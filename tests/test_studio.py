@@ -19,6 +19,9 @@ class PreflightTests(unittest.TestCase):
         self.assertEqual(r["status"], "BLOCKED_AS_DESIGNED")
         self.assertEqual(r["external_generation_calls"], 0)
         self.assertGreaterEqual(len(r["blockers"]), 8)
+        self.assertIn("Exact Mishnah text must be checked and locked", r["blockers"])
+        self.assertIn("No approved image assets", r["blockers"])
+        self.assertIn("No approved audio clips; silent proof only if explicitly declared", r["blockers"])
 
     def test_bad_caption_is_rejected(self):
         m = copy.deepcopy(self.manifest)

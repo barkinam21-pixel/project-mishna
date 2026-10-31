@@ -36,5 +36,24 @@ class SingleControlRoomTest(unittest.TestCase):
         self.assertEqual(manifest["assets"],[])
         self.assertFalse(manifest["cost"]["external_spend_enabled"])
 
+    def test_mobile_dashboard_links_workflow_and_approval_evidence(self):
+        main=(ROOT/"README.md").read_text(encoding="utf-8")
+        for expected in (
+            "actions/workflows/studio-check.yml", "issues/1", "pull/2",
+            "docs/operator-decisions.md", "episodes/berakhot-01-01/source-dossier.md",
+            "episodes/berakhot-01-01/manifest.json", "episodes/berakhot-01-01/trials.json",
+            "Artifacts", "דפדפן בטלפון", "אין צורך להפעיל אותו ידנית",
+        ):
+            self.assertIn(expected,main)
+
+    def test_ci_runs_on_pull_requests_and_keeps_handoff_before_tests(self):
+        workflow=(ROOT/".github/workflows/studio-check.yml").read_text(encoding="utf-8")
+        self.assertIn("  pull_request:\n    branches: [main]",workflow)
+        self.assertLess(
+            workflow.index("Generate truthful stage-gate and Codex session handoff"),
+            workflow.index("Unit tests"),
+        )
+        self.assertIn("if-no-files-found: error",workflow)
+
 if __name__=="__main__":
     unittest.main()
