@@ -60,10 +60,11 @@ jobs:
           python-version: '3.12'
       - name: Audit narration pacing in 12-sequence longform draft (no voice claimed)
         run: python tools/pacing_audit.py scripts/episode-01-before-dawn.md --output build/episode-01-pacing-audit.json
-      - name: Verify FFmpeg and libass are available
+      - name: Install FFmpeg and Hebrew-capable fallback fonts on fresh runner
         run: |
-          ffmpeg -version
-          ffmpeg -filters | grep subtitles
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          ffmpeg -hide_banner -filters | grep subtitles
       - name: Render Hebrew captions with sample-accurate synthetic sync markers
         run: python tools/sync_probe.py --out-dir build/sync-probe
       - name: Upload review reports and 12-second TECHNICAL test ONLY
