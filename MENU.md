@@ -3,6 +3,8 @@
 ## 🎬 [סדרת המשנה והתורה](./README.md)
 הפרויקט הפעיל של אולפן המשנה: מקורות, תסריט, בימוי, קריינות והפקה.
 
+- [כל החלטות ההפקה והסוכנים — מסמך קבוע](./docs/production-pipeline-decisions.md)
+- [תיק המקורות לברכות א׳ א׳](./episodes/berakhot-01-01/source-dossier.md)
 - [מצב העבודה](./docs/session-handoff.md)
 - [בדיקת תיקוני Copilot](https://github.com/barkinam21-pixel/project-mishna/pull/2)
 
@@ -10,7 +12,7 @@
 **פרויקט נפרד, ללא ערבוב קוד או קבצים עם המשנה.**
 
 - [כניסה לפרויקט RPGM](https://github.com/barkinam21-pixel/rpg-maker-auto-player)
-- [הנחיות מוכנות להקמתו](./docs/rpgm-shared-agents.md)
+- [הנחיות לסוכני RPG Maker](./docs/rpgm-shared-agents.md)
 
 ## 🤖 אותם סוכנים, שני פרויקטים
 אותו חשבון GitHub Copilot ואותם כלים שנבחר בהמשך יכולים לסייע לשניהם. **הקשר וההוראות שונים בכל מאגר**, כדי שלא יתבלבלו בין לימוד המשנה לבין משחקים. מנוי Copilot לא אומר שספקי הווידאו כלולים במחיר. כל ריצה מוגבלת ובדוקה; אין הפעלה חופשית או חיובים בלי אישור.
