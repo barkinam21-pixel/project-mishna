@@ -66,7 +66,7 @@ def command(probe_dir):
         "-i", str(probe_dir / "sync-test.wav"),
         "-i", str(probe_dir / "sync-test.srt"),
         "-map", "0:v:0", "-map", "1:a:0", "-map", "2:s:0",
-        "-vf", "subtitles=" + str(probe_dir / "sync-test.srt"),
+        "-vf", "subtitles=" + str(probe_dir / "sync-test.srt") + ",setparams=range=limited:color_primaries=bt709:color_trc=bt709:colorspace=bt709",
         "-frames:v", str(DURATION_FRAMES),
         "-r", str(FPS),
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "24",
