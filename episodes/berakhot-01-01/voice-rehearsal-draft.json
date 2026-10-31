@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "purpose": "unapproved_voice_rehearsal",
+  "fps": 24,
+  "sample_rate": 48000,
+  "release_authorized": false,
+  "source_text_locked": false,
+  "speakers": {
+    "narrator": {
+      "voice_character": "Warm, serious, mature Hebrew Israeli narrator; calm national-historical register",
+      "target_wpm": [
+        105,
+        135
+      ],
+      "notes": "No theatrical bombast; breathe around historical transitions"
+    },
+    "rabbi_host": {
+      "voice_character": "Older warm male; measured teacher; clearly labeled dramatization",
+      "target_wpm": [
+        95,
+        125
+      ],
+      "notes": "Never attribute later commentary to Rabbi"
+    },
+    "contemporary_explainer": {
+      "voice_character": "Approachable clear modern Hebrew explainer",
+      "target_wpm": [
+        115,
+        145
+      ],
+      "notes": "Define terms before reading citations"
+    },
+    "son": {
+      "voice_character": "Adult son; respectful curious tone",
+      "target_wpm": [
+        105,
+        140
+      ],
+      "notes": "Human fictional lines labeled dramatization"
+    }
+  },
+  "pronunciation_dictionary": {
+    "מֵאֵימָתַי": "מֵאֵימָתַי",
+    "חֲלָבִים": "חֲלָבִים — temple fats, not milk",
+    "רַבָּן גַּמְלִיאֵל": "רַבָּן גַּמְלִיאֵל",
+    "אַשְׁמוּרָה": "אַשְׁמוּרָה",
+    "עַמּוּד הַשַּׁחַר": "עַמּוּד הַשַּׁחַר",
+    "תְּרוּמָה": "תְּרוּמָה"
+  },
+  "segments": [
+    {
+      "id": "N01",
+      "speaker": "narrator",
+      "source_status": "dramatization",
+      "start_frame": 0,
+      "end_frame": 240,
+      "spoken_text": "מה מחזיק עם לאורך הדורות? ארמונות נבנים ונופלים.",
+      "pronunciation_text": "מה מחזיק עם לאורך הדורות? ארמונות נבנים ונופלים.",
+      "audio_path": "audio/rehearsals/n01.wav"
+    },
+    {
+      "id": "N02",
+      "speaker": "narrator",
+      "source_status": "dramatization",
+      "start_frame": 240,
+      "end_frame": 480,
+      "spoken_text": "אבל יש דברים שאינם נמדדים בגובה החומות, אלא בעומק הזיכרון.",
+      "pronunciation_text": "אבל יש דברים שאינם נמדדים בגובה החומות, אלא בעומק הזיכרון.",
+      "audio_path": "audio/rehearsals/n02.wav"
+    }
+  ],
+  "notes": "TWO sample units of original editorial narration for later WAV measurement. No actual WAV exists, no real voice tested; timings and text are provisional, do not equate this file to approved episode captions."
+}
