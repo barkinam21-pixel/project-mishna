@@ -34,16 +34,16 @@ class ComparisonTests(unittest.TestCase):
     def test_niqqud_does_not_trigger_false_incomplete(self):
         payload = self.example()
         payload["versions"][0]["text"] = [
-            UNIT.format(response="מותרין").replace("מאימתי", "מֵאֵימָתַי")
+            UNIT.format(response="חייבין").replace("מאימתי", "מֵאֵימָתַי")
             .replace("אמר להם", "אָמַר לָהֶם")
-            .replace("מותרין", "מֻתָּרִין")
+            .replace("חייבין", "חַיָּבִין")
             .replace("להרחיק", "לְהַרְחִיק")
             .replace("העבירה", "הָעֲבֵירָה")
         ]
         report = compare(payload)
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
-        self.assertEqual(report["editions"][0]["sons_response_token"], "מתרין")
-        self.assertEqual(report["editions"][0]["sons_response_meaning"], "permission")
+        self.assertEqual(report["editions"][0]["sons_response_token"], "חיבין")
+        self.assertEqual(report["editions"][0]["sons_response_meaning"], "obligation")
 
     def test_real_world_defective_spelling(self):
         payload = self.example()
@@ -53,6 +53,15 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
         self.assertEqual([x["sons_response_meaning"] for x in report["editions"]],
                          ["obligation", "obligation", "permission"])
+
+    def test_known_manuscript_variant_change_is_flagged(self):
+        payload = self.example()
+        payload["versions"][2]["text"] = [UNIT.format(response="חייבין")]
+        result = compare(payload)
+        self.assertEqual(result["status"], "review_required")
+        self.assertTrue(any("Unexpected meaningful reading" in warning
+                            for warning in result["warnings"]))
+        self.assertFalse(audit_ok(result))
 
     def test_missing_edition_cannot_pass(self):
         payload = self.example()
