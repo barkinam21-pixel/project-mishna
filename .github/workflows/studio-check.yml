@@ -59,7 +59,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sefaria-three-edition-audit
-          path: build/sefaria-variant-comparison.json
+          path: |
+            build/sefaria-variant-comparison.html
+            build/sefaria-variant-comparison.json
+          if-no-files-found: error
 
   voice_sync_diagnostic:
     runs-on: ubuntu-latest
