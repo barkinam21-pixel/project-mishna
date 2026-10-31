@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import unicodedata
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -30,6 +31,21 @@ def clean_text(version):
     else:
         return ""
     return re.sub(r"\s+", " ", TAGS.sub("", " ".join(pieces))).strip()
+
+
+def normalized_for_matching(text):
+    """Remove niqqud/cantillation only for comparison; preserve original SHA."""
+    return "".join(c for c in unicodedata.normalize("NFD", text)
+                   if unicodedata.category(c) != "Mn")
+
+
+def whole_unit_markers(text):
+    return {
+        "contains_start": any(a in text for a in ("מאימתי", "מאימתיי", "מאמתי", "מאמתיי")),
+        "contains_gamliel": "רבן גמליאל" in text,
+        "contains_sons_story": "בניו" in text and "בית המשתה" in text,
+        "contains_final_rationale": "להרחיק" in text and any(a in text for a in ("עבירה", "עברה")),
+    }
 
 
 def compare(payload):
@@ -59,12 +75,15 @@ def compare(payload):
             continue
         version = found[0]
         text = clean_text(version)
-        expression = PHRASE.search(text)
-        anchor = text.find("אמר להם")
+        plain = normalized_for_matching(text)
+        expression = PHRASE.search(plain)
+        anchor = plain.find("אמר להם")
         if anchor < 0:
-            anchor = text.find("לא קרינו")
-        response_context = text[anchor:anchor + 110] if anchor >= 0 else "unfound"
-        ending_context = text[-110:] if text else ""
+            anchor = plain.find("אמר להן")
+        if anchor < 0:
+            anchor = plain.find("לא קרינו")
+        response_context = plain[anchor:anchor + 110] if anchor >= 0 else "unfound"
+        ending_context = plain[-110:] if plain else ""
         flags = {
             "title": title,
             "received": True,
@@ -72,10 +91,7 @@ def compare(payload):
             "source_url": version.get("versionSource") or version.get("versionUrl") or "unknown",
             "word_count": len(text.split()),
             "normalized_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest() if text else None,
-            "contains_start": "מאימתי" in text or "מאימתיי" in text,
-            "contains_gamliel": "רבן גמליאל" in text,
-            "contains_sons_story": "בניו" in text and "בית המשתה" in text,
-            "contains_final_rationale": "להרחיק" in text and "העבירה" in text,
+            **whole_unit_markers(plain),
             "sons_response_token": expression.group(1) if expression else "unresolved",
             "response_context_for_review": response_context,
             "ending_context_for_review": ending_context,
