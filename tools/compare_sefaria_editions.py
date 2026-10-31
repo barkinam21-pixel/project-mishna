@@ -27,6 +27,10 @@ EXPECTED_RESPONSE_MEANINGS = {
 }
 MAX_BYTES = 1024 * 1024
 PHRASE = re.compile(r"(חייבין|חיבין|חייבים|חיבים|מותרין|מתרין|מותרים|מתרים)\s+אתם\s+לקרות")
+ONE_DAY_OFFERINGS = re.compile(
+    r"וכל\s+הנאכל(?:ין|ים)\s+ליום\s+אחד(?:[\s־—–-]+)"
+    r"מצו(?:תן|ותן)\s+עד\s+שיעלה\s+עמוד\s+השחר"
+)
 KNOWN_PUBLIC_DOMAIN = {"public domain", "pd"}
 UNIT_MARKERS = {
     "evening_shema_start": "שאלה על תחילת זמן קריאת שמע בערבית",
@@ -37,6 +41,7 @@ UNIT_MARKERS = {
     "sons_response_variant": "תשובת חייבין/מותרין אתם לקרות",
     "lo_zo_bilvad": "המשך לשון לא זו בלבד",
     "burning_fats_and_limbs": "הקטר חלבים ואברים עד עמוד השחר",
+    "one_day_offerings": "וכל הנאכלין/הנאכלים ליום אחד — מצוותן עד עמוד השחר",
     "preventive_midnight_rationale": "הטעם להרחיק את האדם מן העבירה",
 }
 
@@ -96,6 +101,7 @@ def whole_unit_markers(text):
             and any(word in text for word in ("אברים", "איברים"))
             and "עמוד השחר" in text
         ),
+        "one_day_offerings": ONE_DAY_OFFERINGS.search(text) is not None,
         "preventive_midnight_rationale": (
             "חכמים" in text and "חצות" in text and "להרחיק" in text
             and any(word in text for word in ("העבירה", "עברה"))
@@ -169,6 +175,10 @@ def _empty_edition(title):
         "source_text_sha256": None,
         "normalized_text_sha256": None,
         "coverage": {key: False for key in UNIT_MARKERS},
+        "missing_unit_clauses": [
+            {"key": key, "description": description}
+            for key, description in UNIT_MARKERS.items()
+        ],
         "sons_response_token": "unresolved",
         "sons_response_original": "unresolved",
         "sons_response_meaning": "unresolved",
@@ -242,6 +252,11 @@ def compare(payload):
                 hashlib.sha256(normalized.encode("utf-8")).hexdigest() if normalized else None
             ),
             "coverage": coverage,
+            "missing_unit_clauses": [
+                {"key": key, "description": UNIT_MARKERS[key]}
+                for key, present in coverage.items()
+                if not present
+            ],
             "sons_response_token": response_token,
             "sons_response_original": response_original,
             "sons_response_meaning": meaning,
@@ -259,6 +274,10 @@ def compare(payload):
         }
         if item["word_count"] < 55 or not all(coverage.values()):
             report["warnings"].append("Possible partial / invalid Mishnah unit in edition: " + title)
+        if not coverage["one_day_offerings"]:
+            report["warnings"].append(
+                "Missing required one-day-offerings clause in edition: " + title
+            )
         if not known_public_domain:
             report["warnings"].append("Non-public-domain or unknown rights: " + title)
         if response_token == "unresolved":
@@ -377,6 +396,15 @@ def render_html(report):
             for key, description in UNIT_MARKERS.items()
         )
 
+    def missing_clauses_for(item):
+        clauses = item.get("missing_unit_clauses", [])
+        if not clauses:
+            return "לא זוהה רכיב חסר."
+        return "<ul>{}</ul>".format("".join(
+            '<li class="missing">{}</li>'.format(html.escape(clause["description"]))
+            for clause in clauses
+        ))
+
     def word_variants_for(item):
         diff_report = report.get("word_level_differences", {})
         reference_title = diff_report.get("reference_edition", TITLES[0])
@@ -439,7 +467,8 @@ def render_html(report):
         )),
         row("השוואה", text_for),
         row("הבדלי מילים מול המהדורה הראשונה (אסימונים מקוריים)", word_variants_for),
-        row("כיסוי תשעת רכיבי היחידה", lambda item: "<ul>{}</ul>".format(coverage_for(item))),
+        row("כיסוי רכיבי היחידה", lambda item: "<ul>{}</ul>".format(coverage_for(item))),
+        row("סעיפים נדרשים שחסרים", missing_clauses_for),
         row("SHA-256 נוסח המקור", lambda item: "<code>{}</code>".format(
             html.escape(str(item.get("source_text_sha256") or "לא זמין"))
         )),

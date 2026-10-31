@@ -20,6 +20,7 @@ UNIT = "מאימתי קורין את שמע בערבית משעה שהכהנים
        "אמרו לו לא קרינו את שמע אמר להם אם לא עלה עמוד השחר {response} אתם לקרות " + \
        "ולא זו בלבד אלא כל שאמרו חכמים עד חצות מצותן עד שיעלה עמוד השחר " + \
        "הקטר חלבים ואברים מצותן עד שיעלה עמוד השחר " + \
+       "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר " + \
        "אם כן למה אמרו חכמים עד חצות כדי להרחיק את האדם מן העבירה"
 
 
@@ -32,7 +33,7 @@ class ComparisonTests(unittest.TestCase):
             for i, title in enumerate(TITLES)
         ]}
 
-    def test_complete_unit_has_three_editions_and_all_nine_markers(self):
+    def test_complete_unit_has_three_editions_and_all_required_markers(self):
         report = compare(self.example())
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
         self.assertEqual([x["sons_response_token"] for x in report["editions"]],
@@ -47,6 +48,17 @@ class ComparisonTests(unittest.TestCase):
             self.assertFalse(edition["text_verified"])
             self.assertFalse(edition["torah_approved"])
             self.assertFalse(edition["release_authorized"])
+        variant_payload = self.example()
+        variant_payload["versions"][1]["text"] = [
+            UNIT.format(response="חייבין")
+            .replace(
+                "וכל הנאכלין ליום אחד מצותן",
+                "וכל הנאכלים ליום אחד — מצוותן",
+            )
+        ]
+        self.assertTrue(
+            compare(variant_payload)["editions"][1]["coverage"]["one_day_offerings"]
+        )
         self.assertFalse(report["text_locked"])
         self.assertFalse(report["text_verified"])
         self.assertFalse(report["textual_variants_reviewed"])
@@ -138,6 +150,38 @@ class ComparisonTests(unittest.TestCase):
         report = compare(payload)
         self.assertEqual(report["status"], "review_required")
         self.assertFalse(report["editions"][0]["coverage"]["burning_fats_and_limbs"])
+
+    def test_missing_one_day_offerings_clause_fails_and_is_exposed(self):
+        payload = self.example()
+        missing_clause = "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר "
+        payload["versions"][0]["text"] = [
+            UNIT.format(response="חיבין").replace(missing_clause, "")
+        ]
+        report = compare(payload)
+        edition = report["editions"][0]
+        self.assertEqual(report["status"], "review_required")
+        self.assertFalse(audit_ok(report))
+        self.assertFalse(edition["coverage"]["one_day_offerings"])
+        self.assertEqual(
+            edition["missing_unit_clauses"],
+            [{
+                "key": "one_day_offerings",
+                "description": "וכל הנאכלין/הנאכלים ליום אחד — מצוותן עד עמוד השחר",
+            }],
+        )
+        self.assertTrue(any(
+            "Missing required one-day-offerings clause" in warning
+            for warning in report["warnings"]
+        ))
+        self.assertFalse(report["text_locked"])
+        self.assertFalse(report["text_verified"])
+        self.assertFalse(report["textual_variants_reviewed"])
+        self.assertFalse(report["rights_reviewed"])
+        self.assertFalse(report["torah_approved"])
+        self.assertFalse(report["release_authorized"])
+        page = render_html(report)
+        self.assertIn("סעיפים נדרשים שחסרים", page)
+        self.assertIn("וכל הנאכלין/הנאכלים ליום אחד", page)
 
     def test_unknown_license_keeps_only_a_bounded_comparison_excerpt(self):
         payload = self.example()
