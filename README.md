@@ -31,11 +31,11 @@
 ✅ נבדקו [חלופות זולות ל-Higgsfield](docs/low-cost-video-alternatives.md): Wan2.2, HunyuanVideo-1.5, FramePack ו-LTX, כולל GPU, רישוי ועלויות ענן אפשריות. **לא הותקן ולא חויב שום מנוע יצירה.**
 ✅ קיימת כעת **[טיוטת תסריט ל-75 שניות](episodes/berakhot-01-01/literary-draft.md)**, [מפת מקור־סצנה](episodes/berakhot-01-01/source-to-scene-map.md) ו[תוכנית צילום מובנית](episodes/berakhot-01-01/proof-blueprint.json): חמש סצנות, 16 שוטים, 1,800 פריימים. **לא אושרו להפקה**.
 ✅ GitHub Actions בודק גם רציפות פריימים, תיאורי מקורות, תכנון מספר איורים, ומונע מצג שווא של אישור/נכסים שלא קיימים.
-✅ נמצא ונוסח **[מסלול GPU חינמי](docs/free-cloud-gpu-images.md)**: [מחברת Colab לפתיחה ישירה בנייד](https://colab.research.google.com/github/barkinam21-pixel/project-mishna/blob/main/notebooks/free_mishnah_images_colab.ipynb), עם מודל SDXL בקוד פתוח־משקלים, [16 פרומפטים מוכנים](episodes/berakhot-01-01/free-cloud-image-prompts.json), בחירה בין 1/5/16 איורי ניסיון, ZIP ורישום שימוש לכל תמונה. **קוד המחברת ובדיקות מבנהו עברו ב-GitHub; GPU אמיתי עוד לא הופעל, ואיורים לא נוצרו.**
+✅ נמצא ונוסח **[מסלול GPU חינמי](docs/free-cloud-gpu-images.md)**: [מחברת Colab לפתיחה ישירה בנייד](https://colab.research.google.com/github/barkinam21-pixel/project-mishna/blob/main/notebooks/free_mishnah_images_colab.ipynb), עם מודל SDXL בקוד פתוח־משקלים, [16 פרומפטים מוכנים](episodes/berakhot-01-01/free-cloud-image-prompts.json), בחירה בין 1/5/16 איורי ניסיון, ZIP ורישום שימוש לכל תמונה. **עדכון 31.10.2026: המשתמש הפעיל את המחברת ב-Colab והעביר ארכיון מאומת עם איור SH01 אמיתי (SDXL, Tesla T4, 1024×576); איכות הסגנון עדיין דורשת שיפור, ואין אישור לשימוש בפרק. ראו [תיעוד האימות](docs/session-handoff.md).**
 ✅ נמצא גם [דמו FLUX.2 Klein 4B חינמי ב-ZeroGPU](https://huggingface.co/spaces/black-forest-labs/FLUX.2-klein-4B), מוגבל במכסה ולא נבחן בהפעלה שלנו.
 ✅ [תנ״ך חזותי לכיוון האמנותי](episodes/berakhot-01-01/visual-bible.md) מוכן להחלטה של בר. [מנוע כתוביות עבריות](tools/hebrew_captions.py) מייצא SRT/VTT/ASS מתזמון פריימים ונבדק על מקרי RTL, אבל **מסרב להפיק כתוביות לפרק לפני נעילת נוסח וביקורת תורנית**. [מניפסט כתוביות](episodes/berakhot-01-01/hebrew-caption-master.json) ריק במתכוון.
 
-⏳ עדיין לא נעשו: נעילת נוסח מדויק במהדורה שמותר להשתמש בה, אישור אנושי תורני, **אישור תסריט הטיוטה**, עיצוב דמויות, קריינות או אנימציה. **אין כרגע סרט מוגמר או מנוע AI מחובר.**
+⏳ עדיין לא נעשו: נעילת נוסח מדויק במהדורה שמותר להשתמש בה, אישור אנושי תורני, **אישור תסריט הטיוטה**, עיצוב דמויות, קריינות או אנימציה. **כבר יש איור ניסיון אחד שהפיק המשתמש ב-Colab ושנבדק בפועל; עדיין אין סרט מוגמר, רציפות דמויות מאומתת, מנוע AI המחובר ישירות ל-GitHub, או אישורי הפקה.**
 
 ## איך זה יעבוד בלי מחשב חזק
 
@@ -45,7 +45,7 @@ GitHub שומר קבצים והחלטות ומפעיל בדיקות אוטומט
 
 ## יצירת איור ניסיון על GPU חינמי
 
-[פותחים כאן את מחברת Colab](https://colab.research.google.com/github/barkinam21-pixel/project-mishna/blob/main/notebooks/free_mishnah_images_colab.ipynb), בוחרים GPU בהגדרות Runtime, ואז Run all. ברירת המחדל איור ניסיון אחד, עם קובץ ZIP להורדה; המודל נטען **רק לאחר** זיהוי GPU. GPU חינמי אינו מובטח ואינו בלתי מוגבל, והוא עשוי לצרוך מכסת השירות, אבל המחברת אינה מחייבת API בתשלום ואינה משתמשת ב-ChatGPT Image. לצפייה מהירה בדמו [FLUX.2 Klein 4B ב-Hugging Face](https://huggingface.co/spaces/black-forest-labs/FLUX.2-klein-4B). **לא נוצרה תמונה בפועל על ידינו; הבדיקה האוטומטית ב-GitHub מאמתת את קוד המחברת, לא את הצלחת המודל על GPU.**
+[פותחים כאן את מחברת Colab](https://colab.research.google.com/github/barkinam21-pixel/project-mishna/blob/main/notebooks/free_mishnah_images_colab.ipynb), בוחרים GPU בהגדרות Runtime, ואז Run all. ברירת המחדל איור ניסיון אחד, עם קובץ ZIP להורדה; המודל נטען **רק לאחר** זיהוי GPU. GPU חינמי אינו מובטח ואינו בלתי מוגבל, והוא עשוי לצרוך מכסת השירות, אבל המחברת אינה מחייבת API בתשלום ואינה משתמשת ב-ChatGPT Image. לצפייה מהירה בדמו [FLUX.2 Klein 4B ב-Hugging Face](https://huggingface.co/spaces/black-forest-labs/FLUX.2-klein-4B). **עדכון: תמונה אחת הופקה בפועל ב-Colab בהרצת המשתמש, ונבדקה מהארכיון שהעלה. בדיקות GitHub כשלעצמן עדיין אינן מפיקות תמונות או מאשרות איכות.**
 
 ## הרצה ותוצאות
 
