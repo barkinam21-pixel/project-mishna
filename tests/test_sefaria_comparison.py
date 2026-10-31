@@ -42,7 +42,17 @@ class ComparisonTests(unittest.TestCase):
         ]
         report = compare(payload)
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
-        self.assertEqual(report["editions"][0]["sons_response_token"], "מותרין")
+        self.assertEqual(report["editions"][0]["sons_response_token"], "מתרין")
+        self.assertEqual(report["editions"][0]["sons_response_meaning"], "permission")
+
+    def test_real_world_defective_spelling(self):
+        payload = self.example()
+        payload["versions"][0]["text"] = [UNIT.format(response="חיבין")]
+        payload["versions"][2]["text"] = [UNIT.format(response="מתרין")]
+        report = compare(payload)
+        self.assertEqual(report["status"], "three_versions_received_pending_human_review")
+        self.assertEqual([x["sons_response_meaning"] for x in report["editions"]],
+                         ["obligation", "obligation", "permission"])
 
     def test_missing_edition_cannot_pass(self):
         payload = self.example()
