@@ -18,6 +18,14 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Zero-cost episode plan
         run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
+      - name: Validate editorial proof storyboard (no media creation)
+        run: python tools/validate_proof_blueprint.py episodes/berakhot-01-01/proof-blueprint.json --output build/editorial-plan-review.json
+      - name: Upload editorial plan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-plan-review
+          path: build/editorial-plan-review.json
       - name: Upload preflight report
         uses: actions/upload-artifact@v4
         with:
