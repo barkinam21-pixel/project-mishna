@@ -113,6 +113,19 @@ def compare(payload):
     return report
 
 
+def audit_ok(report):
+    """Only API evidence completeness; NEVER Torah/release approval."""
+    return (
+        isinstance(report, dict)
+        and report.get("status") == "three_versions_received_pending_human_review"
+        and not report.get("warnings")
+        and len(report.get("editions", [])) == len(TITLES)
+        and all(e.get("received") for e in report.get("editions", []))
+        and report.get("text_locked") is False
+        and report.get("release_authorized") is False
+    )
+
+
 def main():
     output = Path("build/sefaria-variant-comparison.json")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -144,7 +157,7 @@ def main():
     for w in report.get("warnings", []):
         print("WARNING: " + w)
     print("RELEASE: not authorized; human text and Torah review still required")
-    return 0  # Network unavailability must not block deterministic offline tests.
+    return 0 if audit_ok(report) else 2  # CI must fail on missing/partial evidence.
 
 
 if __name__ == "__main__":
