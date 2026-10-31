@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "fps": 24,
+  "language": "he",
+  "source_text_locked": false,
+  "human_torah_review_approved": false,
+  "caption_text_approved": false,
+  "source_edition": "Mishnah, ed. Romm, Vilna 1913 (candidate only)",
+  "cues": [],
+  "notes": [
+    "This is a reserved manifest, not approved dialogue or subtitles.",
+    "Every approved future cue requires id, start/end_frame, display_text, spoken_text, pronunciation_text, speaker, source, shot_id.",
+    "Export script refuses to create SRT/VTT/ASS until human source and caption approval.",
+    "Never type subtitles into a generated illustration."
+  ]
+}
