@@ -54,7 +54,7 @@ def preflight(data):
         witnesses = []
     reviewed = [x for x in witnesses if isinstance(x, dict) and x.get("checked") is True and x.get("url") and x.get("edition") and x.get("license")]
     if len({x.get("name") for x in reviewed}) < 2:
-        blockers.append("Two independent editions must be checked and licensed")
+        blockers.append("Two independent edition witnesses must be compared with rights status documented (not necessarily reusable)")
     if not sources.get("working_text") or sources.get("text_verified") is not True:
         blockers.append("Exact Mishnah text must be checked and locked")
     if sources.get("textual_variants_reviewed") is not True:
