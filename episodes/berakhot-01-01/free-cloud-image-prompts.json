@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "status": "private_style_tests_only",
+  "source_lock": false,
+  "torah_review_approved": false,
+  "visual_direction_approved": false,
+  "public_release_authorized": false,
+  "monetary_spend_authorized_usd": 0,
+  "workspace_usage": "unknown",
+  "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+  "model_license": "CreativeML Open RAIL++-M per Stability AI model card; confirm downstream requirements before release",
+  "model_card": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+  "image_size": {
+    "width": 1024,
+    "height": 576
+  },
+  "style_lock": "cinematic historical illustration for a serious accessible educational film, warm painterly semi-realism, fine traditional brushwork, subtle natural skin texture, understated restrained human emotions, realistic fabric and proportions, plausible Roman-period Galilee or Judea environment without claiming a specific archaeological site, natural practical lighting, subdued sand gold and midnight blue palette, atmospheric cinematic depth, horizontal widescreen composition, physically coherent setting, an original artistic reconstruction and NOT a verified historical image, no letters or writing",
+  "negative_prompt": "text, lettering, captions, Hebrew text, English text, logo, watermark, modern electric lights, modern furniture, wristwatch, printed book, clock, crown, royal throne, fantasy armor, exaggerated costumes, sci-fi, anime, cartoon, plastic skin, glossy 3d CGI, extra fingers, disfigured hands, duplicate limbs, identical cloned faces, chaotic lighting, distorted face, sharp horror, gore, neon",
+  "notes": [
+    "Only source-grounded visual test prompts, no biblical quotations or later rabbinic claims inscribed in art.",
+    "Every generated image is a draft; do not set the production manifest assets[].accepted=true automatically.",
+    "Image generation runs on user-provided free cloud GPU session, never in ChatGPT image quota.",
+    "Camera/wardrobe text locks improve coherence but do not prove identity continuity; scene-pack visual QA needed.",
+    "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah."
+  ],
+  "shots": [
+    {
+      "shot_id": "SH01",
+      "scene_id": "S01",
+      "shot_type": "establishing",
+      "shot_prompt": "A wide establishing view of a modest hillside settlement in the ancient southern Levant at twilight, low stone and earthen houses, soft amber light through a few doorways, deep blue sky, quiet human scale; no recognizable monument or specific town; emotionally inviting question at evening",
+      "seed": 173101,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH02",
+      "scene_id": "S01",
+      "shot_type": "medium_host",
+      "shot_prompt": "A fictional artistic reconstruction of a thoughtful mature Jewish teacher serving as the series host, simple woven period-inspired clothing, contemplative gentle eyes, seated on the right side of a modest study interior with a listener implied out of frame to the left, warm side light; NOT an authenticated portrait of Rabbi Judah the Prince; no printed texts",
+      "seed": 173102,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH03",
+      "scene_id": "S02",
+      "shot_type": "establishing_stars",
+      "shot_prompt": "Wide horizon at the transition from evening to visible stars above modest ancient Judean dwellings, natural darkness not theatrical fantasy, a delicate first cluster of visible stars, no sundial, no timer, no writing",
+      "seed": 173103,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH04",
+      "scene_id": "S02",
+      "shot_type": "medium_priest",
+      "shot_prompt": "An anonymous adult man of ordinary appearance in simple non-ceremonial woven tunic entering a modest domestic doorway on left side of frame, practical warm indoor light from camera right, night visible outside, plausible ancient Levant domestic scene, NO high priest ritual garments, no precise event claimed",
+      "seed": 173104,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH05",
+      "scene_id": "S02",
+      "shot_type": "insert_food",
+      "shot_prompt": "Close-in painterly insert of a plain ceramic bowl of unidentifiable simple food on a rough domestic table in warm lamplight, hands only if anatomically coherent, suggesting a meal without declaring historical contents, no script or readable marks",
+      "seed": 173105,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH06",
+      "scene_id": "S03",
+      "shot_type": "rabbi_eliezer_separate",
+      "shot_prompt": "An interpretive solitary character portrait representing Rabbi Eliezer, dignified older Jewish scholar in plain period-inspired clothing, against a simple dark evening background, half-length and gentle, intentionally separate from other opinion holders; this is NOT a historical likeness or a documented meeting",
+      "seed": 173106,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH07",
+      "scene_id": "S03",
+      "shot_type": "anonymous_sages_symbol",
+      "shot_prompt": "Symbolic panoramic night landscape divided by naturally dark clouds and a distant midnight horizon, a visually distinct editorial representation of an anonymous collective opinion, NO named characters and NO assembly of rabbis, no textual markings",
+      "seed": 173107,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH08",
+      "scene_id": "S03",
+      "shot_type": "rabban_gamliel_separate",
+      "shot_prompt": "A solitary interpretive portrait representing Rabban Gamliel, mature dignified Jewish scholar in unadorned clothing within a distinct home interior, focused expression, natural lamplight; this is NOT a historical likeness or a documented shared debate",
+      "seed": 173108,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "shot_type": "exterior_arrival",
+      "shot_prompt": "Historical-drama style nighttime exterior of a modest family courtyard with an entrance on screen left, two indistinct adult male figures seen from behind approaching a doorway, painterly quiet anticipation; exact number of sons is UNDOCUMENTED, these are fictional stand-ins, no palace",
+      "seed": 173109,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH10",
+      "scene_id": "S04",
+      "shot_type": "sons_medium",
+      "shot_prompt": "Two adult male figures represented as anonymous artistic stand-ins for sons returning at night, simple sand and brown woven garments, medium shot, standing together on screen left and looking with quiet uncertainty to their right inside a humble lamp-lit house; no dialogue text, no claim this is their real appearance or count",
+      "seed": 173110,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH11",
+      "scene_id": "S04",
+      "shot_type": "over_shoulder_sons",
+      "shot_prompt": "Over-the-shoulder camera from behind the two fictional adult male visitors on screen left toward a mature father figure screen right, inside same modest ancient house, door on screen left and warm small lamp from screen right, grounded restrained familial concern, same sand brown clothing for visitors",
+      "seed": 173111,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH12",
+      "scene_id": "S04",
+      "shot_type": "reverse_father",
+      "shot_prompt": "Medium reverse shot of a mature fictional father figure as Rabban Gamliel representation on screen right, facing sons to screen left, unadorned brown linen clothing and carefully controlled warm lamp lighting; not a historically confirmed portrait, retain same room design, no royal effects",
+      "seed": 173112,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH13",
+      "scene_id": "S04",
+      "shot_type": "reaction_insert",
+      "shot_prompt": "Intimate dramatic detail of a father's open reassuring palm resting beside a simple clay oil lamp on low wooden surface inside a modest ancient home, night behind, warm light from screen right, emotional shift from uncertainty to possible relief, not a quotation or factual artifact claim",
+      "seed": 173113,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH14",
+      "scene_id": "S05",
+      "shot_type": "midnight_graphic",
+      "shot_prompt": "Minimal painterly symbolic sky panorama with subtle arc across deep indigo midnight above a low ancient village silhouette, a purely visual metaphor for time passing; no person, no written numerals, no clock, no astrological symbols",
+      "seed": 173114,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH15",
+      "scene_id": "S05",
+      "shot_type": "dawn_graphic",
+      "shot_prompt": "Calm far horizon moments before sunrise, soft slate blue gently approaching warm amber, simple Galilean hill silhouettes, a contemplative original cinematic landscape, purely visual metaphor not the exact night of an ancient event, no text",
+      "seed": 173115,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    },
+    {
+      "shot_id": "SH16",
+      "scene_id": "S05",
+      "shot_type": "conclusion_title",
+      "shot_prompt": "Wide quiet contemplative view from a shaded ancient doorway toward a pre-dawn sky, one clay lamp and empty foreground to reserve safe space for subtitles added later, sober hopeful closure, no text within image",
+      "seed": 173116,
+      "source_approval": "unreviewed_visual_reconstruction",
+      "accepted": false,
+      "generated": false
+    }
+  ]
+}
