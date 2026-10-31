@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "purpose": "private_editorial_plan_only",
+  "status": "editorial_draft_only",
+  "fps": 24,
+  "sample_rate": 48000,
+  "frame_to_audio_samples": 2000,
+  "target_duration_frames": 1800,
+  "source_edition_candidate": "Mishnah, ed. Romm, Vilna 1913",
+  "selected_source_text_locked": false,
+  "human_torah_review_approved": false,
+  "script_approved": false,
+  "visual_direction_approved": false,
+  "voice_approved": false,
+  "proof_approved": false,
+  "external_spend_enabled": false,
+  "max_external_usd": 0,
+  "workspace_usage": "unknown",
+  "image_generation_enabled": false,
+  "video_generation_enabled": false,
+  "release_authorized": false,
+  "scenes": [
+    {
+      "id": "S01",
+      "title": "השאלה",
+      "start_frame": 0,
+      "end_frame": 288,
+      "source_facts": "משנה פותחת בשאלת מועד קריאת שמע בערבית",
+      "attributed_interpretations": [],
+      "source_links": [
+        "https://www.sefaria.org/Mishnah_Berakhot.1.1"
+      ],
+      "unknowns": [
+        "מראה רבי יהודה הנשיא",
+        "בית המדרש ומיקומו"
+      ],
+      "dramatization": "רבי יהודה הנשיא הוא מנחה אמנותי, ואינו מצוטט כאיש היסטורי",
+      "dramatization_label": "המחזה המבוססת על מקורות — לא ציטוט מדברי רבי",
+      "historical_portrait_label": "שחזור אמנותי; אין בידינו דיוקן ודאי",
+      "dramatic_change": "זמן הערב מתחלף בשאלה",
+      "continuity_lock": "host right frame; same warm key light; generic learning setting",
+      "axis": "host screen-right"
+    },
+    {
+      "id": "S02",
+      "title": "כהנים ותרומה",
+      "start_frame": 288,
+      "end_frame": 624,
+      "source_facts": "המשנה קושרת תחילת זמן קריאת שמע לשעת כניסת הכהנים לאכול בתרומתם",
+      "attributed_interpretations": [
+        "בבלי ברכות ב א: צאת הכוכבים",
+        "ברטנורא א א: כהן שטבל ממתין לשעת היתר התרומה"
+      ],
+      "source_links": [
+        "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "https://www.sefaria.org/Berakhot.2a",
+        "https://www.sefaria.org/Bartenura_on_Mishnah_Berakhot.1.1"
+      ],
+      "unknowns": [
+        "מראה הכהן",
+        "מיקום הבית המדויק",
+        "הארוחה"
+      ],
+      "dramatization": "בית כללי וכניסה לארוחה הם המחשה בלבד",
+      "dramatization_label": "המחזה — שחזור אמנותי",
+      "dramatic_change": "שאלה מופשטת מקבלת סימן יומיומי",
+      "continuity_lock": "door screen-left, light screen-right, one unnamed priest same costume",
+      "axis": "movement left-to-right"
+    },
+    {
+      "id": "S03",
+      "title": "שלוש דעות",
+      "start_frame": 624,
+      "end_frame": 984,
+      "source_facts": "רבי אליעזר סוף האשמורה הראשונה; חכמים חצות; רבן גמליאל עמוד השחר",
+      "attributed_interpretations": [
+        "ברטנורא: אשמורה ראשונה היא שליש ראשון של הלילה"
+      ],
+      "source_links": [
+        "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "https://www.sefaria.org/Bartenura_on_Mishnah_Berakhot.1.1"
+      ],
+      "unknowns": [
+        "אין תיעוד למפגש פיזי משותף",
+        "חכמים אינם מזוהים בשמם"
+      ],
+      "dramatization": "שלוש תמונות מופרדות מייצגות מסורות, לא דיון מצולם משותף",
+      "dramatization_label": "מונטאז׳ המחשה — אין מקור למפגש משותף",
+      "dramatic_change": "נפתחות שלוש אפשרויות",
+      "continuity_lock": "three independent compositions, anonymous collective not personified",
+      "axis": "editorial montage, no shared room"
+    },
+    {
+      "id": "S04",
+      "title": "הבנים חוזרים",
+      "start_frame": 984,
+      "end_frame": 1440,
+      "source_facts": "בני רבן גמליאל שבים מבית המשתה לפני שקראו שמע; האב משיב לפני עמוד השחר",
+      "attributed_interpretations": [],
+      "source_links": [
+        "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "https://he.wikisource.org/wiki/כתב_יד_קאופמן_למשנה/מסכת_ברכות"
+      ],
+      "unknowns": [
+        "מספר הבנים המדויק",
+        "הבית",
+        "השעה המדויקת",
+        "מראה הדמויות",
+        "הנוסח חייבין/מותרין להקלטה"
+      ],
+      "dramatization": "חזרתם הביתה, מיקום הדלת והמחוות אמנותיות; המשפטים בתסריט פרפרזה בלבד",
+      "dramatization_label": "המחזה — שחזור אמנותי",
+      "dramatic_change": "מחלוקת בזמנים נעשית דילמה מעשית",
+      "continuity_lock": "door screen-left, father screen-right, maintain axis; costumes, eyes, prop continuity",
+      "axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "S05",
+      "title": "גבול הזהירות",
+      "start_frame": 1440,
+      "end_frame": 1800,
+      "source_facts": "המשנה מסבירה את גבול חצות: כדי להרחיק את האדם מן העבירה",
+      "attributed_interpretations": [
+        "ברטנורא: החשש שידחה עד שתחלוף השעה"
+      ],
+      "source_links": [
+        "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "https://www.sefaria.org/Bartenura_on_Mishnah_Berakhot.1.1"
+      ],
+      "unknowns": [
+        "איור לילה לחצות ושחר אינו מתאר את לילו של המעשה"
+      ],
+      "dramatization": "גרף לילה וחצות הוא משל חזותי ולא סצנה מן המשנה",
+      "dramatization_label": "משל חזותי — לא סצנה מן המשנה",
+      "dramatic_change": "התשובה ההלכתית מקבלת משקל של אחריות",
+      "continuity_lock": "no historic physical scene; restrained luminance progression",
+      "axis": "abstract diagram"
+    }
+  ],
+  "shots": [
+    {
+      "id": "SH01",
+      "scene_id": "S01",
+      "shot_type": "establishing",
+      "start_frame": 0,
+      "end_frame": 144,
+      "duration_frames": 144,
+      "source_status": "historical_reconstruction",
+      "dramatic_purpose": "לילה ומרחב למידה כללי",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "host screen-right"
+    },
+    {
+      "id": "SH02",
+      "scene_id": "S01",
+      "shot_type": "medium_host",
+      "start_frame": 144,
+      "end_frame": 288,
+      "duration_frames": 144,
+      "source_status": "dramatization",
+      "dramatic_purpose": "המנחה שואל, לא ציטוט",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "host screen-right"
+    },
+    {
+      "id": "SH03",
+      "scene_id": "S02",
+      "shot_type": "establishing_stars",
+      "start_frame": 288,
+      "end_frame": 408,
+      "duration_frames": 120,
+      "source_status": "historical_reconstruction",
+      "dramatic_purpose": "מעבר ערב ללילה",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "movement left-to-right"
+    },
+    {
+      "id": "SH04",
+      "scene_id": "S02",
+      "shot_type": "medium_priest",
+      "start_frame": 408,
+      "end_frame": 552,
+      "duration_frames": 144,
+      "source_status": "historical_reconstruction",
+      "dramatic_purpose": "כניסת דמות כהן אנונימית",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "movement left-to-right"
+    },
+    {
+      "id": "SH05",
+      "scene_id": "S02",
+      "shot_type": "insert_food",
+      "start_frame": 552,
+      "end_frame": 624,
+      "duration_frames": 72,
+      "source_status": "historical_reconstruction",
+      "dramatic_purpose": "קערה כמשל למעשה תרומה",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "movement left-to-right"
+    },
+    {
+      "id": "SH06",
+      "scene_id": "S03",
+      "shot_type": "rabbi_eliezer_separate",
+      "start_frame": 624,
+      "end_frame": 744,
+      "duration_frames": 120,
+      "source_status": "exact_source",
+      "dramatic_purpose": "דעת רבי אליעזר ללא מפגש",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "editorial montage, no shared room"
+    },
+    {
+      "id": "SH07",
+      "scene_id": "S03",
+      "shot_type": "anonymous_sages_symbol",
+      "start_frame": 744,
+      "end_frame": 864,
+      "duration_frames": 120,
+      "source_status": "exact_source",
+      "dramatic_purpose": "חכמים נשארים אנונימיים",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "editorial montage, no shared room"
+    },
+    {
+      "id": "SH08",
+      "scene_id": "S03",
+      "shot_type": "rabban_gamliel_separate",
+      "start_frame": 864,
+      "end_frame": 984,
+      "duration_frames": 120,
+      "source_status": "exact_source",
+      "dramatic_purpose": "דעת רבן גמליאל, לא דיוקן",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "editorial montage, no shared room"
+    },
+    {
+      "id": "SH09",
+      "scene_id": "S04",
+      "shot_type": "exterior_arrival",
+      "start_frame": 984,
+      "end_frame": 1080,
+      "duration_frames": 96,
+      "source_status": "dramatization",
+      "dramatic_purpose": "כניסה מן החשכה",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "SH10",
+      "scene_id": "S04",
+      "shot_type": "sons_medium",
+      "start_frame": 1080,
+      "end_frame": 1176,
+      "duration_frames": 96,
+      "source_status": "dramatization",
+      "dramatic_purpose": "הבנים פונים אל אביהם",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "SH11",
+      "scene_id": "S04",
+      "shot_type": "over_shoulder_sons",
+      "start_frame": 1176,
+      "end_frame": 1272,
+      "duration_frames": 96,
+      "source_status": "dramatization",
+      "dramatic_purpose": "ציר הבנים אל האב",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "SH12",
+      "scene_id": "S04",
+      "shot_type": "reverse_father",
+      "start_frame": 1272,
+      "end_frame": 1368,
+      "duration_frames": 96,
+      "source_status": "dramatization",
+      "dramatic_purpose": "תגובה מצד האב ללא דיבור מקור נעול",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "SH13",
+      "scene_id": "S04",
+      "shot_type": "reaction_insert",
+      "start_frame": 1368,
+      "end_frame": 1440,
+      "duration_frames": 72,
+      "source_status": "dramatization",
+      "dramatic_purpose": "הקלה ומבט; לא טענה היסטורית",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "sons left, father right, no reverse-axis jumps"
+    },
+    {
+      "id": "SH14",
+      "scene_id": "S05",
+      "shot_type": "midnight_graphic",
+      "start_frame": 1440,
+      "end_frame": 1584,
+      "duration_frames": 144,
+      "source_status": "attributed_commentary",
+      "dramatic_purpose": "המשגה של גבול חצות",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "abstract diagram"
+    },
+    {
+      "id": "SH15",
+      "scene_id": "S05",
+      "shot_type": "dawn_graphic",
+      "start_frame": 1584,
+      "end_frame": 1728,
+      "duration_frames": 144,
+      "source_status": "exact_source",
+      "dramatic_purpose": "השחר כמגבלת זמן",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "abstract diagram"
+    },
+    {
+      "id": "SH16",
+      "scene_id": "S05",
+      "shot_type": "conclusion_title",
+      "start_frame": 1728,
+      "end_frame": 1800,
+      "duration_frames": 72,
+      "source_status": "exact_source",
+      "dramatic_purpose": "כדי להרחיק - רק לאחר נעילת טקסט",
+      "original_illustration_required": true,
+      "asset_ready": false,
+      "motion": "locked",
+      "camera_axis": "abstract diagram"
+    }
+  ],
+  "narration_status": "unrecorded",
+  "images_status": "none",
+  "audio_status": "none",
+  "scope_note": "The proof sketches the Mishnah; full teaching needs additional segments about the verse, the watch, fats/limbs and one-day offerings",
+  "links": {
+    "literary_draft": "episodes/berakhot-01-01/literary-draft.md",
+    "source_dossier": "episodes/berakhot-01-01/source-dossier.md",
+    "source_to_scene_map": "episodes/berakhot-01-01/source-to-scene-map.md"
+  }
+}
