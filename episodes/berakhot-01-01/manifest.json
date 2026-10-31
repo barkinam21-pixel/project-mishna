@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "unit": {
+    "work": "Mishnah",
+    "tractate": "Berakhot",
+    "chapter": 1,
+    "mishnah": 1
+  },
+  "production": {
+    "title": "ברכות א׳, א׳ — סרט ניסיון",
+    "status": "research",
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "sample_rate": 48000,
+    "target_duration_seconds": 75,
+    "release_authorized": false
+  },
+  "sources": {
+    "working_text": "",
+    "text_verified": false,
+    "independent_witnesses": [
+      {
+        "name": "Mechon Mamre",
+        "url": "https://mechon-mamre.org/b/h/h11.htm",
+        "checked": false,
+        "edition": "",
+        "license": ""
+      },
+      {
+        "name": "Sefaria",
+        "url": "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "checked": false,
+        "edition": "",
+        "license": ""
+      }
+    ],
+    "textual_variants_reviewed": false,
+    "rights_reviewed": false,
+    "torah_review": {
+      "approved": false,
+      "reviewer": "",
+      "date": ""
+    }
+  },
+  "creative": {
+    "style": "mature, warm, cinematic painterly semi-realism; no horror or childish look",
+    "script_approved": false,
+    "visual_direction_approved": false,
+    "voice_approved": false,
+    "proof_approved": false
+  },
+  "shots": [],
+  "assets": [],
+  "narration": [],
+  "captions": [],
+  "audio": [],
+  "cost": {
+    "max_external_usd": 0,
+    "external_spend_enabled": false,
+    "workspace_usage": "unknown"
+  },
+  "release": {
+    "rights_cleared": false,
+    "technical_qa_passed": false,
+    "human_approval": false
+  }
+}
