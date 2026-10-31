@@ -18,7 +18,7 @@ TITLES = (
     "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
 )
 MAX_BYTES = 1024 * 1024
-PHRASE = re.compile(r"(חייב[יי]ן|חייבים|מותר[יי]ן|מותרים)\s+אתם\s+לקרות")
+PHRASE = re.compile(r"(חייבין|חיבין|חייבים|חיבים|מותרין|מתרין|מותרים|מתרים)\s+אתם\s+לקרות")
 TAGS = re.compile(r"<[^>]+>")
 
 
@@ -93,6 +93,10 @@ def compare(payload):
             "normalized_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest() if text else None,
             **whole_unit_markers(plain),
             "sons_response_token": expression.group(1) if expression else "unresolved",
+            "sons_response_meaning": (
+                "obligation" if expression and expression.group(1).startswith("ח")
+                else "permission" if expression and expression.group(1).startswith("מ")
+                else "unresolved"),
             "response_context_for_review": response_context,
             "ending_context_for_review": ending_context,
             "content_ready_for_editorial_review": False,
@@ -132,7 +136,7 @@ def main():
         print("EDITION: " + str(v.get("title")) +
               " | rights=" + str(v.get("license_declared_by_sefaria")) +
               " | words=" + str(v.get("word_count")) +
-              " | response=" + str(v.get("sons_response_token")) +
+              " | response=" + str(v.get("sons_response_token")) + " (" + str(v.get("sons_response_meaning")) + ")" +
               " | complete=" + str(v.get("contains_final_rationale")))
         if v.get("sons_response_token") == "unresolved" or not v.get("contains_final_rationale"):
             print("REVIEW_CONTEXT: " + str(v.get("response_context_for_review")) +
