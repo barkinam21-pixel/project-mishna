@@ -60,6 +60,8 @@ jobs:
           python-version: '3.12'
       - name: Audit narration pacing in 12-sequence longform draft (no voice claimed)
         run: python tools/pacing_audit.py scripts/episode-01-before-dawn.md --output build/episode-01-pacing-audit.json
+      - name: Validate WAV voice-take slots (explicitly blocked while recordings missing)
+        run: python tools/voice_take_audit.py episodes/berakhot-01-01/voice-rehearsal-draft.json --output build/voice-take-audit.json
       - name: Install FFmpeg and Hebrew-capable fallback fonts on fresh runner
         run: |
           sudo apt-get update -qq
@@ -74,6 +76,7 @@ jobs:
           name: voice-pacing-and-av-sync-technical-test
           path: |
             build/episode-01-pacing-audit.json
+            build/voice-take-audit.json
             build/sync-probe/sync-qa.json
             build/sync-probe/sync-test.mp4
             build/sync-probe/sync-test.srt
