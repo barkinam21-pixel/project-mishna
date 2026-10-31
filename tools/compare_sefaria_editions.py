@@ -18,6 +18,13 @@ TITLES = (
     "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
 )
 MAX_BYTES = 1024 * 1024
+# Locked research expectation (not a locked production text): alert on semantic drift.
+# See episodes/berakhot-01-01/source-dossier.md for independent evidence.
+EXPECTED_RESPONSE_MEANINGS = {
+    "Torat Emet 357": "obligation",
+    "Mishnah, ed. Romm, Vilna 1913": "obligation",
+    "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri": "permission",
+}
 PHRASE = re.compile(r"(חייבין|חיבין|חייבים|חיבים|מותרין|מתרין|מותרים|מתרים)\s+אתם\s+לקרות")
 TAGS = re.compile(r"<[^>]+>")
 
@@ -107,6 +114,12 @@ def compare(payload):
             report["warnings"].append("Non-public-domain or unknown rights: " + title)
         if flags["sons_response_token"] == "unresolved":
             report["warnings"].append("No exact response phrase found in edition: " + title)
+        elif flags["sons_response_meaning"] != EXPECTED_RESPONSE_MEANINGS[title]:
+            report["warnings"].append(
+                "Unexpected meaningful reading in " + title
+                + ": expected " + EXPECTED_RESPONSE_MEANINGS[title]
+                + ", got " + flags["sons_response_meaning"]
+                + "; independent manuscript review required")
         report["editions"].append(flags)
     if len(report["editions"]) == len(TITLES) and not report["warnings"]:
         report["status"] = "three_versions_received_pending_human_review"
