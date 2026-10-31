@@ -40,9 +40,25 @@
       {
         "name": "Sefaria: Torat Emet 357",
         "url": "https://www.sefaria.org/Mishnah_Berakhot?tab=versions",
-        "checked": false,
-        "edition": "Torat Emet 357; actual selected text still not checked",
-        "license": "Public Domain (as listed by Sefaria)",
+        "checked": true,
+        "edition": "Torat Emet 357, API v3 edition compared 2026-10-31; human recension not approved",
+        "license": "Public Domain (Sefaria version metadata)",
+        "reuse_authorized": false
+      },
+      {
+        "name": "Sefaria: Vilna/Romm printed Mishnah 1913",
+        "url": "https://www.sefaria.org/Mishnah_Berakhot?tab=versions",
+        "checked": true,
+        "edition": "Mishnah, ed. Romm, Vilna 1913; API v3 edition compared 2026-10-31",
+        "license": "Public Domain (Sefaria version metadata)",
+        "reuse_authorized": false
+      },
+      {
+        "name": "Sefaria: edited Kaufmann manuscript edition",
+        "url": "https://www.sefaria.org/Mishnah_Berakhot?tab=versions",
+        "checked": true,
+        "edition": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri; API v3 2026-10-31",
+        "license": "PD (Sefaria version metadata); manuscript facsimile reuse separate",
         "reuse_authorized": false
       }
     ],
@@ -57,7 +73,33 @@
     "editorial_issues": [
       "Mechon Mamre splits standard 1:1 into 1:1-1:4",
       "Hayavin vs mutarin wording requires edition decision and manuscript check",
-      "Select verified public-domain production text before narration"
+      "Select verified public-domain production text before narration",
+      "Ms. Kaufmann A50 folio 2a identifies permission variant; Wikisource transcription remains unreviewed and full facsimile collation pending",
+      "NLI/Ktiv manuscript scan restricted to noncommercial research/teaching; do not reuse image in public film",
+      "Preserve full edit history for Vilna text and require human Torah/rights approval before narration"
+    ],
+    "production_text_candidate": {
+      "edition": "Mishnah, ed. Romm, Vilna 1913",
+      "source_url": "https://www.sefaria.org/Mishnah_Berakhot?tab=versions",
+      "license_reported_by_sefaria": "Public Domain",
+      "selected_for_production": false,
+      "text_locked": false,
+      "human_reviewer_approved": false,
+      "notes": "Research candidate, not an authorized master text. Maintain Kaufmann/Rambam alternative reading in credits."
+    },
+    "manuscript_evidence": [
+      {
+        "shelfmark": "Budapest, Library of the Hungarian Academy of Sciences, Ms. Kaufmann A 50",
+        "folio": "2a",
+        "catalogue": "https://www.nli.org.il/he/discover/manuscripts/hebrew-manuscripts/itempage?docId=PNX_MANUSCRIPTS990001910470205171&scope=KTIV&vid=KTIV",
+        "transcription": "https://he.wikisource.org/wiki/כתב_יד_קאופמן_למשנה/מסכת_ברכות",
+        "transcription_revision_verified": false,
+        "facsimile_directly_collated": false,
+        "transcription_reports": "מותרין/מוּתָּרִין אתם לקרות",
+        "digital_scan_rights": "Ktiv catalogue: noncommercial teaching/research usage, separate ownership permissions for other uses",
+        "digital_scan_reuse_authorized": false,
+        "transcription_note": "Wikisource page marked unreviewed; image host returned 502 in this session"
+      }
     ]
   },
   "creative": {
