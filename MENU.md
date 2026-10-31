@@ -1,35 +1,20 @@
-# הבית שלי — תפריט פשוט מהטלפון
+# מרכז הפרויקטים — כניסה אחת מהטלפון
 
-**בחר מה אתה רוצה לעשות:**
+## 🎬 [סדרת המשנה והתורה](./README.md)
+הפרויקט הפעיל של אולפן המשנה: מקורות, תסריט, בימוי, קריינות והפקה.
 
-## 🎬 [סדרת המשנה — כניסה לאולפן](./README.md)
-הכנת סדרת המשנה: מקורות, תסריט, בימוי, תמונות, קריינות, בדיקות והפקה.
+- [מצב העבודה](./docs/session-handoff.md)
+- [בדיקת תיקוני Copilot](https://github.com/barkinam21-pixel/project-mishna/pull/2)
 
-- [מצב העבודה והתוצאות](./docs/session-handoff.md)
-- [המשימה של הסוכן הראשון](https://github.com/barkinam21-pixel/project-mishna/pull/2)
-- [תכנון צוות סוכנים](https://github.com/barkinam21-pixel/project-mishna/issues/3)
+## 🎮 RPG Maker — אוטומציית משחקים
+**פרויקט נפרד, ללא ערבוב קוד או קבצים עם המשנה.**
 
-## 🎮 RPG Maker — משחקים שמשחקים בעצמם
-**עדיין לא נמצא בחשבון GitHub מאגר RPGM.** לכן לא המצאנו קישור לפרויקט שלא קיים ולא ערבבנו את הקוד עם המשנה.
+- [הקמת מאגר RPGM חדש](https://github.com/new?name=rpg-maker-auto-player&description=RPG+Maker+autonomous+gameplay+research+and+testing)
+- [הנחיות מוכנות להקמתו](./docs/rpgm-shared-agents.md)
 
-- [כל המאגרים שלי — לאיתור מאגר RPGM קיים](https://github.com/barkinam21-pixel?tab=repositories)
-- כשנמצא או ניצור מאגר RPGM, נוסיף כאן כפתור ישיר. לא נצהיר שאוטומציית משחק הוכחה עד שבוצעה בדיקה אמיתית.
+## 🤖 אותם סוכנים, שני פרויקטים
+אותו חשבון GitHub Copilot ואותם כלים שנבחר בהמשך יכולים לסייע לשניהם. **הקשר וההוראות שונים בכל מאגר**, כדי שלא יתבלבלו בין לימוד המשנה לבין משחקים. מנוי Copilot לא אומר שספקי הווידאו כלולים במחיר. כל ריצה מוגבלת ובדוקה; אין הפעלה חופשית או חיובים בלי אישור.
 
----
+**תקציב:** $10 Copilot קיים + עד $50 נוספים בחודש, רק לאחר אישור מפורש.
 
-## 🧹 ניקוי GitHub — בדיקה לפני מחיקה
-
-**לא מוחקים דבר בלי לוודא שהוא לא חשוב.** בחשבון נמצאו שישה מאגרים:
-
-| מאגר | החלטה זמנית |
-| --- | --- |
-| [project-mishna](https://github.com/barkinam21-pixel/project-mishna) | לשמור — פעיל |
-| [project-mishnah-lightning-flux2](https://github.com/barkinam21-pixel/project-mishnah-lightning-flux2) | לבדוק לפני מחיקה — מאגר ריק לכאורה |
-| [mishnah-kaggle-video](https://github.com/barkinam21-pixel/mishnah-kaggle-video) | לבדוק לפני מחיקה — מאגר ריק לכאורה |
-| [מאגר בשם -](https://github.com/barkinam21-pixel/-) | לבדוק לפני מחיקה — מאגר ריק לכאורה |
-| [sefer-shoftim](https://github.com/barkinam21-pixel/sefer-shoftim) | לשמור בינתיים — פרויקט נפרד עם תוכן |
-| [cosmos-to-life](https://github.com/barkinam21-pixel/cosmos-to-life) | לשמור בינתיים — פרויקט נפרד עם תוכן |
-
-**תקציב:** Copilot קיים $10 לחודש, תקרה נוספת עד $50 לחודש; אין רכישות או חיובים בלי אישור.
-
-**מה עושים עכשיו?** בוחרים אחד משני הנושאים למעלה. אין צורך להיכנס לקוד או להתקין משהו במחשב.
+**סטטוס:** מאגר המשנה קיים; מאגר RPGM טרם נוצר; חיבור אוטומטי של סוכנים לשני המאגרים טרם הוגדר.
