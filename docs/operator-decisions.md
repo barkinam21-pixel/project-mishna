@@ -34,3 +34,11 @@
 - CI: https://github.com/barkinam21-pixel/project-mishna/actions/workflows/studio-check.yml
 - דוח מקורות: https://github.com/barkinam21-pixel/project-mishna/blob/main/episodes/berakhot-01-01/source-dossier.md
 - ריצת ההשוואה המאומתת: https://github.com/barkinam21-pixel/project-mishna/actions/runs/41177878212
+
+
+## כלל סיום סשן ותיאום כלים (בקשת בר 31.10.2026)
+- בר ביקש להמשיך בעבודה, **לאמת כל שלב**, ובכל סוף סשן לדווח **בקצרה** מה נעשה, מה אומת, מה הבא, מתי כדאי להפעיל Codex או תוכנות אחרות, ואם בר צריך לעשות דבר-מה.
+- השימוש ב-Codex בענן צריך להיות לפי **צורך הנדסי אמיתי וקונקרטי**, לא בשביל להגיד שהשתמשנו בו. כאשר נדרש, להכין משימה אחת מוכנה להפעלה דרך הטלפון ולצרף קישור. אם לא נדרש — להמשיך בעזרת GitHub ישירות.
+- מיקום המסירה: [docs/session-handoff.md](session-handoff.md). מנגנון דוח אוטומטי: [tools/session_handoff.py](../tools/session_handoff.py), עם בדיקות ב-GitHub Actions; לקבל סטטוס `BLOCKED` כאשר חסרים נכסים או אישורים ולא לייפות מצב.
+- כללי עבודה ל-Codex נמצאים ב-[AGENTS.md](../AGENTS.md).
+- **דיוק שלב:** אמנם קיימת טיוטת תסריט ארוכה ומפת צילום, אבל השלמת שלב המקורות עדיין חסרה, ולכן טיוטות אלו אינן מורשות להפקה. ניהול קבצים והכנת בדיקות לא מסמנים אישור יצירתי, הלכתי או משפטי.
