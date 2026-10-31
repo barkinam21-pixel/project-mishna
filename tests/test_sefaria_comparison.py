@@ -3,7 +3,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from compare_sefaria_editions import TITLES, compare, clean_text
+from compare_sefaria_editions import TITLES, compare, clean_text, audit_ok
 
 
 UNIT = "מאימתי קורין את שמע בערבית משעה שהכהנים נכנסים לאכול בתרומתן " + \
@@ -70,6 +70,11 @@ class ComparisonTests(unittest.TestCase):
         payload = self.example()
         payload["versions"][0]["text"] = ["מאימתי קורין את שמע בערבית"]
         self.assertEqual(compare(payload)["status"], "review_required")
+
+    def test_network_unavailable_cannot_be_green(self):
+        self.assertFalse(audit_ok({"status": "unavailable", "warnings": ["network failure"]}))
+        self.assertFalse(audit_ok({"status": "review_required", "warnings": []}))
+        self.assertTrue(audit_ok(compare(self.example())))
 
     def test_bad_payload_not_crash(self):
         self.assertEqual(compare({"versions": None})["status"], "review_required")
