@@ -60,6 +60,11 @@ def compare(payload):
         version = found[0]
         text = clean_text(version)
         expression = PHRASE.search(text)
+        anchor = text.find("אמר להם")
+        if anchor < 0:
+            anchor = text.find("לא קרינו")
+        response_context = text[anchor:anchor + 110] if anchor >= 0 else "unfound"
+        ending_context = text[-110:] if text else ""
         flags = {
             "title": title,
             "received": True,
@@ -72,6 +77,8 @@ def compare(payload):
             "contains_sons_story": "בניו" in text and "בית המשתה" in text,
             "contains_final_rationale": "להרחיק" in text and "העבירה" in text,
             "sons_response_token": expression.group(1) if expression else "unresolved",
+            "response_context_for_review": response_context,
+            "ending_context_for_review": ending_context,
             "content_ready_for_editorial_review": False,
         }
         if flags["word_count"] < 55 or not all(flags[k] for k in ("contains_start", "contains_gamliel", "contains_sons_story", "contains_final_rationale")):
@@ -111,6 +118,9 @@ def main():
               " | words=" + str(v.get("word_count")) +
               " | response=" + str(v.get("sons_response_token")) +
               " | complete=" + str(v.get("contains_final_rationale")))
+        if v.get("sons_response_token") == "unresolved" or not v.get("contains_final_rationale"):
+            print("REVIEW_CONTEXT: " + str(v.get("response_context_for_review")) +
+                  " | END: " + str(v.get("ending_context_for_review")))
     for w in report.get("warnings", []):
         print("WARNING: " + w)
     print("RELEASE: not authorized; human text and Torah review still required")
