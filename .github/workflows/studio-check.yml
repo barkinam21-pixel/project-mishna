@@ -16,6 +16,17 @@ jobs:
           python-version: '3.12'
       - name: Unit tests
         run: python -m unittest discover -s tests -v
+      - name: Generate truthful stage-gate and Codex session handoff (no spend)
+        run: python tools/session_handoff.py --out-json build/session-handoff.json --out-md build/session-handoff.md
+      - name: Upload durable session-handoff status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-session-handoff
+          path: |
+            build/session-handoff.json
+            build/session-handoff.md
+          if-no-files-found: warn
       - name: Zero-cost episode plan
         run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
       - name: Validate editorial proof storyboard (no media creation)
