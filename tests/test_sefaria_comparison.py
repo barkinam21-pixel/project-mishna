@@ -31,6 +31,19 @@ class ComparisonTests(unittest.TestCase):
         self.assertFalse(report["text_locked"])
         self.assertFalse(report["release_authorized"])
 
+    def test_niqqud_does_not_trigger_false_incomplete(self):
+        payload = self.example()
+        payload["versions"][0]["text"] = [
+            UNIT.format(response="מותרין").replace("מאימתי", "מֵאֵימָתַי")
+            .replace("אמר להם", "אָמַר לָהֶם")
+            .replace("מותרין", "מֻתָּרִין")
+            .replace("להרחיק", "לְהַרְחִיק")
+            .replace("העבירה", "הָעֲבֵירָה")
+        ]
+        report = compare(payload)
+        self.assertEqual(report["status"], "three_versions_received_pending_human_review")
+        self.assertEqual(report["editions"][0]["sons_response_token"], "מותרין")
+
     def test_missing_edition_cannot_pass(self):
         payload = self.example()
         payload["versions"].pop()
