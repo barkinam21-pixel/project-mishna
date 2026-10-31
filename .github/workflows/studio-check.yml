@@ -34,6 +34,7 @@ jobs:
       - name: Compare three Sefaria editions (no publication, no approval)
         run: python tools/compare_sefaria_editions.py
       - name: Upload source evidence report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sefaria-three-edition-audit
