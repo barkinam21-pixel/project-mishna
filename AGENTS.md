@@ -35,3 +35,11 @@ Use Codex **only for specific multi-file coding/engineering work**: manifest-dri
 - If an official asset/recording is missing, report `MISSING` or `BLOCKED_AS_DESIGNED`, never fake an approved sample or green release.
 - After each working session return five brief Hebrew items: **what changed; what was actually verified; what remains/next; whether Codex or another service is needed and why; whether Bar must do anything.** If no user action is required, say so clearly.
 - Keep a durable handoff record in `docs/session-handoff.md` whenever substantial decisions or status change. Do not claim autonomous future monitoring solely because a workflow exists.
+
+
+## Consolidated production contract (2026-11-01; mandatory)
+Read [the production pipeline decisions](docs/production-pipeline-decisions.md) before assigning any agent, drafting a script, choosing TTS/images, or modifying film-production code. This is the **standing specification**, not a competing status dashboard. Never infer approvals from that document: consult the manifest.
+
+Agent discipline: **one ChatGPT producer + existing Copilot for bounded engineering** at present; independent review roles are conditional, not subscriptions/agents to launch now. Human Torah review remains required. Preserve the user's 16:9 cinematic narrative rather than slides, complete Mishnah learning, Hebrew narration, distinct source/explainer/dramatization voices, scene continuity, original 4–7-illustration packs, and phone-accessible captions. Starting proof is 60–90 seconds; it is not permission to substitute a short clip for the eventual full series.
+
+Do **not** ask the user to install tools or choose between speculative service menus. State one recommended implementation and postpone unverified service selection until actual quality testing. Azure Hebrew TTS is only a future test candidate, not an approved voice or connected account. When a tool/Codex or user action becomes genuinely necessary, explain what and why in one short Hebrew instruction; otherwise explicitly say nothing is needed.
