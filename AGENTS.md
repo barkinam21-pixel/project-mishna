@@ -53,3 +53,13 @@ At the end of **every interactive session** about this Mishnah project, provide 
 4. **Who must act next:** explicitly say one of `כדי שאמשיך עכשיו בשיחה, כתוב "תמשיך"`, `ממתינים ל-Copilot, לא צריך ללחוץ`, or `נדרשת פעולה אחת ממך: ...`. If an enabled automation exists, distinguish its next scheduled check from instant Copilot completion and never imply the assistant runs continuously between turns.
 5. **Correctness and next gate:** explain the concrete quality checks and what remains blocked (text/rights/human Torah approval, creative review, no film yet).
 Keep it short and candid; do not declare success solely from a Copilot checklist, green CI, or source text appearing online. Do not invent exact ETA or completion percentages.
+
+
+## Parallel work and Copilot delegation rule (2026-11-01)
+At each session handoff, **explicitly identify independent necessary work that can proceed in parallel** while Copilot is running. For each parallel track state: concrete deliverable, why it matters to the eventual film, owner (assistant vs Copilot), dependency/approval gate, and whether it can safely run now. Distinguish genuinely independent work from tasks that depend on a not-yet-approved text, images, or voice.
+
+Default coordination:
+- Copilot owns one bounded engineering PR at a time. The assistant can concurrently research primary sources, document pronunciation with citations, verify rights, or audit creative continuity **in separate files/areas**. Never edit Copilot's in-flight branch or the same files concurrently.
+- Do **not** assign a second Copilot task just because parallelism is possible. Add one only when it has a clearly independent deliverable, isolated files, explicit acceptance tests, and low risk of merge conflicts, quota contention, or wasted credits. State why it is worth doing and whether Copilot actually accepted it.
+- Never let Copilot silently approve Torah interpretation, source text, release rights, or creative direction. Do not generate final media before gates.
+- At end of session add: `עבודה מקבילה אפשרית כעת: ...` and `האם כדאי להפעיל Copilot נוסף: כן/לא, כי ...`, alongside current Copilot PR, observed status, honest ETA uncertainty, and whether Bar needs to say `תמשיך`.
