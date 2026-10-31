@@ -1,11 +1,18 @@
 # Codex and agent instructions — Mishnah Film Studio
 
+## Mandatory single control room and no-repeat rule
+- The ONLY active Mishnah production repository is `barkinam21-pixel/project-mishna` and the ONLY human operator dashboard is [README.md](README.md). Read it FIRST every session, then the episode manifest and `episodes/berakhot-01-01/trials.json` evidence ledger before proposing any user action.
+- **SH01 is DONE as a technical GPU trial**: a user-uploaded ZIP containing a real SDXL/Tesla T4 image was inspected and SHA-256 verified; it is **not** an approved production asset. Never ask Bar to rerun the one-image Colab trial because an old document says GPU was not yet tested.
+- `START_HERE.md` is a link-only alias. Background documents in `docs/` are not competing live project states. Keep useful evidence; don't create parallel tracking files, projects, repos, or duplicative status pages.
+- Compare proposed work with verified milestones; skip already completed work. Technical code checks do not equal Torah or film approval. No local setup, no spending, no unapproved publication.
+
+
 Read this file before changing the repository. The owner prefers **cloud-first, low-click** operation due to pain. Do not ask them to install local tools, copy logs, manage timelines, or repeatedly approve intermediate steps.
 
 ## Mission and stage
 - A Hebrew, serious, warm, historically careful cinematic illustrated Mishnah series, starting **Mishnah Berakhot 1:1**. Distinguish Mishnah text, named commentaries, modern explanation, historical reconstruction and explicitly labeled `המחזה`.
 - **Current source approval gate is not complete.** The existing 75-second pilot and 13.5-minute scripts are exploratory drafts, NOT signed-off production masters. Never turn a draft into approved scripture, narration or a published episode merely because tests pass.
-- Authoritative state: `episodes/berakhot-01-01/manifest.json`, `episodes/berakhot-01-01/source-dossier.md`, `docs/operator-decisions.md`, and `docs/session-handoff.md`. Update a decision record only with evidence; do not fabricate approvals.
+- Authoritative state: `README.md` for routing, `episodes/berakhot-01-01/manifest.json` for approvals, `episodes/berakhot-01-01/trials.json` for verified external image trials, and `episodes/berakhot-01-01/source-dossier.md` for source work. The `docs/` files are historical/reference notes. Update a decision record only with evidence; do not fabricate approvals.
 - Variant `חייבין אתם לקרות` versus `מותרין אתם לקרות` remains material. Mechon Mamre segments differently. Source rights and human Torah review remain unresolved. Do not silently select a reading or reuse protected manuscript images.
 
 ## Working rules

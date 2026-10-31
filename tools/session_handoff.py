@@ -76,6 +76,33 @@ def audit(root, manifest_path, voice_path):
     }
     all_ready = all(gates.values())
     errors = []
+    # External user-provided proof is intentionally metadata only in this public repository.
+    # A verified private trial is not an accepted production asset.
+    trial_receipt = root / "episodes/berakhot-01-01/trials.json"
+    verified_private_trials = []
+    if trial_receipt.is_file():
+        try:
+            receipt = load(trial_receipt)
+            listed = receipt.get("trials")
+            if (receipt.get("schema_version") != 1 or
+                    receipt.get("episode_id") != m.get("episode_id") or
+                    not isinstance(listed, list)):
+                raise ValueError("Trial receipt does not match episode/schema")
+            seen = set()
+            for trial in listed:
+                if (not isinstance(trial, dict) or
+                        not isinstance(trial.get("shot_id"), str) or
+                        trial.get("shot_id") in seen or
+                        trial.get("status") != "generated_unapproved" or
+                        trial.get("production_asset_accepted") is not False or
+                        not isinstance(trial.get("image_sha256"), str) or
+                        len(trial["image_sha256"]) != 64):
+                    raise ValueError("Malformed/unapproved trial record")
+                seen.add(trial["shot_id"])
+                verified_private_trials.append(trial["shot_id"])
+        except ValueError:
+            errors.append("PRIVATE_TRIAL_RECEIPT_INVALID")
+            verified_private_trials = []
     if m.get("episode_id") != v.get("episode_id"):
         errors.append("VOICE_EPISODE_MISMATCH")
     if prod.get("fps") != v.get("fps") or prod.get("sample_rate") != v.get("sample_rate"):
@@ -132,6 +159,8 @@ def audit(root, manifest_path, voice_path):
             "shots_in_canonical_manifest": len(shots),
             "declared_assets": len(assets),
             "asset_files_present_in_checkout": n_assets,
+            "verified_private_trial_ids": verified_private_trials,
+            "verified_private_image_trials": len(verified_private_trials),
         },
         "synthetic_test_disclaimer": "Synthetic tone/video validates only timing/encode, not real spoken Hebrew, lip-sync or film quality.",
         "codex_now": False,
@@ -154,6 +183,7 @@ def as_markdown(a):
         f"- המניפסט מצהיר על {e['witnesses_marked_checked']} מקורות בדוקים; דוח זה **לא** השווה אותם בעצמו.",
         f"- {e['planned_voice_segments']} קטעי קול מתוכננים; {e['voice_files_present_in_checkout']} קבצים קיימים; {e['voice_files_missing_in_checkout']} חסרים בצ'קאאוט.",
         f"- {e['shots_in_canonical_manifest']} שוטים במניפסט, {e['declared_assets']} נכסים מוכרזים, {e['asset_files_present_in_checkout']} קובצי איורים קיימים.",
+        f"- ניסויי GPU חיצוניים שאומתו בארכיון משתמש: {e['verified_private_image_trials']} ({', '.join(e['verified_private_trial_ids']) or 'אין'}). ניסיון שאומת אינו תמונה מאושרת להפקה; **אין לדרוש שוב ניסוי שכבר בוצע**.",
         "- מבחן צפצופים וקידוד, גם אם עברו ב-CI, **אינם** סרט עלילתי או אישור קול.",
         "",
         "## מה חסום",

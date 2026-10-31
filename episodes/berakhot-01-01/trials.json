@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "purpose": "Externally inspected private image tests, NOT production assets",
+  "inspection_date": "2026-10-31",
+  "trials": [
+    {
+      "shot_id": "SH01",
+      "scene_id": "S01",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-10-31T19:52:21.966949+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M",
+      "seed": 173101,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 15.9,
+      "image_sha256": "e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d",
+      "evidence_type": "User-provided ZIP inspected in conversation; PNG SHA-256 recomputed and image opened",
+      "archive_entries": [
+        "SH01.png",
+        "prompt-pack-snapshot.json",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "needs_revision",
+      "artistic_issue": "Daylight/desert-like image does not match the planned twilight settlement",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Do not rerun simply to prove GPU works; do not mark as an approved asset."
+    }
+  ]
+}

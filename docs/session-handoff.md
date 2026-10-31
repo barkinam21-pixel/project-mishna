@@ -1,5 +1,8 @@
 # מסירת מצב בין סשנים — אולפן המשנה
 
+**מקור הבקרה הפעיל והיחיד: [README](../README.md)** · [רישום התמונה המאומתת](../episodes/berakhot-01-01/trials.json). מסמך זה הוא היסטוריית בדיקות והעברת הקשר, ולא לוח פעולות נפרד. אין לבקש שוב את ניסוי SH01.
+
+
 **עודכן:** 31.10.2026. מסמך ידני יציב; הדוח הכי עדכני נוצר אוטומטית בכל [הרצת GitHub Actions](https://github.com/barkinam21-pixel/project-mishna/actions/workflows/studio-check.yml) תחת `studio-session-handoff` (`session-handoff.md` ו-`session-handoff.json`).
 
 ## אימות חדש — קובץ ניסיון אמיתי מ-Colab (31.10.2026)
