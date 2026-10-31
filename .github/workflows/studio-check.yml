@@ -23,7 +23,7 @@ jobs:
         with:
           name: preflight-report
           path: build/preflight.json
-  source_snapshot:
+  source_comparison:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -31,10 +31,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Read-only Sefaria edition check (does not approve source)
-        run: python tools/fetch_sefaria.py
+      - name: Compare three Sefaria editions (no publication, no approval)
+        run: python tools/compare_sefaria_editions.py
       - name: Upload source evidence report
         uses: actions/upload-artifact@v4
         with:
-          name: sefaria-source-evidence
-          path: build/sefaria-source-snapshot.json
+          name: sefaria-three-edition-audit
+          path: build/sefaria-variant-comparison.json
