@@ -43,3 +43,13 @@ Read [the production pipeline decisions](docs/production-pipeline-decisions.md) 
 Agent discipline: **one ChatGPT producer + existing Copilot for bounded engineering** at present; independent review roles are conditional, not subscriptions/agents to launch now. Human Torah review remains required. Preserve the user's 16:9 cinematic narrative rather than slides, complete Mishnah learning, Hebrew narration, distinct source/explainer/dramatization voices, scene continuity, original 4–7-illustration packs, and phone-accessible captions. Starting proof is 60–90 seconds; it is not permission to substitute a short clip for the eventual full series.
 
 Do **not** ask the user to install tools or choose between speculative service menus. State one recommended implementation and postpone unverified service selection until actual quality testing. Azure Hebrew TTS is only a future test candidate, not an approved voice or connected account. When a tool/Codex or user action becomes genuinely necessary, explain what and why in one short Hebrew instruction; otherwise explicitly say nothing is needed.
+
+
+## Mandatory end-of-session status to Bar (2026-11-01)
+At the end of **every interactive session** about this Mishnah project, provide a compact Hebrew handoff that unambiguously answers:
+1. **What was actually completed** in this session, with direct evidence/PR/commit/run links; distinguish plans from shipped code and from a playable film.
+2. **What Copilot is doing now**, in plain Hebrew, naming the exact PR/issue and expected concrete deliverable; verify status through GitHub rather than assuming background progress.
+3. **How long it may take:** state a clearly labeled *rough estimate only if grounded*, not a promise; GitHub Copilot has no reliable completion ETA from PR state alone. Say `אין זמן סיום מאומת` if unknown. If a workflow is in progress, report the current observed status.
+4. **Who must act next:** explicitly say one of `כדי שאמשיך עכשיו בשיחה, כתוב "תמשיך"`, `ממתינים ל-Copilot, לא צריך ללחוץ`, or `נדרשת פעולה אחת ממך: ...`. If an enabled automation exists, distinguish its next scheduled check from instant Copilot completion and never imply the assistant runs continuously between turns.
+5. **Correctness and next gate:** explain the concrete quality checks and what remains blocked (text/rights/human Torah approval, creative review, no film yet).
+Keep it short and candid; do not declare success solely from a Copilot checklist, green CI, or source text appearing online. Do not invent exact ETA or completion percentages.
