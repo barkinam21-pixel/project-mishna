@@ -25,9 +25,10 @@ UNIT = "מאימתי קורין את שמע בערבית משעה שהכהנים
 
 class ComparisonTests(unittest.TestCase):
     def example(self):
+        readings = ("חיבין", "חייבין", "מתרין")
         return {"ref": "Mishnah Berakhot 1:1", "versions": [
             {"versionTitle": title, "license": "PD" if i == 2 else "Public Domain",
-             "text": [UNIT.format(response="מותרין" if i == 2 else "חייבין")]}
+             "text": [UNIT.format(response=readings[i])]}
             for i, title in enumerate(TITLES)
         ]}
 
@@ -35,7 +36,7 @@ class ComparisonTests(unittest.TestCase):
         report = compare(self.example())
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
         self.assertEqual([x["sons_response_token"] for x in report["editions"]],
-                         ["חייבין", "חייבין", "מותרין"])
+                         ["חיבין", "חייבין", "מתרין"])
         self.assertEqual(len(report["editions"]), 3)
         for edition in report["editions"]:
             self.assertEqual(set(edition["coverage"]), set(UNIT_MARKERS))
@@ -77,16 +78,39 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual([x["sons_response_meaning"] for x in report["editions"]],
                          ["obligation", "obligation", "permission"])
 
-    def test_alternate_reading_is_preserved_without_selecting_a_winner(self):
+    def test_unexpected_meaningful_kaufmann_reading_fails_technical_audit(self):
         payload = self.example()
         payload["versions"][2]["text"] = [UNIT.format(response="חייבין")]
         result = compare(payload)
-        self.assertEqual(
-            result["status"], "three_versions_received_pending_human_review"
-        )
+        self.assertEqual(result["status"], "review_required")
         self.assertEqual(result["editions"][2]["sons_response_token"], "חייבין")
+        self.assertEqual(result["editions"][2]["sons_response_original"], "חייבין")
+        self.assertTrue(result["editions"][2]["unexpected_meaningful_reading"])
+        self.assertTrue(any(
+            warning.startswith("unexpected_meaningful_reading:")
+            for warning in result["warnings"]
+        ))
+        self.assertFalse(audit_ok(result))
         self.assertFalse(result["textual_variants_reviewed"])
         self.assertFalse(result["torah_approved"])
+
+    def test_html_exposes_exact_word_level_variants_without_editorial_substitution(self):
+        report = compare(self.example())
+        differences = report["word_level_differences"]["comparisons"]
+        self.assertEqual(len(differences), 2)
+        kaufmann = differences[1]
+        self.assertFalse(kaufmann["withheld_due_to_rights"])
+        self.assertTrue(any(
+            "חיבין" in difference["reference_words"]
+            and "מתרין" in difference["edition_words"]
+            for difference in kaufmann["differences"]
+        ))
+        rendered = render_html(report)
+        self.assertIn("הבדלי מילים מול המהדורה הראשונה", rendered)
+        self.assertIn("<mark><bdi dir=\"rtl\">חיבין</bdi></mark>", rendered)
+        self.assertIn("<mark><bdi dir=\"rtl\">חייבין</bdi></mark>", rendered)
+        self.assertIn("<mark><bdi dir=\"rtl\">מתרין</bdi></mark>", rendered)
+        self.assertIn("אין זו הצעת תיקון או הכרעה", rendered)
 
     def test_missing_edition_cannot_pass(self):
         payload = self.example()
@@ -104,6 +128,9 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(report["status"], "review_required")
         self.assertFalse(report["editions"][1]["full_text_included"])
         self.assertIsNone(report["editions"][1]["full_text"])
+        self.assertTrue(
+            report["word_level_differences"]["comparisons"][0]["withheld_due_to_rights"]
+        )
 
     def test_incomplete_story_is_detected(self):
         payload = self.example()

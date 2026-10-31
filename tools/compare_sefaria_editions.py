@@ -2,6 +2,7 @@
 
 No model calls, no payment, no publication, and no automatic halakhic approval.
 """
+import difflib
 import hashlib
 import html
 import json
@@ -19,6 +20,11 @@ TITLES = (
     "Mishnah, ed. Romm, Vilna 1913",
     "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
 )
+EXPECTED_RESPONSE_MEANINGS = {
+    TITLES[0]: "obligation",
+    TITLES[1]: "obligation",
+    TITLES[2]: "permission",
+}
 MAX_BYTES = 1024 * 1024
 PHRASE = re.compile(r"(חייבין|חיבין|חייבים|חיבים|מותרין|מתרין|מותרים|מתרים)\s+אתם\s+לקרות")
 KNOWN_PUBLIC_DOMAIN = {"public domain", "pd"}
@@ -166,6 +172,8 @@ def _empty_edition(title):
         "sons_response_token": "unresolved",
         "sons_response_original": "unresolved",
         "sons_response_meaning": "unresolved",
+        "expected_response_meaning": EXPECTED_RESPONSE_MEANINGS[title],
+        "unexpected_meaningful_reading": False,
         "comparison_excerpt": "",
         "full_text_included": False,
         "full_text": None,
@@ -216,6 +224,10 @@ def compare(payload):
             else "permission" if response_token.startswith(("מ",))
             else "unresolved"
         )
+        unexpected_meaningful_reading = (
+            meaning != "unresolved"
+            and meaning != EXPECTED_RESPONSE_MEANINGS[title]
+        )
         item = {
             "title": title,
             "received": True,
@@ -233,6 +245,8 @@ def compare(payload):
             "sons_response_token": response_token,
             "sons_response_original": response_original,
             "sons_response_meaning": meaning,
+            "expected_response_meaning": EXPECTED_RESPONSE_MEANINGS[title],
+            "unexpected_meaningful_reading": unexpected_meaningful_reading,
             "comparison_excerpt": original_excerpt,
             "full_text_included": bool(text and known_public_domain),
             "full_text": text if text and known_public_domain else None,
@@ -249,11 +263,62 @@ def compare(payload):
             report["warnings"].append("Non-public-domain or unknown rights: " + title)
         if response_token == "unresolved":
             report["warnings"].append("No exact response phrase found in edition: " + title)
+        if unexpected_meaningful_reading:
+            report["warnings"].append(
+                "unexpected_meaningful_reading: " + title
+                + " expected " + EXPECTED_RESPONSE_MEANINGS[title]
+                + ", received " + meaning
+                + "; preserve the reading and require human source review"
+            )
         report["editions"].append(item)
 
+    report["word_level_differences"] = _word_level_differences(report["editions"])
     if len(report["editions"]) == len(TITLES) and not report["warnings"]:
         report["status"] = "three_versions_received_pending_human_review"
     return report
+
+
+def _word_level_differences(editions):
+    """Report changed original tokens only when both editions have declared PD text."""
+    reference = next((edition for edition in editions if edition.get("title") == TITLES[0]), None)
+    if not reference:
+        return {"reference_edition": TITLES[0], "comparisons": []}
+    reference_text = reference.get("full_text") if reference.get("full_text_included") else None
+    comparisons = []
+    for edition in editions:
+        if edition.get("title") == TITLES[0]:
+            continue
+        comparison = {
+            "edition": edition.get("title"),
+            "withheld_due_to_rights": not (
+                reference_text is not None
+                and edition.get("full_text_included")
+                and edition.get("full_text") is not None
+            ),
+            "differences": [],
+        }
+        if not comparison["withheld_due_to_rights"]:
+            reference_words = reference_text.split()
+            edition_words = edition["full_text"].split()
+            matcher = difflib.SequenceMatcher(
+                a=[normalized_for_matching(word) for word in reference_words],
+                b=[normalized_for_matching(word) for word in edition_words],
+                autojunk=False,
+            )
+            comparison["differences"] = [
+                {
+                    "reference_words": reference_words[i1:i2],
+                    "edition_words": edition_words[j1:j2],
+                }
+                for tag, i1, i2, j1, j2 in matcher.get_opcodes()
+                if tag != "equal"
+            ]
+        comparisons.append(comparison)
+    return {
+        "reference_edition": TITLES[0],
+        "comparison_method": "Whitespace tokens; niqqud removed only for matching; original tokens retained.",
+        "comparisons": comparisons,
+    }
 
 
 def audit_ok(report):
@@ -312,6 +377,55 @@ def render_html(report):
             for key, description in UNIT_MARKERS.items()
         )
 
+    def word_variants_for(item):
+        diff_report = report.get("word_level_differences", {})
+        reference_title = diff_report.get("reference_edition", TITLES[0])
+        parts = []
+        if item.get("title") == reference_title:
+            for comparison in diff_report.get("comparisons", []):
+                if comparison.get("withheld_due_to_rights"):
+                    parts.append(
+                        "<li>{}: הבדלי מילים הוסתרו עקב מצב זכויות לא מאומת.</li>".format(
+                            html.escape(str(comparison.get("edition", "מהדורה")))
+                        )
+                    )
+                    continue
+                for difference in comparison.get("differences", []):
+                    words = " ".join(difference.get("reference_words", []))
+                    if words:
+                        parts.append(
+                            "<li>{}: <mark><bdi dir=\"rtl\">{}</bdi></mark></li>".format(
+                                html.escape(str(comparison.get("edition", "מהדורה"))),
+                                html.escape(words),
+                            )
+                        )
+        else:
+            comparison = next(
+                (entry for entry in diff_report.get("comparisons", [])
+                 if entry.get("edition") == item.get("title")),
+                None,
+            )
+            if comparison and comparison.get("withheld_due_to_rights"):
+                return "הבדלי מילים הוסתרו עקב מצב זכויות לא מאומת."
+            if comparison:
+                for difference in comparison.get("differences", []):
+                    baseline_words = " ".join(difference.get("reference_words", []))
+                    edition_words = " ".join(difference.get("edition_words", []))
+                    parts.append(
+                        "<li>נוסח בפועל במהדורת הבסיס: "
+                        "<mark><bdi dir=\"rtl\">{}</bdi></mark>; "
+                        "נוסח בפועל במהדורה זו: "
+                        "<mark><bdi dir=\"rtl\">{}</bdi></mark></li>".format(
+                            html.escape(baseline_words or "אין מילה מקבילה"),
+                            html.escape(edition_words or "אין מילה מקבילה"),
+                        )
+                    )
+        if not parts:
+            return "לא נמצא הבדל מילולי מול מהדורת הבסיס."
+        return "<ul>{}</ul><small>הצגת אסימונים מקוריים בלבד; אין זו הצעת תיקון או הכרעה.</small>".format(
+            "".join(parts)
+        )
+
     table_rows = "".join([
         row("קישור מדויק", link_for),
         row("רישיון לפי מטא־נתוני ספריא", lambda item: html.escape(
@@ -324,6 +438,7 @@ def render_html(report):
             )
         )),
         row("השוואה", text_for),
+        row("הבדלי מילים מול המהדורה הראשונה (אסימונים מקוריים)", word_variants_for),
         row("כיסוי תשעת רכיבי היחידה", lambda item: "<ul>{}</ul>".format(coverage_for(item))),
         row("SHA-256 נוסח המקור", lambda item: "<code>{}</code>".format(
             html.escape(str(item.get("source_text_sha256") or "לא זמין"))
@@ -346,6 +461,7 @@ h1,h2{{line-height:1.25}} .notice{{background:#fff3cd;padding:.8rem;border-inlin
 th,td{{border:1px solid #aeb8c2;padding:.65rem;vertical-align:top;text-align:right}}
 thead th{{background:#e8eef4}} td ul{{padding-inline-start:1.2rem;margin:.2rem 0}}
 .pass{{color:#176b35}} .missing{{color:#9c1c1c}} code{{overflow-wrap:anywhere}}
+mark{{background:#ffe58a;padding:.05rem .2rem}}
 details{{max-width:38rem}} bdi{{unicode-bidi:isolate}}
 </style>
 </head>
