@@ -22,18 +22,28 @@
     "text_verified": false,
     "independent_witnesses": [
       {
-        "name": "Mechon Mamre",
+        "name": "Mechon Mamre: attributed Rambam MS",
         "url": "https://mechon-mamre.org/b/h/h11.htm",
-        "checked": false,
-        "edition": "",
-        "license": ""
+        "checked": true,
+        "edition": "Mahadurat Av 5762, based on MS attributed to Rambam; sections Berakhot 1:1-1:4",
+        "license": "Copyright (c) 2002 Mechon Mamre - all rights reserved; comparison only",
+        "reuse_authorized": false
       },
       {
-        "name": "Sefaria",
-        "url": "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+        "name": "Hebrew Wikisource: main printed-text presentation",
+        "url": "https://he.wikisource.org/wiki/משנה_ברכות_א_א",
+        "checked": true,
+        "edition": "Main unvocalized printed Mishnah, separately displays Rambam version",
+        "license": "Rights and revision status pending page-specific check; not cleared for reproduction",
+        "reuse_authorized": false
+      },
+      {
+        "name": "Sefaria: Torat Emet 357",
+        "url": "https://www.sefaria.org/Mishnah_Berakhot?tab=versions",
         "checked": false,
-        "edition": "",
-        "license": ""
+        "edition": "Torat Emet 357; actual selected text still not checked",
+        "license": "Public Domain (as listed by Sefaria)",
+        "reuse_authorized": false
       }
     ],
     "textual_variants_reviewed": false,
@@ -42,7 +52,13 @@
       "approved": false,
       "reviewer": "",
       "date": ""
-    }
+    },
+    "research_dossier": "episodes/berakhot-01-01/source-dossier.md",
+    "editorial_issues": [
+      "Mechon Mamre splits standard 1:1 into 1:1-1:4",
+      "Hayavin vs mutarin wording requires edition decision and manuscript check",
+      "Select verified public-domain production text before narration"
+    ]
   },
   "creative": {
     "style": "mature, warm, cinematic painterly semi-realism; no horror or childish look",
