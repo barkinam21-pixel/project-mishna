@@ -2,6 +2,8 @@ name: Mishnah Studio - Safe Preflight
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,8 +16,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Unit tests
-        run: python -m unittest discover -s tests -v
       - name: Generate truthful stage-gate and Codex session handoff (no spend)
         run: python tools/session_handoff.py --out-json build/session-handoff.json --out-md build/session-handoff.md
       - name: Upload durable session-handoff status
@@ -26,7 +26,9 @@ jobs:
           path: |
             build/session-handoff.json
             build/session-handoff.md
-          if-no-files-found: warn
+          if-no-files-found: error
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
       - name: Zero-cost episode plan
         run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
       - name: Validate editorial proof storyboard (no media creation)
