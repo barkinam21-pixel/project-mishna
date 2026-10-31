@@ -9,7 +9,7 @@
 ## 🎮 RPG Maker — אוטומציית משחקים
 **פרויקט נפרד, ללא ערבוב קוד או קבצים עם המשנה.**
 
-- [הקמת מאגר RPGM חדש](https://github.com/new?name=rpg-maker-auto-player&description=RPG+Maker+autonomous+gameplay+research+and+testing)
+- [כניסה לפרויקט RPGM](https://github.com/barkinam21-pixel/rpg-maker-auto-player)
 - [הנחיות מוכנות להקמתו](./docs/rpgm-shared-agents.md)
 
 ## 🤖 אותם סוכנים, שני פרויקטים
@@ -17,4 +17,4 @@
 
 **תקציב:** $10 Copilot קיים + עד $50 נוספים בחודש, רק לאחר אישור מפורש.
 
-**סטטוס:** מאגר המשנה קיים; מאגר RPGM טרם נוצר; חיבור אוטומטי של סוכנים לשני המאגרים טרם הוגדר.
+**סטטוס:** מאגר המשנה קיים; מאגר RPGM נוצר ונגיש; חיבור אוטומטי של סוכנים לשני המאגרים טרם הוגדר.
