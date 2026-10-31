@@ -28,7 +28,8 @@ def validate(data):
     errors = []
     if not isinstance(data, dict):
         return {"valid": False, "status": "INVALID", "errors": ["Expected root object"],
-                "blockers": ["Human text, Torah, visual and voice review not approved"]}
+                "blockers": ["Human text, Torah, visual and voice review not approved"],
+                "scene_count": 0, "shot_count": 0}
     def error(message):
         errors.append(message)
 
@@ -51,7 +52,7 @@ def validate(data):
     if not valid_positive_int(fps) or rate != 48000 or not valid_positive_int(total):
         error("fps, 48000 sample rate and integer total frames required")
         fps, total = 24, 1800
-    if rate % fps != 0 or data.get("frame_to_audio_samples") != rate // fps:
+    if not isinstance(rate, int) or isinstance(rate, bool) or rate % fps != 0 or data.get("frame_to_audio_samples") != rate // fps:
         error("Must use exact samples per frame")
     if total != 1800 or fps != 24:
         error("Pilot is fixed at 1,800 frames / 24fps / 75s")
@@ -111,7 +112,7 @@ def validate(data):
         if isinstance(end, int):
             previous = end
         sid = shot.get("scene_id")
-        if sid not in scene_by_id:
+        if not isinstance(sid, str) or sid not in scene_by_id:
             error(f"shots[{n}] references absent scene {sid}")
         else:
             scene = scene_by_id[sid]
