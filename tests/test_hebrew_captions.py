@@ -87,8 +87,7 @@ class HebrewCaptionTests(unittest.TestCase):
     def test_non_normalized_hebrew_rejected(self):
         data = sample()
         # Hebrew shin dot before qamats is non-canonical combining-mark order.
-        non_nfc = "ש\\u05c1\\u05b8לום"
-        non_nfc = non_nfc.encode("utf-8").decode("unicode_escape") if False else "שָׁלום"
+        non_nfc = "שָׁלום"
         self.assertNotEqual(non_nfc, unicodedata.normalize("NFC", non_nfc))
         data["cues"][0]["display_text"] = non_nfc
         self.assertFalse(validate(data)["valid"])
