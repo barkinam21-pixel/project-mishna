@@ -14,8 +14,8 @@ import re
 import subprocess
 import sys
 
-APPROVAL_FILE='production_authorizations/OPN01_APPROVED_ONCE.json'
-MESSAGE='YES_ONE_OPN01_CREDIT_CHARGE'
+APPROVAL_FILE='production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json'
+MESSAGE='YES_ONE_OPN01_RETAKE_CREDIT_CHARGE'
 
 class ApprovalDenied(ValueError):pass
 
@@ -31,7 +31,7 @@ def validate(payload:dict,diff_status:str,history_entries:int,*,now=None):
     now=now or datetime.now(timezone.utc)
     expected={'project','episode','shot','approval','created_at_utc','expires_at_utc',
               'approved_external_requests','local_reservation_usd','provider_hard_cap_exists',
-              'new_user_authorization'}
+              'new_user_authorization','authorized_prompt_sha256'}
     if set(payload)!=expected:raise ApprovalDenied('Approval receipt schema does not match')
     if payload['project']!='kolnoa-hamishnah' or payload['episode']!='berakhot-01-01' or payload['shot']!='OPN01':
         raise ApprovalDenied('Wrong project, episode or chronological shot')
@@ -41,6 +41,8 @@ def validate(payload:dict,diff_status:str,history_entries:int,*,now=None):
         raise ApprovalDenied('Approval must allow exactly one provider request')
     if type(payload['local_reservation_usd']) not in (float,int) or abs(payload['local_reservation_usd']-0.15)>1e-9:
         raise ApprovalDenied('Unexpected local reservation')
+    if not isinstance(payload['authorized_prompt_sha256'], str) or not re.fullmatch(r'[0-9a-f]{64}', payload['authorized_prompt_sha256']):
+        raise ApprovalDenied('Retake approval must pin the exact corrective prompt digest')
     if payload['provider_hard_cap_exists'] is not False:
         raise ApprovalDenied('Price reservation must not masquerade as provider cap')
     created=iso_time(payload['created_at_utc']);expires=iso_time(payload['expires_at_utc'])
@@ -74,6 +76,16 @@ def gate(repo:Path,approval_path:Path,before:str,sha:str,run_attempt:int,now=Non
         raise ApprovalDenied('Untrusted checkout commit')
     payload=json.loads(approval_path.read_text(encoding='utf-8'))
     result=validate(payload,status,len(commits),now=now)
+    # The previous OPN01 authorization is irrevocably consumed. A retake
+    # requires a NEW path and a user-approved hash of the corrective payload.
+    old_path='production_authorizations/OPN01_APPROVED_ONCE.json'
+    if not run_git(['git','-C',str(repo),'log','--format=%H','--all','--',old_path]):
+        raise ApprovalDenied('Historical paid OPN01 approval is not verifiable')
+    from tools.fal_private_opening_opn01 import prepare
+    manifest=json.loads((repo/'episodes/berakhot-01-01/opening-45s-director-pack-v1.json').read_text(encoding='utf-8'))
+    expected_digest=prepare(manifest)['prompt_sha256']
+    if payload['authorized_prompt_sha256']!=expected_digest:
+        raise ApprovalDenied('Authorized prompt differs from corrective OPN01 payload')
     return result
 
 
