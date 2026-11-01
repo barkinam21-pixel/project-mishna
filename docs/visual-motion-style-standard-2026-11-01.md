@@ -1,3 +1,5 @@
+> **Primary detailed standard:** [Animation & Directing Bible v1](animation-direction-bible-v1-2026-11-01.md). Use this for production choices. See also [shot-by-shot animatic plan](../episodes/berakhot-01-01/shot-directing-animatic-v1.md) and [offline fractional camera renderer](../tools/private_subpixel_camera_v2.py). The older `tools/private_motion_shot.py` zoompan preview is a legacy experiment; prefer the new renderer for future tests.
+
 # Mishnah Cinema — visual and camera-motion direction (2026-11-01)
 
 Status: USER-APPROVED DIRECTION, NOT final sign-off on every asset.
@@ -22,3 +24,11 @@ Status: USER-APPROVED DIRECTION, NOT final sign-off on every asset.
 - No new paid image/video API calls without separate authorization.
 - Keep SH09 image and derived video private. Do not commit private assets to GitHub.
 - Separate visual style approval from Mishnah source accuracy, historical QA, narration and release approval.
+
+## New private style test (2026-11-01)
+- A new original S01/SH01 setting illustration was generated as a **private style candidate** (not accepted as historically accurate or final).
+- Original SHA256: `480b6d2e506d22b6c70564cf90d02a6bef4a523283c375160234c4c6926b568a`.
+- A softly graded candidate and a six-second, 144-frame **constant 24fps** camera test were rendered. Video SHA256: `c281ee7308843a070f1b2ca517d2bd2b74cffd978ba9b5de238a4b70a2b74a2a`.
+- Private ChatGPT Library folder: `/Mishnah Project/private-animation-style-2026-11-01`. Never commit visuals to public GitHub.
+- Secondary generated infographic was **rejected** due to unreliable AI-written Hebrew and anachronistic/unsupported imagery. Do not treat it as approved reference.
+- **No paid external API calls this session. ChatGPT image generation did take place; plan/usage meter unavailable.**
