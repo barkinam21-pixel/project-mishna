@@ -6,7 +6,7 @@
 
 ב־1.11.2026 הופקה ב־container **טעימת בימוי פרטית של 33 שניות** באמצעות שני איורים קיימים בלבד, תנועות מצלמה תת־פיקסל, עיצוב כתוביות עבריות, מוזיקה ואפקטים מקוריים סינתטיים, AAC 48kHz ו־H.264 24fps BT.709. נבדקו 792 פריימים ופענוח מלא; הוכנה גרסה קלה של 15 שניות לאנדרואיד. זהו **mood/performance-direction proof**, לא סרט סיפורי מוגמר, לא 16 איורים ולא משחק דמויות אמיתי. SH09 הוא איור ניסיון ישן **שאינו מתאים לציר דלת שמאל הנעול להפקה**. אין לקדם אותו לנכס ההפקה הראשי.
 
-מנוע הבסיס החדש: [`tools/torah_cinema_engine.py`](../tools/torah_cinema_engine.py). הוא נקרא דרך manifest נפרד, ולא מכיר כלל את הטקסט של המשנה. דוגמת manifest **בלי תמונות פרטיות ובלי אישור לפרסום**: [`examples/torah-cinema-editorial-preview.example.json`](../examples/torah-cinema-editorial-preview.example.json). בדיקות רגרסיה: [`tests/test_torah_cinema_engine.py`](../tests/test_torah_cinema_engine.py). הוכחת קבלה מקומית: 20 בדיקות, dry run של 33 שניות, smoke render של 48 פריימים עם פענוח מדיה. **אין כאן TTS או lip sync.**
+מנוע הבסיס החדש: [`tools/torah_cinema_engine.py`](../tools/torah_cinema_engine.py). הוא נקרא דרך manifest נפרד, ולא מכיר כלל את הטקסט של המשנה. דוגמת manifest **בלי תמונות פרטיות ובלי אישור לפרסום**: [`examples/torah-cinema-editorial-preview.example.json`](../examples/torah-cinema-editorial-preview.example.json). בדיקות רגרסיה: [`tests/test_torah_cinema_engine.py`](../tests/test_torah_cinema_engine.py). הוכחת קבלה מקומית: 21 בדיקות, dry run של 33 שניות, smoke render של 48 פריימים עם פענוח מדיה. **אין כאן TTS או lip sync.**
 
 ## גבולות הליבה לעומת התוכן
 
@@ -61,3 +61,7 @@ python tools/torah_cinema_engine.py /PRIVATE_PATH/approved-preview-manifest.json
 4. להריץ QA ארבעה מעברים: שקט, שמע בלבד, רציפות חזותית, הבנת לומד מתחיל; לשמור לקחים בכל פרויקט כך שגם סרטי התורה הבאים ירוויחו מהתיקונים.
 
 **הלקח שנלמד:** מבחן קוד ותזמון הוא שימושי, אך אינו תחליף לדמויות בתנועה, לקול טבעי ולסצנה קולנועית. לא להכריז על סרט מוכן מתוך תוכנית שוטים בלבד.
+
+## לקח בדיקת גוון BT.709
+
+ברינדור ניסיון התגלה שהשדה `color_space=bt709` הופיע, אך `color_primaries` ו-`color_transfer` היו `unknown` בתצורת התצוגה. **אין לקרוא לזה QA צבע מלא.** בוצע תיקון עם `h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1`, אומתו מחדש שלושת השדות ב-`ffprobe`, והוכנס הכלל לקוד המנוע עם מבחן רגרסיה.
