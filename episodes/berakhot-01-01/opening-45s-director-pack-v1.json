@@ -1,0 +1,385 @@
+{
+  "schema_version": "1.0.0",
+  "episode": "berakhot-01-01",
+  "sequence_id": "OPENING_PROLOGUE_01",
+  "title_he": "מה נשאר מן הדרך? — פרולוג קולנועי מקורי",
+  "purpose": "editorial_and_directing_plan_only",
+  "status": "draft_not_source_locked_not_produced",
+  "chronological_position": "first_sequence_first_shot",
+  "scene_before_sinai": true,
+  "next_sequence": "SINAI_TRADITION_SEPARATELY_LABELED",
+  "filmmaking_style": "adult epic intimate painterly cinematic 2.5D; weather, actors and sound carry story rather than constant zooms",
+  "privacy": {
+    "repository_public_text_only": true,
+    "source_assets_private_only": true,
+    "generation_in_chatgpt_forbidden": true,
+    "fal_paid_approval_granted": false,
+    "new_external_spend_authorized": false,
+    "paid_calls_made_for_this_pack": 0,
+    "images_generated_for_this_pack": 0,
+    "preview_rendered_for_this_pack": false,
+    "never_call_tinyfish": true,
+    "production_voice_or_film_audio_generated_for_this_pack": 0,
+    "synthetic_audio_previsualization_generated": 1,
+    "audio_canary_contains_dialogue": false,
+    "audio_canary_not_final_score": true
+  },
+  "film": {
+    "fps": 24,
+    "sample_rate_hz": 48000,
+    "target_frames_editorial_only": 1080,
+    "target_seconds_editorial_only": 45,
+    "runtime_approved": false,
+    "camera_speed_factor_vs_v10_on_moving_shots": 1.15,
+    "camera_shake_px": 0,
+    "jump_cuts_for_time_compression": false,
+    "avoid_fake_lipsync": true,
+    "color": "slightly desaturated warm amber against cool blue-gray dawn; deep but readable shadows",
+    "projection": "16:9 landscape with phone-safe framing"
+  },
+  "source_contract": {
+    "narrative_frame": "invented symbolic journey as a metaphor for intergenerational transmission, not a historical event",
+    "source_layer": "dramatization_only_until_next_sequence",
+    "mandatory_first_caption_he": "המחזה סמלית — לא אירוע היסטורי מתועד",
+    "historical_source_seed": "Pirkei Avot 1:1, traditional transmission chain; do not quote it as if characters said it",
+    "primary_source_url": "https://www.sefaria.org/Pirkei_Avot.1.1",
+    "next_sequence_caveat": "Sinai tradition and its visual representation must be clearly labeled, no proven mountain/geography claim",
+    "approved_for_public_release": false,
+    "torah_review": "not_completed",
+    "narration_and_dialogue_approval": "not_completed"
+  },
+  "set_and_character_lock": {
+    "geography": "unnamed ancient-feeling dry pathway with dawn horizon; not Sinai archaeological reconstruction",
+    "geography_attestation": "unverified_symbolic",
+    "screen_direction": "both travelers from screen_right toward screen_left toward distant ridgeline",
+    "horizon_height_ratio": 0.4,
+    "older_traveler": "anonymous adult 55-65, warm weathered olive-toned face, medium beard, muted earth cloak, leather water-skin at left hip; same exact outfit and face throughout",
+    "younger_traveler": "anonymous young adult 20-30, short dark hair, blue-gray outer cloth, same face and scale throughout; both are fictional",
+    "light": "dawn warm key at screen-left horizon, cool blue-gray ambient from sky screen-right; fixed across all seven illustrations",
+    "props": [
+      "plain leather water-skin without text",
+      "non-ornate travel bags"
+    ],
+    "prohibited": [
+      "tablets",
+      "scroll labeled Torah",
+      "known Mount Sinai silhouette",
+      "modern clothing",
+      "pseudo-Hebrew text",
+      "signatures or watermark",
+      "famous real actor resemblance",
+      "anachronistic temples",
+      "magical rays implying a historical revelation"
+    ]
+  },
+  "theme_motif_music": {
+    "status": "synthetic_private_draft_only_not_final_score",
+    "working_title": "מסירה",
+    "role": "a fragile four-tone motif begins as low warm strings / breath-like texture, opens into broad harmonic space only after the hands connect; recurring in later eras",
+    "original_music_only": true,
+    "reuse_film_scores_as_reference_only": true,
+    "do_not_use_existing_copyrighted_recordings": true,
+    "musical_arc": "space and bare wind -> one low note -> searching intervals -> silence at human question -> restrained hopeful rise at passing water -> wide but not bombastic dawn",
+    "mix": "dialogue always foreground; duck music during speech; avoid synthetic choirs imitating historic religious ceremonies",
+    "private_synthetic_canary": "Private Library /Mishnah Project/private-opening-research-and-score-2026-11-01/original_opening_foley_and_motif_draft_45s.mp3",
+    "final_music_composed_and_approved": false
+  },
+  "coverage_groups": [
+    {
+      "id": "PATH_AND_SPACE",
+      "original_illustrations_required": 2,
+      "not_generated": true
+    },
+    {
+      "id": "TWO_PEOPLE_AND_QUESTION",
+      "original_illustrations_required": 3,
+      "not_generated": true
+    },
+    {
+      "id": "GESTURE_AND_BRIDGE",
+      "original_illustrations_required": 2,
+      "not_generated": true
+    }
+  ],
+  "shots": [
+    {
+      "id": "OPN01",
+      "frames": 96,
+      "start_frame": 0,
+      "end_frame": 96,
+      "scene": "PATH_AND_SPACE",
+      "beat": "A world is heard before it is seen",
+      "shot_type": "DETAIL_WIDE",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "מחשכת פריים מתגלות כפות רגליים מאובקות החוצות נתיב יבש עם אור שחר קל בקצה, בלי מזוהה היסטורי.",
+      "prompt_subject_en": "Cinematic hand-painted 2.5D illustration. Low ankle-level close wide frame of TWO ANONYMOUS travelers' period-plausible sandals crossing an unnamed dry ancient-feeling rocky path at first blue-gray dawn, strong readable diagonal leading line into distance, subtle windblown dust, warm glimmer at frame far LEFT, detailed human weight and cloth folds, sober mature epic cinematic atmosphere, softly desaturated restrained amber and slate blue, no recognizable Sinai location, no tablets or scroll, no words or logos. Keep screen movement from RIGHT toward LEFT; same continuity lock as subsequent scene.",
+      "shot_transition": "fade_from_black_as_footsteps_precede_image",
+      "camera": {
+        "mode": "locked",
+        "motion_speed_factor": 1.0,
+        "intended_movement": "none",
+        "shake_px": 0
+      },
+      "acting": "show unequal, human stride weight; secondary cloak motion later via limited layers, not fake foot cycle",
+      "sound": [
+        "two separated soft gravel footfalls",
+        "distant natural wind without heavy percussion"
+      ],
+      "dialogue_he": [],
+      "source_label": "המחזה סמלית",
+      "cut_motivation": "the next frame reveals who owns those footsteps"
+    },
+    {
+      "id": "OPN02",
+      "frames": 168,
+      "start_frame": 96,
+      "end_frame": 264,
+      "scene": "PATH_AND_SPACE",
+      "beat": "Scale of the journey dwarfs the travelers",
+      "shot_type": "EXTREME_WIDE",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "מרחב רחב, שני עוברי דרך אנונימיים קטנים מימין, רכס ומסלול פתוח לפניהם משמאל.",
+      "prompt_subject_en": "New ORIGINAL wide cinematic illustrated master, same two anonymous older and younger travelers, same clothing and water skin, walking RIGHT to LEFT across unnamed arid trail, foreground rocks, middle-ground human figures, far ridgeline, horizon at 40 percent frame height; breathtaking open scale but warm human stakes. Distinct layout from prior ankle detail, painterly 2.5D, soft muted golden edge light from LEFT, blue gray atmospheric distance, no identifiable religious site, no Hebrew text, no modern objects or royalty insignia.",
+      "shot_transition": "cut_on_shared_walk_direction",
+      "camera": {
+        "mode": "subpixel_push",
+        "motion_speed_factor": 1.15,
+        "intended_movement": "subtle 2 percent forward change toward travelers, no fake tracking shake",
+        "shake_px": 0
+      },
+      "acting": "both figures small, one slows half a stride so the other can catch up",
+      "sound": [
+        "wind continues",
+        "clothing movement rustle"
+      ],
+      "dialogue_he": [],
+      "source_label": "המחזה סמלית",
+      "cut_motivation": "from monumental space to a question between two people"
+    },
+    {
+      "id": "OPN03",
+      "frames": 168,
+      "start_frame": 264,
+      "end_frame": 432,
+      "scene": "TWO_PEOPLE_AND_QUESTION",
+      "beat": "The young traveler cannot rely forever on the older",
+      "shot_type": "TWO_SHOT_MEDIUM",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "מבוגר וצעיר נעצרים; הצעיר פונה אל המבוגר עם מבט שואל ולא מרצה.",
+      "prompt_subject_en": "New ORIGINAL medium two-shot. Anonymous older traveler's warm weathered face, medium beard, muted earth cloak and water skin fixed at left hip. Anonymous younger adult in blue-gray wrap, short dark hair, one foot just planted and looking up from SCREEN-RIGHT toward older traveler on SCREEN-LEFT. They have paused; a simple unspoken question begins. Period-plausible unnamed road, coherent LEFT dawn key, clean hands and face with restrained realistic asymmetry, cinematic painterly 2.5D, no text or ornaments. Preserve geography and identities across OPN03-OPN06.",
+      "shot_transition": "match_on_foot_stop",
+      "camera": {
+        "mode": "locked",
+        "motion_speed_factor": 1.0,
+        "intended_movement": "none",
+        "shake_px": 0
+      },
+      "acting": "younger plants foot; breath before line; older turns eyes without whipping face",
+      "sound": [
+        "two steps stop",
+        "wind dips under voice"
+      ],
+      "dialogue_he": [
+        {
+          "speaker": "הצעיר",
+          "text": "ואם מחר לא תהיה איתי... איך אדע את הדרך?",
+          "type": "invented_dramatization_not_a_quote"
+        }
+      ],
+      "source_label": "דיאלוג מומחז — לא דברי דמות היסטורית",
+      "cut_motivation": "stay in shared frame through the young person's vulnerable question"
+    },
+    {
+      "id": "OPN04",
+      "frames": 120,
+      "start_frame": 432,
+      "end_frame": 552,
+      "scene": "TWO_PEOPLE_AND_QUESTION",
+      "beat": "The older one does not answer at once",
+      "shot_type": "OTS_YOUNGER_TO_OLDER",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "מעל כתפו של הצעיר רואים את המבוגר ממעיט בתנועה, עוצר ומקשיב.",
+      "prompt_subject_en": "Separate ORIGINAL over-the-shoulder view from young traveler foreground right toward older traveler LEFT, consistent screen axis, elderly anonymous man in same earth cloak water skin left hip, his eyes lower slightly as he hears a difficult question, no forced gesturing, dawn warm edge lighting from LEFT and quiet cool fill. Painted film still in a mature 2.5D epic yet intimate film style, no on-image letters, no print, no artificial lens warp.",
+      "shot_transition": "eyeline_match",
+      "camera": {
+        "mode": "locked",
+        "motion_speed_factor": 1.0,
+        "intended_movement": "none",
+        "shake_px": 0
+      },
+      "acting": "one involuntary small breath and downward glance; not mouth flapping",
+      "sound": [
+        "wind momentarily thins",
+        "one breath"
+      ],
+      "dialogue_he": [],
+      "source_label": "המחזה סמלית",
+      "cut_motivation": "his answer is first a visible pause"
+    },
+    {
+      "id": "OPN05",
+      "frames": 168,
+      "start_frame": 552,
+      "end_frame": 720,
+      "scene": "TWO_PEOPLE_AND_QUESTION",
+      "beat": "Knowledge is less certain than the act of passing it",
+      "shot_type": "CLOSE_UP_OLDER",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "תקריב המבוגר; הוא אינו מנבא עתיד אלא מתלבט כיצד להשיב בכנות.",
+      "prompt_subject_en": "New ORIGINAL emotionally restrained close-up of same anonymous older traveler, aged expressive face with warm eyes and believable wrinkles, beard and cloak details exact continuity with previous scene, dawn edge light from LEFT, natural wind-softened cloth; calm honest uncertainty, not Hollywood divine prophecy or pointing skyward. Mature painterly cinematic 2.5D, modest depth of field, no text, no copy of any specific movie still.",
+      "shot_transition": "cut_on_attention_shift",
+      "camera": {
+        "mode": "locked",
+        "motion_speed_factor": 1.0,
+        "intended_movement": "none",
+        "shake_px": 0
+      },
+      "acting": "hesitates before saying he cannot guarantee tomorrow, eyes meet young traveler's",
+      "sound": [
+        "near silence",
+        "voice first, music absent"
+      ],
+      "dialogue_he": [
+        {
+          "speaker": "המבוגר",
+          "text": "לא אוכל ללכת איתך בכל דרך.",
+          "type": "invented_dramatization_not_a_quote"
+        }
+      ],
+      "source_label": "דיאלוג מומחז — לא דברי דמות היסטורית",
+      "cut_motivation": "cut to gesture that completes an incomplete verbal answer"
+    },
+    {
+      "id": "OPN06",
+      "frames": 144,
+      "start_frame": 720,
+      "end_frame": 864,
+      "scene": "GESTURE_AND_BRIDGE",
+      "beat": "The lesson appears through an action",
+      "shot_type": "HAND_DETAIL",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "יד מבוגרת מוסרת נאד מים פשוט; היד הצעירה אוחזת בו. זו עזרה אנושית, לא חפץ קדוש שמייצג תורה ממש.",
+      "prompt_subject_en": "New ORIGINAL close hand insert from same two adult travelers in unnamed ancient-feeling desert setting, older weathered hand passing a plain leather water-skin by its woven strap into younger unadorned palm. Accurate anatomy, separate fingers, visible natural weight and tension in leather; do NOT display Torah scrolls, tablets, symbols or written words. A simple human offering, warm LEFT dawn key in blue gray background, painterly cinema 2.5D with no excessive bokeh.",
+      "shot_transition": "match_cut_on_reaching_hand",
+      "camera": {
+        "mode": "subpixel_push",
+        "motion_speed_factor": 1.15,
+        "intended_movement": "1.5 percent push only after touch; no hand morph",
+        "shake_px": 0
+      },
+      "acting": "hand slows before contact, young hand closes on strap, cloth settles naturally; use distinct poses if animation attempted",
+      "sound": [
+        "soft leather strain",
+        "fingers contact fabric",
+        "first return of low musical theme"
+      ],
+      "dialogue_he": [
+        {
+          "speaker": "המבוגר",
+          "text": "אבל את מה שלמדת בדרך — תוכל להעביר הלאה.",
+          "type": "invented_dramatization_not_a_quote"
+        }
+      ],
+      "source_label": "דיאלוג מומחז — לא דברי דמות היסטורית",
+      "cut_motivation": "the concrete transfer leads into the larger idea of transmitted tradition"
+    },
+    {
+      "id": "OPN07",
+      "frames": 216,
+      "start_frame": 864,
+      "end_frame": 1080,
+      "scene": "GESTURE_AND_BRIDGE",
+      "beat": "The story expands from two people to generations",
+      "shot_type": "EXTREME_WIDE_HORIZON",
+      "original_illustration_required": true,
+      "asset_status": "not_generated",
+      "source_status": "symbolic_dramatization",
+      "description_he": "שני הנוסעים שוב קטנים מול האופק; האור עולה. קריינות המסביר תיפתח רק בסוף הדימוי ותוביל במסורת לסיני.",
+      "prompt_subject_en": "New ORIGINAL very wide distant shot of same anonymous travelers, now smaller and closer to left horizon on the same dry path, early first light opens vast ridgeline, cinematic epic scale with warm restrained amber and desaturated slate blue shadows, no identifiable Mount Sinai, no divine beams, no temples, no scrolls, no words, no anachronism. This is a painterly symbolic sequence about passing knowledge, not visual proof of an ancient scene. 16:9 mature cinematic 2.5D, painterly subtle dramatic richness.",
+      "shot_transition": "l_cut_of_footsteps_to_future_sinai_narrative",
+      "camera": {
+        "mode": "subpixel_pullback",
+        "motion_speed_factor": 1.15,
+        "intended_movement": "2 percent pull back as human figures diminish, no zoom pumping",
+        "shake_px": 0
+      },
+      "acting": "pair resume movement LEFT with grounded stepping; do not invent smooth walking from one static image",
+      "sound": [
+        "quiet wind",
+        "one isolated open string chord or original motif, no triumphant choir",
+        "voice-over transition into next Sinai labeled sequence only AFTER this shot"
+      ],
+      "dialogue_he": [],
+      "source_label": "המחזה סמלית — חיבור למסורת המסירה",
+      "cut_motivation": "next frame is a separately labeled Sinai tradition, not same location or same people"
+    }
+  ],
+  "audio_spotting_frames": [
+    {
+      "id": "AUD01",
+      "start_frame": 0,
+      "end_frame": 264,
+      "kind": "original_foley_and_ambience",
+      "direction": "two identifiable dry steps and very gentle desert wind; music stays out for image discovery",
+      "media_status": "not_produced"
+    },
+    {
+      "id": "AUD02",
+      "start_frame": 264,
+      "end_frame": 552,
+      "kind": "dialogue_priority",
+      "direction": "single questioning voice, visible breathing; ambient wind ducked; no heavy score",
+      "media_status": "not_produced"
+    },
+    {
+      "id": "AUD03",
+      "start_frame": 552,
+      "end_frame": 720,
+      "kind": "intentional_musical_silence",
+      "direction": "keep room for the older speaker's uncertainty; physical ambience can continue",
+      "media_status": "not_produced"
+    },
+    {
+      "id": "AUD04",
+      "start_frame": 720,
+      "end_frame": 864,
+      "kind": "foley_original_motif_enter",
+      "direction": "water-skin strap and quiet 4-tone motif, never obscure speech; no historical soundtrack samples",
+      "media_status": "not_produced"
+    },
+    {
+      "id": "AUD05",
+      "start_frame": 864,
+      "end_frame": 1080,
+      "kind": "original_motif_reprise_and_l_cut",
+      "direction": "sparse string harmony slowly broadens, lead to separately labeled Sinai tradition, do not crowd transition",
+      "media_status": "not_produced"
+    }
+  ],
+  "review_gates": [
+    "research_sources_checked",
+    "fiction_labels_visible",
+    "full_dialogue_voice_test",
+    "source_and_rights_review",
+    "shot_pose_approval",
+    "fal_one_paid_call_explicit_user_approval",
+    "private_asset_encryption",
+    "phone_playback",
+    "human_torah_review_before_publication"
+  ],
+  "next_paid_shot_candidate": "OPN01",
+  "sons_return_scene_is_later": true,
+  "legacy_33s_demo_is_not_episode_opening": true
+}
