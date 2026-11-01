@@ -39,6 +39,20 @@ def file_under(root, name):
     return target
 
 
+def image_signature_ok(path):
+    """Cheap rejection of mislabeled file extensions (not a full decode test)."""
+    with path.open("rb") as item:
+        head = item.read(16)
+    extension = path.suffix.lower()
+    if extension == ".png":
+        return head.startswith(b"\x89PNG\r\n\x1a\n")
+    if extension in (".jpg", ".jpeg"):
+        return head.startswith(b"\xff\xd8\xff")
+    if extension == ".webp":
+        return head.startswith(b"RIFF") and head[8:12] == b"WEBP"
+    return False
+
+
 def digest(path):
     h = hashlib.sha256()
     with path.open("rb") as src:
@@ -136,6 +150,8 @@ def audit(config, blueprint, root=ROOT):
             errors.append(sid + ": unsafe image path or type")
         elif not target.is_file():
             missing.append(sid + ": original illustration missing")
+        elif not image_signature_ok(target):
+            errors.append(sid + ": image signature does not match extension")
         elif HASH.fullmatch(str(sha)) and digest(target) != sha:
             errors.append(sid + ": image SHA256 mismatch")
     for sid in by_id:
@@ -220,7 +236,8 @@ def ffmpeg_args(config, blueprint, root, temp):
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     for shot in blueprint["shots"]:
         img = file_under(root, images[shot["id"]]["path"])
-        cmd += ["-loop", "1", "-framerate", "24", "-i", str(img)]
+        duration = format(shot["duration_frames"] / 24, ".8f")
+        cmd += ["-loop", "1", "-framerate", "24", "-t", duration, "-i", str(img)]
     count = len(blueprint["shots"])
     for item in voices:
         cmd += ["-i", str(file_under(root, item["path"]))]
@@ -242,10 +259,11 @@ def ffmpeg_args(config, blueprint, root, temp):
     else:
         mix = "".join(f"[a{i}]" for i in range(len(voices)))
         mix += f"amix=inputs={len(voices)}:duration=longest:normalize=0,"
-    graph.append(mix + "atrim=end_sample=3600000,apad=whole_len=3600000[aout]")
+    samples = blueprint["target_duration_frames"] * 2000
+    graph.append(mix + f"atrim=end_sample={samples},apad=whole_len={samples}[aout]")
     cmd += ["-filter_complex", ";".join(graph),
             "-map", "[vout]", "-map", "[aout]", "-map", f"{count+len(voices)}:s:0",
-            "-frames:v", "1800", "-r", "24",
+            "-frames:v", str(blueprint["target_duration_frames"]), "-r", "24",
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
             "-pix_fmt", "yuv420p", "-profile:v", "high",
             "-color_primaries", "bt709", "-color_trc", "bt709",
@@ -258,7 +276,7 @@ def ffmpeg_args(config, blueprint, root, temp):
     return cmd
 
 
-def verify_video(path):
+def verify_video(path, total_frames=1800):
     result = subprocess.run(["ffprobe", "-v", "error", "-count_frames",
                              "-show_entries", "stream=codec_type,codec_name,width,height,nb_read_frames,"
                              "avg_frame_rate,sample_rate,channels,color_primaries,color_transfer,color_space:"
@@ -269,7 +287,7 @@ def verify_video(path):
     a = [s for s in streams if s["codec_type"] == "audio"]
     sub = [s for s in streams if s["codec_type"] == "subtitle"]
     return bool(len(v) == len(a) == len(sub) == 1
-                and v[0].get("nb_read_frames") == "1800"
+                and v[0].get("nb_read_frames") == str(total_frames)
                 and v[0].get("avg_frame_rate") == "24/1"
                 and v[0].get("width") == 1920 and v[0].get("height") == 1080
                 and v[0].get("color_primaries") == "bt709"
