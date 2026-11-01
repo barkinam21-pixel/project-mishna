@@ -292,12 +292,24 @@ def render_private(config, blueprint, root, out):
     qa = hebrew_captions.validate(master, require_approval=False)
     if not qa["valid"]:
         raise ValueError("Private captions invalid")
-    private = dict(master)
-    private["source_text_locked"] = True
-    private["human_torah_review_approved"] = True
-    private["caption_text_approved"] = True
-    # This local copy is ONLY to call the formatter. Never write these flags to disk.
-    caption_files, _ = hebrew_captions.emit(private)
+    # Private draft formatting does NOT manufacture Torah/caption approval flags,
+    # even transiently. The public caption exporter remains strictly gated.
+    srt, vtt, ass = [], ["WEBVTT", ""], [hebrew_captions.ASS_HEADER.rstrip("\n")]
+    for number, cue in enumerate(master["cues"], 1):
+        start, end, displayed = cue["start_frame"], cue["end_frame"], cue["display_text"]
+        srt.extend([str(number),
+                    hebrew_captions.timestamp(start, "srt") + " --> " +
+                    hebrew_captions.timestamp(end, "srt"),
+                    displayed, ""])
+        vtt.extend([hebrew_captions.timestamp(start, "vtt") + " --> " +
+                    hebrew_captions.timestamp(end, "vtt"), displayed, ""])
+        ass.append("Dialogue: 0,%s,%s,Hebrew,,0,0,0,,%s" %
+                   (hebrew_captions.timestamp(start, "ass"),
+                    hebrew_captions.timestamp(end, "ass"),
+                    displayed.replace("\n", r"\N")))
+    caption_files = {"srt": "\n".join(srt).rstrip() + "\n",
+                     "vtt": "\n".join(vtt).rstrip() + "\n",
+                     "ass": "\n".join(ass).rstrip() + "\n"}
     with tempfile.TemporaryDirectory(prefix="private-proof-", dir=out) as folder:
         temp = Path(folder)
         for ext, contents in caption_files.items():
