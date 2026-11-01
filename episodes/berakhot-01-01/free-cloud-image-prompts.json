@@ -18,6 +18,7 @@
   "style_lock": "cinematic historical illustration for a serious accessible educational film, warm painterly semi-realism, fine traditional brushwork, subtle natural skin texture, understated restrained human emotions, realistic fabric and proportions, plausible Roman-period Galilee or Judea environment without claiming a specific archaeological site, natural practical lighting, subdued sand gold and midnight blue palette, atmospheric cinematic depth, horizontal widescreen composition, physically coherent setting, an original artistic reconstruction and NOT a verified historical image, no letters or writing",
   "negative_prompt": "text, lettering, captions, Hebrew text, English text, logo, watermark, modern electric lights, modern furniture, wristwatch, printed book, clock, crown, royal throne, fantasy armor, exaggerated costumes, sci-fi, anime, cartoon, plastic skin, glossy 3d CGI, extra fingers, disfigured hands, duplicate limbs, identical cloned faces, chaotic lighting, distorted face, sharp horror, gore, neon",
   "notes": [
+    "2026-11-01 USER DECISION: new Mishnah Cinema artwork must NOT use ChatGPT image generation; prefer the already-connected paid fal.ai/FLUX.2 Pro account. This legacy Colab/SDXL pack is preserved ONLY for reproducibility of prior trials, not the active pipeline. No new paid request is authorized by this change.",
     "Only source-grounded visual test prompts, no biblical quotations or later rabbinic claims inscribed in art.",
     "Every generated image is a draft; do not set the production manifest assets[].accepted=true automatically.",
     "Image generation runs on user-provided free cloud GPU session, never in ChatGPT image quota.",
@@ -213,5 +214,8 @@
     }
   ],
   "render_style": "Hand-painted cinematic historical illustration, natural anatomy, traditional brush texture, restrained emotion, plausible ancient Levant homes and woven cloth, muted indigo and warm amber palette, atmospheric depth, 16:9, no writing",
-  "render_negative_prompt": "text, logos, watermarks, electric lights, modern buildings, modern clothing, plastic CGI, anime, crowns, fantasy armor, duplicate limbs, deformed fingers, warped faces, impossible lighting"
+  "render_negative_prompt": "text, logos, watermarks, electric lights, modern buildings, modern clothing, plastic CGI, anime, crowns, fantasy armor, duplicate limbs, deformed fingers, warped faces, impossible lighting",
+  "superseded_for_new_image_generation": true,
+  "active_image_provider_plan": "episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json",
+  "updated_provider_policy": "docs/image-provider-and-private-generation-lock-2026-11-01.md"
 }
