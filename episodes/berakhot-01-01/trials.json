@@ -129,6 +129,41 @@
       "external_cash_spend_reported_usd": 0,
       "colab_gpu_quota_usage": "unknown",
       "note": "Image stays private; do not upload PNG to GitHub or count as accepted source art. No automatic publication."
+    },
+    {
+      "trial_id": "SH09-20261101-modern-storefront-rejected",
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T07:23:22.331431+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "seed": 173109,
+      "variation_index": 0,
+      "resolution": [
+        1024,
+        576
+      ],
+      "image_sha256": "291a3612845d0852ba0942f0192bdae9d65add5e6f3495e919f9e0eedb0fb81a",
+      "generation_spec_sha256": "d7a20c9cd507d35fc6939e146df08db27cc092057fe35b77b8094a2989035eb6",
+      "evidence_type": "User uploaded ZIP (4); PNG decoded and directly inspected; ledger and prompt snapshot verified",
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "rejected_wrong_period_and_scene",
+      "artistic_issue": "Ornate European-looking shopfront with display windows, decorative columns and a central door. No people, no two brothers, no modest Judean courtyard.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 75.2,
+        "luma_p10": 18,
+        "luma_p90": 108,
+        "luma_p90_p10_spread": 90,
+        "mean_neighbor_luma_delta": 12.2,
+        "meaning": "descriptive_only_not_artistic_approval"
+      },
+      "creative_diagnosis": "Scene-first dual-encoder prompts plus guidance 7.0 still fail to enforce actors, location and period. Softening colors and trying alternate seeds are not verified fixes. Prioritize controlled layout using references/ControlNet or a stronger model; no new batch until validated.",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Private PNG stays outside GitHub; no release approval."
     }
   ]
 }
