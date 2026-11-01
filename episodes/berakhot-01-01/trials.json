@@ -35,6 +35,43 @@
       "external_cash_spend_reported_usd": 0,
       "colab_gpu_quota_usage": "unknown",
       "note": "Do not rerun simply to prove GPU works; do not mark as an approved asset."
+    },
+    {
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T05:54:21.096655+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M (per model card; release rights remain pending)",
+      "seed": 173109,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 50.7,
+      "image_sha256": "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717",
+      "archive_sha256": "add58bad280ce7cc7d6639010a1d3b9d7117c2c37278bc77396ce10d3231f299",
+      "generation_spec_sha256": "8635478684983ddb5954ab3e0e847fa25d09d9d0ef51984864bfc9c276f7feb7",
+      "evidence_type": "User-supplied ZIP inspected visually: PNG verified, image/ledger/spec/prompt SHA-256 recomputed",
+      "archive_entries": [
+        "SH09.png",
+        "prompt-pack-snapshot.json",
+        "review-contact-sheet.jpg",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "needs_revision",
+      "artistic_strengths": "Attractive warm painterly look, plausible anatomy, atmospheric depth",
+      "artistic_issue": "One man in bright open sandy landscape; intended two fictional adult sons arriving at modest stone courtyard after dark",
+      "diagnosis": "139-word prompt used 72 general style words before shot details; likely CLIP truncation, exact token lengths not logged in the old trial",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Number and appearance of real sons are not attested. Two adult men in the storyboard are fictional artistic stand-ins. Original image stays in private ZIP, not GitHub."
     }
   ]
 }
