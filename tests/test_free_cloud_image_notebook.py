@@ -203,6 +203,18 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
         self.assertIn("TWO distinct adult men", self.pack["shots"][8]["render_lead"])
 
+    def test_failed_image_run_reports_stage_instead_of_silent_no_zip(self):
+        shot = self.pack["shots"][8]
+        self.assertLessEqual(len(shot["render_negative_prompt"].split()), 25)
+        self.assertIn("single figure", shot["render_negative_prompt"])
+        source = "".join(self.cells["render"]["source"])
+        for phrase in ('stage = "load_sdxl"', 'stage = "check_prompt_tokens"',
+                       'stage = "generate"', 'stage = "save_image"',
+                       'stage = "create_zip"', 'נכשל ב-', 'flush=True'):
+            self.assertIn(phrase, source)
+        self.assertIn('len(token_ids) > tokenizer.model_max_length', source)
+        self.assertIn("לא נוצר ZIP חדש", source)
+
     def test_sh09_high_clarity_art_direction_is_scoped_and_auditable(self):
         shot = self.pack["shots"][8]
         self.assertEqual(shot["shot_id"], "SH09")
@@ -212,8 +224,8 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         self.assertIn("amber oil lamp", shot["render_lead"])
         self.assertIn("High-clarity hand-painted", shot["render_style"])
         self.assertIn("rich midnight blue and amber", shot["render_style"])
-        self.assertIn("washed-out image", shot["render_negative_prompt"])
-        self.assertIn("solo traveler", shot["render_negative_prompt"])
+        self.assertIn("washed-out", shot["render_negative_prompt"])
+        self.assertIn("solo man", shot["render_negative_prompt"])
         self.assertEqual(shot["guidance_scale"], 7.0)
         self.assertEqual(sum("guidance_scale" in other for other in self.pack["shots"]), 1)
         source = "".join(self.cells["render"]["source"])
