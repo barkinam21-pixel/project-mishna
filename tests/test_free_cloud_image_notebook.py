@@ -236,6 +236,23 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         self.assertIn('visual_metrics = visual_diagnostics(image)', source)
         self.assertIn('"visual_diagnostics": visual_metrics', source)
 
+    def test_sh09_negative_channel_does_not_suppress_required_location(self):
+        """SDXL's negative_prompt is anti-guidance, not English 'do not omit' instructions.
+
+        Prompt integrity only: this cannot prove that a model will draw the scene.
+        """
+        shot = next(s for s in self.pack["shots"] if s["shot_id"] == "SH09")
+        positive = shot["render_lead"].lower()
+        negative = shot["render_negative_prompt"].lower()
+        self.assertIn("house door", positive)
+        self.assertIn("courtyard", positive)
+        for required_subject in ("house", "door", "courtyard", "stone"):
+            self.assertNotIn(required_subject, negative,
+                             "Required scene object appears in anti-guidance")
+        self.assertIn("desert", negative)
+        self.assertIn("daylight", negative)
+        self.assertIn("washed-out", negative)
+
     def test_visual_diagnostics_reports_pixels_not_artistic_approval(self):
         source = "".join(self.cells["render"]["source"])
         tree = ast.parse(source)
