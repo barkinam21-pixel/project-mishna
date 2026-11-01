@@ -1,0 +1,82 @@
+name: Mishnah OPN01 - paid one-shot AFTER fresh chat approval only
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'production_authorizations/OPN01_APPROVED_ONCE.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fal-private-opn01-one-time-chat-approval
+  cancel-in-progress: false
+
+jobs:
+  opn01-one-shot:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: SINGLE-USE authorization from one exact added file and fresh UTC window
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          python -m tools.validate_opn01_single_use_approval \
+            --repo . --file production_authorizations/OPN01_APPROVED_ONCE.json \
+            --before "$BEFORE_SHA" --sha "$AFTER_SHA" --run-attempt "$RUN_ATTEMPT"
+      - name: Install encryption dependency
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.4
+      - name: Require existing secret and VALID public encryption key BEFORE payment
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$FAL_KEY"
+          openssl pkey -pubin -in security/production_artifacts_public_key.pem -noout
+      - name: Locked OPN01 offline schema and source checks (not billed)
+        run: |
+          python -m tools.fal_private_opening_opn01 \
+            --manifest episodes/berakhot-01-01/opening-45s-director-pack-v1.json
+          python -m unittest discover -s tests -p test_fal_private_opn01.py -v
+      - name: ONE fal.ai OPN01 image only; NO RETRY, NOT a provider spending cap
+        shell: bash
+        env:
+          CONFIRM_PAID: 'YES'
+        run: |
+          set -euo pipefail
+          python -m tools.fal_private_opening_opn01 \
+            --manifest episodes/berakhot-01-01/opening-45s-director-pack-v1.json \
+            --output-dir "$RUNNER_TEMP/opn01-private" \
+            --local-reservation-usd 0.15 --authorize-paid
+      - name: Encrypt before upload, even on provider error, and never upload raw image
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$RUNNER_TEMP/opn01-private" ] && [ -n "$(find "$RUNNER_TEMP/opn01-private" -type f -print -quit)" ]; then
+            python tools/seal_private_media.py seal \
+              --input-dir "$RUNNER_TEMP/opn01-private" \
+              --public-key security/production_artifacts_public_key.pem \
+              --output "$RUNNER_TEMP/mishnah-opn01-ENCRYPTED.bin"
+          fi
+      - name: Keep only encrypted image and receipts; no plaintext in GitHub
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mishnah-opn01-encrypted-once-${{ github.run_id }}
+          path: ${{ runner.temp }}/mishnah-opn01-ENCRYPTED.bin
+          if-no-files-found: ignore
+          retention-days: 7
