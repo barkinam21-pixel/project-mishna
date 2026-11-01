@@ -77,7 +77,13 @@ class FFmpegFilterSmoke(unittest.TestCase):
                            capture_output=True, text=True, timeout=100)
             result = root / "private-review.mp4"
             self.assertTrue(result.exists())
-            self.assertTrue(proof.verify_video(result, total_frames=48))
+            probe_ok = proof.verify_video(result, total_frames=48)
+            if not probe_ok:
+                details = subprocess.run(
+                    ["ffprobe", "-v", "error", "-count_frames",
+                     "-show_streams", "-of", "json", str(result)],
+                    capture_output=True, text=True, check=True)
+                self.fail("Codec/frame verification failed: " + details.stdout[:4500])
             # TemporaryDirectory deletes everything; never publish test tones.
             self.assertLess(result.stat().st_size, 5000000)
 
