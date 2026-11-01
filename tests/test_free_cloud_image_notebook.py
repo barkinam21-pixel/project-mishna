@@ -142,6 +142,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             for node in render_ast.body
         ))
         self.assertIn("zipfile.ZIP_DEFLATED", source)
+        self.assertIn("ZIP_PATH.unlink(missing_ok=True)", source)
         self.assertIn('"accepted": False', source)
 
     def test_zip_export_excludes_old_shots_without_gpu(self):
