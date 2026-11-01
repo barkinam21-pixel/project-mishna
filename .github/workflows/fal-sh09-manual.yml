@@ -43,7 +43,29 @@ jobs:
             exit 1
           fi
           mkdir -p "$RUNNER_TEMP/private"
-          python -c 'import os, urllib.request; u=os.environ["FAL_SH09_REFERENCE_URL"]; assert u.startswith("https://"), "Reference URL must use HTTPS"; urllib.request.urlretrieve(u, os.environ["RUNNER_TEMP"]+"/private/reference.png")'
+          python - <<'PY'
+          import os
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+          url = os.environ["FAL_SH09_REFERENCE_URL"]
+          parsed = urllib.parse.urlparse(url)
+          if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+              raise SystemExit("Private reference URL must be HTTPS without embedded credentials")
+          req = urllib.request.Request(url, headers={"User-Agent": "MishnahCinema-private-reference/1"})
+          opener = urllib.request.build_opener(urllib.request.HTTPHandler, urllib.request.HTTPSHandler)
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  raise RuntimeError("Reference redirects are disabled")
+          opener.add_handler(NoRedirect())
+          with opener.open(req, timeout=30) as response:
+              if response.status != 200:
+                  raise SystemExit("Reference unavailable")
+              blob = response.read(12_000_001)
+          if len(blob) > 12_000_000 or not blob.startswith(bytes.fromhex("89504e470d0a1a0a")):
+              raise SystemExit("Reference must be PNG, maximum 12 MB")
+          (Path(os.environ["RUNNER_TEMP"]) / "private" / "reference.png").write_bytes(blob)
+          PY
           python -c 'from pathlib import Path; p=Path("'"$RUNNER_TEMP"'/private/reference.png"); assert p.read_bytes().startswith(bytes.fromhex("89504e470d0a1a0a")), "Reference must be PNG"'
       - name: One paid request, maximum local budget 10 USD, no retry
         shell: bash
