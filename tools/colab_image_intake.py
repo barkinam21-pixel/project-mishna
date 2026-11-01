@@ -77,6 +77,8 @@ def verify_png(data):
     try:
         stream = zlib.decompressobj()
         raw = stream.decompress(b"".join(idat), limit + 1)
+        if stream.unconsumed_tail or not stream.eof or stream.unused_data:
+            raise ArchiveError("PNG decompression exceeds expected pixels or stream not complete")
         raw += stream.flush()
     except zlib.error as exc:
         raise ArchiveError("PNG image stream cannot be decoded") from exc
@@ -118,8 +120,14 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                 json.loads(Path(trials_path).read_text(encoding="utf-8")).get("trials", [])
                 if trial.get("production_asset_accepted") is not True}
     known = {shot["shot_id"]: shot for shot in pack["shots"]}
-    archive_bytes = Path(archive).read_bytes()
-    archive_sha = sha256(archive_bytes)
+    archive_path = Path(archive)
+    if archive_path.stat().st_size > MAX_ZIP_BYTES:
+        raise ArchiveError("ZIP compressed size exceeds safe batch limit")
+    digest_state = hashlib.sha256()
+    with archive_path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest_state.update(block)
+    archive_sha = digest_state.hexdigest()
     candidates, skipped, seen_hash = [], [], set()
     with zipfile.ZipFile(archive) as zf:
         image_names = archive_members(zf)
@@ -172,6 +180,10 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                     or spec.get("negative_prompt_sha256") != sha256(pack["negative_prompt"].encode("utf-8"))
                     or spec.get("seed") != shot["seed"]
                     or spec.get("model_id") != pack["model_id"]
+                    or record.get("model_id") != pack["model_id"]
+                    or record.get("model_license") != pack["model_license"]
+                    or spec.get("variant") != "fp16"
+                    or spec.get("guidance_scale") != 6.0
                     or spec.get("inference_steps") != record.get("inference_steps")
                     or [spec.get("width"), spec.get("height")] != size
                     or record.get("image_size") != size
