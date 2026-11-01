@@ -39,12 +39,20 @@ class SingleControlRoomTest(unittest.TestCase):
     def test_mobile_dashboard_links_workflow_and_approval_evidence(self):
         main=(ROOT/"README.md").read_text(encoding="utf-8")
         for expected in (
-            "actions/workflows/studio-check.yml", "issues/1", "pull/2",
+            "actions/workflows/studio-check.yml",
             "docs/operator-decisions.md", "episodes/berakhot-01-01/source-dossier.md",
             "episodes/berakhot-01-01/manifest.json", "episodes/berakhot-01-01/trials.json",
-            "Artifacts", "דפדפן בטלפון", "אין צורך להפעיל אותו ידנית",
+            "sefaria-three-edition-audit", "Chrome", "אין צורך להתקין",
+            "לא מאשר נוסח/זכויות/קריינות",
         ):
-            self.assertIn(expected,main)
+            self.assertIn(expected, main)
+        # Do not freeze navigation to historical PR/issue numbers (PR #2 is already merged).
+        self.assertRegex(main, r"issues/\d+")
+        self.assertRegex(main, r"pull/\d+")
+        # A blocked hosted run must not be described as passing or as an approved film.
+        self.assertIn("action_required", main)
+        self.assertIn("אין לטעון שהריצה הצליחה", main)
+        self.assertIn("אין עדיין סרט אמיתי", main)
 
     def test_ci_runs_on_pull_requests_and_keeps_handoff_before_tests(self):
         workflow=(ROOT/".github/workflows/studio-check.yml").read_text(encoding="utf-8")
