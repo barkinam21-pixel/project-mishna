@@ -102,6 +102,14 @@ class SonsReturnContinuityTests(unittest.TestCase):
         self.assertTrue(coverage["timing_estimate_unverified"])
         self.assertIn("לא סרט", coverage["notice_he"])
 
+    def test_in_story_dialogue_not_interrupted_by_meta_explanations(self):
+        self.assertIn("לא הספקנו לקרוא קריאת שמע הערב", self.script)
+        self.assertIn("אם כבר עבר חצות", self.script)
+        self.assertIn("הערת בימוי — לא לקריינות", self.script)
+        self.assertNotIn("המילים ששמענו בפי השחקנים", self.script)
+        self.assertNotIn("השתיקה כאן היא בחירת בימוי", self.script)
+        self.assertIn("תווית חובה לצופה", self.script)
+
     def test_source_layers_and_dramatization_not_historical_dialogue(self):
         self.assertEqual(
             self.pack["dramatic_contract"]["historically_attested_number_of_sons"], "unknown"
