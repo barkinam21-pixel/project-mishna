@@ -112,4 +112,4 @@
 ## 1.11.2026 — צנרת תמונה מונחית־הפניה (Issue #22)
 
 - **נוסף:** `tools/reference_guided.py` + `tests/test_reference_guided.py` + [מסמך](reference-guided-image-pipeline.md). ריצה יבשה לא־מקוונת ובדיקות עם mock; אין GPU, משקלים או תמונה אמיתית, **לא נוצרה תמונה**.
-- **הצעד הבא:** הרצה אחת של `python tools/reference_guided.py generate-one --allow-generate` בסביבת GPU חינמית זמינה, ואז צפייה אנושית ב־SH09. עד אז `accepted=false`, אין אצוות ואין הרכבה.
+- **הצעד הבא:** הרצה אחת של `python tools/reference_guided.py all --reference <תמונה פרטית> --allow-generate` בסביבת GPU חינמית זמינה (מבצעת גם evaluate+export; ללא GPU/הפניה — חסום), ואז צפייה אנושית ב־SH09. עד אז `accepted=false`, אין אצוות ואין הרכבה.

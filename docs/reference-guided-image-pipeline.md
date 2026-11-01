@@ -3,21 +3,22 @@
 מסמך עזר, לא לוח סטטוס. המצב הרשמי נשאר ב־[README](../README.md) ו־`trials.json`.
 
 ## מה קיים
-`python tools/reference_guided.py` — שלבים: `plan`, `preflight`, `generate-one`, `evaluate`, `export`, או `all` (ברירת מחדל: **ריצה יבשה לא־מקוונת**, בלי רשת/GPU/משקלים/עלות).
+`python tools/reference_guided.py` — שלבים: `plan`, `preflight`, `generate-one`, `evaluate`, `export`, או `all` (ברירת מחדל: **ריצה לא־מקוונת**, חסומה בלי `--allow-generate`; בלי רשת/עלות).
 
-- `plan`: אילוצי סצנה טיפוסיים (שתי דמויות, לילה, בית אבן צנוע, דלת משמאל, מנורת ענבר), מפת פריסה דטרמיניסטית (`layout-map.png`, קלט תנאי שנוצר בקוד — **לא איור**), גיבוב SHA-256 של הפניות פרטיות.
-- `preflight`: קבצים, הרשאת הוצאה = 0, רישיון מתועד, מגבלת ניסיון אחד, נעילת ניסיון קודם, זמינות torch/diffusers/transformers. VRAM, מכסת Colab ושימוש נותר: `unknown`.
-- `generate-one`: נחסם בלי `--allow-generate` ובלי מחסנית GPU. ניסיון אחד בלבד; `attempt.lock` מונע ניסיון חוזר (גם אחרי כישלון). לא מסמן אישור.
-- `evaluate`: מדדים **ייעוצים** (גודל, בהירות לילה, ניגודיות). ספירת דמויות, אדריכלות והתמקדות = `unknown_requires_human_review`.
-- `export`: ZIP פרטי עם PNG, `metadata.json` (seed, SHA, מודל, משך, חיוב `unknown`) ודוח ייעוצי; `accepted=false` תמיד.
+- **מצב אמיתי היחיד:** תמונה־לתמונה (`StableDiffusionXLControlNetImg2ImgPipeline`). תמונת `--reference` פרטית היא מקור ה־img2img, קווי Canny נגזרים ממנה (`control_image`), עוצמה נמוכה 0.3. אין נפילה שקטה ל־SDXL טקסט בלבד: בלי `--reference` יצירה אמיתית **חסומה** ולא נצרכת נעילת ניסיון. התמונה לא מועלית ל־git (רק SHA-256 ושם קובץ). תמונת ההפניה של המשתמש אינה במאגר.
+- `preflight`: פרומפט/הוצאה=0/רישיון/ניסיון יחיד/נעילה קודמת, ובנוסף `torch.cuda.is_available()`, VRAM כולל (≥12GB), Pillow, opencv, accelerate, ושגרסת diffusers המותקנת כוללת את צינור ControlNet Img2Img. CPU בלבד נחסם. מכסה נותרת: `unknown`.
+- `generate-one`: ניסיון אחד; `attempt.lock` נלקח רק אחרי שה־preflight עבר, ונשאר גם אחרי כישלון.
+- `all --reference X --allow-generate`: ניסיון אחד ואז אוטומטית `evaluate` + `export` (ZIP עם PNG, `metadata.json` ו־SHA-256). אין שלבים נוספים.
+- `evaluate`: ייעוצי בלבד (גודל, בהירות, ניגודיות); דמויות/אדריכלות/מיקוד = `unknown_requires_human_review`.
+- `export`: `accepted=false` תמיד. תוצר mock מסומן `synthetic_mock=true`.
 
-פלט ב־`private-media/reference-guided/SH09/` (מתעלם ב־git).
+פלט ב־`private-media/reference-guided/SH09/` (מתעלם ב־git). IP-Adapter אינו מופעל (תאימות לא נבדקה).
 
 ## בחירת Backend
-SDXL base + ControlNet canny (`diffusers/controlnet-canny-sdxl-1.0`, Apache-2.0 לפי כרטיס המודל — לאמת) לפי מפת הפריסה, עם IP-Adapter אופציונלי כשיש תמונת הפניה. דורש בערך ≥12GB VRAM; T4 חינמי של Colab כשזמין, ללא הבטחת מכסה. Inpainting נדחה (דורש תמונת בסיס). תמונות Copilot זמינות רק בצ׳אט/IDE ללא API — ספק ידני, לא נבנה מתאם. Copilot Pro הוא לקוד ולא ל־GPU/תמונות בלתי מוגבלים.
+SDXL base + ControlNet canny (`diffusers/controlnet-canny-sdxl-1.0`, Apache-2.0 לפי כרטיס המודל — לאמת). דורש ≥12GB VRAM; T4 חינמי של Colab כשזמין, ללא הבטחת מכסה. תמונות Copilot זמינות רק בצ׳אט/IDE ללא API — ספק ידני. Copilot Pro הוא לקוד ולא ל־GPU.
 
 ## זרימת משתמש
-אפס פעולות לבדיקה לא־מקוונת (CI). ליצירה אמיתית: פעולה אחת — להריץ בסביבת GPU מותרת `python tools/reference_guided.py generate-one --allow-generate`. אין אחריות להרצת Colab ללא השגחה; אם אין GPU חינמי — המשך חסום, ללא רכישה.
+בדיקה לא־מקוונת: אפס פעולות (CI). יצירה אמיתית: העלאת תמונת הפניה פרטית לסביבת GPU מותרת והרצת פקודה אחת: `python tools/reference_guided.py all --reference <path> --allow-generate`. אין אחריות להרצת Colab ללא השגחה; אם אין GPU חינמי — חסום, ללא רכישה.
 
 ## לא הוכח
 אין תמונה אמיתית. הצלחה חזותית (שני גברים, בית אבן בלילה, מנורה) נבדקת רק בצפייה אנושית בפלט GPU אמיתי. לא TinyFish, לא ChatGPT images. אצוות ורכבה רק אחרי SH09 אמיתי שאושר על ידי בר.

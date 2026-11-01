@@ -4,8 +4,9 @@ Phases: plan -> preflight -> generate-one -> evaluate -> export.  Default is an 
 dry run: no network, no GPU, no weights, no spend.  Real generation needs --allow-generate
 plus an authorized, user-run GPU environment, and is capped at ONE attempt (a lock file
 blocks any retry).  Outputs live in git-ignored private-media/.  accepted is always false.
-Backend: SDXL base + ControlNet (canny/line layout map, Apache-2.0 weights) via diffusers
-img2img, optional IP-Adapter reference.  See docs/reference-guided-image-pipeline.md.
+Backend: SDXL base + ControlNet canny, true image-to-image: the private --reference is the
+img2img source and Canny edges are derived from it (low strength). No reference => real
+generation is blocked (never a silent prompt-only fallback). GPU/VRAM/CUDA are probed.  See docs/reference-guided-image-pipeline.md.
 """
 import argparse
 import dataclasses
@@ -23,13 +24,14 @@ ROOT = Path(__file__).resolve().parents[1]
 EPISODE = ROOT / "episodes" / "berakhot-01-01"
 PACK = EPISODE / "free-cloud-image-prompts.json"
 OUT_ROOT = ROOT / "private-media" / "reference-guided"
+STRENGTH = 0.3
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 BACKEND = {
-    "name": "sdxl-controlnet-canny-img2img",
+    "name": "sdxl-controlnet-canny-img2img-from-reference",
     "base_model": "stabilityai/stable-diffusion-xl-base-1.0",
     "controlnet": "diffusers/controlnet-canny-sdxl-1.0",
     "controlnet_license": "Apache-2.0 (verify on model card before use)",
-    "ip_adapter": "h94/IP-Adapter (optional, only when a reference image is supplied)",
+    "ip_adapter": "not enabled (compatibility with this pipeline unverified)",
     "library": "diffusers",
     "min_vram_gb": 12,
     "free_gpu": "Google Colab free T4 (~15 GB) when available; quota is NOT measurable here",
@@ -78,7 +80,7 @@ def constraints_for(shot, pack):
         lamp="amber oil lamp at door", width=size["width"], height=size["height"])
 
 
-# ---- layout map (conditioning input made by code; NOT an illustration) ----
+# ---- PNG helper (tests build tiny mock PNGs with it; never an illustration) ----
 def png_chunk(kind, payload):
     return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", zlib.crc32(kind + payload) & 0xffffffff)
 
@@ -89,121 +91,132 @@ def encode_gray_png(width, height, rows):
             + png_chunk(b"IDAT", zlib.compress(raw, 9)) + png_chunk(b"IEND", b""))
 
 
-def layout_map(c):
-    """Deterministic line-art layout: house wall, doorway, two figures, ground line."""
-    w, h = c.width, c.height
-    px = [[0] * w for _ in range(h)]
-
-    def box(x0, y0, x1, y1):
-        x0, x1 = max(0, x0), min(w - 1, x1)
-        y0, y1 = max(0, y0), min(h - 1, y1)
-        for x in range(x0, x1 + 1):
-            px[y0][x] = px[y1][x] = 255
-        for y in range(y0, y1 + 1):
-            px[y][x0] = px[y][x1] = 255
-
-    ground = int(h * 0.78)
-    box(int(w * .03), int(h * .12), int(w * .97), ground)           # house wall
-    dx = int(w * .10) if c.door_side == "left" else int(w * .72)
-    box(dx, int(h * .30), dx + int(w * .16), ground)                # doorway
-    box(dx - 8, int(h * .26), dx + int(w * .16) + 8, int(h * .30))  # lintel
-    for fx in (int(w * .38), int(w * .52)):                         # two adult figures
-        fw = int(w * .08)
-        box(fx, int(h * .34), fx + fw, ground + int(h * .17))
-        box(fx + fw // 4, int(h * .26), fx + fw * 3 // 4, int(h * .34))  # head
-    for x in range(w):
-        px[ground][x] = 255
-    return encode_gray_png(w, h, px)
-
-
 # ---- phases ----
+MODE_IMG2IMG = "controlnet_canny_img2img_from_reference"
+MODE_BLOCKED = "blocked_no_reference"
+
+
 def build_plan(shot_id="SH09", pack_path=PACK, reference=None, out_root=OUT_ROOT):
+    """Reference present -> img2img mode; absent -> real generation is deliberately blocked."""
     pack, shot = load_shot(shot_id, pack_path)
     c = constraints_for(shot, pack)
-    layout = layout_map(c)
     refs = []
     if reference:
-        refs.append({"basename": Path(reference).name, "sha256": file_sha256(reference)})
+        ref = Path(reference)
+        refs.append({"basename": ref.name, "sha256": file_sha256(ref) if ref.is_file() else None})
     return {
-        "schema_version": 1, "shot_id": shot_id, "constraints": dataclasses.asdict(c),
-        "backend": BACKEND, "seed": shot["seed"], "max_generation_attempts": 1,
+        "schema_version": 2, "shot_id": shot_id, "constraints": dataclasses.asdict(c),
+        "backend": BACKEND, "mode": MODE_IMG2IMG if reference else MODE_BLOCKED,
+        "seed": shot["seed"], "max_generation_attempts": 1,
         "prompt": shot["render_lead"], "style": shot.get("render_style", pack["render_style"]),
         "negative_prompt": shot.get("render_negative_prompt", pack["render_negative_prompt"]),
         "guidance_scale": shot.get("guidance_scale", 6.0), "steps": 24,
-        "layout_map_sha256": sha256(layout), "references": refs,
-        "output_dir": str(Path(out_root) / shot_id),
+        "strength": STRENGTH, "controlnet_conditioning_scale": 0.6,
+        "references": refs, "output_dir": str(Path(out_root) / shot_id),
         "accepted": False, "private": True,
-    }, layout
+    }
 
 
-def preflight(plan, pack_path=PACK, allow_generate=False, modules=None):
+def probe_environment():
+    """Real hardware/dependency probe. Tests inject a dict with the same keys instead."""
+    env = {"torch": False, "cuda_available": False, "vram_gb": 0.0, "pillow": False,
+           "cv2": False, "accelerate": False, "controlnet_img2img_pipeline": False}
+    for name, module in (("pillow", "PIL"), ("cv2", "cv2"), ("accelerate", "accelerate")):
+        env[name] = importlib.util.find_spec(module) is not None
+    try:
+        import torch
+        env["torch"] = True
+        env["cuda_available"] = bool(torch.cuda.is_available())
+        if env["cuda_available"]:
+            env["vram_gb"] = round(torch.cuda.get_device_properties(0).total_memory / 2**30, 1)
+    except Exception:
+        pass
+    try:
+        import diffusers
+        env["controlnet_img2img_pipeline"] = hasattr(diffusers, "StableDiffusionXLControlNetImg2ImgPipeline")
+    except Exception:
+        pass
+    return env
+
+
+def preflight(plan, pack_path=PACK, allow_generate=False, env=None):
     pack = json.loads(Path(pack_path).read_text(encoding="utf-8"))
-    present = modules if modules is not None else {
-        m: importlib.util.find_spec(m) is not None for m in ("torch", "diffusers", "transformers")}
+    env = probe_environment() if env is None else env
     out = Path(plan["output_dir"])
+    refs = plan["references"]
+    ref_ok = bool(refs) and all(r["sha256"] and len(r["sha256"]) == 64 for r in refs)
     checks = [
         Check("prompt_pack", plan["shot_id"] in {s["shot_id"] for s in pack["shots"]}, "shot present in prompt pack"),
         Check("spend_zero", pack.get("monetary_spend_authorized_usd") == 0, "external spend authorization must be 0"),
         Check("license_recorded", "RAIL" in pack.get("model_license", ""), "base model license noted; confirm before release"),
         Check("single_attempt", plan["max_generation_attempts"] == 1, "automatic attempts capped at one"),
         Check("no_prior_attempt", not (out / "attempt.lock").exists(), "no earlier attempt lock; retries need explicit manual cleanup"),
-        Check("references_hashed", all(len(r["sha256"]) == 64 for r in plan["references"]), "reference inputs hashed, never uploaded"),
     ]
-    gpu = {m: bool(v) for m, v in present.items()}
-    gpu_ok = all(gpu.get(m) for m in ("torch", "diffusers", "transformers"))
-    checks.append(Check("gpu_stack_importable", gpu_ok, f"modules: {gpu}; VRAM >= {BACKEND['min_vram_gb']} GB and quota are unknown offline"))
-    offline_ok = all(c.ok for c in checks if c.name != "gpu_stack_importable")
+    gates = [
+        Check("reference_image_present", ref_ok and plan["mode"] == MODE_IMG2IMG,
+              "a private --reference image is required; no silent fallback to prompt-only SDXL"),
+        Check("cuda_available", bool(env.get("torch") and env.get("cuda_available")), "torch.cuda.is_available() must be true (CPU is not accepted)"),
+        Check("vram_sufficient", env.get("vram_gb", 0) >= BACKEND["min_vram_gb"],
+              f"detected {env.get('vram_gb', 0)} GB; need >= {BACKEND['min_vram_gb']} GB"),
+        Check("dependencies", all(env.get(k) for k in ("pillow", "cv2", "accelerate")), "Pillow, opencv (Canny) and accelerate required"),
+        Check("controlnet_img2img_supported", bool(env.get("controlnet_img2img_pipeline")),
+              "installed diffusers must provide StableDiffusionXLControlNetImg2ImgPipeline"),
+    ]
+    offline_ok = all(c.ok for c in checks)
+    gates_ok = all(c.ok for c in gates)
+    can = offline_ok and gates_ok and allow_generate
+    blocked = None if can else (
+        "preflight failed: " + ", ".join(c.name for c in checks + gates if not c.ok) if not (offline_ok and gates_ok)
+        else "no explicit --allow-generate")
     return {
-        "offline_ok": offline_ok,
-        "can_generate": offline_ok and gpu_ok and allow_generate,
-        "generation_blocked_reason": None if offline_ok and gpu_ok and allow_generate else
-        "no explicit --allow-generate" if not allow_generate else "preflight failed or GPU stack missing",
-        "checks": [dataclasses.asdict(c) for c in checks],
-        "remaining_usage": "unknown",
+        "offline_ok": offline_ok, "can_generate": can, "generation_blocked_reason": blocked,
+        "checks": [dataclasses.asdict(c) for c in checks + gates],
+        "remaining_usage": "unknown (free Colab quota is not exposed)",
     }
 
 
-def write_plan(plan, layout):
+def write_plan(plan):
     out = Path(plan["output_dir"])
     out.mkdir(parents=True, exist_ok=True)
-    (out / "layout-map.png").write_bytes(layout)
     (out / "plan.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def default_runner(plan, layout, reference):  # pragma: no cover - needs GPU and weights
+def default_runner(plan, reference):  # pragma: no cover - needs GPU and weights
     import io
+    import cv2
+    import numpy as np
     import torch
-    from diffusers import ControlNetModel, StableDiffusionXLControlNetPipeline
+    from diffusers import ControlNetModel, StableDiffusionXLControlNetImg2ImgPipeline
     from PIL import Image
+    width, height = plan["constraints"]["width"], plan["constraints"]["height"]
+    source = Image.open(reference).convert("RGB").resize((width, height))
+    edges = cv2.Canny(np.array(source), 100, 200)
+    control = Image.fromarray(np.stack([edges] * 3, axis=-1))
     cn = ControlNetModel.from_pretrained(plan["backend"]["controlnet"], torch_dtype=torch.float16)
-    pipe = StableDiffusionXLControlNetPipeline.from_pretrained(
+    pipe = StableDiffusionXLControlNetImg2ImgPipeline.from_pretrained(
         plan["backend"]["base_model"], controlnet=cn, torch_dtype=torch.float16).to("cuda")
-    kwargs = {}
-    if reference:
-        pipe.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models", weight_name="ip-adapter_sdxl.bin")
-        kwargs["ip_adapter_image"] = Image.open(reference).convert("RGB")
     image = pipe(
         prompt=plan["prompt"], prompt_2=plan["style"], negative_prompt=plan["negative_prompt"],
-        image=Image.open(io.BytesIO(layout)).convert("RGB"), width=plan["constraints"]["width"],
-        height=plan["constraints"]["height"], num_inference_steps=plan["steps"],
-        guidance_scale=plan["guidance_scale"], controlnet_conditioning_scale=0.6,
-        generator=torch.Generator("cuda").manual_seed(plan["seed"]), **kwargs).images[0]
+        image=source, control_image=control, strength=plan["strength"],
+        num_inference_steps=plan["steps"], guidance_scale=plan["guidance_scale"],
+        controlnet_conditioning_scale=plan["controlnet_conditioning_scale"],
+        generator=torch.Generator("cuda").manual_seed(plan["seed"])).images[0]
     buf = io.BytesIO()
     image.save(buf, "PNG")
     return buf.getvalue(), {"gpu": torch.cuda.get_device_name(0), "model_revision": "unknown"}
 
 
-def generate_one(plan, layout, allow_generate=False, reference=None, runner=None, pack_path=PACK, modules=None):
-    """Exactly one attempt; never retries; never marks accepted."""
-    report = preflight(plan, pack_path, allow_generate, modules)
+def generate_one(plan, allow_generate=False, reference=None, runner=None, pack_path=PACK, env=None):
+    """Exactly one attempt; the lock is only taken after preflight passes; never retries or accepts."""
+    report = preflight(plan, pack_path, allow_generate, env)
     if not report["can_generate"]:
         return {"status": "BLOCKED", "reason": report["generation_blocked_reason"], "preflight": report}
     out = Path(plan["output_dir"])
-    write_plan(plan, layout)
+    write_plan(plan)
     (out / "attempt.lock").write_text(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), encoding="utf-8")
     start = time.monotonic()
     try:
-        data, info = (runner or default_runner)(plan, layout, reference)
+        data, info = (runner or default_runner)(plan, reference)
     except Exception as exc:  # recorded, never retried
         result = {"status": "FAILED", "error": f"{type(exc).__name__}: {exc}", "attempts": 1}
         (out / "attempt-result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
@@ -211,10 +224,11 @@ def generate_one(plan, layout, allow_generate=False, reference=None, runner=None
     (out / "candidate.png").write_bytes(data)
     record = {
         "status": "GENERATED_UNAPPROVED", "attempts": 1, "image_sha256": sha256(data),
-        "seed": plan["seed"], "backend": plan["backend"]["name"], "base_model": plan["backend"]["base_model"],
-        "controlnet": plan["backend"]["controlnet"], "model_revision": info.get("model_revision", "unknown"),
+        "seed": plan["seed"], "mode": plan["mode"], "backend": plan["backend"]["name"],
+        "base_model": plan["backend"]["base_model"], "controlnet": plan["backend"]["controlnet"],
+        "strength": plan["strength"], "model_revision": info.get("model_revision", "unknown"),
         "gpu": info.get("gpu", "unknown"), "duration_seconds_measured": round(time.monotonic() - start, 1),
-        "layout_map_sha256": plan["layout_map_sha256"], "references": plan["references"],
+        "references": plan["references"], "synthetic_mock": bool(info.get("synthetic_mock", False)),
         "billing": "unknown", "paid_api_calls": 0, "accepted": False,
     }
     (out / "attempt-result.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
@@ -314,18 +328,23 @@ def main(argv=None):
     p.add_argument("--out-root", default=str(OUT_ROOT))
     p.add_argument("--allow-generate", action="store_true", help="explicit permission for the single real attempt")
     a = p.parse_args(argv)
-    plan, layout = build_plan(a.shot, reference=a.reference, out_root=a.out_root)
-    write_plan(plan, layout)
+    plan = build_plan(a.shot, reference=a.reference, out_root=a.out_root)
+    write_plan(plan)
+    out = Path(plan["output_dir"])
     if a.phase == "plan":
         print(json.dumps(plan, indent=2, ensure_ascii=False))
-    elif a.phase in ("preflight", "all"):
+    elif a.phase == "preflight":
         print(json.dumps(preflight(plan, allow_generate=a.allow_generate), indent=2))
-    if a.phase in ("generate-one", "all") and (a.phase == "generate-one" or a.allow_generate):
-        print(json.dumps(generate_one(plan, layout, a.allow_generate, a.reference), indent=2))
-    if a.phase == "evaluate":
-        print(json.dumps(evaluate(Path(plan["output_dir"]) / "candidate.png"), indent=2))
-    if a.phase == "export":
+    elif a.phase == "evaluate":
+        print(json.dumps(evaluate(out / "candidate.png"), indent=2))
+    elif a.phase == "export":
         print(json.dumps(export(plan), indent=2))
+    else:
+        result = generate_one(plan, a.allow_generate, a.reference)
+        print(json.dumps(result, indent=2))
+        if a.phase == "all" and result.get("status") == "GENERATED_UNAPPROVED":
+            print(json.dumps(evaluate(out / "candidate.png"), indent=2))
+            print(json.dumps(export(plan), indent=2))
     return 0
 
 
