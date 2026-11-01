@@ -23,6 +23,7 @@ PNG = re.compile(r"SH(0[1-9]|1[0-6])\.png\Z")
 SUPERSEDED = re.compile(r"SH(0[1-9]|1[0-6])\.superseded-[a-f0-9]{12}\.png\Z")
 SHA256 = re.compile(r"[a-f0-9]{64}\Z")
 META = {"prompt-pack-snapshot.json", "usage-ledger.jsonl"}
+REVIEW_SHEET = "review-contact-sheet.jpg"  # derived JPEG preview, NEVER an original art source
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 MAX_IMAGE_BYTES = 20 * 1024 * 1024
 MAX_ZIP_BYTES = 360 * 1024 * 1024
@@ -98,8 +99,8 @@ def archive_members(zf):
         name = info.filename
         if (name in seen or name.startswith("/") or "/" in name
                 or "\\" in name or ".." in name
-                or name not in META and not PNG.fullmatch(name)
-                and not SUPERSEDED.fullmatch(name)):
+                or name not in META and name != REVIEW_SHEET
+                and not PNG.fullmatch(name) and not SUPERSEDED.fullmatch(name)):
             raise ArchiveError("unexpected, duplicate, or unsafe ZIP entry")
         if info.is_dir() or (info.external_attr >> 16 & 0o170000) == 0o120000:
             raise ArchiveError("directory/symlink entries are not accepted")
@@ -107,6 +108,8 @@ def archive_members(zf):
             raise ArchiveError("PNG exceeds 20 MiB")
         if name in META and info.file_size > 2 * 1024 * 1024:
             raise ArchiveError("metadata exceeds 2 MiB")
+        if name == REVIEW_SHEET and info.file_size > 12 * 1024 * 1024:
+            raise ArchiveError("review JPEG exceeds 12 MiB")
         seen.add(name)
     if not META.issubset(seen):
         raise ArchiveError("missing Colab snapshot or usage ledger")
@@ -134,6 +137,12 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
         snapshot = json.loads(zf.read("prompt-pack-snapshot.json").decode("utf-8"))
         ledger_lines = zf.read("usage-ledger.jsonl").decode("utf-8").splitlines()
         ledger = [json.loads(line) for line in ledger_lines if line.strip()]
+        has_review_sheet = REVIEW_SHEET in zf.namelist()
+        if has_review_sheet:
+            preview_bytes = zf.read(REVIEW_SHEET)
+            if not (len(preview_bytes) > 4 and preview_bytes.startswith(b"\xff\xd8")
+                    and preview_bytes.endswith(b"\xff\xd9")):
+                raise ArchiveError("invalid derived review JPEG")
         if (snapshot.get("episode_id") != "berakhot-01-01"
                 or snapshot.get("status") != "private_style_tests_only"
                 or snapshot.get("source_lock") is not False
@@ -215,6 +224,7 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
         "draft_images": candidates,
         "skipped": skipped,
         "image_count": len(candidates),
+        "review_contact_sheet_present": has_review_sheet,
         "external_spend_authorized_usd": 0,
         "workspace_usage": "unknown",
         "ready_for_render": False,
@@ -257,8 +267,23 @@ def stage_archive(archive, report, output_dir=STAGE):
                 "provenance": item["provenance"],
                 "generation_spec_sha256": item["generation_spec_sha256"],
             })
+    preview_rel = None
+    if report.get("review_contact_sheet_present"):
+        with zipfile.ZipFile(archive) as zf:
+            preview_data = zf.read(REVIEW_SHEET)
+        preview_file = output_dir / ("review-sheet-" + report["archive_sha256"][:16] + ".jpg")
+        if preview_file.exists():
+            if preview_file.is_symlink() or preview_file.read_bytes() != preview_data:
+                raise ArchiveError("unsafe or conflicting preview sheet")
+        else:
+            with preview_file.open("xb") as dst:
+                dst.write(preview_data)
+        preview_rel = (str(preview_file.relative_to(ROOT)) if preview_file.is_relative_to(ROOT)
+                       else str(preview_file))
     config = json.loads(EXAMPLE.read_text(encoding="utf-8"))
     config["status"] = "staged_for_visual_review_only"
+    if preview_rel:
+        config["review_contact_sheet"] = preview_rel
     config["images"] = items
     config["notes"].append("Offline ZIP verified, not visually reviewed; all private/rights/Torah approvals remain false.")
     config["notes"].append("Model weights revision is unknown; inspect provenance and applicable licenses before acceptance.")

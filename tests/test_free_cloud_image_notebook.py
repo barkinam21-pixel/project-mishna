@@ -120,6 +120,27 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             picture.write_bytes(b"tampered bytes")
             self.assertFalse(matches(picture, "SH09", "spec-1"))
 
+    def test_private_contact_sheet_and_lazy_model_preflight(self):
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn('SHEET = OUT / "review-contact-sheet.jpg"', source)
+        self.assertIn('SHEET.unlink(missing_ok=True)', source)
+        self.assertIn("ImageOps.contain", source)  # full frame, no crop
+        self.assertIn("DRAFT CONTACT SHEET - NOT APPROVED", source)
+        self.assertIn("build_contact_sheet(successful)", source)
+        self.assertIn("display(Image.open(SHEET).copy())", source)
+        self.assertIn("if pipe is None:", source)
+        self.assertIn("pipe = load_pipeline_only_when_needed()", source)
+        # Loading a generative model must not happen at module top level.
+        render_ast = ast.parse(source)
+        self.assertFalse(any(
+            isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Attribute)
+            and node.value.func.attr == "from_pretrained"
+            for node in render_ast.body
+        ))
+        self.assertIn("zipfile.ZIP_DEFLATED", source)
+        self.assertIn('"accepted": False', source)
+
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])
         plan = "".join(self.cells["plan"]["source"])
