@@ -165,6 +165,8 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
             if not shot or not old_shot:
                 raise ArchiveError("unknown shot in Colab ZIP: " + shot_id)
             if (old_shot.get("shot_prompt") != shot["shot_prompt"]
+                    or old_shot.get("shot_negative_prompt") != shot.get("shot_negative_prompt")
+                    or old_shot.get("guidance_scale", 6.0) != shot.get("guidance_scale", 6.0)
                     or snapshot.get("style_lock") != pack["style_lock"]
                     or snapshot.get("negative_prompt") != pack["negative_prompt"]
                     or old_shot.get("seed") != shot["seed"]):
@@ -179,20 +181,24 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
             spec = record.get("generation_spec")
             if not isinstance(spec, dict):
                 raise ArchiveError(shot_id + ": missing reproducible generation specification")
-            full_prompt = pack["style_lock"] + ". Shot direction: " + shot["shot_prompt"]
+            full_prompt = shot["shot_prompt"] + ". Visual treatment: " + pack["style_lock"]
+            negative_prompt = pack["negative_prompt"] + (
+                ", " + shot["shot_negative_prompt"] if shot.get("shot_negative_prompt") else ""
+            )
             expected_prompt = sha256(full_prompt.encode("utf-8"))
             spec_sha = sha256(json.dumps(spec, sort_keys=True).encode("utf-8"))
             if (not SHA256.fullmatch(str(record.get("generation_spec_sha256", "")))
                     or record.get("generation_spec_sha256") != spec_sha
                     or record.get("prompt_sha256") != expected_prompt
                     or spec.get("prompt_sha256") != expected_prompt
-                    or spec.get("negative_prompt_sha256") != sha256(pack["negative_prompt"].encode("utf-8"))
+                    or spec.get("negative_prompt_sha256") != sha256(negative_prompt.encode("utf-8"))
+                    or spec.get("prompt_order") != "shot_first_v2"
                     or spec.get("seed") != shot["seed"]
                     or spec.get("model_id") != pack["model_id"]
                     or record.get("model_id") != pack["model_id"]
                     or record.get("model_license") != pack["model_license"]
                     or spec.get("variant") != "fp16"
-                    or spec.get("guidance_scale") != 6.0
+                    or spec.get("guidance_scale") != shot.get("guidance_scale", 6.0)
                     or spec.get("inference_steps") != record.get("inference_steps")
                     or [spec.get("width"), spec.get("height")] != size
                     or record.get("image_size") != size
