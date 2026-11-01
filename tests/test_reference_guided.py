@@ -39,6 +39,8 @@ class ReferenceGuidedTests(unittest.TestCase):
 
     def test_mode_selection_and_reference_hash(self):
         self.assertEqual(self.plan["mode"], rg.MODE_IMG2IMG)
+        # Private SH09 reference: brothers on the left, lamp-lit doorway on the right.
+        self.assertEqual(self.plan["constraints"]["door_side"], "right")
         self.assertEqual(self.plan["references"][0]["sha256"], rg.sha256(b"private reference bytes"))
         self.assertEqual(self.plan["strength"], 0.3)
         self.assertFalse(self.plan["accepted"])
