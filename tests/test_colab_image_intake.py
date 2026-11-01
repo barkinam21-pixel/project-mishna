@@ -147,6 +147,31 @@ class ColabImageIntakeTests(unittest.TestCase):
             with self.assertRaises(intake.ArchiveError):
                 intake.stage_archive(archive, report, Path(tmp) / "staged")
 
+    def test_derived_contact_sheet_is_staged_but_never_an_original_image(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            preview = b"\xff\xd8\xff\xe0mock-review-sheet\xff\xd9"
+            archive, _ = self.make_archive(
+                tmp, more={intake.REVIEW_SHEET: preview}
+            )
+            report = intake.audit_archive(archive)
+            self.assertTrue(report["review_contact_sheet_present"])
+            self.assertEqual(report["image_count"], 1)
+            candidate = intake.stage_archive(archive, report, Path(tmp) / "staged")
+            config = json.loads(candidate.read_text(encoding="utf-8"))
+            self.assertEqual(Path(config["review_contact_sheet"]).read_bytes(), preview)
+            self.assertEqual(len(config["images"]), 1)
+            self.assertNotIn("review_contact_sheet", config["images"][0])
+            self.assertFalse(config["images"][0]["accepted_for_private_preview"])
+            self.assertFalse(config["release_authorized"])
+
+    def test_malformed_review_sheet_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive, _ = self.make_archive(
+                tmp, more={intake.REVIEW_SHEET: b"not a JPEG"}
+            )
+            with self.assertRaises(intake.ArchiveError):
+                intake.audit_archive(archive)
+
     def test_superseded_legacy_file_is_ignored(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive, _ = self.make_archive(tmp, more={"SH09.superseded-aaaaaaaaaaaa.png": b"old"})
