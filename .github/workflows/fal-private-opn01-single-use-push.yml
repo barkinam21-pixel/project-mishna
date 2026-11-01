@@ -4,13 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - 'production_authorizations/OPN01_APPROVED_ONCE.json'
+      - 'production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json'
 
 permissions:
   contents: read
 
 concurrency:
-  group: fal-private-opn01-one-time-chat-approval
+  group: fal-private-opn01-retake-01-one-time-chat-approval
   cancel-in-progress: false
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m tools.validate_opn01_single_use_approval \
-            --repo . --file production_authorizations/OPN01_APPROVED_ONCE.json \
+            --repo . --file production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json \
             --before "$BEFORE_SHA" --sha "$AFTER_SHA" --run-attempt "$RUN_ATTEMPT"
       - name: Install encryption dependency
         run: python -m pip install --disable-pip-version-check cryptography==46.0.4
