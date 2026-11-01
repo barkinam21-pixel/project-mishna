@@ -34,6 +34,7 @@ H=720
 HEBREW_SERIF='/usr/share/fonts/truetype/noto/NotoSerifHebrew-Regular.ttf'
 HEBREW_SANS='/usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf'
 FORBIDDEN_KEYS={'fal_key','token','api_key','private_key','signed_url'}
+BT709_BSF='h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1'
 
 
 def digest(path:Path):
@@ -237,7 +238,7 @@ def render(doc,out_dir):
  proc.stdin.close();stderr=proc.stderr.read().decode();code=proc.wait()
  if code:raise RuntimeError('encode failed: '+stderr[-2000:])
  # Audio measured and remastered for comfortable mobile playback; no fake voice added.
- subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(raw),'-map','0:v:0','-map','0:a:0','-c:v','copy','-af','loudnorm=I=-20:TP=-4:LRA=7','-c:a','aac','-b:a','160k','-ar','48000','-ac','2','-movflags','+faststart','-metadata:s:a:0','language=heb',str(out)],check=True)
+ subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(raw),'-map','0:v:0','-map','0:a:0','-c:v','copy','-bsf:v',BT709_BSF,'-af','loudnorm=I=-20:TP=-4:LRA=7','-c:a','aac','-b:a','160k','-ar','48000','-ac','2','-movflags','+faststart','-metadata:s:a:0','language=heb',str(out)],check=True)
  subtitles(shots,out_dir/'private_cinematic_proof.srt')
  report={'status':'PRIVATE_EDITING_PROOF_NOT_A_RELEASE','project_family':doc.get('franchise','torah-film-studio'),'episode':doc.get('episode'),'video_sha256':digest(out),'source_art_sha256':{k:v['sha256'] for k,v in doc['assets'].items()},'camera_speed_factor':doc['render']['camera_speed_vs_v10'],'render_frames':doc['duration_frames'],'duration_seconds':doc['duration_frames']/FPS,'audio':sound,'new_ai_images':0,'new_ai_voice':0,'paid_requests':0,'workspace_usage':'unknown','rights_and_history_pending':True,'limitations':doc.get('limitations',[])}
  (out_dir/'render-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
