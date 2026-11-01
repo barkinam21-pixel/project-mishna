@@ -131,7 +131,7 @@ class ColabImageIntakeTests(unittest.TestCase):
         self.assertEqual(item["image_sha256"], "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717")
         self.assertFalse(item["production_asset_accepted"])
         self.assertIn("TWO", item["artistic_issue"])
-        self.assertIn("style", item["artistic_strengths"])
+        self.assertIn("painterly", item["artistic_strengths"])
 
     def test_malformed_png_and_mismatched_dimensions_are_rejected(self):
         valid = fake_png()
