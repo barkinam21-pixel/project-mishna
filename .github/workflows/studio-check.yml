@@ -42,6 +42,19 @@ jobs:
           name: external-shotpack-dry-plan
           path: build/external-shotpack-preflight.json
           if-no-files-found: warn
+      - name: Assemble official fal.ai FLUX.2 Pro SH01 payload OFFLINE (no network or credits)
+        run: python tools/fal_payload_preflight.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --shot SH01 --output build/fal-sh01-payload-dry-run.json > /dev/null
+      - name: Validate full 75-second storyboard timing, without generating images
+        run: python tools/private_storyreel.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json episodes/berakhot-01-01/private-storyreel-captions.json > build/private-storyreel-dry-plan.json
+      - name: Upload official API payload and storyboard dry plans (NO MEDIA)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fal-provider-schema-and-75s-storyreel-plans-only
+          path: |
+            build/fal-sh01-payload-dry-run.json
+            build/private-storyreel-dry-plan.json
+          if-no-files-found: warn
       - name: Audit actual private movie inputs (read-only; NOT a film)
         run: |
           python -m tools.private_proof_assembler > build/private-film-readiness.json
