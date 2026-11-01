@@ -140,7 +140,7 @@ class ColabImageIntakeTests(unittest.TestCase):
             self.assertEqual(result["image_count"], 1)
             with zipfile.ZipFile(archive) as zf:
                 record = json.loads(zf.read("usage-ledger.jsonl").decode("utf-8"))
-            self.assertEqual(record["generation_spec"]["guidance_scale"], 7.0)
+            self.assertEqual(record["generation_spec"]["guidance_scale"], self.pack["shots"][8]["guidance_scale"])
             self.assertFalse(result["ready_for_render"])
             self.assertFalse(result["public_release_authorized"])
 
