@@ -95,7 +95,7 @@ def main():
         # Do not log API keys, reference bytes, or full response.
         with urllib.request.urlopen(urls[0], timeout=90) as img:
             image = img.read(30_000_001)
-        if len(image) > 30_000_000 or not image.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+        if len(image) > 30_000_000 or not image.startswith(bytes.fromhex("89504e470d0a1a0a")):
             raise ValueError("Invalid or oversized PNG result")
         output = a.out_dir / "SH09_fal_unreviewed.png"
         output.write_bytes(image)
