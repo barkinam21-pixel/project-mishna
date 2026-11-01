@@ -1,0 +1,68 @@
+name: Mishnah SH01 - ONE paid fal image, ENCRYPTED before GitHub artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_paid:
+        description: 'Type YES to explicitly authorize ONE paid fal.ai SH01 image request (local budget reservation $0.15, not a provider-side cap)'
+        type: string
+        default: 'NO'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mishnah-fal-sh01-single-manual
+  cancel-in-progress: false
+
+jobs:
+  sh01:
+    if: ${{ inputs.confirm_paid == 'YES' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+      CONFIRM_PAID: ${{ inputs.confirm_paid }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only encryptor dependency
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.4
+      - name: Validate exact paid consent and secret presence BEFORE calling provider
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$CONFIRM_PAID" = YES || { echo 'No consent'; exit 1; }
+          test -n "$FAL_KEY" || { echo 'FAL_KEY secret unavailable; no paid call'; exit 1; }
+          test -f security/production_artifacts_public_key.pem
+          openssl pkey -pubin -in security/production_artifacts_public_key.pem -noout
+      - name: Verify SH01 exact fal.ai payload locally (NO REQUEST)
+        shell: bash
+        run: |
+          python tools/fal_payload_preflight.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --shot SH01 --output "$RUNNER_TEMP/sh01-request-plan.json" > /dev/null
+          python -m tools.fal_private_single_shot episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --shot SH01 --out-dir "$RUNNER_TEMP/SH01-private"
+      - name: Exactly ONE paid request, with no retry
+        shell: bash
+        run: |
+          python -m tools.fal_private_single_shot episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --shot SH01 --out-dir "$RUNNER_TEMP/SH01-private" --max-budget-usd 0.15 --authorize-paid
+      - name: Seal all PRIVATE media + receipts BEFORE artifact upload
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$RUNNER_TEMP/SH01-private" ] && [ -n "$(find "$RUNNER_TEMP/SH01-private" -type f -print -quit)" ]; then
+            python tools/seal_private_media.py seal --input-dir "$RUNNER_TEMP/SH01-private" --public-key security/production_artifacts_public_key.pem --output "$RUNNER_TEMP/mishnah-sh01-SEALED.bin"
+          else
+            echo 'No private image or ledger to seal.'
+          fi
+      - name: Upload ONLY ciphertext, NEVER PNG or raw receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mishnah-sh01-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/mishnah-sh01-SEALED.bin
+          retention-days: 7
+          if-no-files-found: ignore
