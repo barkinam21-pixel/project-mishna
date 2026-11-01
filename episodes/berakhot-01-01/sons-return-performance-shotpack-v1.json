@@ -24,7 +24,8 @@
     "imagegen_forbidden": true,
     "tinyfish_forbidden": true,
     "assets_status": "not_generated",
-    "keys_or_signed_urls_present": false
+    "keys_or_signed_urls_present": false,
+    "asset_generation_count_this_run": 0
   },
   "render_contract": {
     "fps": 24,
@@ -383,5 +384,15 @@
     "no direct quote of unresolved variant",
     "no paid calls or secrets",
     "no imagegen"
-  ]
+  ],
+  "coverage_scope": {
+    "kind": "selected_editorial_coverage_only",
+    "not_a_complete_film": true,
+    "not_the_75_second_technical_animatic": true,
+    "not_act_runtime": true,
+    "timing_estimate_unverified": true,
+    "placeholder_frames_total": 2544,
+    "placeholder_seconds_total": 106,
+    "notice_he": "16 תכניות איור נפרדות נועדו לבדיקת רציפות, לא לתזמן את כל המערכה. 106 השניות הן סכום משכי־דוגמה, לא סרט שהופק ולא יעד אורך הפרק; יידרשו שוטים ופעימות נוספים אחרי מדידת דיאלוג."
+  }
 }
