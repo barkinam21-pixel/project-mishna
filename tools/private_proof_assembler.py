@@ -249,7 +249,9 @@ def ffmpeg_args(config, blueprint, root, temp):
                      f"trim=end_frame={shot['duration_frames']},setpts=PTS-STARTPTS[v{index}]")
     graph.append("".join(f"[v{i}]" for i in range(count)) +
                  f"concat=n={count}:v=1:a=0[video]")
-    graph.append("[video]ass=filename=private-captions.ass,format=yuv420p[vout]")
+    graph.append("[video]ass=filename=private-captions.ass,format=yuv420p,"
+                 "setparams=range=limited:color_primaries=bt709:"
+                 "color_trc=bt709:colorspace=bt709[vout]")
     for i, take in enumerate(voices):
         delay = take["start_frame"] * 2000
         graph.append(f"[{count+i}:a]aresample=48000,aformat=channel_layouts=stereo,"
