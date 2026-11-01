@@ -4,6 +4,8 @@
 
 **נא להתחיל כאן בסבב הבא.** [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36) הוא ענף **טיוטה** `feature/opn01-retake-anatomy-lock-20261101`, מבוסס על `main b9201a92`; לא מוזג ולא אושרה הפקת תמונה מחדש. השוט הכרונולוגי הבא נשאר **OPN01 מתוקן**, ורק לאחר אישורו יגיעו OPN02–OPN07, סיני, הדורות, רבי ותחילת ברכות. תמונת fal.ai הראשונה הופקה בעבר בקריאה אחת ([41324742353](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41324742353)), **נפסלה**, ונשארה פרטית. דוגמת 45 השניות עם האיור הפסול אינה סרט מאושר. אין ליצור איורים ב-ChatGPT או להשתמש ב-TinyFish.
 
+**סגירת בדיקת ההרצה, לאחר התיקון:** [CI #41335400511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335400511) נכשל משום שבדיקת שער ה-render החדשה ניסתה לקרוא manifest זמני שלא נוצר. תוקנה סביבת הניסוי ב-`tests/test_replace_opn01_preview.py` בקומיט [00c399a](https://github.com/barkinam21-pixel/project-mishna/commit/00c399afef77e504e745bdef431844846e85a48a). [CI #41335471923](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335471923) על הקומיט הזה הסתיים **success בשלושת ה-jobs**; ב-`preflight` **284 בדיקות עברו ואחת דולגה**. נבדק לוג ולא נמצאו כשלי טסט. הכשל הראשון היה ב-fixture בלבד; הוא אינו הוכחת כשל בשער האבטחה. שינוי תיעוד זה עצמו יוצר SHA נוסף, לכן אם נוצר CI נוסף יש לאמת גם אותו לפני מיזוג.
+
 ### השוואת הוראות הסבב הקודם לקבצים ולבדיקות
 
 | הוראה קודמת | מצב מבוסס ראיות | מה באמת אומת |
