@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
 import urllib.request
 import urllib.error
 
@@ -86,6 +87,7 @@ def main():
         ENDPOINT, data=json.dumps(payload).encode("utf-8"),
         headers={"Authorization": "Key " + key,
                  "Content-Type": "application/json"}, method="POST")
+    started_at = time.monotonic()
     try:
         with urllib.request.urlopen(request, timeout=240) as resp:
             result = json.load(resp)
@@ -103,6 +105,10 @@ def main():
                              "reserved_usd": RESERVATION_USD,
                              "actual_provider_charge_usd": None,
                              "image_sha256": hashlib.sha256(image).hexdigest(),
+                             "provider_seed": result.get("seed"),
+                             "provider_request_id": result.get("request_id"),
+                             "model_revision": "unknown (not returned by endpoint)",
+                             "elapsed_seconds": round(time.monotonic() - started_at, 3),
                              "plan": plan})
         print("ONE unreviewed image saved:", output)
         print("Review quality and actual provider billing before any next request.")
