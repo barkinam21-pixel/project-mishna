@@ -40,13 +40,18 @@ class ColabImageIntakeTests(unittest.TestCase):
         plan = copy.deepcopy(self.pack)
         image = fake_png()
         shot = next(s for s in plan["shots"] if s["shot_id"] == shot_id)
-        full_prompt = plan["style_lock"] + ". Shot direction: " + shot["shot_prompt"]
+        scene_prompt = shot["render_lead"]
+        style_prompt = shot.get("render_style", plan["render_style"])
+        negative_prompt = shot.get("render_negative_prompt", plan["render_negative_prompt"])
         spec = {
             "model_id": plan["model_id"],
             "model_revision": "unknown",
             "variant": "fp16",
-            "prompt_sha256": digest(full_prompt.encode("utf-8")),
-            "negative_prompt_sha256": digest(plan["negative_prompt"].encode("utf-8")),
+            "prompt_strategy": "dual_encoder_scene_style_v1",
+            "prompt_sha256": digest(scene_prompt.encode("utf-8")),
+            "prompt_2_sha256": digest(style_prompt.encode("utf-8")),
+            "negative_prompt_sha256": digest(negative_prompt.encode("utf-8")),
+            "negative_prompt_2_sha256": digest(negative_prompt.encode("utf-8")),
             "seed": shot["seed"], "width": 1024, "height": 576,
             "inference_steps": 24, "guidance_scale": 6.0,
         }
@@ -54,6 +59,9 @@ class ColabImageIntakeTests(unittest.TestCase):
             "shot_id": shot_id, "image_sha256": digest(image),
             "model_id": plan["model_id"], "model_license": plan["model_license"],
             "prompt_sha256": spec["prompt_sha256"],
+            "prompt_2_sha256": spec["prompt_2_sha256"],
+            "negative_prompt_sha256": spec["negative_prompt_sha256"],
+            "negative_prompt_2_sha256": spec["negative_prompt_2_sha256"],
             "generation_spec_sha256": digest(json.dumps(spec, sort_keys=True).encode("utf-8")),
             "generation_spec": spec, "image_size": [1024, 576],
             "inference_steps": 24, "operation": "image_generate",
@@ -110,6 +118,9 @@ class ColabImageIntakeTests(unittest.TestCase):
             "wrong_spec_sha": lambda p, r, i: r.update({"generation_spec_sha256": "0" * 64}),
             "no_spec": lambda p, r, i: r.pop("generation_spec"),
             "stale_prompt": lambda p, r, i: p["shots"][8].update({"shot_prompt": "stale"}),
+            "stale_render_lead": lambda p, r, i: p["shots"][8].update({"render_lead": "stale"}),
+            "wrong_second_encoder": lambda p, r, i: r.update({"prompt_2_sha256": "0" * 64}),
+            "wrong_negative_2": lambda p, r, i: r.update({"negative_prompt_2_sha256": "0" * 64}),
             "release_gate": lambda p, r, i: p.update({"public_release_authorized": True}),
         }
         for label, mutation in cases.items():

@@ -23,7 +23,8 @@
     "Image generation runs on user-provided free cloud GPU session, never in ChatGPT image quota.",
     "Camera/wardrobe text locks improve coherence but do not prove identity continuity; scene-pack visual QA needed.",
     "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah.",
-    "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval."
+    "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval.",
+    "2026-11-01 SH09 real T4 trial: one person in bright landscape rather than two at dark courtyard; old style-first 139-word prompt probably truncated the shot. New short render_lead + separate SDXL style encoder, with explicit runtime tokenizer checks; no new art approved."
   ],
   "shots": [
     {
@@ -34,7 +35,8 @@
       "seed": 173101,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Twilight ancient hillside village. Small stone houses with warm oil lamps in doorways, deepening blue sky and quiet human-scale panorama, no monuments."
     },
     {
       "shot_id": "SH02",
@@ -44,7 +46,8 @@
       "seed": 173102,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Mature Jewish teacher as fictional series host seated on the right inside humble ancient study. Simple woven robe, warm side lamplight, thoughtful kind expression."
     },
     {
       "shot_id": "SH03",
@@ -54,7 +57,8 @@
       "seed": 173103,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Modest ancient Judean houses at dusk with a few first stars appearing. Deep blue evening sky, natural darkening horizon, quiet wide view."
     },
     {
       "shot_id": "SH04",
@@ -64,7 +68,8 @@
       "seed": 173104,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "An anonymous adult man in plain ancient tunic entering a modest home through a left-side doorway at night. Small oil lamp inside, ordinary domestic life."
     },
     {
       "shot_id": "SH05",
@@ -74,7 +79,8 @@
       "seed": 173105,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Cinematic close-up of plain ceramic food bowl on rustic ancient table, softly lit by a small oil lamp in a humble dwelling. No writing."
     },
     {
       "shot_id": "SH06",
@@ -84,7 +90,8 @@
       "seed": 173106,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Half-length interpretive portrait of a dignified older Jewish scholar alone against a dark evening interior. Plain robe, gentle eyes, no shared debate."
     },
     {
       "shot_id": "SH07",
@@ -94,7 +101,8 @@
       "seed": 173107,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Symbolic ancient hills and village rooftops under an indigo midnight sky with dark clouds. No people, no numbers, quiet time-passing panorama."
     },
     {
       "shot_id": "SH08",
@@ -104,7 +112,8 @@
       "seed": 173108,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Mature father and scholar as an interpretive Rabban Gamliel figure, alone inside a humble ancient home. Plain brown robes, focused expression, warm lamplight."
     },
     {
       "shot_id": "SH09",
@@ -114,7 +123,10 @@
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "NIGHT scene. TWO adult brothers seen from behind arrive together at a small stone courtyard doorway on the LEFT. Both men and doorway clearly visible. Indigo sky, warm oil lamp.",
+      "render_style": "Hand-painted cinematic nighttime view of TWO brothers at a humble stone courtyard doorway. Deep indigo sky, one warm oil lamp, subtle brushwork, believable ancient robes, atmospheric shadows, 16:9",
+      "render_negative_prompt": "single man, lone traveler, open desert, sand dunes, sea, empty valley, sunset, daylight, sunrise, golden sun, palace, modern building, CGI, anime, text, watermark"
     },
     {
       "shot_id": "SH10",
@@ -124,7 +136,8 @@
       "seed": 173110,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Inside a humble lamp-lit ancient home at night, TWO fictional adult brothers stand together on the LEFT facing right. Plain sand-brown tunics, concerned expressions."
     },
     {
       "shot_id": "SH11",
@@ -134,7 +147,8 @@
       "seed": 173111,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Night inside the SAME modest stone house. Over-shoulder view from behind TWO brothers on the LEFT toward their mature father on the RIGHT. Small oil lamp on right."
     },
     {
       "shot_id": "SH12",
@@ -144,7 +158,8 @@
       "seed": 173112,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Medium reverse shot of mature father on the RIGHT facing his sons to the LEFT inside the SAME humble ancient house at night. Brown robe, warm lamplight."
     },
     {
       "shot_id": "SH13",
@@ -154,7 +169,8 @@
       "seed": 173113,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Tight dramatic detail of reassuring open palm beside a clay oil lamp on low table inside modest ancient home. Nighttime shadows, restrained emotion."
     },
     {
       "shot_id": "SH14",
@@ -164,7 +180,8 @@
       "seed": 173114,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Symbolic midnight sky above distant silhouette of a modest ancient village. Deep indigo clouds with a subtle arc suggesting time passing, no clocks or numbers."
     },
     {
       "shot_id": "SH15",
@@ -174,7 +191,8 @@
       "seed": 173115,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "Quiet ancient hills immediately before dawn. Soft slate blue sky beginning to glow pale amber at horizon, no sun yet, calm painterly landscape."
     },
     {
       "shot_id": "SH16",
@@ -184,7 +202,10 @@
       "seed": 173116,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "render_lead": "View from a shaded ancient doorway toward a predawn blue sky. Single clay oil lamp in foreground and empty room for future subtitles, peaceful hopeful wide composition."
     }
-  ]
+  ],
+  "render_style": "Hand-painted cinematic historical illustration, natural anatomy, traditional brush texture, restrained emotion, plausible ancient Levant homes and woven cloth, muted indigo and warm amber palette, atmospheric depth, 16:9, no writing",
+  "render_negative_prompt": "text, logos, watermarks, electric lights, modern buildings, modern clothing, plastic CGI, anime, crowns, fantasy armor, duplicate limbs, deformed fingers, warped faces, impossible lighting"
 }
