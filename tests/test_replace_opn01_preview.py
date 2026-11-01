@@ -41,12 +41,13 @@ class ShotReplacement(unittest.TestCase):
     def test_render_rejects_missing_human_review_before_ffmpeg(self):
         with tempfile.TemporaryDirectory() as td:
             d=Path(td)
+            manifest=d/'manifest.json';manifest.write_text('{}',encoding='utf-8')
             with patch.object(MOD,'preflight',return_value={'status':'OFFLINE_EDITORIAL_PLAN_READY'}), \
                  patch.object(MOD.visual_gate_opn01,'verify_visual_gate') as gate, \
                  patch.object(MOD.subprocess,'run') as command:
                 gate.side_effect=MOD.visual_gate_opn01.VisualGateError('No review')
                 with self.assertRaises(MOD.visual_gate_opn01.VisualGateError):
-                    MOD.render(d/'image.png','a'*64,d/'blockout.mp4',d/'manifest.json',d/'result.mp4',dry_run=False)
+                    MOD.render(d/'image.png','a'*64,d/'blockout.mp4',manifest,d/'result.mp4',dry_run=False)
                 gate.assert_called_once_with(None,'a'*64)
                 command.assert_not_called()
                 self.assertFalse((d/'result.mp4').exists())
