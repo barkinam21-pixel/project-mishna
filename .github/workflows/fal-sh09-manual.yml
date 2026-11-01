@@ -19,5 +19,5 @@ jobs:
       - name: Reject legacy paid flow
         run: |
           echo "The original SH09 workflow was retired: it used an unsafe raw artifact upload and a storyboard-misaligned reference."
-          echo "Use fal-private-sh01.yml, which requires fresh consent and encrypts the only GitHub artifact."
+          echo "The only allowed paid route after specific fresh consent is fal-private-opn01-single-use-push.yml; do not manually dispatch legacy workflows."
           exit 1

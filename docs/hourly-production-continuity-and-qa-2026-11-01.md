@@ -23,6 +23,8 @@
 
 **שימוש:** בריצה זו בוצעו קריאות GitHub לקוד/CI בלבד; **0 קריאות ל-fal.ai, 0 ImageGen, 0 בקשות וידאו ענן בתשלום, 0 תמונות חדשות**. לא בוצעה בדיקת חיובים בחשבון fal, ולא נמדדו משאבי ChatGPT/GitHub: `unknown`. אין רישיון לפרסם, אישור נוסח מלא, או ביקורת תורנית אנושית.
 
+**סיכון תשלום/סדר נוסף שהתגלה ותוקן באותה הרצה:** במסלולי ה-GitHub הוותיקים `.github/workflows/fal-private-sh01.yml` ו-`.github/workflows/fal-private-opn01.yml` היה אפשר להפעיל עבודה בתשלום דרך `workflow_dispatch` וכתיבת `YES`, **בלי** קובץ האישור החד-פעמי שבר קבע. בנוסף מסלול SH09 המושבת הפנה בטעות אל SH01, שוט שאינו פתיחת הסרט. שני jobs ישנים הוגבלו ל-`if: ${{ false }}` (מושבתים), הפניית SH09 תוקנה ל-`.github/workflows/fal-private-opn01-single-use-push.yml`, ונוספו שתי בדיקות שמונעות השבת הפתח. נתיב ה-one-use של OPN01 בלבד נשאר זמין *רק לאחר הרשאה חדשה*; לא נוצר קובץ אישור ולא בוצעה קריאה לספק. יש לאמת CI על SHA הסופי — לפני כן אין לטעון שהבדיקות החדשות עברו.
+
 ### הוראות לשעה הבאה — להתחיל מכאן, לא ממפת הבנים
 
 1. **אמת CI סופי על SHA `3920df4` וללא raw artifacts:** בדוק `.github/workflows/studio-check.yml`, `tests/test_public_workflow_artifact_uploads.py`, והרצה [#41320118789](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41320118789). תנאי קבלה: 3/3 jobs success, 3 בדיקות artifact PASS, artifact `reports-only`, בלי נתיבי MP4/PNG/WAV גולמיים. אם התחלף main HEAD — בדוק מחדש SHA.

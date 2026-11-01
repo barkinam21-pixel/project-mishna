@@ -1,4 +1,4 @@
-name: Mishnah SH01 - ONE paid fal image, ENCRYPTED before GitHub artifact
+name: DISABLED legacy SH01 - wrong chronological shot
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   sh01:
-    if: ${{ inputs.confirm_paid == 'YES' }}
+    if: ${{ false }} # RETIRED: payment may ONLY use single-use chat-approved OPN01 push
     runs-on: ubuntu-latest
     timeout-minutes: 14
     env:

@@ -57,5 +57,19 @@ class PublicArtifactSafetyTests(unittest.TestCase):
         self.assertTrue(all(path.endswith(".bin") for path in paths))
 
 
+    def test_legacy_manual_paid_workflows_are_inert(self):
+        # Historical workflows must remain viewable for audit, but cannot charge.
+        for name in ("fal-private-sh01.yml", "fal-private-opn01.yml"):
+            with self.subTest(name=name):
+                body = (WORKFLOWS / name).read_text(encoding="utf-8")
+                self.assertIn("if: ${{ false }}", body)
+                self.assertNotIn("if: ${{ inputs.confirm_paid == 'YES' }}", body)
+
+    def test_retired_sh09_does_not_redirect_to_paid_sh01(self):
+        body = (WORKFLOWS / "fal-sh09-manual.yml").read_text(encoding="utf-8")
+        self.assertIn("fal-private-opn01-single-use-push.yml", body)
+        self.assertNotIn("Use fal-private-sh01.yml", body)
+
+
 if __name__ == "__main__":
     unittest.main()

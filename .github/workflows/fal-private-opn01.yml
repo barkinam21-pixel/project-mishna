@@ -1,4 +1,4 @@
-name: Mishnah OPN01 - private single paid frame only with NEW consent
+name: DISABLED legacy manual OPN01 - use one-use push approval
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   opening01:
-    if: ${{ inputs.confirm_paid == 'YES' }}
+    if: ${{ false }} # RETIRED: payment may ONLY use single-use chat-approved OPN01 push
     runs-on: ubuntu-latest
     timeout-minutes: 14
     env:
