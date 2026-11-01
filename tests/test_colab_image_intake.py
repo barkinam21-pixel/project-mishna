@@ -40,15 +40,19 @@ class ColabImageIntakeTests(unittest.TestCase):
         plan = copy.deepcopy(self.pack)
         image = fake_png()
         shot = next(s for s in plan["shots"] if s["shot_id"] == shot_id)
-        full_prompt = plan["style_lock"] + ". Shot direction: " + shot["shot_prompt"]
+        full_prompt = shot["shot_prompt"] + ". Visual treatment: " + plan["style_lock"]
+        negative_prompt = plan["negative_prompt"] + (
+            ", " + shot["shot_negative_prompt"] if shot.get("shot_negative_prompt") else ""
+        )
         spec = {
             "model_id": plan["model_id"],
             "model_revision": "unknown",
             "variant": "fp16",
             "prompt_sha256": digest(full_prompt.encode("utf-8")),
-            "negative_prompt_sha256": digest(plan["negative_prompt"].encode("utf-8")),
+            "negative_prompt_sha256": digest(negative_prompt.encode("utf-8")),
             "seed": shot["seed"], "width": 1024, "height": 576,
-            "inference_steps": 24, "guidance_scale": 6.0,
+            "inference_steps": 24, "guidance_scale": shot.get("guidance_scale", 6.0),
+            "prompt_order": "shot_first_v2",
         }
         record = {
             "shot_id": shot_id, "image_sha256": digest(image),
@@ -110,6 +114,9 @@ class ColabImageIntakeTests(unittest.TestCase):
             "wrong_spec_sha": lambda p, r, i: r.update({"generation_spec_sha256": "0" * 64}),
             "no_spec": lambda p, r, i: r.pop("generation_spec"),
             "stale_prompt": lambda p, r, i: p["shots"][8].update({"shot_prompt": "stale"}),
+            "stale_shot_negative": lambda p, r, i: p["shots"][8].update({"shot_negative_prompt": "stale"}),
+            "bad_prompt_order": lambda p, r, i: r["generation_spec"].update({"prompt_order": "legacy"}),
+            "wrong_guidance": lambda p, r, i: r["generation_spec"].update({"guidance_scale": 6.0}),
             "release_gate": lambda p, r, i: p.update({"public_release_authorized": True}),
         }
         for label, mutation in cases.items():
@@ -117,6 +124,14 @@ class ColabImageIntakeTests(unittest.TestCase):
                 archive, _ = self.make_archive(tmp, mutate=mutation)
                 with self.assertRaises(intake.ArchiveError):
                     intake.audit_archive(archive)
+
+    def test_sh09_observed_failure_hash_cannot_be_accepted_as_new_art(self):
+        trials = json.loads(intake.TRIALS.read_text(encoding="utf-8"))["trials"]
+        item = next(x for x in trials if x["shot_id"] == "SH09")
+        self.assertEqual(item["image_sha256"], "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717")
+        self.assertFalse(item["production_asset_accepted"])
+        self.assertIn("TWO", item["artistic_issue"])
+        self.assertIn("style", item["artistic_strengths"])
 
     def test_malformed_png_and_mismatched_dimensions_are_rejected(self):
         valid = fake_png()
