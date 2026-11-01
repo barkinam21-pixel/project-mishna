@@ -1,3 +1,5 @@
 __pycache__/
 *.py[cod]
 private-media/
+# Private fal.ai references, candidate images and locally stored request ledgers
+local-output/
