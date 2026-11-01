@@ -76,7 +76,7 @@ def constraints_for(shot, pack):
     size = pack["image_size"]
     return SceneConstraints(
         shot_id=shot["shot_id"], figures=2, time_of_day="night",
-        setting="modest ancient stone courtyard house", door_side="left",
+        setting="modest ancient stone courtyard house", door_side="right",
         lamp="amber oil lamp at door", width=size["width"], height=size["height"])
 
 
