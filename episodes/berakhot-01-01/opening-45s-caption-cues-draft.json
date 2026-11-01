@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "episode": "berakhot-01-01",
+  "sequence_id": "OPENING_PROLOGUE_01",
+  "shotpack": "episodes/berakhot-01-01/opening-45s-director-pack-v1.json",
+  "editorial_status": "DRAFT_NOT_RECORDED_NOT_RENDERED_NOT_SOURCE_LOCKED",
+  "source_layer": "symbolic_dramatization",
+  "fps": 24,
+  "sample_rate_hz": 48000,
+  "total_frames": 1080,
+  "next_paid_shot_candidate": "OPN01",
+  "no_cloud_spend_authorized": true,
+  "dialogue_audio_recorded": false,
+  "caption_video_rendered": false,
+  "performance_timing_measured": false,
+  "font_policy": {
+    "family": "Noto Sans Hebrew",
+    "max_lines": 2,
+    "max_visible_chars_per_line": 42,
+    "phone_safe_bottom_margin_ratio": 0.12,
+    "ai_generated_image_contains_no_subtitles": true,
+    "soft_captions_required": true
+  },
+  "notes_he": "תזמון קריאה עריכתי בלבד; אין הקלטה או דיבור מאומת. יש למדוד בקול אנושי עברי לפני נעילת 45 השניות. כל השיחה היא המחזה סמלית ואינה ציטוט עתיק.",
+  "cues": [
+    {
+      "id": "OPN-CAP-01",
+      "kind": "source_notice",
+      "shot_id": "OPN01",
+      "audio_spot_id": "AUD01",
+      "start_frame": 0,
+      "end_frame": 96,
+      "display_text_he": "המחזה סמלית — לא אירוע\nהיסטורי מתועד",
+      "spoken_text_he": null,
+      "speaker": null,
+      "voice_status": "not_applicable",
+      "source_status": "symbolic_dramatization",
+      "placement": "bottom_center_phone_safe"
+    },
+    {
+      "id": "OPN-CAP-02",
+      "kind": "invented_dialogue",
+      "shot_id": "OPN03",
+      "audio_spot_id": "AUD02",
+      "start_frame": 288,
+      "end_frame": 419,
+      "display_text_he": "ואם מחר לא תהיה איתי...\nאיך אדע את הדרך?",
+      "spoken_text_he": "ואם מחר לא תהיה איתי... איך אדע את הדרך?",
+      "speaker": "הצעיר",
+      "voice_status": "not_recorded",
+      "source_status": "symbolic_dramatization",
+      "placement": "bottom_center_phone_safe"
+    },
+    {
+      "id": "OPN-CAP-03",
+      "kind": "invented_dialogue",
+      "shot_id": "OPN05",
+      "audio_spot_id": "AUD03",
+      "start_frame": 570,
+      "end_frame": 677,
+      "display_text_he": "לא אוכל ללכת איתך\nבכל דרך.",
+      "spoken_text_he": "לא אוכל ללכת איתך בכל דרך.",
+      "speaker": "המבוגר",
+      "voice_status": "not_recorded",
+      "source_status": "symbolic_dramatization",
+      "placement": "bottom_center_phone_safe"
+    },
+    {
+      "id": "OPN-CAP-04",
+      "kind": "invented_dialogue",
+      "shot_id": "OPN06",
+      "audio_spot_id": "AUD04",
+      "start_frame": 732,
+      "end_frame": 859,
+      "display_text_he": "אבל את מה שלמדת בדרך —\nתוכל להעביר הלאה.",
+      "spoken_text_he": "אבל את מה שלמדת בדרך — תוכל להעביר הלאה.",
+      "speaker": "המבוגר",
+      "voice_status": "not_recorded",
+      "source_status": "symbolic_dramatization",
+      "placement": "bottom_center_phone_safe"
+    }
+  ]
+}
