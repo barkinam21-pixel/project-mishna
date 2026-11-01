@@ -172,6 +172,7 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                     or old_shot.get("render_lead") != shot.get("render_lead")
                     or old_shot.get("render_style") != shot.get("render_style")
                     or old_shot.get("render_negative_prompt") != shot.get("render_negative_prompt")
+                    or old_shot.get("guidance_scale") != shot.get("guidance_scale")
                     or old_shot.get("seed") != shot["seed"]):
                 raise ArchiveError(shot_id + ": stale prompt, scene design, or seed")
             size = verify_png(image)
@@ -207,7 +208,7 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                     or record.get("model_id") != pack["model_id"]
                     or record.get("model_license") != pack["model_license"]
                     or spec.get("variant") != "fp16"
-                    or spec.get("guidance_scale") != 6.0
+                    or spec.get("guidance_scale") != shot.get("guidance_scale", 6.0)
                     or spec.get("inference_steps") != record.get("inference_steps")
                     or [spec.get("width"), spec.get("height")] != size
                     or record.get("image_size") != size
