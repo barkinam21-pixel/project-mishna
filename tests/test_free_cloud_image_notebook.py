@@ -91,6 +91,8 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         source = "".join(self.cells["render"]["source"])
         self.assertIn("cached_image_matches(image_path, shot[\"shot_id\"], spec_hash)", source)
         self.assertIn('"negative_prompt_sha256":', source)
+        self.assertIn('"prompt_2_sha256": prompt_2_digest', source)
+        self.assertIn('"prompt_strategy": "dual_encoder_scene_style_v1"', source)
         self.assertIn('"generation_spec_sha256": spec_hash', source)
         self.assertIn("hashlib.sha256(path.read_bytes()).hexdigest()", source)
         self.assertIn(".superseded-", source)
@@ -180,6 +182,25 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             namespace["successful"] = []
             with self.assertRaises(RuntimeError):
                 namespace["save_zip"]()
+
+    def test_sdxl_encoders_prioritize_short_scene_and_separate_visual_style(self):
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn("prompt=scene_prompt,", source)
+        self.assertIn("prompt_2=style_prompt,", source)
+        self.assertIn("negative_prompt=negative_prompt,", source)
+        self.assertIn("negative_prompt_2=negative_prompt,", source)
+        self.assertIn("tokenizer.model_max_length", source)
+        self.assertNotIn('prompt=full_prompt,', source)
+        self.assertEqual(len(self.pack["shots"]), 16)
+        self.assertLessEqual(len(self.pack["render_style"].split()), 37)
+        for shot in self.pack["shots"]:
+            with self.subTest(shot=shot["shot_id"]):
+                self.assertTrue(shot.get("render_lead"))
+                self.assertLessEqual(len(shot["render_lead"].split()), 47)
+                self.assertLessEqual(len(shot.get("render_style", self.pack["render_style"]).split()), 37)
+                self.assertTrue(shot.get("render_negative_prompt", self.pack["render_negative_prompt"]))
+        self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
+        self.assertIn("TWO adult brothers", self.pack["shots"][8]["render_lead"])
 
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])
