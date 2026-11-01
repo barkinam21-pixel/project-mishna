@@ -1,4 +1,4 @@
-"""Prevent duplicate user loops: one active studio, one externally verified SH01 receipt."""
+"""Prevent duplicate user loops: one active studio, verified trial ledger with no false approvals."""
 import json
 from pathlib import Path
 import unittest
@@ -7,16 +7,27 @@ ROOT=Path(__file__).resolve().parents[1]
 EP=ROOT/"episodes"/"berakhot-01-01"
 
 class SingleControlRoomTest(unittest.TestCase):
-    def test_evidence_is_one_unapproved_image_trial(self):
+    def test_verified_image_trials_remain_distinct_and_unapproved(self):
         data=json.loads((EP/"trials.json").read_text(encoding="utf-8"))
         self.assertEqual(data["episode_id"],"berakhot-01-01")
-        self.assertEqual(len(data["trials"]),1)
-        shot=data["trials"][0]
-        self.assertEqual(shot["shot_id"],"SH01")
-        self.assertEqual(shot["status"],"generated_unapproved")
-        self.assertEqual(shot["image_sha256"],"e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d")
-        self.assertFalse(shot["production_asset_accepted"])
-        self.assertFalse(shot["archive_in_repository"])
+        trials=data["trials"]
+        by_shot={t["shot_id"]: t for t in trials}
+        self.assertIn("SH01", by_shot)
+        self.assertIn("SH09", by_shot)
+        self.assertEqual(
+            by_shot["SH01"]["image_sha256"],
+            "e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d"
+        )
+        self.assertEqual(
+            by_shot["SH09"]["image_sha256"],
+            "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717"
+        )
+        self.assertEqual(len({t["image_sha256"] for t in trials}), len(trials))
+        for shot in trials:
+            self.assertEqual(shot["status"], "generated_unapproved")
+            self.assertFalse(shot["production_asset_accepted"])
+            self.assertFalse(shot["archive_in_repository"])
+        self.assertIn("night", by_shot["SH09"]["artistic_issue"].lower())
 
     def test_one_dashboard_and_no_stale_first_trial_claim(self):
         main=(ROOT/"README.md").read_text(encoding="utf-8")
