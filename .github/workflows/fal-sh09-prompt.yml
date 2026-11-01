@@ -22,7 +22,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: One paid image only if explicitly authorized
         run: |
-          test "$CONFIRM" = "YES" || { echo "Not authorized"; exit 1; }
+          NORMALIZED_CONFIRM="$(printf %s "$CONFIRM" | tr "[:lower:]" "[:upper:]" | tr -d "[:space:]")"
+          test "$NORMALIZED_CONFIRM" = "YES" || { echo "Not authorized (confirmation must be YES)"; exit 1; }
+          export CONFIRM="$NORMALIZED_CONFIRM"
           test -n "$FAL_KEY" || { echo "Missing key"; exit 1; }
           python tools/fal_sh09_prompt.py
       - name: Save unreviewed result privately
