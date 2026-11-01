@@ -38,6 +38,16 @@ class ShotReplacement(unittest.TestCase):
             p=Path(td)
             with self.assertRaises(MOD.UnsafeMedia):
                 MOD.preflight(DATA,p/'wrong.png','0'*64,p/'wrong.mp4')
+    def test_remux_prevents_last_frame_timestamp_shortfall(self):
+        s=(ROOT/'tools/replace_opn01_preview.py').read_text()
+        # A container duration of 45s alone is insufficient: the original
+        # video stream ended at 44.958333s despite 1080 frames.
+        self.assertIn("'-video_track_timescale','12288'",s)
+        self.assertIn("'-c','copy'",s)
+        self.assertIn("v.get('avg_frame_rate')!='24/1'",s)
+        self.assertIn("abs(float(v.get('duration','0'))-45.0)>.001",s)
+        self.assertIn('retimed.replace(output_path)',s)
+
     def test_output_keeps_hebrew_tags_and_phone_friendly_codec(self):
         s=(ROOT/'tools/replace_opn01_preview.py').read_text()
         self.assertIn("'language=heb'",s)
