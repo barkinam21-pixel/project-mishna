@@ -42,7 +42,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                      "api.runpod.io", "ngrok", "cloudflared", "gradio.launch",
                      "autoclick", "selenium"):
             self.assertNotIn(term, source)
-        self.assertIn("BATCH = \"איור ניסיון אחד\"", source)
+        self.assertIn("BATCH = \"איור אחד חדש - SH09\"", source)
         self.assertIn("AUTO_DOWNLOAD_ZIP = True", source)
         self.assertIn("paid_api_calls\": 0", source)
         self.assertIn("external_cash_spend_initiated_usd\": 0", source)
@@ -83,6 +83,22 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         for shot in ("SH09", "SH10", "SH11", "SH12", "SH13"):
             self.assertIn(shot, source)
         self.assertIn('"כל 16 איורי הניסיון": [s["shot_id"] for s in plan["shots"]]', source)
+
+    def test_cache_requires_exact_generation_spec_and_sha(self):
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn("cached_image_matches(image_path, shot[\"shot_id\"], spec_hash)", source)
+        self.assertIn('"negative_prompt_sha256":', source)
+        self.assertIn('"generation_spec_sha256": spec_hash', source)
+        self.assertIn("hashlib.sha256(path.read_bytes()).hexdigest()", source)
+        self.assertIn(".superseded-", source)
+        self.assertNotIn('if image_path.exists():\n        print("נמצא כבר בסשן:"', source)
+
+    def test_new_default_does_not_repeat_rejected_sh01(self):
+        settings = "".join(self.cells["settings"]["source"])
+        plan = "".join(self.cells["plan"]["source"])
+        self.assertIn('BATCH = "איור אחד חדש - SH09"', settings)
+        self.assertIn('"איור אחד חדש - SH09": ["SH09"]', plan)
+        self.assertIn("SH01", " ".join(self.pack["notes"]))
 
 
 if __name__ == "__main__":
