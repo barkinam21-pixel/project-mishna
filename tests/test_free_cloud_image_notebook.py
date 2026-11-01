@@ -188,6 +188,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         self.assertIn("AFTER DARK", shot["shot_prompt"])
         self.assertIn("oil lamp", shot["shot_prompt"])
         self.assertIn("cinematic chiaroscuro", shot["shot_prompt"])
+        self.assertLessEqual(len(shot["shot_prompt"].split()), 76)  # prioritize scene before text truncation
         self.assertIn("single person", shot["shot_negative_prompt"])
         self.assertIn("sunny day", shot["shot_negative_prompt"])
         self.assertEqual(shot["guidance_scale"], 7.0)
