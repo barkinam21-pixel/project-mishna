@@ -70,10 +70,18 @@ class OPN01Security(unittest.TestCase):
         self.assertNotIn('sons return',prompt.lower())
         self.assertIn('TWO ANONYMOUS',prompt)
     def test_no_extra_billable_job_in_workflow(self):
-        source=(ROOT/'.github/workflows/fal-private-opn01.yml').read_text()
-        self.assertIn("inputs.confirm_paid == 'YES'",source)
-        self.assertEqual(source.count('--authorize-paid'),1)
-        self.assertIn('seal_private_media.py seal',source)
-        self.assertNotIn('upload-artifact@v4\n        with:\n          name: OPN01_UNREVIEWED_PRIVATE.png',source)
+        # Legacy manual route is intentionally inert; the only live payment
+        # pathway has an exact one-file, fresh, single-use approval gate.
+        manual=(ROOT/'.github/workflows/fal-private-opn01.yml').read_text()
+        self.assertIn('if: ${{ false }}',manual)
+        self.assertEqual(manual.count('--authorize-paid'),1)
+        self.assertIn('seal_private_media.py seal',manual)
+        self.assertNotIn('upload-artifact@v4\n        with:\n          name: OPN01_UNREVIEWED_PRIVATE.png',manual)
+        one_use=(ROOT/'.github/workflows/fal-private-opn01-single-use-push.yml').read_text()
+        self.assertIn('validate_opn01_single_use_approval',one_use)
+        self.assertIn('production_authorizations/OPN01_APPROVED_ONCE.json',one_use)
+        self.assertIn('github.run_attempt == 1',one_use)
+        self.assertEqual(one_use.count('--authorize-paid'),1)
+        self.assertIn('seal_private_media.py seal',one_use)
 
 if __name__ == '__main__':unittest.main()
