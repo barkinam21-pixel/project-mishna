@@ -108,7 +108,7 @@ def finish(encrypted: Path, key: Path, manifest: Path, blockout: Path,
                 or receipt.get('shot') != intended['shot']):
             raise UnsafePipeline('Cipher content does not match the locked OPN01 production prompt')
         # Prevent pretending that a mock artifact or photo crop is finished art.
-        report = replace_opn01_preview.render(image,receipt['image_sha256'],blockout,manifest,mp4,dry_run=False)
+        report = replace_opn01_preview.render(image,receipt['image_sha256'],blockout,manifest,mp4,dry_run=False,visual_review=visual_review)
         if report.get('status') != 'PRIVATE_DRAFT_1_OF_7_ILLUSTRATIONS_ATTACHED':
             raise UnsafePipeline('Renderer did not report provisional scene state')
     with zipfile.ZipFile(bundle,mode='x',compression=zipfile.ZIP_STORED) as z:

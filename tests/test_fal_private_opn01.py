@@ -68,7 +68,23 @@ class OPN01Security(unittest.TestCase):
         prompt=p['payload']['prompt']
         self.assertNotIn('Gamliel',prompt)
         self.assertNotIn('sons return',prompt.lower())
-        self.assertIn('TWO ANONYMOUS',prompt)
+        self.assertIn('EXACTLY ONE adult traveler',prompt)
+        self.assertIn('EXACTLY TWO connected human legs',prompt)
+        self.assertIn('EXACTLY TWO anatomically coherent feet',prompt)
+        self.assertIn('NO other people',prompt)
+        self.assertNotIn('TWO ANONYMOUS travelers',prompt)
+    def test_old_ambiguous_two_traveler_foot_prompt_is_blocked(self):
+        p = copy.deepcopy(PACK)
+        p['shots'][0]['prompt_subject_en'] = 'TWO ANONYMOUS travelers in close-up with too many feet.' * 10
+        with self.assertRaises(MOD.GateBlocked):
+            MOD.prepare(p)
+
+    def test_missing_anatomy_contract_is_blocked(self):
+        p = copy.deepcopy(PACK)
+        del p['shots'][0]['anatomy_contract']
+        with self.assertRaises(MOD.GateBlocked):
+            MOD.prepare(p)
+
     def test_no_extra_billable_job_in_workflow(self):
         # Legacy manual route is intentionally inert; the only live payment
         # pathway has an exact one-file, fresh, single-use approval gate.
@@ -79,7 +95,8 @@ class OPN01Security(unittest.TestCase):
         self.assertNotIn('upload-artifact@v4\n        with:\n          name: OPN01_UNREVIEWED_PRIVATE.png',manual)
         one_use=(ROOT/'.github/workflows/fal-private-opn01-single-use-push.yml').read_text()
         self.assertIn('validate_opn01_single_use_approval',one_use)
-        self.assertIn('production_authorizations/OPN01_APPROVED_ONCE.json',one_use)
+        self.assertIn('production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json',one_use)
+        self.assertNotIn('production_authorizations/OPN01_APPROVED_ONCE.json',one_use)
         self.assertIn('github.run_attempt == 1',one_use)
         self.assertEqual(one_use.count('--authorize-paid'),1)
         self.assertIn('seal_private_media.py seal',one_use)

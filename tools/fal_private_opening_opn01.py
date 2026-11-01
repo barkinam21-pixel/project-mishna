@@ -28,6 +28,11 @@ class GateBlocked(ValueError):
 
 def prepare(manifest: dict) -> dict:
     """Build exactly one schema-correct text-to-image request with no I/O."""
+    # Fail closed if the paid retake would reuse the rejected ambiguous
+    # two-traveler foot prompt, or if its historic spend is erased from plan.
+    from tools.validate_opening_director_pack import validate as validate_opening
+    if validate_opening(manifest)["status"] != "PASS_DRY_RUN_ONLY":
+        raise GateBlocked("Corrective OPN01 chronology/anatomy/source preflight failed")
     if manifest.get('episode') != 'berakhot-01-01':
         raise GateBlocked('Wrong Mishnah episode')
     if manifest.get('chronological_position') != 'first_sequence_first_shot':

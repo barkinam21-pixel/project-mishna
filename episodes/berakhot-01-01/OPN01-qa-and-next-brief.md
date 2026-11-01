@@ -22,3 +22,13 @@ OPN01 is a low tracking shot of **a single pair of weathered ancient-style sanda
 - No raw private media on public GitHub.
 - No new paid generation without **fresh explicit user approval**.
 - Deliver phone-tested direct MP4, short ASCII filename, backup ZIP only after content QA.
+
+## Corrective lock after visual style selection — 1 November 2026 (not generated)
+
+The first paid attempt remains **REJECTED**. Historical receipt, artwork and SHA live in private storage; never reuse its old one-shot authorization or show the defective MP4 as an accepted opening. The first frame is **one older traveler's two lower legs only**, not both travelers' feet tangled in one detail shot. In OPN02 the second traveler enters the much wider composition. No distinct on-screen figure, extra leg, buckle, modern sole or pseudo-signature may be invented in OPN01.
+
+The corrected operational prompt is now the `OPN01` entry in [the 45-second director pack](opening-45s-director-pack-v1.json), with a machine-checked `anatomy_contract` and an explicit record of the one rejected prior attempt. Its palette and wardrobe are aligned to [Bar's current visual style lock](../../docs/visual-style-lock-2026-11-01.md): painterly mature cinema, deep-plum/slate-blue older traveler's mantle, cream tunic, warm copper rim light against cool dawn, while the younger traveler's beige/cream clothes first appear in later shots.
+
+**The previous approval path has been consumed.** A possible retake, **only after separate fresh explicit permission**, uses `production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json`, a new one-use gate that requires the exact SHA-256 digest of the revised fal payload and never replays the old request. No such authorization file is created by this corrective work. `$0.15` is only a local reserve, not the actual charge or a provider-side cap.
+
+**Five visual acceptance checks before private preview:** (1) exactly two connected legs and two coherent feet belonging to one traveler; (2) thin period-neutral leather sandals without modern buckles/rubber; (3) no text, mark, logo or third-limb artifact; (4) warm key from screen-left and right-to-left ground contact with consistent clothing; (5) original painterly 16:9 filmic composition and honest single-still status. A model prompt does **not** prove any of these: a human must inspect a real private result, and `tools/visual_gate_opn01.py` continues to fail closed. OPN02–OPN07 remain ungenerated and unauthorized for paid calls.

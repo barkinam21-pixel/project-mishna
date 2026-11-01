@@ -53,8 +53,8 @@
     "geography_attestation": "unverified_symbolic",
     "screen_direction": "both travelers from screen_right toward screen_left toward distant ridgeline",
     "horizon_height_ratio": 0.4,
-    "older_traveler": "anonymous adult 55-65, warm weathered olive-toned face, medium beard, muted earth cloak, leather water-skin at left hip; same exact outfit and face throughout",
-    "younger_traveler": "anonymous young adult 20-30, short dark hair, blue-gray outer cloth, same face and scale throughout; both are fictional",
+    "older_traveler": "anonymous older adult 55-65, curly gray hair and short gray beard, cream rough-woven tunic with weathered deep-plum/slate-blue mantle, simple thin leather-soled sandals, plain water skin at left hip; preserve one face/outfit across OPN02-OPN06",
+    "younger_traveler": "anonymous younger adult 20-30, short curly dark hair, beige/cream rough-woven clothes and light shawl, simple leather-soled sandals; same face/outfit across OPN02-OPN07; both are fictional",
     "light": "dawn warm key at screen-left horizon, cool blue-gray ambient from sky screen-right; fixed across all seven illustrations",
     "props": [
       "plain leather water-skin without text",
@@ -113,12 +113,12 @@
       "original_illustration_required": true,
       "asset_status": "not_generated",
       "source_status": "symbolic_dramatization",
-      "description_he": "מחשכת פריים מתגלות כפות רגליים מאובקות החוצות נתיב יבש עם אור שחר קל בקצה, בלי מזוהה היסטורי.",
-      "prompt_subject_en": "Cinematic hand-painted 2.5D illustration. Low ankle-level close wide frame of TWO ANONYMOUS travelers' period-plausible sandals crossing an unnamed dry ancient-feeling rocky path at first blue-gray dawn, strong readable diagonal leading line into distance, subtle windblown dust, warm glimmer at frame far LEFT, detailed human weight and cloth folds, sober mature epic cinematic atmosphere, softly desaturated restrained amber and slate blue, no recognizable Sinai location, no tablets or scroll, no words or logos. Keep screen movement from RIGHT toward LEFT; same continuity lock as subsequent scene.",
+      "description_he": "תקריב נמוך של רגלי עובר הדרך המבוגר בלבד, מן הברכיים מטה: בדיוק שתי רגליים ושתי כפות רגליים בסנדלי עור פשוטים. הנוסע השני מחוץ לפריים; דרך מדברית מטפורית בשחר.",
+      "prompt_subject_en": "ORIGINAL mature hand-painted cinematic 2.5D panoramic 16:9 frame, low knee-to-ground camera: EXACTLY ONE adult traveler visible from both knees down, EXACTLY TWO connected human legs and EXACTLY TWO anatomically coherent feet, the older anonymous traveler only. Both lower legs connect naturally to one body continuing ABOVE the frame; clear visual separation between legs. One foot bears weight on rough ochre stone and sand, the other lifts naturally in a believable RIGHT-to-LEFT stride. Plain ancient-feeling leather sandals with simple straps and thin flexible leather soles; NO buckles, rubber, modern tread or plastic. Only a glimpse of the same weathered deep-plum/slate-blue mantle hem over a cream woven tunic as the older traveler in OPN02. NO other people, background travelers, ghost limbs, detached feet, duplicate toes, inscriptions, artist signatures, pseudotext or logos. Unnamed rocky desert path with distant ridge, blue-violet layered dawn cloud, restrained copper-amber LEFT rim light, cool readable shadows, dust and painterly tactile grain. Slightly desaturated, dramatic yet warm and human, no famous-film imitation, no known Sinai landscape. This is one still illustration, NOT walking animation.",
       "shot_transition": "fade_from_black_as_footsteps_precede_image",
       "camera": {
         "mode": "locked",
-        "motion_speed_factor": 1.0,
+        "motion_speed_factor": 1,
         "intended_movement": "none",
         "shake_px": 0
       },
@@ -129,7 +129,15 @@
       ],
       "dialogue_he": [],
       "source_label": "המחזה סמלית",
-      "cut_motivation": "the next frame reveals who owns those footsteps"
+      "cut_motivation": "the next frame reveals who owns those footsteps",
+      "anatomy_contract": {
+        "visible_travelers": 1,
+        "visible_legs": 2,
+        "visible_feet": 2,
+        "other_travelers_in_frame": false,
+        "framing": "one_person_knees_down",
+        "prior_paid_attempt_rejected": true
+      }
     },
     {
       "id": "OPN02",
@@ -172,11 +180,11 @@
       "asset_status": "not_generated",
       "source_status": "symbolic_dramatization",
       "description_he": "מבוגר וצעיר נעצרים; הצעיר פונה אל המבוגר עם מבט שואל ולא מרצה.",
-      "prompt_subject_en": "New ORIGINAL medium two-shot. Anonymous older traveler's warm weathered face, medium beard, muted earth cloak and water skin fixed at left hip. Anonymous younger adult in blue-gray wrap, short dark hair, one foot just planted and looking up from SCREEN-RIGHT toward older traveler on SCREEN-LEFT. They have paused; a simple unspoken question begins. Period-plausible unnamed road, coherent LEFT dawn key, clean hands and face with restrained realistic asymmetry, cinematic painterly 2.5D, no text or ornaments. Preserve geography and identities across OPN03-OPN06.",
+      "prompt_subject_en": "New ORIGINAL medium two-shot. Anonymous older traveler's warm weathered face, medium beard, weathered deep-plum/slate-blue mantle over cream tunic and water skin fixed at left hip. Anonymous younger adult in beige/cream woven clothing and light shawl, short dark hair, one foot just planted and looking up from SCREEN-RIGHT toward older traveler on SCREEN-LEFT. They have paused; a simple unspoken question begins. Period-plausible unnamed road, coherent LEFT dawn key, clean hands and face with restrained realistic asymmetry, cinematic painterly 2.5D, no text or ornaments. Preserve geography and identities across OPN03-OPN06.",
       "shot_transition": "match_on_foot_stop",
       "camera": {
         "mode": "locked",
-        "motion_speed_factor": 1.0,
+        "motion_speed_factor": 1,
         "intended_movement": "none",
         "shake_px": 0
       },
@@ -207,11 +215,11 @@
       "asset_status": "not_generated",
       "source_status": "symbolic_dramatization",
       "description_he": "מעל כתפו של הצעיר רואים את המבוגר ממעיט בתנועה, עוצר ומקשיב.",
-      "prompt_subject_en": "Separate ORIGINAL over-the-shoulder view from young traveler foreground right toward older traveler LEFT, consistent screen axis, elderly anonymous man in same earth cloak water skin left hip, his eyes lower slightly as he hears a difficult question, no forced gesturing, dawn warm edge lighting from LEFT and quiet cool fill. Painted film still in a mature 2.5D epic yet intimate film style, no on-image letters, no print, no artificial lens warp.",
+      "prompt_subject_en": "Separate ORIGINAL over-the-shoulder view from young traveler foreground right toward older traveler LEFT, consistent screen axis, elderly anonymous man in same weathered deep-plum/slate-blue mantle water skin left hip, his eyes lower slightly as he hears a difficult question, no forced gesturing, dawn warm edge lighting from LEFT and quiet cool fill. Painted film still in a mature 2.5D epic yet intimate film style, no on-image letters, no print, no artificial lens warp.",
       "shot_transition": "eyeline_match",
       "camera": {
         "mode": "locked",
-        "motion_speed_factor": 1.0,
+        "motion_speed_factor": 1,
         "intended_movement": "none",
         "shake_px": 0
       },
@@ -240,7 +248,7 @@
       "shot_transition": "cut_on_attention_shift",
       "camera": {
         "mode": "locked",
-        "motion_speed_factor": 1.0,
+        "motion_speed_factor": 1,
         "intended_movement": "none",
         "shake_px": 0
       },
@@ -381,5 +389,13 @@
   ],
   "next_paid_shot_candidate": "OPN01",
   "sons_return_scene_is_later": true,
-  "legacy_33s_demo_is_not_episode_opening": true
+  "legacy_33s_demo_is_not_episode_opening": true,
+  "production_history": {
+    "previous_opn01_paid_attempts": 1,
+    "previous_opn01_result": "REJECTED_VISUAL_QA",
+    "new_opn01_paid_authorization": false,
+    "existing_paid_authorization_consumed": true,
+    "original_receipt_and_prompt_hash_preserved_in_private_storage": true,
+    "comment": "This is a prospective corrective prompt plan only. Counts in privacy refer to the revised prompt, not the already-rejected historical request."
+  }
 }

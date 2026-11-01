@@ -9,7 +9,7 @@ def approved():
   'approval':MESSAGE,'created_at_utc':'2026-11-01T13:59:00Z',
   'expires_at_utc':'2026-11-01T14:20:00Z','approved_external_requests':1,
   'local_reservation_usd':0.15,'provider_hard_cap_exists':False,
-  'new_user_authorization':True}
+  'new_user_authorization':True,'authorized_prompt_sha256':'a'*64}
 
 class ApprovalSecurity(unittest.TestCase):
  def test_only_expected_new_file(self):
@@ -17,6 +17,12 @@ class ApprovalSecurity(unittest.TestCase):
   self.assertEqual(r['provider_calls_allowed'],1)
  def test_replay_history(self):
   with self.assertRaises(ApprovalDenied):validate(approved(),'A\t'+APPROVAL_FILE,2,now=NOW)
+ def test_prompt_digest_required(self):
+  d=approved();d['authorized_prompt_sha256']='unknown'
+  with self.assertRaises(ApprovalDenied):validate(d,'A\t'+APPROVAL_FILE,1,now=NOW)
+ def test_legacy_used_path_never_authorizes_retake(self):
+  with self.assertRaises(ApprovalDenied):
+   validate(approved(),'A\tproduction_authorizations/OPN01_APPROVED_ONCE.json',1,now=NOW)
  def test_wrong_shot(self):
   d=approved();d['shot']='SH09'
   with self.assertRaises(ApprovalDenied):validate(d,'A\t'+APPROVAL_FILE,1,now=NOW)

@@ -67,6 +67,23 @@ def validate(payload: dict) -> dict:
     if not isinstance(scenes, list) or len(scenes) != 7:
         reject("exactly seven distinct first-prologue shot plans are required")
         scenes = scenes if isinstance(scenes, list) else []
+    # A paid OPN01 was rejected (extra leg and modern details). The working
+    # corrective plan must never silently reset this factual history.
+    history = payload.get("production_history", {})
+    if not isinstance(history, dict) or history.get("previous_opn01_paid_attempts") != 1 or history.get("previous_opn01_result") != "REJECTED_VISUAL_QA" or history.get("new_opn01_paid_authorization") is not False or history.get("existing_paid_authorization_consumed") is not True:
+        reject("OPN01 prior rejected paid attempt and lack of fresh approval must be recorded")
+    first = scenes[0] if scenes and isinstance(scenes[0], dict) else {}
+    contract = first.get("anatomy_contract", {})
+    required = {"visible_travelers": 1, "visible_legs": 2, "visible_feet": 2,
+                "other_travelers_in_frame": False, "framing": "one_person_knees_down",
+                "prior_paid_attempt_rejected": True}
+    if not isinstance(contract, dict) or any(type(contract.get(k)) is not type(v) or contract.get(k) != v for k, v in required.items()):
+        reject("OPN01 must depict exactly one visible traveler and a single coherent pair of legs/feet")
+    first_prompt = first.get("prompt_subject_en", "")
+    markers = ("EXACTLY ONE adult traveler", "EXACTLY TWO connected human legs",
+               "EXACTLY TWO anatomically coherent feet", "NO other people", "NO buckles")
+    if not isinstance(first_prompt, str) or any(x not in first_prompt for x in markers) or "TWO ANONYMOUS travelers" in first_prompt:
+        reject("OPN01 prompt must be anatomically unambiguous, period-plausible and single-person")
     cursor = 0
     ids = []
     dialog_count = 0

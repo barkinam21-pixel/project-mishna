@@ -38,6 +38,27 @@ class ShotReplacement(unittest.TestCase):
             p=Path(td)
             with self.assertRaises(MOD.UnsafeMedia):
                 MOD.preflight(DATA,p/'wrong.png','0'*64,p/'wrong.mp4')
+    def test_render_rejects_missing_human_review_before_ffmpeg(self):
+        with tempfile.TemporaryDirectory() as td:
+            d=Path(td)
+            manifest=d/'manifest.json';manifest.write_text('{}',encoding='utf-8')
+            with patch.object(MOD,'preflight',return_value={'status':'OFFLINE_EDITORIAL_PLAN_READY'}), \
+                 patch.object(MOD.visual_gate_opn01,'verify_visual_gate') as gate, \
+                 patch.object(MOD.subprocess,'run') as command:
+                gate.side_effect=MOD.visual_gate_opn01.VisualGateError('No review')
+                with self.assertRaises(MOD.visual_gate_opn01.VisualGateError):
+                    MOD.render(d/'image.png','a'*64,d/'blockout.mp4',manifest,d/'result.mp4',dry_run=False)
+                gate.assert_called_once_with(None,'a'*64)
+                command.assert_not_called()
+                self.assertFalse((d/'result.mp4').exists())
+    def test_renderer_cli_requires_separate_review_file(self):
+        s=(ROOT/'tools/replace_opn01_preview.py').read_text()
+        self.assertIn("--visual-review-json",s)
+        self.assertIn("verify_visual_gate(visual_review, expected_sha)",s)
+        self.assertIn("visual_review=a.visual_review_json",s)
+        f=(ROOT/'tools/finish_opn01_private.py').read_text()
+        self.assertIn("dry_run=False,visual_review=visual_review",f)
+
     def test_remux_prevents_last_frame_timestamp_shortfall(self):
         s=(ROOT/'tools/replace_opn01_preview.py').read_text()
         # A container duration of 45s alone is insufficient: the original

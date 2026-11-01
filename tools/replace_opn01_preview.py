@@ -14,6 +14,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from tools import visual_gate_opn01
 
 FPS = 24
 TOTAL = 1080
@@ -94,11 +95,15 @@ def ass_stamp(path):
     path.write_text(''.join(lines),encoding='utf-8')
 
 
-def render(image_path,expected_sha,source_path,manifest_path,output_path,*,dry_run=True,ffmpeg='ffmpeg'):
+def render(image_path,expected_sha,source_path,manifest_path,output_path,*,dry_run=True,ffmpeg='ffmpeg',visual_review=None):
     manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
     plan=preflight(manifest,image_path,expected_sha,source_path)
     if dry_run:
         return plan
+    # The lower-level renderer was callable directly with --render, bypassing
+    # finish_opn01_private's human review gate. Enforce image-specific approval
+    # in BOTH entrypoints; test images cannot silently become public previews.
+    visual_gate_opn01.verify_visual_gate(visual_review, expected_sha)
     if output_path.exists():
         raise UnsafeMedia('Never overwrite an existing private review render')
     output_path.parent.mkdir(parents=True,exist_ok=True)
@@ -161,9 +166,10 @@ def main(argv=None):
     p.add_argument('--blockout',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--render',action='store_true')
+    p.add_argument('--visual-review-json',type=Path,default=None,help='Private accepted image-specific human visual review required for render')
     a=p.parse_args(argv)
     try:
-        result=render(a.image,a.image_sha256,a.blockout,a.manifest,a.output,dry_run=not a.render)
+        result=render(a.image,a.image_sha256,a.blockout,a.manifest,a.output,dry_run=not a.render,visual_review=a.visual_review_json)
         print(json.dumps(result,ensure_ascii=False,indent=2))
         return 0
     except (ValueError,FileNotFoundError,subprocess.SubprocessError,json.JSONDecodeError) as e:
