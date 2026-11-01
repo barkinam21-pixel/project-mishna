@@ -201,7 +201,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                 self.assertLessEqual(len(shot.get("render_style", self.pack["render_style"]).split()), 37)
                 self.assertTrue(shot.get("render_negative_prompt", self.pack["render_negative_prompt"]))
         self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
-        self.assertIn("TWO adult brothers", self.pack["shots"][8]["render_lead"])
+        self.assertIn("TWO distinct adult men", self.pack["shots"][8]["render_lead"])
 
     def test_sh09_high_clarity_art_direction_is_scoped_and_auditable(self):
         shot = self.pack["shots"][8]
