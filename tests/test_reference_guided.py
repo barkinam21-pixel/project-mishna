@@ -106,6 +106,30 @@ class ReferenceGuidedTests(unittest.TestCase):
         self.assertTrue(meta["synthetic_mock"])
         self.assertFalse(meta["accepted"])
 
+    def test_cli_blocked_rerun_cannot_masquerade_as_new_zip(self):
+        """Colab checks the process exit code; a stale archive must not look successful."""
+        args = ["all", "--reference", str(self.ref), "--allow-generate",
+                "--out-root", str(self.root)]
+        with mock.patch.object(rg, "probe_environment", return_value=GOOD), \
+                mock.patch.object(rg, "default_runner", mock_runner):
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(rg.main(args), 0)
+            archive = self.out / "SH09-reference-guided-unapproved.zip"
+            original = archive.read_bytes()
+            blocked_output = io.StringIO()
+            with contextlib.redirect_stdout(blocked_output):
+                self.assertEqual(rg.main(args), 2)
+        self.assertIn('"status": "BLOCKED"', blocked_output.getvalue())
+        self.assertEqual(archive.read_bytes(), original)
+
+    def test_cli_without_permission_returns_failure_status(self):
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            code = rg.main(["all", "--reference", str(self.ref),
+                            "--out-root", str(self.root)])
+        self.assertEqual(code, 2)
+        self.assertIn('"status": "BLOCKED"', output.getvalue())
+
     def test_export_without_candidate_fails(self):
         with self.assertRaises(FileNotFoundError):
             rg.export(self.plan)
