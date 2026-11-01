@@ -33,6 +33,15 @@ jobs:
         run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
       - name: Validate editorial proof storyboard (no media creation)
         run: python tools/validate_proof_blueprint.py episodes/berakhot-01-01/proof-blueprint.json --output build/editorial-plan-review.json
+      - name: Validate prepaid fal.ai shotpack is a SAFE dry run (no generation, no credits)
+        run: python tools/validate_external_shotpack.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --blueprint episodes/berakhot-01-01/proof-blueprint.json --output build/external-shotpack-preflight.json
+      - name: Upload external generation preflight status (no media and no credentials)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-shotpack-dry-plan
+          path: build/external-shotpack-preflight.json
+          if-no-files-found: warn
       - name: Audit actual private movie inputs (read-only; NOT a film)
         run: |
           python -m tools.private_proof_assembler > build/private-film-readiness.json
