@@ -1,0 +1,59 @@
+name: fal.ai SH09 manual one-image pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_paid:
+        description: "Type YES to authorize exactly one paid image request"
+        required: true
+        default: "NO"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fal-sh09-one-shot
+  cancel-in-progress: false
+
+jobs:
+  sh09:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+      FAL_SH09_REFERENCE_B64: ${{ secrets.FAL_SH09_REFERENCE_B64 }}
+      CONFIRM_PAID: ${{ inputs.confirm_paid }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check explicit consent and private reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRM_PAID" != "YES" ]; then
+            echo "NO paid request authorized. Stopping safely."
+            exit 1
+          fi
+          if [ -z "$FAL_KEY" ]; then
+            echo "FAL_KEY secret is missing."
+            exit 1
+          fi
+          if [ -z "$FAL_SH09_REFERENCE_B64" ]; then
+            echo "FAL_SH09_REFERENCE_B64 secret is missing. No paid request."
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/private"
+          printf '%s' "$FAL_SH09_REFERENCE_B64" | base64 --decode > "$RUNNER_TEMP/private/reference.png"
+          python -c 'from pathlib import Path; p=Path("'"$RUNNER_TEMP"'/private/reference.png"); assert p.read_bytes().startswith(bytes.fromhex("89504e470d0a1a0a")), "Reference must be PNG"'
+      - name: One paid request, maximum local budget 10 USD, no retry
+        shell: bash
+        run: |
+          python tools/fal_sh09.py --reference "$RUNNER_TEMP/private/reference.png" --out-dir "$RUNNER_TEMP/fal-sh09" --max-budget-usd 10 --authorize-paid
+      - name: Save candidate and audit ledger (private workflow artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fal-sh09-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/fal-sh09/
+          retention-days: 7
+          if-no-files-found: ignore
