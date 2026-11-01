@@ -80,11 +80,11 @@ def whole_unit_markers(text):
         "evening_shema_start": (
             any(word in text for word in ("מאימתי", "מאימתיי", "מאמתי", "מאמתיי"))
             and "שמע" in text
-            and any(word in text for word in ("בערבית", "בערבין"))
+            and any(word in text for word in ("בערבית", "בערבין", "בערבים"))
         ),
         "eliezers_first_watch": (
             "אליעזר" in text
-            and any(word in text for word in ("האשמורה", "האשמורת"))
+            and any(word in text for word in ("האשמורה", "האשמורת", "האשמרת"))
             and "ראשונה" in text
         ),
         "sages_midnight": "חכמים" in text and "חצות" in text,

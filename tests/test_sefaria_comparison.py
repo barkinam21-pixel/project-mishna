@@ -27,6 +27,11 @@ LIVE_ONE_DAY_CLAUSES = (
     "וְכָל הַנֶּאֱכָלִים לְיוֹם אֶחָד, מִצְוָתָן עַד שֶׁיַּעֲלֶה עַמּוּד הַשָּׁחַר",
     "כָּל הַנֶּאֱכָלִים לְיוֹם אֶחָד, מִצְוָתָן עַד שֶׁיַּעֲלֶה עַמּוּד הַשַּׁחַר",
 )
+LIVE_KAUFMANN_OPENING = (
+    "א מֵאֵמָּתַי קוֹרִין אֶת שְׁמַע בַּעֲרָבִים? "
+    "מִשָּׁעָה שֶׁהַכֹּהֲנִים נִכְנָסִים לֹאכַל בִּתְרוּמָתָן, "
+    "עַד סוֹף הָאַשְׁמֹרֶת הָרִאשׁוֹנָה. דִּבְרֵי רְבִּי אֱלִיעֶזֶר."
+)
 
 
 class ComparisonTests(unittest.TestCase):
@@ -116,6 +121,67 @@ class ComparisonTests(unittest.TestCase):
                 self.assertFalse(edition["text_verified"])
                 self.assertFalse(edition["torah_approved"])
                 self.assertFalse(edition["release_authorized"])
+
+    def test_exact_live_kaufmann_opening_and_first_watch_are_covered(self):
+        baseline_opening = (
+            "מאימתי קורין את שמע בערבית משעה שהכהנים נכנסים לאכול בתרומתן "
+            "עד סוף האשמורה הראשונה דברי רבי אליעזר"
+        )
+        payload = self.example()
+        payload["versions"][2]["text"] = [
+            UNIT.format(response="מתרין").replace(
+                baseline_opening,
+                LIVE_KAUFMANN_OPENING,
+            )
+        ]
+        report = compare(payload)
+        edition = report["editions"][2]
+        self.assertEqual(
+            report["status"],
+            "three_versions_received_pending_human_review",
+        )
+        self.assertTrue(all(edition["coverage"].values()))
+        self.assertIn(LIVE_KAUFMANN_OPENING, edition["full_text"])
+        self.assertIn(LIVE_KAUFMANN_OPENING, render_html(report))
+        self.assertTrue(audit_ok(report))
+        self.assertFalse(report["text_verified"])
+        self.assertFalse(report["torah_approved"])
+        self.assertFalse(report["release_authorized"])
+
+    def test_missing_kaufmann_evening_or_first_watch_clause_fails_audit(self):
+        missing_clauses = {
+            "evening_shema_start": LIVE_KAUFMANN_OPENING.replace(
+                "בַּעֲרָבִים", ""
+            ),
+            "eliezers_first_watch": LIVE_KAUFMANN_OPENING.replace(
+                ", עַד סוֹף הָאַשְׁמֹרֶת הָרִאשׁוֹנָה.", "."
+            ),
+        }
+        baseline_opening = (
+            "מאימתי קורין את שמע בערבית משעה שהכהנים נכנסים לאכול בתרומתן "
+            "עד סוף האשמורה הראשונה דברי רבי אליעזר"
+        )
+        for missing_marker, incomplete_opening in missing_clauses.items():
+            with self.subTest(missing_marker=missing_marker):
+                payload = self.example()
+                payload["versions"][2]["text"] = [
+                    UNIT.format(response="מתרין").replace(
+                        baseline_opening,
+                        incomplete_opening,
+                    )
+                ]
+                report = compare(payload)
+                edition = report["editions"][2]
+                self.assertEqual(report["status"], "review_required")
+                self.assertFalse(audit_ok(report))
+                self.assertFalse(edition["coverage"][missing_marker])
+                self.assertIn(
+                    missing_marker,
+                    {clause["key"] for clause in edition["missing_unit_clauses"]},
+                )
+                self.assertFalse(report["text_verified"])
+                self.assertFalse(report["torah_approved"])
+                self.assertFalse(report["release_authorized"])
 
     def test_one_day_clause_word_match_requires_attested_word_boundary(self):
         payload = self.example()
