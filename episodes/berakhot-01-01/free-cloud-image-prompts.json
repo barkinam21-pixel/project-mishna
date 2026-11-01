@@ -129,7 +129,7 @@
       "generated": false,
       "render_lead": "NIGHT. Enclosed modest STONE COURTYARD and HOUSE DOOR fill the frame. TWO distinct adult men in foreground, backs to camera, walking together toward the LEFT doorway. Both figures large and unmistakable. Deep blue-black shadows; amber oil lamp lights stone threshold.",
       "render_style": "High-clarity hand-painted historical cinema, bold readable silhouettes, rich midnight blue and amber colors, crisp stone edges and cloth folds, luminous oil-lamp glow, legible dark background, strong cinematic contrast, restrained semi-realistic brushwork, no fog.",
-      "render_negative_prompt": "solo man, single figure, open desert, distant horizon, lake, sea, daylight, sun, fog, haze, pale pastel, washed-out, blur, tiny people, missing house, missing door, modern architecture, text",
+      "render_negative_prompt": "solo man, single figure, desert, horizon, sea, lake, daylight, sunlight, fog, haze, pastel, washed-out, blurry, tiny figures, no house, no door, modern building, text",
       "guidance_scale": 7
     },
     {
