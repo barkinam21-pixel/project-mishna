@@ -209,6 +209,24 @@ def audit(config, blueprint, root=ROOT):
             qa = hebrew_captions.validate(master, require_approval=False)
             if not qa["valid"]:
                 missing.append("Private Hebrew captions incomplete: " + "; ".join(qa["errors"]))
+            if master.get("episode_id") != blueprint.get("episode_id"):
+                errors.append("Private captions belong to a different episode")
+            # Caption validity alone does not guarantee correspondence with the
+            # 16-shot private proof: a shifted cue or duplicated shot ID could
+            # otherwise be rendered with the wrong image and spoken scene.
+            cues = master.get("cues", [])
+            if qa["valid"] and isinstance(cues, list):
+                shot_slots = {shot["id"]: (shot["start_frame"], shot["end_frame"])
+                              for shot in shots}
+                cue_shots = [cue["shot_id"] for cue in cues]
+                if (len(cues) != len(shots)
+                        or len(set(cue_shots)) != len(cues)
+                        or set(cue_shots) != set(shot_slots)):
+                    errors.append("Private caption cues must cover each blueprint shot exactly once")
+                for cue in cues:
+                    slot = shot_slots.get(cue["shot_id"])
+                    if slot and (cue["start_frame"], cue["end_frame"]) != slot:
+                        errors.append(cue["shot_id"] + ": caption timing differs from blueprint shot")
             if any(cue.get("end_frame", 0) > total for cue in master.get("cues", [])):
                 errors.append("Caption extends beyond 75-second film")
         except (ValueError, OSError, TypeError, AttributeError) as exc:
