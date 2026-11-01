@@ -124,7 +124,7 @@
       "shot_id": "SH09",
       "scene_id": "S04",
       "shot_type": "exterior_arrival",
-      "shot_prompt": "In a carefully framed, enclosed modest courtyard after dark, TWO fictional adult sons, distinctly visible, approach their family HOUSE DOOR on the left. The house wall and doorway dominate the picture. One oil lamp creates warm amber light against rich blue-black night. The number and appearance of sons, exact building, and light placement are artistic reconstruction, not stated in the Mishnah.",
+      "shot_prompt": "In a carefully framed, enclosed modest courtyard after dark, TWO fictional adult sons, distinctly visible, approach their family HOUSE DOOR on the right. The house wall and doorway dominate the picture. One oil lamp creates warm amber light against rich blue-black night. The number and appearance of sons, exact building, and light placement are artistic reconstruction, not stated in the Mishnah.",
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
