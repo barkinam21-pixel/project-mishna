@@ -28,7 +28,8 @@
     "2026-11-01 second real user-supplied SH09 (sha256 0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939) used SDXL dual-encoder_scene_style_v1 but still showed one man in sunlit dunes; mean saturation fell from 77.8 to 34.1 on a comparable 128x72 pixel diagnostic. The render strategy alone did NOT solve composition; subjective visual review is required.",
     "Experimental SH09 clarity revision: new short, enclosed house-door scene lead, rich amber/blue legible painterly style, anti-haze/anti-solo scene negative, 7.0 guidance for SH09 only; other shots stay at 6.0. Technical validation cannot prove artistic success; do NOT generate all 16 before visual checking one real image.",
     "2026-11-01 incident: Colab user reports no image/ZIP after T4/dependencies; final cell output missing, so root cause not proven. SH09 previous 43-word negative instruction could exceed CLIP 77-token budget. Shortened to a compact negative cue list; notebook now preflights encoding and reports explicit failure stage. Do not claim this is GPU-tested before new user result.",
-    "2026-11-01 SDXL negative-prompt audit: removed `no house` and `no door` from SH09 negative_prompt because those core desired objects are included in positive render_lead. In classifier-free guidance the negative channel is what the model is guided away from; do not invert a required object into the negative list. Validated structurally in tests; no claim of a new GPU visual result or that this explains the separately reported no-output Colab run."
+    "2026-11-01 SDXL negative-prompt audit: removed `no house` and `no door` from SH09 negative_prompt because those core desired objects are included in positive render_lead. In classifier-free guidance the negative channel is what the model is guided away from; do not invert a required object into the negative list. Validated structurally in tests; no claim of a new GPU visual result or that this explains the separately reported no-output Colab run.",
+    "2026-11-01 user art direction: preserve the two-brother lamplit courtyard composition and painterly historical character/architecture references; slightly softer, gently muted color grading than the newly generated vivid reference, but NEVER return to the rejected pale desert/daylight solo-traveler composition. SH09 scene is dramatization, not sourced historical reconstruction. SDXL outcome requires real GPU test; prompt alone cannot guarantee composition."
   ],
   "shots": [
     {
@@ -128,10 +129,10 @@
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
       "generated": false,
-      "render_lead": "NIGHT. Enclosed modest STONE COURTYARD and HOUSE DOOR fill the frame. TWO distinct adult men in foreground, backs to camera, walking together toward the LEFT doorway. Both figures large and unmistakable. Deep blue-black shadows; amber oil lamp lights stone threshold.",
-      "render_style": "High-clarity hand-painted historical cinema, bold readable silhouettes, rich midnight blue and amber colors, crisp stone edges and cloth folds, luminous oil-lamp glow, legible dark background, strong cinematic contrast, restrained semi-realistic brushwork, no fog.",
-      "render_negative_prompt": "solo man, single figure, desert, horizon, sea, lake, daylight, sunlight, fog, haze, pastel, washed-out, blurry, tiny figures, modern building, text",
-      "guidance_scale": 7
+      "render_lead": "NIGHT. TWO adult brothers seen from behind, near camera, walking toward a warmly lit HOUSE DOOR in a small enclosed STONE COURTYARD. Doorway and two men are the clear focal subjects. Blue night sky; amber oil lamp at entrance.",
+      "render_style": "Cinematic hand-painted historical realism, warm lamp glow, cool indigo night, textured limestone and woven robes, clear faces and silhouettes, gentle atmospheric softness, lightly muted colors, subtle filmic haze, medium contrast, detailed focal subjects, restrained brush texture.",
+      "render_negative_prompt": "solo man, single figure, desert, dunes, horizon, sea, lake, daylight, sunlight, thick fog, heavy haze, washed-out, blurry, tiny figures, modern building, text",
+      "guidance_scale": 6.5
     },
     {
       "shot_id": "SH10",
