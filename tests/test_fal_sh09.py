@@ -46,6 +46,12 @@ class FalSafetyTests(unittest.TestCase):
             self.assertIn("FAL_KEY", p.stderr)
             self.assertFalse((Path(d) / "local-output").exists())
 
+    def test_private_generated_output_is_gitignored(self):
+        # In a public repo this must never be accidentally staged via git add -A.
+        ignore = (SCRIPT.parents[1] / ".gitignore").read_text("utf-8").splitlines()
+        self.assertIn("local-output/", ignore)
+        self.assertIn("private-media/", ignore)
+
     def test_paid_one_shot_mocked_no_real_network_and_no_second_charge(self):
         # Exercises the previously untested API request / PNG / ledger path using
         # a completely mocked HTTP transport: never contact fal.ai or bill.
