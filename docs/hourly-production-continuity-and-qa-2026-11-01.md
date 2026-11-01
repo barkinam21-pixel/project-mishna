@@ -1,5 +1,38 @@
 # קולנוע המשנה — פרוטוקול עבודה ושיפור מתמשך בכל שעה
 
+## מסירת סבב — 1.11.2026, ערב | תיקון OPN01, מניעת חיוב חוזר וסגירת מעקף preview — PR #36
+
+**נא להתחיל כאן בסבב הבא.** [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36) הוא ענף **טיוטה** `feature/opn01-retake-anatomy-lock-20261101`, מבוסס על `main b9201a92`; לא מוזג ולא אושרה הפקת תמונה מחדש. השוט הכרונולוגי הבא נשאר **OPN01 מתוקן**, ורק לאחר אישורו יגיעו OPN02–OPN07, סיני, הדורות, רבי ותחילת ברכות. תמונת fal.ai הראשונה הופקה בעבר בקריאה אחת ([41324742353](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41324742353)), **נפסלה**, ונשארה פרטית. דוגמת 45 השניות עם האיור הפסול אינה סרט מאושר. אין ליצור איורים ב-ChatGPT או להשתמש ב-TinyFish.
+
+### השוואת הוראות הסבב הקודם לקבצים ולבדיקות
+
+| הוראה קודמת | מצב מבוסס ראיות | מה באמת אומת |
+| --- | --- | --- |
+| 1. CI חדש, artifacts, PR #32/#33 | **בוצע ומאומת עבור main הקודם** | [CI main 41333309672](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41333309672) = שלוש משימות success ב-`b9201a92`; שמונה artifacts מסוג דוחות ותוכניות בלבד, ללא MP4/PNG גולמיים. PR #32 ו-#33 נשארו draft ולא נערכו; Copilot branches קיימים, אך אין הוכחה לעבודה סימולטנית פעילה. |
+| 2. לתקן brief OPN01 ללא חיוב | **בוצע כקוד וטקסט; לא הופק נכס** | [director pack](../episodes/berakhot-01-01/opening-45s-director-pack-v1.json) שונה ל**מטייל אחד בפריים, שתי רגליים ושתי כפות רגליים**, רצועות עור וסוליה דקה, ללא אבזמים/סימן, רציפות מלבוש מול [נעילת הסגנון](visual-style-lock-2026-11-01.md). `production_history` משמר קריאה קודמת שנפסלה. [דוח התיקון](../episodes/berakhot-01-01/OPN01-qa-and-next-brief.md). |
+| 3. לבדוק שער חזותי, finish ו-render | **זוהה מעקף ותוקן בקוד; CI אחרון בבדיקה** | `tools/visual_gate_opn01.py` ו-`finish_opn01_private.py` כבר בדקו human review, אבל `tools/replace_opn01_preview.py --render` היה זמין **ישירות בלי קובץ ביקורת**. הוספה דרישת `--visual-review-json` גם ברמת renderer, ו-`finish` מעביר קבלה תואמת SHA. נוספו שתי בדיקות חסימת render לפני ffmpeg. |
+| 4. רציפות, קול וכתוביות, handoff | **חלקי** | רציפות OPN01 מול עשר תמונות סגנון חדשות ננעלה ללא יצירה. [כתוביות PR #33](https://github.com/barkinam21-pixel/project-mishna/pull/33): 4 cues, מהם 3 דיאלוגים מומחזים, `performance_timing_measured=false`, אין קול שחקנים או בדיקת צפייה בטלפון. מסמך זה עודכן; טיוטת PR #33 לא נדרסה. |
+
+### שני פגמים אמיתיים והטיפול בהם
+
+**פגם חזותי ומדיניות חיוב.** בתוצר OPN01 הראשון הופיעו שלוש רגליים, פרטי סנדלים מודרניים וסימן דמוי חתימה. prompt הפעיל לפני התיקון ביקש *TWO ANONYMOUS travelers' sandals* בתקריב ללא הגדרת מספר זוגות רגליים — גורם סיכון ממשי, אך **אין ראיה שזה הגורם היחיד לכשל המודל**. תוקן ב-`opening-45s-director-pack-v1.json` החוזה המדיד: אדם אחד הנראה מן הברכיים ומטה, בדיוק שתי רגליים ושתי כפות רגליים. `tools/validate_opening_director_pack.py` והכנת payload של `fal_private_opening_opn01.py` חוסמים ניסוח עמום, פגיעה בתיעוד ניסיון קודם או טענה שקרית שניתן אישור. נוספו מבחני רגרסיה לניסוח הישן, רגל שלישית והסתרת חיוב. **רק בדיקת איור עתידי אמיתי תקבע אם התיקון החזותי הצליח**.
+
+**פגם חוזר בהרשאה ותמונת preview.** ההרשאה `production_authorizations/OPN01_APPROVED_ONCE.json` כבר נוצלה; לא ניתן באופן תקין להשתמש בה שוב. הוכן מסלול תיקון נפרד, **לא פעיל וללא קובץ הרשאה**: `production_authorizations/OPN01_RETAKE_01_APPROVED_ONCE.json` עם חלון אישור חדש, hash של payload מתוקן, בקשת ספק אחת בלבד ללא retry והצפנה לפני Artifact. זו רק הכנת מנגנון, **אינה אישור לחיוב**. בנוסף נמצאה אפשרות CLI ישירה `replace_opn01_preview.py --render` שעוקפת את דרישת human review ב-`finish`; תיקון הוסיף שער קבלה תואם SHA **גם ל-renderer** לפני פתיחת קובץ פלט. בדיקות חדשות `tests/test_replace_opn01_preview.py` בוחנות איסור ffmpeg ללא אישור ובקרת CLI.
+
+**טעות קוד בבדיקת CI וזיכרון מניעה:** ב-[CI 41335272545](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335272545) היה SyntaxError ב-`tests/test_fal_private_opn01.py`: רצף תווים `\\n` הוכנס לקוד במקום שורה חדשה. תוקן בקומיט [0284a2b](https://github.com/barkinam21-pixel/project-mishna/commit/0284a2b78850b07f9801235c730b544355724451); [CI 41335356275](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335356275) הסתיים `success` על התיקון הזה. ההרצה **החדשה יותר** לאחר חסימת ה-renderer, [41335400511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335400511), טרם אומתה כסופית בזמן כתיבת הרשומה; יש לבדוק סיומה על SHA המדויק ולא להסיק מירוק קודם.
+
+**מקורות וסטטוס:** תיק המקורות נשאר פתוח; וילנה `חייבין` לעומת קאופמן `מותרין`, רישיונות, הגייה וביקורת תורנית אנושית טרם ננעלו. הגנה על ארטיפקטים חדשים אומתה על main, **ארטיפקטים ישנים לא נמחקו**. לא נוצרה תמונה חדשה, לא נוצר קול חדש, לא נוצר MP4 חדש, לא פורסם נכס, **0 קריאות fal.ai בתשלום ו-0 ImageGen שבוצעו בסבב זה** לפי הפעולות שבוצעו; יתרת fal וסכום החיוב הקודם לא נמדדו; ChatGPT/GitHub usage לא ידוע. QA וארטיפקטים טכניים מקומיים אינם סרט עלילתי.
+
+### הוראות לשעה הבאה — לפעול מהמצב הנוכחי, לא לפתוח מחדש את הפרויקט
+
+1. **אמת CI של [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36)**: בדוק [41335400511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335400511) ואת HEAD החדש אם השתנה; תנאי קבלה: 3/3 jobs success, כל הבדיקות החדשות של `test_replace_opn01_preview.py`, `test_validate_opening_director_pack.py`, `test_validate_opn01_single_use_approval.py` עוברות; רק artifacts של דוחות. אם כשל, קרא לוגים ותקן באותו ענף, בלי חיוב.
+2. **חסום מסירה לא מאושרת של OPN01**: אמת ש-`tools/replace_opn01_preview.py --render` נכשל ללא `--visual-review-json` ושה-`finish_opn01_private.py` מעביר אישור פרטני תואם SHA; תנאי קבלה: אפס פלט MP4 מפעולה לא מאושרת, ועצירת ffmpeg לפני ריצה; אם יש מעקף נוסף, הוסף regression.
+3. **בדיקת תיקון הלימה וקריאות פתיח**: השווה את 7 השוטים ב-`opening-45s-director-pack-v1.json` לנעילת הסגנון ול-`opening-45s-caption-cues-draft.json` שב-PR #33; תנאי קבלה: מתחילים OPN01 עם אדם אחד בלבד, OPN02 פותח לשניים, 24fps/1080 frames, עד שתי שורות עבריות; הוסף מדידה רק אם קיימת הקלטת קול אמיתית (כרגע אין).
+4. **סגירת handoff מאומת**: רענן את המסמך הזה לאחר CI ואת PR #36 בלי לדרוס #32/#33; שמור `OPN01=REJECTED` עד ביקורת אנושית על **נכס חדש** אם תינתן **הרשאה מפורשת חדשה**. ללא הרשאה — dry-run וקוד בלבד, ללא יצירת תיק אישור או קריאה בתשלום. ארטיפקטים ישנים נשארים חוב אבטחה.
+
+---
+
+
 ## מסירת סבב — 1.11.2026, 19:06–19:17 ישראל | תמונת OPN01 נפסלה; שני תיקוני איכות הוטמעו ב-main
 
 **מקור אמת:** נא לקרוא את הסעיף הזה לפני הסבבים המוקדמים יותר שמתחתיו. תחילת הסרט עדיין **OPN01** — ציור יחיד שהופק בקריאה אחת ב-[workflow 41324742353](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41324742353), אך **נפסל בביקורת**; אין תמונת OPN01 מאושרת ואין להפיק OPN02 מוקדם מדי.
