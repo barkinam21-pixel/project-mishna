@@ -28,7 +28,8 @@ EXPECTED_RESPONSE_MEANINGS = {
 MAX_BYTES = 1024 * 1024
 PHRASE = re.compile(r"(חייבין|חיבין|חייבים|חיבים|מותרין|מתרין|מותרים|מתרים)\s+אתם\s+לקרות")
 ONE_DAY_OFFERINGS = re.compile(
-    r"וכל\s+הנאכל(?:ין|ים)\s+ליום\s+אחד(?:[\s־—–-]+)"
+    r"(?<!\S)ו?כל\s+הנאכל(?:ין|ים)\s+ליום\s+אחד"
+    r"(?:\s*,\s*|\s*[-־—–]\s*|\s+)"
     r"מצו(?:תן|ותן)\s+עד\s+שיעלה\s+עמוד\s+השחר"
 )
 KNOWN_PUBLIC_DOMAIN = {"public domain", "pd"}
@@ -118,6 +119,13 @@ def _base_report():
         "editions": [],
         "warnings": [],
         "unit_markers": dict(UNIT_MARKERS),
+        "coverage_method_notes": {
+            "one_day_offerings": (
+                "Coverage recognizes source-attested כל/וכל, הנאכלין/הנאכלים, "
+                "מצותן/מצוותן, and comma/dash punctuation variants. This does not "
+                "merge edition texts; original spellings and hashes remain separate."
+            )
+        },
         "text_locked": False,
         "text_verified": False,
         "textual_variants_reviewed": False,
@@ -468,6 +476,9 @@ def render_html(report):
         row("השוואה", text_for),
         row("הבדלי מילים מול המהדורה הראשונה (אסימונים מקוריים)", word_variants_for),
         row("כיסוי רכיבי היחידה", lambda item: "<ul>{}</ul>".format(coverage_for(item))),
+        row("הערת וריאנטים בזיהוי הסעיף", lambda item: html.escape(
+            report["coverage_method_notes"]["one_day_offerings"]
+        )),
         row("סעיפים נדרשים שחסרים", missing_clauses_for),
         row("SHA-256 נוסח המקור", lambda item: "<code>{}</code>".format(
             html.escape(str(item.get("source_text_sha256") or "לא זמין"))

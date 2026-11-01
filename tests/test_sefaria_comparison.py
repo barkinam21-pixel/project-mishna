@@ -48,23 +48,58 @@ class ComparisonTests(unittest.TestCase):
             self.assertFalse(edition["text_verified"])
             self.assertFalse(edition["torah_approved"])
             self.assertFalse(edition["release_authorized"])
-        variant_payload = self.example()
-        variant_payload["versions"][1]["text"] = [
-            UNIT.format(response="חייבין")
-            .replace(
-                "וכל הנאכלין ליום אחד מצותן",
-                "וכל הנאכלים ליום אחד — מצוותן",
-            )
-        ]
-        self.assertTrue(
-            compare(variant_payload)["editions"][1]["coverage"]["one_day_offerings"]
-        )
         self.assertFalse(report["text_locked"])
         self.assertFalse(report["text_verified"])
         self.assertFalse(report["textual_variants_reviewed"])
         self.assertFalse(report["rights_reviewed"])
         self.assertFalse(report["torah_approved"])
         self.assertFalse(report["release_authorized"])
+
+    def test_rambam_one_day_clause_without_vav_and_with_comma_is_covered(self):
+        payload = self.example()
+        rambam_clause = "כל הנאכלים ליום אחד, מצותן עד שיעלה עמוד השחר"
+        payload["versions"][0]["text"] = [
+            UNIT.format(response="חיבין").replace(
+                "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר",
+                rambam_clause,
+            )
+        ]
+        report = compare(payload)
+        edition = report["editions"][0]
+        self.assertTrue(edition["coverage"]["one_day_offerings"])
+        self.assertEqual(report["status"], "three_versions_received_pending_human_review")
+        self.assertIn(rambam_clause, edition["full_text"])
+        self.assertIn("כל/וכל", report["coverage_method_notes"]["one_day_offerings"])
+        self.assertIn("original spellings and hashes remain separate",
+                      report["coverage_method_notes"]["one_day_offerings"])
+        self.assertIn("כל/וכל", render_html(report))
+
+    def test_printed_one_day_clause_with_vav_and_em_dash_is_covered(self):
+        payload = self.example()
+        printed_clause = "וכל הנאכלין ליום אחד — מצוותן עד שיעלה עמוד השחר"
+        payload["versions"][1]["text"] = [
+            UNIT.format(response="חייבין").replace(
+                "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר",
+                printed_clause,
+            )
+        ]
+        report = compare(payload)
+        edition = report["editions"][1]
+        self.assertTrue(edition["coverage"]["one_day_offerings"])
+        self.assertEqual(report["status"], "three_versions_received_pending_human_review")
+        self.assertIn(printed_clause, edition["full_text"])
+
+    def test_one_day_clause_word_match_requires_attested_word_boundary(self):
+        payload = self.example()
+        payload["versions"][0]["text"] = [
+            UNIT.format(response="חיבין").replace(
+                "וכל הנאכלין",
+                "ובכל הנאכלין",
+            )
+        ]
+        report = compare(payload)
+        self.assertFalse(report["editions"][0]["coverage"]["one_day_offerings"])
+        self.assertEqual(report["status"], "review_required")
 
     def test_niqqud_does_not_trigger_false_incomplete(self):
         payload = self.example()
