@@ -16,6 +16,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install dependency for encrypted-media unit tests
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.4
+      - name: Verify public encryption key is valid (never read any private key here)
+        run: openssl pkey -pubin -in security/production_artifacts_public_key.pem -noout
       - name: Generate truthful stage-gate and Codex session handoff (no spend)
         run: python tools/session_handoff.py --out-json build/session-handoff.json --out-md build/session-handoff.md
       - name: Upload durable session-handoff status
