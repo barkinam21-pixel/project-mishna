@@ -31,6 +31,10 @@ jobs:
             build/session-handoff.json
             build/session-handoff.md
           if-no-files-found: error
+      - name: Validate first seven chronological opening shots (offline; no generation)
+        run: python tools/validate_opening_director_pack.py episodes/berakhot-01-01/opening-45s-director-pack-v1.json
+      - name: Validate Hebrew opening captions and sound cues (offline; no voice claimed)
+        run: python tools/validate_opening_caption_cues.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Zero-cost episode plan
@@ -124,15 +128,15 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_private_proof_ffmpeg_smoke.py' -v
       - name: Render Hebrew captions with sample-accurate synthetic sync markers
         run: python tools/sync_probe.py --out-dir build/sync-probe
-      - name: Upload review reports and 12-second TECHNICAL test ONLY
+      - name: Upload TEXT-ONLY voice and sync QA reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: voice-pacing-and-av-sync-technical-test
+          name: voice-pacing-and-av-sync-reports-only
           path: |
             build/episode-01-pacing-audit.json
             build/voice-take-audit.json
             build/sync-probe/sync-qa.json
-            build/sync-probe/sync-test.mp4
+
             build/sync-probe/sync-test.srt
           if-no-files-found: warn
