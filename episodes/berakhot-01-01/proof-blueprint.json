@@ -372,5 +372,72 @@
     "literary_draft": "episodes/berakhot-01-01/literary-draft.md",
     "source_dossier": "episodes/berakhot-01-01/source-dossier.md",
     "source_to_scene_map": "episodes/berakhot-01-01/source-to-scene-map.md"
+  },
+  "continuity_contract": {
+    "status": "planning_only_no_visual_reference_approved",
+    "evidence": "episodes/berakhot-01-01/source-dossier.md (2026-11-01 chronology/identity audit); episodes/berakhot-01-01/source-to-scene-map.md",
+    "characters": [
+      {
+        "id": "rabbi_yehuda_hanasi_host",
+        "kind": "artistic_narrative_host",
+        "historical_layer": "later_editorial_frame",
+        "expected_visible_shots": [
+          "SH02"
+        ],
+        "portrait_verified": false,
+        "identity_note": "Later Mishna editor acting as a fictional host, not a witness in the sons' historical scene"
+      },
+      {
+        "id": "anonymous_priest_illustration",
+        "kind": "generic_unnamed_reconstruction",
+        "historical_layer": "illustrative_example",
+        "expected_visible_shots": [
+          "SH04"
+        ],
+        "portrait_verified": false,
+        "identity_note": "No individual priest is identified in the Mishnah"
+      },
+      {
+        "id": "rabban_gamliel_yavneh",
+        "kind": "secondary_source_identification_not_exact_portrait",
+        "historical_layer": "earlier_rabban_gamliel_story",
+        "expected_visible_shots": [
+          "SH08",
+          "SH11",
+          "SH12"
+        ],
+        "portrait_verified": false,
+        "same_design_reference_required": true,
+        "identity_note": "SH08 (separate teaching representation) and SH11/SH12 (father in story) depict the same planned Rabban Gamliel, not Rabbi Yehuda HaNasi or another Gamliel"
+      },
+      {
+        "id": "sons_of_rabban_gamliel",
+        "kind": "unnamed_group_dramatization",
+        "historical_layer": "earlier_rabban_gamliel_story",
+        "expected_visible_shots": [
+          "SH09",
+          "SH10",
+          "SH11",
+          "SH13"
+        ],
+        "portrait_verified": false,
+        "same_group_design_reference_required": true,
+        "identity_note": "The Mishnah does not provide names, precise ages, appearances or exact count; lock chosen staging only after visual review"
+      }
+    ],
+    "editorial_time_layers": {
+      "S01": "later_editorial_frame_not_same_historical_night",
+      "S02": "generic_illustrative_practice_not_a_named_event",
+      "S03": "separate_attributed_opinions_not_a_documented_meeting",
+      "S04": "earlier_rabban_gamliel_story_artistic_reconstruction",
+      "S05": "nonliteral_instructional_graphic_not_story_event"
+    },
+    "mandatory_visual_review": [
+      "Never place the editorial host physically in Rabban Gamliel's house or imply he witnessed the event.",
+      "SH08 and SH12 must share the same approved character design and age/wardrobe logic before original media is accepted; a matching identifier alone does not prove visual continuity.",
+      "Preserve the same sons/door/father screen axis from SH09 through SH13; do not assign unsupported names, a definite home location or an exact historical costume.",
+      "The opinions in S03 are an editorial montage, not a historical physical meeting of the speakers.",
+      "No portrait, style reference, image, voice, source text, rights or production approval is granted by this metadata."
+    ]
   }
 }
