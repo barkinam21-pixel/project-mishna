@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 10
     env:
       FAL_KEY: ${{ secrets.FAL_KEY }}
-      FAL_SH09_REFERENCE_B64: ${{ secrets.FAL_SH09_REFERENCE_B64 }}
+      FAL_SH09_REFERENCE_URL: ${{ secrets.FAL_SH09_REFERENCE_URL }}
       CONFIRM_PAID: ${{ inputs.confirm_paid }}
     steps:
       - uses: actions/checkout@v4
@@ -38,12 +38,12 @@ jobs:
             echo "FAL_KEY secret is missing."
             exit 1
           fi
-          if [ -z "$FAL_SH09_REFERENCE_B64" ]; then
-            echo "FAL_SH09_REFERENCE_B64 secret is missing. No paid request."
+          if [ -z "$FAL_SH09_REFERENCE_URL" ]; then
+            echo "FAL_SH09_REFERENCE_URL secret is missing. No paid request."
             exit 1
           fi
           mkdir -p "$RUNNER_TEMP/private"
-          printf '%s' "$FAL_SH09_REFERENCE_B64" | base64 --decode > "$RUNNER_TEMP/private/reference.png"
+          python -c 'import os, urllib.request; u=os.environ["FAL_SH09_REFERENCE_URL"]; assert u.startswith("https://"), "Reference URL must use HTTPS"; urllib.request.urlretrieve(u, os.environ["RUNNER_TEMP"]+"/private/reference.png")'
           python -c 'from pathlib import Path; p=Path("'"$RUNNER_TEMP"'/private/reference.png"); assert p.read_bytes().startswith(bytes.fromhex("89504e470d0a1a0a")), "Reference must be PNG"'
       - name: One paid request, maximum local budget 10 USD, no retry
         shell: bash
