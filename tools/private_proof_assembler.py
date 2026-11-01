@@ -280,7 +280,7 @@ def ffmpeg_args(config, blueprint, root, temp):
 
 def verify_video(path, total_frames=1800):
     result = subprocess.run(["ffprobe", "-v", "error", "-count_frames",
-                             "-show_entries", "stream=codec_type,codec_name,width,height,nb_read_frames,"
+                             "-show_entries", "stream=codec_type,codec_name,pix_fmt,width,height,nb_read_frames,"
                              "avg_frame_rate,sample_rate,channels,color_primaries,color_transfer,color_space:"
                              "stream_tags=language", "-of", "json", str(path)],
                             check=True, capture_output=True, text=True)
@@ -289,10 +289,15 @@ def verify_video(path, total_frames=1800):
     a = [s for s in streams if s["codec_type"] == "audio"]
     sub = [s for s in streams if s["codec_type"] == "subtitle"]
     return bool(len(v) == len(a) == len(sub) == 1
+                and v[0].get("codec_name") == "h264"
+                and v[0].get("pix_fmt") == "yuv420p"
                 and v[0].get("nb_read_frames") == str(total_frames)
                 and v[0].get("avg_frame_rate") == "24/1"
                 and v[0].get("width") == 1920 and v[0].get("height") == 1080
                 and v[0].get("color_primaries") == "bt709"
+                and v[0].get("color_transfer") == "bt709"
+                and v[0].get("color_space") == "bt709"
+                and a[0].get("codec_name") == "aac"
                 and a[0].get("sample_rate") == "48000"
                 and a[0].get("channels") == 2
                 and sub[0].get("codec_name") == "mov_text"
