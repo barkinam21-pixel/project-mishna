@@ -29,6 +29,37 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             self.assertEqual(cell["outputs"], [])
             self.assertIsNone(cell["execution_count"])
 
+    def test_branch_notebook_never_silently_uses_stale_main_prompts(self):
+        # This was the real cause of misleading SH09 Colab trials: PR notebooks
+        # loaded the old main prompt pack even when their branch changed the scene.
+        import io
+        from unittest import mock
+
+        source = "".join(self.cells["plan"]["source"])
+        expected_ref = "feat/sh09-soft-cinematic-reference-20261101"
+        stale = json.loads(json.dumps(self.pack))
+        stale["shots"][8]["render_lead"] = "OLD MAIN SCENE"
+        seen = []
+
+        def fake_urlopen(url, timeout=30):
+            seen.append(url)
+            chosen = stale if "/main/" in url else self.pack
+            return io.BytesIO(json.dumps(chosen).encode("utf-8"))
+
+        env = {"BATCH": "איור אחד חדש - SH09", "TAKE": "ניסיון 1 - seed בסיסי",
+               "IMAGE_QUALITY": "איכות גבוהה - 1024x576"}
+        with mock.patch("urllib.request.urlopen", side_effect=fake_urlopen):
+            exec(compile(source, "notebook-plan", "exec"), env)
+        self.assertEqual(env["PROMPT_REF_USED"], expected_ref)
+        self.assertEqual(env["selected"][0]["render_lead"], self.pack["shots"][8]["render_lead"])
+        self.assertEqual(len(seen), 2)
+
+        # Fail closed, before installing weights or spending GPU quota, if neither
+        # candidate ref matches the pinned scene/style/guidance version.
+        with mock.patch("urllib.request.urlopen", return_value=io.BytesIO(json.dumps(stale).encode("utf-8"))):
+            with self.assertRaisesRegex(RuntimeError, "Prompt-pack version mismatch"):
+                exec(compile(source, "notebook-plan", "exec"), dict(env))
+
     def test_notebook_preflights_gpu_before_models_or_deps(self):
         order = [c.get("metadata", {}).get("id") for c in self.notebook["cells"] if c["cell_type"] == "code"]
         self.assertEqual(order, ["settings", "gpu", "plan", "deps", "render"])
@@ -201,7 +232,8 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                 self.assertLessEqual(len(shot.get("render_style", self.pack["render_style"]).split()), 37)
                 self.assertTrue(shot.get("render_negative_prompt", self.pack["render_negative_prompt"]))
         self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
-        self.assertIn("TWO distinct adult men", self.pack["shots"][8]["render_lead"])
+        self.assertIn("TWO adult brothers", self.pack["shots"][8]["render_lead"])
+        self.assertIn("STONE COURTYARD", self.pack["shots"][8]["render_lead"])
 
     def test_failed_image_run_reports_stage_instead_of_silent_no_zip(self):
         shot = self.pack["shots"][8]
@@ -219,14 +251,14 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         shot = self.pack["shots"][8]
         self.assertEqual(shot["shot_id"], "SH09")
         self.assertTrue(shot["render_lead"].startswith("NIGHT."))
-        self.assertIn("TWO distinct adult men", shot["render_lead"])
+        self.assertIn("TWO adult brothers", shot["render_lead"])
         self.assertIn("HOUSE DOOR", shot["render_lead"])
         self.assertIn("amber oil lamp", shot["render_lead"])
-        self.assertIn("High-clarity hand-painted", shot["render_style"])
-        self.assertIn("rich midnight blue and amber", shot["render_style"])
+        self.assertIn("Cinematic hand-painted", shot["render_style"])
+        self.assertIn("cool indigo night", shot["render_style"])
         self.assertIn("washed-out", shot["render_negative_prompt"])
         self.assertIn("solo man", shot["render_negative_prompt"])
-        self.assertEqual(shot["guidance_scale"], 7.0)
+        self.assertEqual(shot["guidance_scale"], 6.5)
         self.assertEqual(sum("guidance_scale" in other for other in self.pack["shots"]), 1)
         source = "".join(self.cells["render"]["source"])
         self.assertIn('guidance = float(shot.get("guidance_scale", 6.0))', source)
