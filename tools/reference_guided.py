@@ -30,7 +30,7 @@ BACKEND = {
     "name": "sdxl-controlnet-canny-img2img-from-reference",
     "base_model": "stabilityai/stable-diffusion-xl-base-1.0",
     "controlnet": "diffusers/controlnet-canny-sdxl-1.0",
-    "controlnet_license": "Apache-2.0 (verify on model card before use)",
+    "controlnet_license": "openrail++ (Hugging Face model card; review requirements before use/release)",
     "ip_adapter": "not enabled (compatibility with this pipeline unverified)",
     "library": "diffusers",
     "min_vram_gb": 12,
@@ -194,7 +194,10 @@ def default_runner(plan, reference):  # pragma: no cover - needs GPU and weights
     control = Image.fromarray(np.stack([edges] * 3, axis=-1))
     cn = ControlNetModel.from_pretrained(plan["backend"]["controlnet"], torch_dtype=torch.float16)
     pipe = StableDiffusionXLControlNetImg2ImgPipeline.from_pretrained(
-        plan["backend"]["base_model"], controlnet=cn, torch_dtype=torch.float16).to("cuda")
+        plan["backend"]["base_model"], controlnet=cn, torch_dtype=torch.float16)
+    # Prefer model CPU offload on the free T4: lower peak VRAM, slower but safer.
+    # Hugging Face recommends this for SDXL/ControlNet memory pressure.
+    pipe.enable_model_cpu_offload()
     image = pipe(
         prompt=plan["prompt"], prompt_2=plan["style"], negative_prompt=plan["negative_prompt"],
         image=source, control_image=control, strength=plan["strength"],
