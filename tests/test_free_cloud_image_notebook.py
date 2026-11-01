@@ -1,6 +1,8 @@
 """No-GPU tests for the one-click free-cloud notebook and its visual source pack."""
 import ast
+import hashlib
 import json
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -42,7 +44,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                      "api.runpod.io", "ngrok", "cloudflared", "gradio.launch",
                      "autoclick", "selenium"):
             self.assertNotIn(term, source)
-        self.assertIn("BATCH = \"איור ניסיון אחד\"", source)
+        self.assertIn("BATCH = \"איור אחד חדש - SH09\"", source)
         self.assertIn("AUTO_DOWNLOAD_ZIP = True", source)
         self.assertIn("paid_api_calls\": 0", source)
         self.assertIn("external_cash_spend_initiated_usd\": 0", source)
@@ -83,6 +85,47 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         for shot in ("SH09", "SH10", "SH11", "SH12", "SH13"):
             self.assertIn(shot, source)
         self.assertIn('"כל 16 איורי הניסיון": [s["shot_id"] for s in plan["shots"]]', source)
+
+    def test_cache_requires_exact_generation_spec_and_sha(self):
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn("cached_image_matches(image_path, shot[\"shot_id\"], spec_hash)", source)
+        self.assertIn('"negative_prompt_sha256":', source)
+        self.assertIn('"generation_spec_sha256": spec_hash', source)
+        self.assertIn("hashlib.sha256(path.read_bytes()).hexdigest()", source)
+        self.assertIn(".superseded-", source)
+        self.assertNotIn('if image_path.exists():\n        print("נמצא כבר בסשן:"', source)
+
+    def test_cache_runtime_rejects_stale_or_tampered_png(self):
+        # Execute the actual notebook function offline: no GPU, import or cloud call.
+        render_ast = ast.parse("".join(self.cells["render"]["source"]))
+        fn = next(node for node in render_ast.body
+                  if isinstance(node, ast.FunctionDef) and node.name == "cached_image_matches")
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            picture = tmp / "SH09.png"
+            ledger = tmp / "usage-ledger.jsonl"
+            namespace = {"hashlib": hashlib, "json": json, "LEDGER": ledger}
+            exec(compile(ast.Module(body=[fn], type_ignores=[]), "<cache-function>", "exec"), namespace)
+            matches = namespace["cached_image_matches"]
+            picture.write_bytes(b"example image bytes")
+            sha = hashlib.sha256(picture.read_bytes()).hexdigest()
+            self.assertFalse(matches(picture, "SH09", "spec-1"))  # no ledger
+            ledger.write_text(json.dumps({
+                "shot_id": "SH09", "image_sha256": sha,
+                "generation_spec_sha256": "spec-1"
+            }) + "\n", encoding="utf-8")
+            self.assertTrue(matches(picture, "SH09", "spec-1"))
+            self.assertFalse(matches(picture, "SH09", "spec-2"))
+            self.assertFalse(matches(picture, "SH10", "spec-1"))
+            picture.write_bytes(b"tampered bytes")
+            self.assertFalse(matches(picture, "SH09", "spec-1"))
+
+    def test_new_default_does_not_repeat_rejected_sh01(self):
+        settings = "".join(self.cells["settings"]["source"])
+        plan = "".join(self.cells["plan"]["source"])
+        self.assertIn('BATCH = "איור אחד חדש - SH09"', settings)
+        self.assertIn('"איור אחד חדש - SH09": ["SH09"]', plan)
+        self.assertIn("SH01", " ".join(self.pack["notes"]))
 
 
 if __name__ == "__main__":
