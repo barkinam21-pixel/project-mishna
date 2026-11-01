@@ -22,7 +22,8 @@
     "Every generated image is a draft; do not set the production manifest assets[].accepted=true automatically.",
     "Image generation runs on user-provided free cloud GPU session, never in ChatGPT image quota.",
     "Camera/wardrobe text locks improve coherence but do not prove identity continuity; scene-pack visual QA needed.",
-    "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah."
+    "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah.",
+    "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval."
   ],
   "shots": [
     {
@@ -109,7 +110,7 @@
       "shot_id": "SH09",
       "scene_id": "S04",
       "shot_type": "exterior_arrival",
-      "shot_prompt": "Historical-drama style nighttime exterior of a modest family courtyard with an entrance on screen left, two indistinct adult male figures seen from behind approaching a doorway, painterly quiet anticipation; exact number of sons is UNDOCUMENTED, these are fictional stand-ins, no palace",
+      "shot_prompt": "Historical-drama style nighttime exterior of a modest family courtyard with an entrance on screen left, two indistinct adult male figures seen from behind approaching a doorway, painterly quiet anticipation; exact number of sons is UNDOCUMENTED, these are fictional stand-ins, no palace; photorealistic daylight is forbidden: genuine nighttime under a deep indigo sky, low oil-lamp spill only; this is a new scene, never reuse rejected SH01",
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
