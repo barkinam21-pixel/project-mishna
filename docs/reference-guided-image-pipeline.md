@@ -22,3 +22,7 @@ SDXL base + ControlNet canny (`diffusers/controlnet-canny-sdxl-1.0`, openrail++ 
 
 ## לא הוכח
 אין תמונה אמיתית. הצלחה חזותית (שני גברים, בית אבן בלילה, מנורה) נבדקת רק בצפייה אנושית בפלט GPU אמיתי. לא TinyFish, לא ChatGPT images. אצוות ורכבה רק אחרי SH09 אמיתי שאושר על ידי בר.
+
+## Colab — מסלול מינימלי לטלפון
+
+מחברת נפרדת [reference_guided_sh09_colab.ipynb](../notebooks/reference_guided_sh09_colab.ipynb) זמינה ב[פתיחה ישירה ב־Colab](https://colab.research.google.com/github/barkinam21-pixel/project-mishna/blob/main/notebooks/reference_guided_sh09_colab.ipynb) **לאחר המיזוג ל־main**. היא מאמתת GPU לפני התקנות, מבקשת פעם אחת קובץ ייחוס שיש בו כבר שני האחים ובית האבן, מורידה קוד קיים מ־main, בודקת מוכנות, מריצה ניסיון אחד בלבד, ובסיום מוציאה ZIP פרטי של טיוטה לא מאושרת. הקובץ עולה לסביבת Google Colab של המשתמש ואינו נשלח ל־GitHub. **אין הרצת GPU אמיתית מאומתת למחברת זו עדיין**. אם אין GPU או אין תמונת ייחוס, נחסם בלי ניסיון יצירה. אין התחייבות ל־Colab Free זמין; אין חיוב API חיצוני מובנה. הפעלת Run all היא הרשאה לניסיון מקומי יחיד בלבד, לא לאצווה ולא להוצאה בתשלום.
