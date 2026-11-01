@@ -19,7 +19,7 @@ class FalSafetyTests(unittest.TestCase):
             self.assertEqual(p.returncode, 0, p.stderr)
             self.assertIn("DRY RUN", p.stdout)
             self.assertFalse(out.exists())
-            self.assertEqual(json.loads(p.stdout.splitlines()[0])["mode"], "dry-run")
+            self.assertEqual(json.loads(p.stdout.split("DRY RUN")[0])["mode"], "dry-run")
 
     def test_rejects_over_budget(self):
         with tempfile.TemporaryDirectory() as d:
