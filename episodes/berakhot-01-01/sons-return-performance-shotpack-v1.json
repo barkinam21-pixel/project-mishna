@@ -1,0 +1,398 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Berakhot 1:1 — sons returning, performance and continuity shotpack",
+  "status": "editorial_dry_run_only",
+  "user_visible_notice_he": "תכנית שוטים להמחזה, לא סרט ולא תמונות שנוצרו",
+  "sources": {
+    "mishnah": "https://www.sefaria.org/Mishnah_Berakhot.1.1",
+    "dossier": "episodes/berakhot-01-01/source-dossier.md",
+    "beat_map": "episodes/berakhot-01-01/feature-narrative-beat-map-v1.md",
+    "screenplay": "episodes/berakhot-01-01/feature-screenplay-act2-draft.md",
+    "direct_quote_allowed": false,
+    "variant_lock": "unresolved_Vilna_chayavin_vs_Kaufmann_mutarin",
+    "torah_review": "not_approved"
+  },
+  "safety": {
+    "private_media_only": true,
+    "public_repo_text_only": true,
+    "new_image_generation_allowed": false,
+    "paid_external_request_allowed": false,
+    "paid_video_allowed": false,
+    "publication_allowed": false,
+    "provider_for_future_approved_requests": "fal-ai/flux-2-pro",
+    "provider_called_in_this_run": false,
+    "imagegen_forbidden": true,
+    "tinyfish_forbidden": true,
+    "assets_status": "not_generated",
+    "keys_or_signed_urls_present": false,
+    "asset_generation_count_this_run": 0
+  },
+  "render_contract": {
+    "fps": 24,
+    "audio_sample_rate_hz": 48000,
+    "output_color": "BT.709 target; slightly desaturated, dramatic yet warm",
+    "camera_shake_px": 0,
+    "camera_speed_factor_vs_v10_for_relevant_moves": 1.15,
+    "walking_speed_multiplier": 1,
+    "speech_speed_multiplier": 1,
+    "no_frame_skips": true,
+    "no_morph_between_faces_or_hands": true
+  },
+  "dramatic_contract": {
+    "historical_core": "Mishnah relates the sons returning from a banquet without having read evening Shema and seeking their father's response",
+    "added_elements": "All walking, gestures, facial expressions, room, costume, two visible actors and extra dialogue are dramatization",
+    "historically_attested_number_of_sons": "unknown",
+    "physical_meeting_of_different_named_tannaim": "not_shown",
+    "spoken_variant_quotation": "prohibited_pending_review"
+  },
+  "set_lock": {
+    "exterior": {
+      "door_screen_x": 0.14,
+      "door_side": "left",
+      "travel_direction": "right_to_left",
+      "warm_door_light_from": "screen_left",
+      "environment": "generic night lane, no known historical house",
+      "axis_rule": "maintain screen direction across all exterior poses"
+    },
+    "threshold": {
+      "bridge": "frontally neutral crossing shot, continuous door opening and sound L-cut",
+      "purpose": "visible neutral reorientation before interior axis"
+    },
+    "interior": {
+      "son_a_screen_x": 0.28,
+      "son_b_screen_x": 0.42,
+      "father_screen_x": 0.76,
+      "sons_side": "left",
+      "father_side": "right",
+      "door_side": "rear_left",
+      "lamp_side": "screen_right",
+      "eyeline_axis": "sons-left_to_father-right",
+      "no_axis_flip": true
+    },
+    "wardrobe": {
+      "sons": "one consistent, restrained silhouette and cloth palette, not historically verified",
+      "father": "same face, costume and height proportions throughout interiors",
+      "locks": "character_sheet_pending_approval; preserve garment fold patterns and handedness"
+    },
+    "look": {
+      "color": "slightly muted ochre, grey-blue night, warm light on faces",
+      "no_shake": true,
+      "no_horror": true,
+      "no_modern_handles": true,
+      "no_ai_text": true
+    }
+  },
+  "pose_keys": [
+    {
+      "id": "P1",
+      "shot_id": "G01-02",
+      "asset_status": "not_generated",
+      "is_distinct_original_illustration": true,
+      "son_a_x": 0.86,
+      "son_b_x": 0.76,
+      "depth": "far",
+      "footwork": "SON_A right foot load / SON_B left foot trailing",
+      "eyes": "toward left door",
+      "gesture": "no speech, pace stable",
+      "story_change": "distance builds expectation"
+    },
+    {
+      "id": "P2",
+      "shot_id": "G01-03",
+      "asset_status": "not_generated",
+      "is_distinct_original_illustration": true,
+      "son_a_x": 0.67,
+      "son_b_x": 0.57,
+      "depth": "middle",
+      "footwork": "SON_A transfers load to left foot; SON_B completes stride",
+      "eyes": "SON_B glances briefly toward SON_A then forward",
+      "gesture": "one body slows slightly; silence, no alleged historical conversation",
+      "story_change": "concern visible before question"
+    },
+    {
+      "id": "P3",
+      "shot_id": "G02-01",
+      "asset_status": "not_generated",
+      "is_distinct_original_illustration": true,
+      "son_a_x": 0.43,
+      "son_b_x": 0.32,
+      "depth": "near",
+      "footwork": "SON_A right foot sets; SON_B shifts weight forward",
+      "eyes": "both look left at the entrance",
+      "gesture": "intent shifts to approaching door",
+      "story_change": "physical arrival demands action"
+    },
+    {
+      "id": "P4",
+      "shot_id": "G02-02",
+      "asset_status": "not_generated",
+      "is_distinct_original_illustration": true,
+      "son_a_x": 0.28,
+      "son_b_x": 0.2,
+      "depth": "threshold",
+      "footwork": "feet grounded on visible stones",
+      "eyes": "toward door frame",
+      "gesture": "right hand reaches simple frame, not modern knob",
+      "story_change": "decision to enter"
+    }
+  ],
+  "groups": [
+    {
+      "id": "EXT_APPROACH",
+      "scene": "G01–G02",
+      "required_originals": 6,
+      "assets": "all_not_generated",
+      "historic_label": "visual dramatization of a Mishnah anecdote; outside setting not attested"
+    },
+    {
+      "id": "INT_DIALOGUE",
+      "scene": "G03–G04",
+      "required_originals": 6,
+      "assets": "all_not_generated",
+      "historic_label": "Mishnah event, dialogue and blocking are invented"
+    },
+    {
+      "id": "EXPLANATORY_BRIDGE",
+      "scene": "G05–G07",
+      "required_originals": 4,
+      "assets": "all_not_generated",
+      "historic_label": "nonliteral educational illustration; no joint Tannaim meeting"
+    }
+  ],
+  "shots": [
+    {
+      "id": "G01-01",
+      "group": "EXT_APPROACH",
+      "beat": "C01",
+      "frames": 240,
+      "shot": "WS",
+      "original_art": "ext_master_lane",
+      "source_status": "dramatization",
+      "action": "Establish street, door on left, two approaching figures on right",
+      "camera": "locked",
+      "cut_reason": "first establish geography",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G01-02",
+      "group": "EXT_APPROACH",
+      "beat": "C02",
+      "frames": 168,
+      "shot": "LS",
+      "original_art": "pose_P1",
+      "pose_key": "P1",
+      "source_status": "dramatization",
+      "action": "Walk right-to-left from far distance",
+      "camera": "locked",
+      "cut_reason": "move from geography to human action",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G01-03",
+      "group": "EXT_APPROACH",
+      "beat": "C03",
+      "frames": 168,
+      "shot": "MS",
+      "original_art": "pose_P2",
+      "pose_key": "P2",
+      "source_status": "dramatization",
+      "action": "One glances and slows without speaking",
+      "camera": "gentle_pan_left; speed_vs_v10=1.15; no shake",
+      "cut_reason": "perceptible change in relational attention",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G02-01",
+      "group": "EXT_APPROACH",
+      "beat": "C05",
+      "frames": 144,
+      "shot": "LS",
+      "original_art": "pose_P3",
+      "pose_key": "P3",
+      "source_status": "dramatization",
+      "action": "Approach doorway, same direction, same clothing/light",
+      "camera": "locked",
+      "cut_reason": "near the choice point",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G02-02",
+      "group": "EXT_APPROACH",
+      "beat": "C06",
+      "frames": 96,
+      "shot": "INSERT",
+      "original_art": "pose_P4_hand_and_door",
+      "pose_key": "P4",
+      "source_status": "dramatization",
+      "action": "Hand begins reaching simple door jamb",
+      "camera": "locked",
+      "cut_reason": "cut on reaching action",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G02-03",
+      "group": "EXT_APPROACH",
+      "beat": "C07",
+      "frames": 144,
+      "shot": "NEUTRAL_THRESHOLD",
+      "original_art": "door_front_bridge",
+      "source_status": "dramatization",
+      "action": "Both cross visible threshold; neutral reorientation sets new axis",
+      "camera": "locked",
+      "cut_reason": "visible axis reset before inside reverse shots",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G03-01",
+      "group": "INT_DIALOGUE",
+      "beat": "C08",
+      "frames": 192,
+      "shot": "MASTER",
+      "original_art": "inside_master_three",
+      "source_status": "dramatization",
+      "action": "Sons left father right; father sets aside object and notices",
+      "camera": "locked",
+      "cut_reason": "establish inside positions before speech",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G03-02",
+      "group": "INT_DIALOGUE",
+      "beat": "C08",
+      "frames": 168,
+      "shot": "OTS_SONS_TO_FATHER",
+      "original_art": "inside_ots",
+      "source_status": "dramatization",
+      "action": "Father waits for the question",
+      "camera": "locked",
+      "cut_reason": "listeners face becomes new dramatic subject",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G03-03",
+      "group": "INT_DIALOGUE",
+      "beat": "C09",
+      "frames": 144,
+      "shot": "REVERSE_SONS",
+      "original_art": "inside_sons_reaction",
+      "source_status": "dramatization",
+      "action": "SON_B unclenches hand, SON_A asks",
+      "camera": "locked",
+      "cut_reason": "inner difficulty becomes explicit",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G04-01",
+      "group": "INT_DIALOGUE",
+      "beat": "C10",
+      "frames": 168,
+      "shot": "MEDIUM_FATHER",
+      "original_art": "father_listens",
+      "source_status": "dramatization",
+      "action": "Father open palm; no direct Mishnah quotation",
+      "camera": "locked",
+      "cut_reason": "answer explained by contemporary voice, not actor quote",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G04-02",
+      "group": "INT_DIALOGUE",
+      "beat": "C10",
+      "frames": 120,
+      "shot": "REVERSE_SONS",
+      "original_art": "sons_new_decision",
+      "source_status": "dramatization",
+      "action": "Two sons shift from worry to a next action",
+      "camera": "locked",
+      "cut_reason": "decision becomes visible",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G04-03",
+      "group": "INT_DIALOGUE",
+      "beat": "C12",
+      "frames": 96,
+      "shot": "INSERT_HAND",
+      "original_art": "inside_hand_set_down",
+      "source_status": "dramatization",
+      "action": "A hand clears space; no staged Hebrew recitation",
+      "camera": "locked",
+      "cut_reason": "turn thought into action",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G05-01",
+      "group": "EXPLANATORY_BRIDGE",
+      "beat": "D01",
+      "frames": 192,
+      "shot": "NONLITERAL_WIDE",
+      "original_art": "abstract_night_boundaries",
+      "source_status": "educational_metaphor",
+      "action": "Midnight and dawn as distinct editorial labels, never as same event",
+      "camera": "locked",
+      "cut_reason": "source explanation leaves historical dramatization",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G06-01",
+      "group": "EXPLANATORY_BRIDGE",
+      "beat": "D02",
+      "frames": 144,
+      "shot": "SYMBOLIC_INSERT",
+      "original_art": "altar_related_objects",
+      "source_status": "educational_metaphor",
+      "action": "Evokes burning offerings without invented ritual or gore",
+      "camera": "locked",
+      "cut_reason": "separate burning category from eating",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G06-02",
+      "group": "EXPLANATORY_BRIDGE",
+      "beat": "D04",
+      "frames": 144,
+      "shot": "SYMBOLIC_INSERT",
+      "original_art": "separate_food_objects",
+      "source_status": "educational_metaphor",
+      "action": "Food category in distinct location, never burning portions eaten",
+      "camera": "locked",
+      "cut_reason": "explicit visual distinction",
+      "asset_status": "not_generated"
+    },
+    {
+      "id": "G07-01",
+      "group": "EXPLANATORY_BRIDGE",
+      "beat": "D05",
+      "frames": 216,
+      "shot": "EDUCATIONAL_GRAPHIC",
+      "original_art": "three_distinct_rules",
+      "source_status": "interpretation_attributed",
+      "action": "Attributed Bartenura and Rambam explanations, no unified midnight claim",
+      "camera": "locked",
+      "cut_reason": "interpretive qualification",
+      "asset_status": "not_generated"
+    }
+  ],
+  "qa_checks_to_run": [
+    "all pose ids unique and referenced by shots",
+    "all frames positive integer and divisible by 24",
+    "no missing original art id within shots",
+    "all groups contain 4 to 7 unique original illustrations",
+    "screen x decreases from P1 to P4",
+    "threshold shot comes before inside shots",
+    "every shot asset_status not_generated",
+    "no direct quote of unresolved variant",
+    "no paid calls or secrets",
+    "no imagegen"
+  ],
+  "coverage_scope": {
+    "kind": "selected_editorial_coverage_only",
+    "not_a_complete_film": true,
+    "not_the_75_second_technical_animatic": true,
+    "not_act_runtime": true,
+    "timing_estimate_unverified": true,
+    "placeholder_frames_total": 2544,
+    "placeholder_seconds_total": 106,
+    "notice_he": "16 תכניות איור נפרדות נועדו לבדיקת רציפות, לא לתזמן את כל המערכה. 106 השניות הן סכום משכי־דוגמה, לא סרט שהופק ולא יעד אורך הפרק; יידרשו שוטים ופעימות נוספים אחרי מדידת דיאלוג."
+  }
+}
