@@ -53,7 +53,7 @@ class ColabImageIntakeTests(unittest.TestCase):
             "negative_prompt_sha256": digest(negative_prompt.encode("utf-8")),
             "negative_prompt_2_sha256": digest(negative_prompt.encode("utf-8")),
             "seed": shot["seed"], "width": 1024, "height": 576,
-            "inference_steps": 24, "guidance_scale": 6.0,
+            "inference_steps": 24, "guidance_scale": shot.get("guidance_scale", 6.0),
         }
         record = {
             "shot_id": shot_id, "image_sha256": digest(image),
@@ -121,6 +121,8 @@ class ColabImageIntakeTests(unittest.TestCase):
             "stale_render_lead": lambda p, r, i: p["shots"][8].update({"render_lead": "stale"}),
             "wrong_second_encoder": lambda p, r, i: r.update({"prompt_2_sha256": "0" * 64}),
             "wrong_negative_2": lambda p, r, i: r.update({"negative_prompt_2_sha256": "0" * 64}),
+            "wrong_sh09_guidance": lambda p, r, i: r["generation_spec"].update({"guidance_scale": 6.0}),
+            "stale_sh09_guidance": lambda p, r, i: p["shots"][8].update({"guidance_scale": 6.0}),
             "release_gate": lambda p, r, i: p.update({"public_release_authorized": True}),
         }
         for label, mutation in cases.items():
@@ -128,6 +130,17 @@ class ColabImageIntakeTests(unittest.TestCase):
                 archive, _ = self.make_archive(tmp, mutate=mutation)
                 with self.assertRaises(intake.ArchiveError):
                     intake.audit_archive(archive)
+
+    def test_sh09_guidance_value_is_part_of_real_zip_contract(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive, _ = self.make_archive(tmp)
+            result = intake.audit_archive(archive)
+            self.assertEqual(result["image_count"], 1)
+            with zipfile.ZipFile(archive) as zf:
+                record = json.loads(zf.read("usage-ledger.jsonl").decode("utf-8"))
+            self.assertEqual(record["generation_spec"]["guidance_scale"], 7.0)
+            self.assertFalse(result["ready_for_render"])
+            self.assertFalse(result["public_release_authorized"])
 
     def test_malformed_png_and_mismatched_dimensions_are_rejected(self):
         valid = fake_png()

@@ -88,18 +88,25 @@ def audit(root, manifest_path, voice_path):
                     receipt.get("episode_id") != m.get("episode_id") or
                     not isinstance(listed, list)):
                 raise ValueError("Trial receipt does not match episode/schema")
-            seen = set()
+            seen_hashes = set()
             for trial in listed:
                 if (not isinstance(trial, dict) or
                         not isinstance(trial.get("shot_id"), str) or
-                        trial.get("shot_id") in seen or
+                        not trial["shot_id"].startswith("SH") or
                         trial.get("status") != "generated_unapproved" or
                         trial.get("production_asset_accepted") is not False or
+                        trial.get("archive_in_repository") is not False or
                         not isinstance(trial.get("image_sha256"), str) or
-                        len(trial["image_sha256"]) != 64):
+                        len(trial["image_sha256"]) != 64 or
+                        any(c not in "0123456789abcdef" for c in trial["image_sha256"])):
                     raise ValueError("Malformed/unapproved trial record")
-                seen.add(trial["shot_id"])
-                verified_private_trials.append(trial["shot_id"])
+                # A shot can have multiple rejected real trials, but NOT duplicate
+                # image hashes: count each genuine image once, never as approved art.
+                sha = trial["image_sha256"]
+                if sha in seen_hashes:
+                    raise ValueError("Duplicate private image trial SHA")
+                seen_hashes.add(sha)
+                verified_private_trials.append(trial["shot_id"] + "@" + sha[:12])
         except ValueError:
             errors.append("PRIVATE_TRIAL_RECEIPT_INVALID")
             verified_private_trials = []

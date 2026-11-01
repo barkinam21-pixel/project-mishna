@@ -2,7 +2,7 @@
   "schema_version": 1,
   "episode_id": "berakhot-01-01",
   "purpose": "Externally inspected private image tests, NOT production assets",
-  "inspection_date": "2026-10-31",
+  "inspection_date": "2026-11-01",
   "trials": [
     {
       "shot_id": "SH01",
@@ -71,7 +71,64 @@
       "paid_api_calls_reported": 0,
       "external_cash_spend_reported_usd": 0,
       "colab_gpu_quota_usage": "unknown",
-      "note": "Number and appearance of real sons are not attested. Two adult men in the storyboard are fictional artistic stand-ins. Original image stays in private ZIP, not GitHub."
+      "note": "Number and appearance of real sons are not attested. Two adult men in the storyboard are fictional artistic stand-ins. Original image stays in private ZIP, not GitHub.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 77.8,
+        "luma_p10": 47,
+        "luma_p90": 179,
+        "luma_p90_p10_spread": 132,
+        "mean_neighbor_luma_delta": 7.14,
+        "method": "Pillow RGB thumbnail 128x72, per-pixel HSV-style saturation, Rec.709-weighted integer luminance, 10th/90th sorted percentile; mean nearest-neighbor luminance delta. These are descriptive signals, not an art or composition score.",
+        "semantic_qa": "human_review_only"
+      }
+    },
+    {
+      "trial_id": "SH09-20261101-dual-encoder-v1",
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T06:16:06.203220+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M per model card; independent release rights review pending",
+      "seed": 173109,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 51.6,
+      "image_sha256": "0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939",
+      "archive_sha256": "bb526f942e531c5062003107a8a537710c8b158fe2ddd98ecc6483a0ed43c38c",
+      "generation_spec_sha256": "1130896e74929643eb1dca130b6de98c7cdf3a5c94712950eac1a2c66aabda7b",
+      "evidence_type": "Second real user-uploaded Colab ZIP checked on 2026-11-01; PNG decoded and viewed; SHA-256 of PNG and ZIP recomputed; ledger confirms SDXL T4 dual-encoder_scene_style_v1",
+      "archive_entries": [
+        "SH09.png",
+        "prompt-pack-snapshot.json",
+        "review-contact-sheet.jpg",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "rejected_scene_content_and_low_color_presence",
+      "artistic_strengths": "Painterly atmosphere, restrained ancient robe on believable adult, spatial lighting",
+      "artistic_issue": "Again a single man in a broad sandy daylight landscape with water, without two sons, courtyard or a house door; the image also appears muted and washed out, with little strong subject color separation.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 34.1,
+        "luma_p10": 28,
+        "luma_p90": 190,
+        "luma_p90_p10_spread": 162,
+        "mean_neighbor_luma_delta": 9.32,
+        "method": "Pillow RGB thumbnail 128x72, per-pixel HSV-style saturation, Rec.709-weighted integer luminance, 10th/90th sorted percentile; mean nearest-neighbor luminance delta. These are descriptive signals, not an art or composition score.",
+        "semantic_qa": "human_review_only"
+      },
+      "creative_diagnosis": "Changing to SDXL dual encoders alone did not correct composition. Average saturation fell from 77.8 to 34.1 vs the first SH09 test; do not attribute the difference to any single setting because prompts also changed. Visual contrast and narrative accuracy still need actual human review.",
+      "corrective_direction": "Short architecture-dominant medium-wide NIGHT shot, two clearly separated figures, rich amber/blue color separation, no pastel haze. Experiment with per-shot guidance scale 7.0 vs 6.0, not a proven quality gain.",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Image stays private; do not upload PNG to GitHub or count as accepted source art. No automatic publication."
     }
   ]
 }

@@ -24,7 +24,9 @@
     "Camera/wardrobe text locks improve coherence but do not prove identity continuity; scene-pack visual QA needed.",
     "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah.",
     "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval.",
-    "2026-11-01 SH09 real T4 trial: one person in bright landscape rather than two at dark courtyard; old style-first 139-word prompt probably truncated the shot. New short render_lead + separate SDXL style encoder, with explicit runtime tokenizer checks; no new art approved."
+    "2026-11-01 SH09 real T4 trial: one person in bright landscape rather than two at dark courtyard; old style-first 139-word prompt probably truncated the shot. New short render_lead + separate SDXL style encoder, with explicit runtime tokenizer checks; no new art approved.",
+    "2026-11-01 second real user-supplied SH09 (sha256 0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939) used SDXL dual-encoder_scene_style_v1 but still showed one man in sunlit dunes; mean saturation fell from 77.8 to 34.1 on a comparable 128x72 pixel diagnostic. The render strategy alone did NOT solve composition; subjective visual review is required.",
+    "Experimental SH09 clarity revision: new short, enclosed house-door scene lead, rich amber/blue legible painterly style, anti-haze/anti-solo scene negative, 7.0 guidance for SH09 only; other shots stay at 6.0. Technical validation cannot prove artistic success; do NOT generate all 16 before visual checking one real image."
   ],
   "shots": [
     {
@@ -119,14 +121,15 @@
       "shot_id": "SH09",
       "scene_id": "S04",
       "shot_type": "exterior_arrival",
-      "shot_prompt": "Historical-drama style nighttime exterior of a modest family courtyard with an entrance on screen left, two indistinct adult male figures seen from behind approaching a doorway, painterly quiet anticipation; exact number of sons is UNDOCUMENTED, these are fictional stand-ins, no palace; photorealistic daylight is forbidden: genuine nighttime under a deep indigo sky, low oil-lamp spill only; this is a new scene, never reuse rejected SH01",
+      "shot_prompt": "In a carefully framed, enclosed modest courtyard after dark, TWO fictional adult sons, distinctly visible, approach their family HOUSE DOOR on the left. The house wall and doorway dominate the picture. One oil lamp creates warm amber light against rich blue-black night. The number and appearance of sons, exact building, and light placement are artistic reconstruction, not stated in the Mishnah.",
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
       "generated": false,
-      "render_lead": "NIGHT scene. TWO adult brothers seen from behind arrive together at a small stone courtyard doorway on the LEFT. Both men and doorway clearly visible. Indigo sky, warm oil lamp.",
-      "render_style": "Hand-painted cinematic nighttime view of TWO brothers at a humble stone courtyard doorway. Deep indigo sky, one warm oil lamp, subtle brushwork, believable ancient robes, atmospheric shadows, 16:9",
-      "render_negative_prompt": "single man, lone traveler, open desert, sand dunes, sea, empty valley, sunset, daylight, sunrise, golden sun, palace, modern building, CGI, anime, text, watermark"
+      "render_lead": "NIGHT. Enclosed modest STONE COURTYARD and HOUSE DOOR fill the frame. TWO distinct adult men in foreground, backs to camera, walking together toward the LEFT doorway. Both figures large and unmistakable. Deep blue-black shadows; amber oil lamp lights stone threshold.",
+      "render_style": "High-clarity hand-painted historical cinema, bold readable silhouettes, rich midnight blue and amber colors, crisp stone edges and cloth folds, luminous oil-lamp glow, legible dark background, strong cinematic contrast, restrained semi-realistic brushwork, no fog.",
+      "render_negative_prompt": "single man, solo traveler, open valley, desert panorama, water, lake, sea, shore, distant horizon, daylight, sunrise, sunset, fog, mist, pastel, desaturated colors, washed-out image, beige haze, flat diffuse lighting, soft focus, blurred silhouettes, tiny figures, tiny doorway, no house, palace, CGI, text, watermark",
+      "guidance_scale": 7
     },
     {
       "shot_id": "SH10",

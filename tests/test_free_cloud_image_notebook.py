@@ -201,7 +201,70 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                 self.assertLessEqual(len(shot.get("render_style", self.pack["render_style"]).split()), 37)
                 self.assertTrue(shot.get("render_negative_prompt", self.pack["render_negative_prompt"]))
         self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
-        self.assertIn("TWO adult brothers", self.pack["shots"][8]["render_lead"])
+        self.assertIn("TWO distinct adult men", self.pack["shots"][8]["render_lead"])
+
+    def test_sh09_high_clarity_art_direction_is_scoped_and_auditable(self):
+        shot = self.pack["shots"][8]
+        self.assertEqual(shot["shot_id"], "SH09")
+        self.assertTrue(shot["render_lead"].startswith("NIGHT."))
+        self.assertIn("TWO distinct adult men", shot["render_lead"])
+        self.assertIn("HOUSE DOOR", shot["render_lead"])
+        self.assertIn("amber oil lamp", shot["render_lead"])
+        self.assertIn("High-clarity hand-painted", shot["render_style"])
+        self.assertIn("rich midnight blue and amber", shot["render_style"])
+        self.assertIn("washed-out image", shot["render_negative_prompt"])
+        self.assertIn("solo traveler", shot["render_negative_prompt"])
+        self.assertEqual(shot["guidance_scale"], 7.0)
+        self.assertEqual(sum("guidance_scale" in other for other in self.pack["shots"]), 1)
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn('guidance = float(shot.get("guidance_scale", 6.0))', source)
+        self.assertIn('"inference_steps": STEPS, "guidance_scale": guidance', source)
+        self.assertIn("guidance_scale=guidance,", source)
+        self.assertNotIn('guidance_scale=6.0,\n            generator=generator', source)
+        self.assertIn('visual_metrics = visual_diagnostics(image)', source)
+        self.assertIn('"visual_diagnostics": visual_metrics', source)
+
+    def test_visual_diagnostics_reports_pixels_not_artistic_approval(self):
+        source = "".join(self.cells["render"]["source"])
+        tree = ast.parse(source)
+        function = next(node for node in tree.body
+                        if isinstance(node, ast.FunctionDef)
+                        and node.name == "visual_diagnostics")
+        class FakeFrame:
+            def __init__(self, pixels):
+                self.pixels = pixels
+            def convert(self, mode):
+                self.assert_mode = mode
+                return self
+            def resize(self, dimensions, resample=None):
+                if dimensions != (128, 72):
+                    raise AssertionError("Unexpected geometry")
+                return self
+            def getdata(self):
+                return self.pixels
+        class FakeImage:
+            class Resampling:
+                BILINEAR = 2
+        context = {"Image": FakeImage}
+        exec(compile(ast.Module(body=[function], type_ignores=[]),
+                     "visual-diagnostics-only", "exec"), context)
+        measure = context["visual_diagnostics"]
+        flat = measure(FakeFrame([(128,128,128)]*(128*72)))
+        self.assertEqual(flat["saturation_mean_0_255"], 0)
+        self.assertEqual(flat["luma_p90_p10_spread"], 0)
+        self.assertEqual(flat["mean_neighbor_luma_delta"], 0)
+        vivid = measure(FakeFrame([(255,0,0)]*(128*72)))
+        self.assertEqual(vivid["saturation_mean_0_255"], 255)
+        gradient = measure(FakeFrame(
+            [(0,0,0)]*(128*36) + [(255,255,255)]*(128*36)
+        ))
+        self.assertGreater(gradient["luma_p90_p10_spread"], 200)
+        self.assertGreater(gradient["mean_neighbor_luma_delta"], 0)
+        for data in (flat, vivid, gradient):
+            self.assertEqual(data["meaning"],
+                             "descriptive_only_not_a_quality_or_scene_approval")
+            self.assertNotIn("accepted", data)
+            self.assertNotIn("release_authorized", data)
 
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])

@@ -10,18 +10,25 @@ class SingleControlRoomTest(unittest.TestCase):
     def test_trial_ledger_records_both_sh01_and_sh09_without_false_approval(self):
         data=json.loads((EP/"trials.json").read_text(encoding="utf-8"))
         self.assertEqual(data["episode_id"],"berakhot-01-01")
-        expected = {
-            "SH01": "e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d",
-            "SH09": "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717",
+        expected_sha = {
+            "e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d",
+            "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717",
+            "0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939",
         }
-        self.assertEqual({t["shot_id"] for t in data["trials"]}, set(expected))
-        self.assertEqual(len({t["image_sha256"] for t in data["trials"]}), len(expected))
-        for shot in data["trials"]:
+        trials = data["trials"]
+        self.assertIn("SH01", {t["shot_id"] for t in trials})
+        self.assertIn("SH09", {t["shot_id"] for t in trials})
+        actual_sha = [t["image_sha256"] for t in trials]
+        self.assertTrue(expected_sha.issubset(set(actual_sha)))
+        self.assertEqual(len(actual_sha), len(set(actual_sha)))
+        for shot in trials:
             self.assertEqual(shot["status"], "generated_unapproved")
-            self.assertEqual(shot["image_sha256"], expected[shot["shot_id"]])
             self.assertFalse(shot["production_asset_accepted"])
             self.assertFalse(shot["archive_in_repository"])
-        self.assertIn("one", data["trials"][-1]["artistic_issue"].lower())
+        latest = next(t for t in trials
+                      if t["image_sha256"] == "0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939")
+        self.assertIn("single man", latest["artistic_issue"])
+        self.assertLess(latest["visual_diagnostics"]["saturation_mean_0_255"], 40)
 
     def test_one_dashboard_and_no_stale_first_trial_claim(self):
         main=(ROOT/"README.md").read_text(encoding="utf-8")
