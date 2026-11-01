@@ -43,7 +43,7 @@ class SingleControlRoomTest(unittest.TestCase):
             "docs/operator-decisions.md", "episodes/berakhot-01-01/source-dossier.md",
             "episodes/berakhot-01-01/manifest.json", "episodes/berakhot-01-01/trials.json",
             "sefaria-three-edition-audit", "Chrome", "אין צורך להתקין",
-            "לא מאשר נוסח/זכויות/קריינות",
+            "אינו מאשר נוסח/זכויות/קריינות",
         ):
             self.assertIn(expected, main)
         # Do not freeze navigation to historical PR/issue numbers (PR #2 is already merged).
