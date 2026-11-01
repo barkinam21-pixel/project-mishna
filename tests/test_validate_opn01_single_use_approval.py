@@ -19,10 +19,10 @@ class ApprovalSecurity(unittest.TestCase):
   with self.assertRaises(ApprovalDenied):validate(approved(),'A\t'+APPROVAL_FILE,2,now=NOW)
  def test_prompt_digest_required(self):
   d=approved();d['authorized_prompt_sha256']='unknown'
-  with self.assertRaises(ApprovalDenied):validate(d,'A\\t'+APPROVAL_FILE,1,now=NOW)
+  with self.assertRaises(ApprovalDenied):validate(d,'A\t'+APPROVAL_FILE,1,now=NOW)
  def test_legacy_used_path_never_authorizes_retake(self):
   with self.assertRaises(ApprovalDenied):
-   validate(approved(),'A\\tproduction_authorizations/OPN01_APPROVED_ONCE.json',1,now=NOW)
+   validate(approved(),'A\tproduction_authorizations/OPN01_APPROVED_ONCE.json',1,now=NOW)
  def test_wrong_shot(self):
   d=approved();d['shot']='SH09'
   with self.assertRaises(ApprovalDenied):validate(d,'A\t'+APPROVAL_FILE,1,now=NOW)
