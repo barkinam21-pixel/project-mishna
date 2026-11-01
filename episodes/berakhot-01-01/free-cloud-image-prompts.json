@@ -25,7 +25,7 @@
     "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah.",
     "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval.",
     "Visual QA finding 2026-11-01: prior SH09 SDXL trial (SHA256 61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717) has appealing painterly style but a solitary man in daylight open scenery, not two fictional visitors approaching a family courtyard entrance at night. It remains unapproved. See trials.json.",
-    "SH09 two-tier improvement: level 1 exact blocking, character count, home courtyard and nocturnal setting; level 2 oil-lamp chiaroscuro, eye-level cinematic composition and painterly realism. Shot prompt must precede generic style and shot negatives apply only to SH09; no guarantee until new image is inspected."
+    "SH09 two-tier improvement: level 1 exact blocking, character count, home courtyard and nocturnal setting; level 2 oil-lamp chiaroscuro, eye-level cinematic composition and painterly realism. Shot prompt must precede generic style and shot negatives apply only to SH09; no guarantee until new image is inspected. SH09 primary shot description is intentionally concise to avoid burying scene composition late in text-encoder prompts."
   ],
   "shots": [
     {
@@ -112,12 +112,12 @@
       "shot_id": "SH09",
       "scene_id": "S04",
       "shot_type": "exterior_arrival",
-      "shot_prompt": "CINEMATIC WIDE SHOT, AFTER DARK, outside an enclosed ancient family courtyard. TWO distinct adult men together in the left foreground, BOTH clearly visible from behind, walking toward a modest stone HOUSE DOOR on the LEFT of frame. The STONE HOUSE, low courtyard wall and warm glowing doorway fill most of the image: it is an enclosed home entrance, not open countryside. One small oil lamp JUST INSIDE the door casts localized amber illumination across the threshold, with deep indigo nighttime shadows surrounding it. Eye-level camera follows the two visitors, capturing a quiet emotionally tense homecoming. Restrained painterly semi-realism, believable bodies and simple fabric, cinematic chiaroscuro, strong visual storytelling. This is an artistic dramatization: exact number and appearance of sons and setting are not historical facts.",
+      "shot_prompt": "AFTER DARK, cinematic painting: TWO distinct adult men from behind, side by side, approach an OPEN HOUSE DOOR inside a small ENCLOSED STONE COURTYARD. A modest STONE HOUSE fills the background; doorway on SCREEN LEFT glows from a single oil lamp. Deep indigo darkness surrounds the figures; warm amber light touches the threshold. Eye-level wide shot, natural linen garments, painterly semi-realism, believable anatomy, cinematic chiaroscuro, restrained emotional tension. Artistic dramatization only.",
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
       "generated": false,
-      "shot_negative_prompt": "single person, one man, solo traveler, alone, isolated male, panoramic landscape, open valley, desert, sand dunes, lake, seashore, coastal bay, scenic vista, mountain panorama, sunlight, sunny day, daylight, golden hour, sunrise, sunset, dusk, pale sky, bright sandy hills, empty courtyard, no building, missing doorway, modern house, palace, crowded street",
+      "shot_negative_prompt": "single man, lone traveler, solo figure, open desert, dunes, broad hillside panorama, distant sea, lake, mountain valley, sunlight, daylight, golden hour, sunset, sunrise, bright pale sky, sunrays, isolated portrait, empty courtyard, modern building, palace, anime, CGI",
       "guidance_scale": 7
     },
     {
