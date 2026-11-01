@@ -33,6 +33,17 @@ jobs:
         run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
       - name: Validate editorial proof storyboard (no media creation)
         run: python tools/validate_proof_blueprint.py episodes/berakhot-01-01/proof-blueprint.json --output build/editorial-plan-review.json
+      - name: Audit actual private movie inputs (read-only; NOT a film)
+        run: |
+          python -m tools.private_proof_assembler > build/private-film-readiness.json
+          python -c "import json; d=json.load(open('build/private-film-readiness.json')); assert d['status']=='BLOCKED_MISSING_REAL_MEDIA' and d['expected_shots']==16 and d['supplied_images']==0 and d['release_authorized'] is False"
+      - name: Upload real-media readiness blockers (NOT a film)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-film-readiness-not-a-movie
+          path: build/private-film-readiness.json
+          if-no-files-found: warn
       - name: Upload editorial plan report
         if: always()
         uses: actions/upload-artifact@v4
