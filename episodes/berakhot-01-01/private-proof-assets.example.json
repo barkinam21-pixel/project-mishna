@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "status": "awaiting_real_illustrations_and_voice",
+  "external_spend_enabled": false,
+  "release_authorized": false,
+  "private_preview_authorized": false,
+  "private_caption_text_checked": false,
+  "caption_master": "episodes/berakhot-01-01/hebrew-caption-master.json",
+  "images": [],
+  "voice_takes": [],
+  "notes": [
+    "Read-only default. No media is currently provided in the repository.",
+    "One accepted original image per blueprint shot (16 distinct images) with SHA256, provenance and rights evidence.",
+    "Actual Hebrew spoken 48kHz PCM16 WAV takes required; technical test tones are not speech.",
+    "Caption master remains a draft. Private-preview authorization does not authorize public release.",
+    "SH01 from trials.json was a rejected technical experiment and must not be re-used.",
+    "Never pay, download others' recordings, generate assets, or silently flip approval fields."
+  ]
+}
