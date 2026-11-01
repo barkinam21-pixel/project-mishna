@@ -1,5 +1,38 @@
 # קולנוע המשנה — פרוטוקול עבודה ושיפור מתמשך בכל שעה
 
+## מסירת סבב חדשה — 1.11.2026, 17:15 ישראל | הגנת CI ב-main; תחילת הסרט עדיין OPN01
+
+**מקור אמת:** נקודת ההתחלה שנבדקה היא main `5386b85`; שתי טיוטות פתוחות ונפרדות: [PR #32](https://github.com/barkinam21-pixel/project-mishna/pull/32) (מערכות מאוחרות) ו-[PR #33](https://github.com/barkinam21-pixel/project-mishna/pull/33) (כתוביות פתיחה). נבדקו diff/שמות קבצים והיסטוריית ריצות. נבדק גם שאין `production_authorizations/OPN01_APPROVED_ONCE.json` בענף main (404); **זה לא אישור ליצור תמונה**. הסדר המחייב נותר [נעילת הפתיחה](production-chronological-order-and-opening-lock-2026-11-01.md): OPN01 עד OPN07 → סיני → דורות → תחילת ברכות → רק בהמשך סיפור הבנים. תסריט בית המלאכה שב-PR #32 אינו הפתיחה הראשונה.
+
+### השוואת הוראות ההרצה הקודמת מול ראיות נוכחיות
+
+| הוראה / דרישה מן ההרצה הקודמת | סטטוס | ראיה ומגבלה |
+| --- | --- | --- |
+| לבדוק CI עדכני ו-PR #32/#33 לפני עריכה | **בוצע ומאומת** | שני ה-PR נשארו draft; [CI #41314861055](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41314861055) נבדק כ-3/3 משימות success ל-HEAD של #33, ונבדק ה-CI של main `5386b85`: [#41318363642](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41318363642) success אך עדיין העלה MP4 טכני גולמי. |
+| OPN01 dry-run, workflow חד-פעמי, מסירה פרטית | **בוטל כי כבר נעשה** (לא חוזרים על סימולציה) | קיימים כבר `tools/fal_private_opening_opn01.py`, `tools/finish_opn01_private.py`, `.github/workflows/fal-private-opn01-single-use-push.yml`. אין תמונת fal חדשה. קובץ אישור חד-פעמי חסר ולא נוצר כאן. |
+| לקרוא/למדוד דיבור עברי OPN03/05/06 בפועל | **התחיל ולא הושלם** | קיימות כתוביות draft ב-PR #33; **אין קול אנושי מוקלט או מדידה**, ואין להמציא תוצאה. |
+| לעצור ארטיפקטים לא מוצפנים במאגר הציבורי | **בוצע בקוד; בדיקת HEAD עדיין חלקית** | ב-main קומיט [8cd5ece](https://github.com/barkinam21-pixel/project-mishna/commit/8cd5ecef29d1cb80b82ea1c0e1320306f2f70f25) הוסר `build/sync-probe/sync-test.mp4` מ-`.github/workflows/studio-check.yml`; קומיט [3920df4](https://github.com/barkinam21-pixel/project-mishna/commit/3920df47111bd938353e0a84b3e380cb1b62f9f1) הוסיף `tests/test_public_workflow_artifact_uploads.py`. ב-[CI #41320118789](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41320118789) משימת `preflight` עברה: 262 בדיקות, 1 דולגה; 3 בדיקות artifact ייעודיות עברו. משימת `voice_sync_diagnostic` עדיין סומנה `in_progress` בעת בדיקה; כבר הופיע artifact `voice-pacing-and-av-sync-reports-only` בלבד לתחום ה-sync. אין להכתיר את כל ה-CI כירוק בטרם הושלם. |
+| להשתמש רק באישור חדש בתשלום ל-OPN01 | **חסום — הרשאה אינה קיימת** | `OPN01_APPROVED_ONCE.json` אינו קיים; לא נשלחה בקשה ל-fal ולא נוצרה תמונת פתיחה בסבב זה. |
+
+### פגם אמיתי, תיקון ומניעת הישנות
+
+- **סימפטום/ראיה:** ב-main הישן, גם [CI #41318363642](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41318363642) הציג `voice-pacing-and-av-sync-technical-test` (artifact `13087489404`), משום ש-`.github/workflows/studio-check.yml` כלל `build/sync-probe/sync-test.mp4`. זהו MP4 **סינתטי** ולא איור פרטי, ובכל זאת הפרת מדיניות העלאת מדיה גלויה. תיקון זה כבר הופיע בטיוטות PR #32/#33 אך לא בענף main.
+- **תיקון שבוצע ולא רק תוכנן:** תיקון נקודתי **ישירות ב-main** (ללא מיזוג התסריטים) סילק את נתיב ה-MP4 והפך את artifact הסנכרון ל-**reports-only**. הועתקו שלוש בדיקות רגרסיה שכבר נכתבו ב-PR #32 כדי למנוע כפילות פיתוח. בדיקות `test_public_workflow_artifact_uploads.py` עברו ב-log של ריצת main. שינויים אלה חופפים בעקרון לתיקוני האבטחה שב-PR #32/#33; בעת מיזוג עתידי יש ליישב **מפורשות** את החפיפה, לא לדרוס אף תסריט.
+- **סיכון שיורי:** ארטיפקטים ישנים שפורסמו בעבר **לא נמחקו**; בכלל זה `13085007453`, `13085789269`, `13087489404`. אין ב-GitHub connector הזמין פעולת מחיקה. סריקת נתיבי ה-workflow והבדיקות אינן שקולות להוכחת פרטיות רטרואקטיבית.
+- **השלכה קולנועית:** OPN01–OPN07 עדיין 0 תמונות fal חדשות. הבלוקאאוט הפרטי 45 שניות וטעימת 33 שניות קיימים כהמחשות טכניות, לא סרט עם איורים סופיים/קול אנושי/ביקורת תורנית. אין כאן תוצר MP4 חדש למסור.
+
+**שימוש:** בריצה זו בוצעו קריאות GitHub לקוד/CI בלבד; **0 קריאות ל-fal.ai, 0 ImageGen, 0 בקשות וידאו ענן בתשלום, 0 תמונות חדשות**. לא בוצעה בדיקת חיובים בחשבון fal, ולא נמדדו משאבי ChatGPT/GitHub: `unknown`. אין רישיון לפרסם, אישור נוסח מלא, או ביקורת תורנית אנושית.
+
+### הוראות לשעה הבאה — להתחיל מכאן, לא ממפת הבנים
+
+1. **אמת CI סופי על SHA `3920df4` וללא raw artifacts:** בדוק `.github/workflows/studio-check.yml`, `tests/test_public_workflow_artifact_uploads.py`, והרצה [#41320118789](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41320118789). תנאי קבלה: 3/3 jobs success, 3 בדיקות artifact PASS, artifact `reports-only`, בלי נתיבי MP4/PNG/WAV גולמיים. אם התחלף main HEAD — בדוק מחדש SHA.
+2. **OPN01 במסלול כרונולוגי בלבד:** בדוק אם באמת נוסף *אחרי אישור בר מפורש חדש* קובץ `production_authorizations/OPN01_APPROVED_ONCE.json`. אם לא, אין להפעיל `.github/workflows/fal-private-opn01-single-use-push.yml` ואין לחייב. במקום זאת בדוק עקביות סופית של `opening-45s-director-pack-v1.json` עם `tools/fal_private_opening_opn01.py` ודוגמת הסגנון הפרטית, ללא יצירה; תנאי קבלה: `OPN01`, מודל `fal-ai/flux-2-pro`, `asset_status=not_generated`, קביעת אי־החיוב מפורשת.
+3. **פעולה עלילתית/קולית ממשית:** שפר את תזמון ומיקס של משפטי `OPN03/05/06` תוך בדיקת `opening-45s-caption-cues-draft.json` ב-PR #33. תנאי קבלה: אין חריגה מגבולות השוט, לכל היותר שתי שורות בעברית ב-NFC, וציין במפורש `performance_timing_measured=false` עד מדידת קול אנושי אמיתי; אל תוסיף בדיה היסטורית.
+4. **נקה חובות והעבר מסירה:** בדוק גישה מורשית למחיקת artifacts ישנים בלי לגעת במדיה פרטית או במפתחות, השווה diff של PR #32/#33 לפני תיקון נוסף, ושמור טבלת השוואה, תקלה, ראיות וצעדים חדשים **במסמך הזה**. אין לפרסם או למזג טיוטה ללא השערים שהוגדרו.
+
+---
+
+
 **עודכן: 2026-11-01 | תחולה: הפקת ברכות א׳ א׳ ומשם לכל מסכת המשנה.**  
 **בעלות:** בר. **סטטוס:** הוראות ביצוע ותיעוד בלבד, לא הוכחה שהפקה מסוימת בוצעה.  
 **תזמון:** אוטומציית ChatGPT פעילה בשם "קולנוע המשנה — שיפור והפקה בכל שעה"; אין לטעון לעבודת רקע רציפה מחוץ להרצה מתוזמנת.
