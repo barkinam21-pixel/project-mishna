@@ -201,7 +201,8 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
                 self.assertLessEqual(len(shot.get("render_style", self.pack["render_style"]).split()), 37)
                 self.assertTrue(shot.get("render_negative_prompt", self.pack["render_negative_prompt"]))
         self.assertTrue(self.pack["shots"][8]["render_lead"].startswith("NIGHT"))
-        self.assertIn("TWO distinct adult men", self.pack["shots"][8]["render_lead"])
+        self.assertIn("TWO adult brothers", self.pack["shots"][8]["render_lead"])
+        self.assertIn("STONE COURTYARD", self.pack["shots"][8]["render_lead"])
 
     def test_failed_image_run_reports_stage_instead_of_silent_no_zip(self):
         shot = self.pack["shots"][8]
