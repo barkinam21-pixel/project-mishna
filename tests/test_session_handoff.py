@@ -84,6 +84,35 @@ class HandoffTest(unittest.TestCase):
         v["sample_rate"] = 44100
         self.assertIn("VOICE_TIMING_STANDARD_MISMATCH", self.report(voices=v)["errors"])
 
+    def test_multiple_real_trials_of_one_shot_are_counted_by_hash(self):
+        folder = self.root / "episodes" / "berakhot-01-01"
+        folder.mkdir(parents=True)
+        receipt = folder / "trials.json"
+        trials = [
+            {
+                "shot_id": "SH09", "status": "generated_unapproved",
+                "production_asset_accepted": False, "archive_in_repository": False,
+                "image_sha256": ch * 64,
+            }
+            for ch in ("a", "b")
+        ]
+        receipt.write_text(json.dumps({
+            "schema_version": 1, "episode_id": "berakhot-01-01",
+            "trials": trials
+        }), encoding="utf-8")
+        ok = self.report()
+        self.assertEqual(ok["health"], "WORKFLOW_HEALTHY_RELEASE_BLOCKED")
+        self.assertEqual(ok["evidence"]["verified_private_image_trials"], 2)
+        self.assertEqual(len(set(ok["evidence"]["verified_private_trial_ids"])), 2)
+        self.assertFalse(ok["gates"]["shot_assets_present_in_checkout"])
+        trials[1]["image_sha256"] = "a" * 64
+        receipt.write_text(json.dumps({
+            "schema_version": 1, "episode_id": "berakhot-01-01",
+            "trials": trials
+        }), encoding="utf-8")
+        broken = self.report()
+        self.assertIn("PRIVATE_TRIAL_RECEIPT_INVALID", broken["errors"])
+
     def test_report_language_and_limitations(self):
         markdown = tool.as_markdown(self.report())
         for required in ("Codex", "לא כעת", "אינם", "הצעד הבא"):
