@@ -26,7 +26,8 @@
     "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval.",
     "2026-11-01 SH09 real T4 trial: one person in bright landscape rather than two at dark courtyard; old style-first 139-word prompt probably truncated the shot. New short render_lead + separate SDXL style encoder, with explicit runtime tokenizer checks; no new art approved.",
     "2026-11-01 second real user-supplied SH09 (sha256 0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939) used SDXL dual-encoder_scene_style_v1 but still showed one man in sunlit dunes; mean saturation fell from 77.8 to 34.1 on a comparable 128x72 pixel diagnostic. The render strategy alone did NOT solve composition; subjective visual review is required.",
-    "Experimental SH09 clarity revision: new short, enclosed house-door scene lead, rich amber/blue legible painterly style, anti-haze/anti-solo scene negative, 7.0 guidance for SH09 only; other shots stay at 6.0. Technical validation cannot prove artistic success; do NOT generate all 16 before visual checking one real image."
+    "Experimental SH09 clarity revision: new short, enclosed house-door scene lead, rich amber/blue legible painterly style, anti-haze/anti-solo scene negative, 7.0 guidance for SH09 only; other shots stay at 6.0. Technical validation cannot prove artistic success; do NOT generate all 16 before visual checking one real image.",
+    "2026-11-01 incident: Colab user reports no image/ZIP after T4/dependencies; final cell output missing, so root cause not proven. SH09 previous 43-word negative instruction could exceed CLIP 77-token budget. Shortened to a compact negative cue list; notebook now preflights encoding and reports explicit failure stage. Do not claim this is GPU-tested before new user result."
   ],
   "shots": [
     {
@@ -128,7 +129,7 @@
       "generated": false,
       "render_lead": "NIGHT. Enclosed modest STONE COURTYARD and HOUSE DOOR fill the frame. TWO distinct adult men in foreground, backs to camera, walking together toward the LEFT doorway. Both figures large and unmistakable. Deep blue-black shadows; amber oil lamp lights stone threshold.",
       "render_style": "High-clarity hand-painted historical cinema, bold readable silhouettes, rich midnight blue and amber colors, crisp stone edges and cloth folds, luminous oil-lamp glow, legible dark background, strong cinematic contrast, restrained semi-realistic brushwork, no fog.",
-      "render_negative_prompt": "single man, solo traveler, open valley, desert panorama, water, lake, sea, shore, distant horizon, daylight, sunrise, sunset, fog, mist, pastel, desaturated colors, washed-out image, beige haze, flat diffuse lighting, soft focus, blurred silhouettes, tiny figures, tiny doorway, no house, palace, CGI, text, watermark",
+      "render_negative_prompt": "solo man, single figure, open desert, distant horizon, lake, sea, daylight, sun, fog, haze, pale pastel, washed-out, blur, tiny people, missing house, missing door, modern architecture, text",
       "guidance_scale": 7
     },
     {
@@ -211,4 +212,4 @@
   ],
   "render_style": "Hand-painted cinematic historical illustration, natural anatomy, traditional brush texture, restrained emotion, plausible ancient Levant homes and woven cloth, muted indigo and warm amber palette, atmospheric depth, 16:9, no writing",
   "render_negative_prompt": "text, logos, watermarks, electric lights, modern buildings, modern clothing, plastic CGI, anime, crowns, fantasy armor, duplicate limbs, deformed fingers, warped faces, impossible lighting"
-}
+}\n
