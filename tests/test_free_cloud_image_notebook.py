@@ -113,7 +113,7 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             ledger.write_text(json.dumps({
                 "shot_id": "SH09", "image_sha256": sha,
                 "generation_spec_sha256": "spec-1"
-            }) + "\\n", encoding="utf-8")
+            }) + "\n", encoding="utf-8")
             self.assertTrue(matches(picture, "SH09", "spec-1"))
             self.assertFalse(matches(picture, "SH09", "spec-2"))
             self.assertFalse(matches(picture, "SH10", "spec-1"))
