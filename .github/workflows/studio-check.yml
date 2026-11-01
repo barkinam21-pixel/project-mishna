@@ -94,6 +94,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg fonts-dejavu-core
           ffmpeg -hide_banner -filters | grep subtitles
+      - name: Smoke-check 48-frame real-media assembler filters (synthetic TEST ONLY; delete output)
+        run: python -m unittest discover -s tests -p 'test_private_proof_ffmpeg_smoke.py' -v
       - name: Render Hebrew captions with sample-accurate synthetic sync markers
         run: python tools/sync_probe.py --out-dir build/sync-probe
       - name: Upload review reports and 12-second TECHNICAL test ONLY
