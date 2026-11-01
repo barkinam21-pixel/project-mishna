@@ -23,7 +23,9 @@
     "Image generation runs on user-provided free cloud GPU session, never in ChatGPT image quota.",
     "Camera/wardrobe text locks improve coherence but do not prove identity continuity; scene-pack visual QA needed.",
     "Do not infer exact faces, architecture, family size, clothing or shared meeting from the Mishnah.",
-    "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval."
+    "SH01 is an already verified but rejected technical GPU trial; default future Colab test starts at SH09. No automatic media approval.",
+    "Visual QA finding 2026-11-01: prior SH09 SDXL trial (SHA256 61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717) has appealing painterly style but a solitary man in daylight open scenery, not two fictional visitors approaching a family courtyard entrance at night. It remains unapproved. See trials.json.",
+    "SH09 two-tier improvement: level 1 exact blocking, character count, home courtyard and nocturnal setting; level 2 oil-lamp chiaroscuro, eye-level cinematic composition and painterly realism. Shot prompt must precede generic style and shot negatives apply only to SH09; no guarantee until new image is inspected."
   ],
   "shots": [
     {
@@ -110,11 +112,13 @@
       "shot_id": "SH09",
       "scene_id": "S04",
       "shot_type": "exterior_arrival",
-      "shot_prompt": "Historical-drama style nighttime exterior of a modest family courtyard with an entrance on screen left, two indistinct adult male figures seen from behind approaching a doorway, painterly quiet anticipation; exact number of sons is UNDOCUMENTED, these are fictional stand-ins, no palace; photorealistic daylight is forbidden: genuine nighttime under a deep indigo sky, low oil-lamp spill only; this is a new scene, never reuse rejected SH01",
+      "shot_prompt": "CINEMATIC WIDE SHOT, AFTER DARK, outside an enclosed ancient family courtyard. TWO distinct adult men together in the left foreground, BOTH clearly visible from behind, walking toward a modest stone HOUSE DOOR on the LEFT of frame. The STONE HOUSE, low courtyard wall and warm glowing doorway fill most of the image: it is an enclosed home entrance, not open countryside. One small oil lamp JUST INSIDE the door casts localized amber illumination across the threshold, with deep indigo nighttime shadows surrounding it. Eye-level camera follows the two visitors, capturing a quiet emotionally tense homecoming. Restrained painterly semi-realism, believable bodies and simple fabric, cinematic chiaroscuro, strong visual storytelling. This is an artistic dramatization: exact number and appearance of sons and setting are not historical facts.",
       "seed": 173109,
       "source_approval": "unreviewed_visual_reconstruction",
       "accepted": false,
-      "generated": false
+      "generated": false,
+      "shot_negative_prompt": "single person, one man, solo traveler, alone, isolated male, panoramic landscape, open valley, desert, sand dunes, lake, seashore, coastal bay, scenic vista, mountain panorama, sunlight, sunny day, daylight, golden hour, sunrise, sunset, dusk, pale sky, bright sandy hills, empty courtyard, no building, missing doorway, modern house, palace, crowded street",
+      "guidance_scale": 7
     },
     {
       "shot_id": "SH10",
