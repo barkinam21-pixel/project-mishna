@@ -18,6 +18,7 @@ import zipfile
 from tools import seal_private_media
 from tools import replace_opn01_preview
 from tools import fal_private_opening_opn01
+from tools import visual_gate_opn01
 
 MAGIC = seal_private_media.MAGIC
 ALLOWED_IMAGE = 'OPN01_UNREVIEWED_PRIVATE.png'
@@ -75,7 +76,7 @@ def verify_receipt(private_dir: Path) -> tuple[Path, dict]:
 
 
 def finish(encrypted: Path, key: Path, manifest: Path, blockout: Path,
-           output_prefix: Path, *, do_finish: bool = False) -> dict:
+           output_prefix: Path, *, do_finish: bool = False, visual_review: Path | None = None) -> dict:
     info = inspect_encrypted(encrypted)
     if not key.is_file():
         raise UnsafePipeline('Private key must be locally accessible; never put it in GitHub')
@@ -91,11 +92,14 @@ def finish(encrypted: Path, key: Path, manifest: Path, blockout: Path,
         raise UnsafePipeline('Refusing to overwrite delivered media')
     if not do_finish:
         return {**info, 'status':'DRY_CHECK_ONLY_NO_DECRYPT_NO_PAID_CALLS', 'expected_scene':'OPN01',
-                'target_mp4': str(mp4), 'will_create_zip': True,
+                'target_mp4': str(mp4), 'will_create_zip': True, 'visual_review_required': True,
                 'voice_actors_present': False, 'movie_finished': False}
+    if visual_review is None:
+        raise UnsafePipeline('Private-preview render blocked until separate human visual review passes')
     with tempfile.TemporaryDirectory(prefix='mishnah_opn01_decrypt_',dir='/mnt/data') as d:
         folder = Path(d)/'private'; seal_private_media.unseal(encrypted,key,folder)
         image, receipt = verify_receipt(folder)
+        visual_gate_opn01.verify_visual_gate(visual_review, receipt['image_sha256'])
         # Prevent a valid encrypted artifact for an unrelated prompt or scene.
         manifest_data = json.loads(manifest.read_text(encoding='utf-8'))
         intended = fal_private_opening_opn01.prepare(manifest_data)
@@ -129,9 +133,10 @@ def main(argv=None):
     p.add_argument('--blockout',type=Path,required=True)
     p.add_argument('--output-prefix',type=Path,default=Path('/mnt/data/mishnah_opn01'))
     p.add_argument('--finish',action='store_true')
+    p.add_argument('--visual-review-json',type=Path,default=None,help='Private human visual-acceptance JSON; required for --finish')
     a=p.parse_args(argv)
     try:
-        result=finish(a.encrypted,a.private_key,a.manifest,a.blockout,a.output_prefix,do_finish=a.finish)
+        result=finish(a.encrypted,a.private_key,a.manifest,a.blockout,a.output_prefix,do_finish=a.finish,visual_review=a.visual_review_json)
         print(json.dumps(result,ensure_ascii=False,indent=2))
         return 0
     except (ValueError,OSError,RuntimeError) as e:
