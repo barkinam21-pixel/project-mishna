@@ -167,6 +167,11 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
             if (old_shot.get("shot_prompt") != shot["shot_prompt"]
                     or snapshot.get("style_lock") != pack["style_lock"]
                     or snapshot.get("negative_prompt") != pack["negative_prompt"]
+                    or snapshot.get("render_style") != pack["render_style"]
+                    or snapshot.get("render_negative_prompt") != pack["render_negative_prompt"]
+                    or old_shot.get("render_lead") != shot.get("render_lead")
+                    or old_shot.get("render_style") != shot.get("render_style")
+                    or old_shot.get("render_negative_prompt") != shot.get("render_negative_prompt")
                     or old_shot.get("seed") != shot["seed"]):
                 raise ArchiveError(shot_id + ": stale prompt, scene design, or seed")
             size = verify_png(image)
@@ -179,14 +184,24 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
             spec = record.get("generation_spec")
             if not isinstance(spec, dict):
                 raise ArchiveError(shot_id + ": missing reproducible generation specification")
-            full_prompt = pack["style_lock"] + ". Shot direction: " + shot["shot_prompt"]
-            expected_prompt = sha256(full_prompt.encode("utf-8"))
+            scene_prompt = shot["render_lead"]
+            style_prompt = shot.get("render_style", pack["render_style"])
+            negative_prompt = shot.get("render_negative_prompt", pack["render_negative_prompt"])
+            expected_prompt = sha256(scene_prompt.encode("utf-8"))
+            expected_prompt_2 = sha256(style_prompt.encode("utf-8"))
+            expected_negative = sha256(negative_prompt.encode("utf-8"))
             spec_sha = sha256(json.dumps(spec, sort_keys=True).encode("utf-8"))
             if (not SHA256.fullmatch(str(record.get("generation_spec_sha256", "")))
                     or record.get("generation_spec_sha256") != spec_sha
                     or record.get("prompt_sha256") != expected_prompt
                     or spec.get("prompt_sha256") != expected_prompt
-                    or spec.get("negative_prompt_sha256") != sha256(pack["negative_prompt"].encode("utf-8"))
+                    or record.get("prompt_2_sha256") != expected_prompt_2
+                    or spec.get("prompt_2_sha256") != expected_prompt_2
+                    or record.get("negative_prompt_sha256") != expected_negative
+                    or spec.get("negative_prompt_sha256") != expected_negative
+                    or record.get("negative_prompt_2_sha256") != expected_negative
+                    or spec.get("negative_prompt_2_sha256") != expected_negative
+                    or spec.get("prompt_strategy") != "dual_encoder_scene_style_v1"
                     or spec.get("seed") != shot["seed"]
                     or spec.get("model_id") != pack["model_id"]
                     or record.get("model_id") != pack["model_id"]
