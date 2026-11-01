@@ -1,0 +1,71 @@
+name: Mishnah OPN01 - private single paid frame only with NEW consent
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_paid:
+        description: 'Type YES for ONE paid fal.ai OPN01 image only; estimated local reservation <= $0.15, not hard provider cap'
+        type: string
+        required: true
+        default: 'NO'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mishnah-fal-opn01-single-paid-manual
+  cancel-in-progress: false
+
+jobs:
+  opening01:
+    if: ${{ inputs.confirm_paid == 'YES' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+      CONFIRM_PAID: ${{ inputs.confirm_paid }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install required encryption dependency
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.4
+      - name: Guard consent, key and encryption public key first
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$CONFIRM_PAID" = YES
+          test -n "$FAL_KEY"
+          openssl pkey -pubin -in security/production_artifacts_public_key.pem -noout
+      - name: Exact chronological OPN01 local dry run (no charge)
+        shell: bash
+        run: |
+          python -m tools.fal_private_opening_opn01 --manifest episodes/berakhot-01-01/opening-45s-director-pack-v1.json
+          python -m unittest discover -s tests -p test_fal_private_opn01.py -v
+      - name: At most one explicit paid fal.ai request, never retry
+        shell: bash
+        run: |
+          python -m tools.fal_private_opening_opn01 \
+            --manifest episodes/berakhot-01-01/opening-45s-director-pack-v1.json \
+            --output-dir "$RUNNER_TEMP/opn01-private" \
+            --local-reservation-usd 0.15 --authorize-paid
+      - name: Encrypt private image and receipts before upload
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$RUNNER_TEMP/opn01-private" ] && [ -n "$(find "$RUNNER_TEMP/opn01-private" -type f -print -quit)" ]; then
+            python tools/seal_private_media.py seal \
+              --input-dir "$RUNNER_TEMP/opn01-private" \
+              --public-key security/production_artifacts_public_key.pem \
+              --output "$RUNNER_TEMP/mishnah-opn01-ENCRYPTED.bin"
+          fi
+      - name: Upload ONLY encrypted private media, never PNG
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mishnah-opn01-encrypted-${{ github.run_id }}
+          path: ${{ runner.temp }}/mishnah-opn01-ENCRYPTED.bin
+          if-no-files-found: ignore
+          retention-days: 7
