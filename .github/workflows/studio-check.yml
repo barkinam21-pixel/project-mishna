@@ -31,6 +31,10 @@ jobs:
             build/session-handoff.json
             build/session-handoff.md
           if-no-files-found: error
+      - name: Validate first seven chronological opening shots (offline; no generation)
+        run: python tools/validate_opening_director_pack.py episodes/berakhot-01-01/opening-45s-director-pack-v1.json
+      - name: Validate Hebrew opening captions and sound cues (offline; no voice claimed)
+        run: python tools/validate_opening_caption_cues.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Zero-cost episode plan
