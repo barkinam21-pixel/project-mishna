@@ -2,7 +2,9 @@
 
 ## מסירת סבב — 1.11.2026, ערב | תיקון OPN01, מניעת חיוב חוזר וסגירת מעקף preview — PR #36
 
-**נא להתחיל כאן בסבב הבא.** [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36) הוא ענף **טיוטה** `feature/opn01-retake-anatomy-lock-20261101`, מבוסס על `main b9201a92`; לא מוזג ולא אושרה הפקת תמונה מחדש. השוט הכרונולוגי הבא נשאר **OPN01 מתוקן**, ורק לאחר אישורו יגיעו OPN02–OPN07, סיני, הדורות, רבי ותחילת ברכות. תמונת fal.ai הראשונה הופקה בעבר בקריאה אחת ([41324742353](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41324742353)), **נפסלה**, ונשארה פרטית. דוגמת 45 השניות עם האיור הפסול אינה סרט מאושר. אין ליצור איורים ב-ChatGPT או להשתמש ב-TinyFish.
+**נא להתחיל כאן בסבב הבא.** [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36) **מוזג ל-main** בקומיט [68796d4](https://github.com/barkinam21-pixel/project-mishna/commit/68796d415615bf7cab336ae53ca7f2948be858e0) לאחר [CI #41335555726](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335555726) שהסתיים 3/3 success, **284 בדיקות עברו ואחת דולגה**; כל הארטיפקטים היו דוחות/תוכניות, ללא מדיה גולמית. לא אושרה הפקת תמונה מחדש, לא בוצע חיוב בתהליך המיזוג. השוט הכרונולוגי הבא נשאר **OPN01 מתוקן**, ורק לאחר אישורו יגיעו OPN02–OPN07, סיני, הדורות, רבי ותחילת ברכות. תמונת fal.ai הראשונה הופקה בעבר בקריאה אחת ([41324742353](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41324742353)), **נפסלה**, ונשארה פרטית. דוגמת 45 השניות עם האיור הפסול אינה סרט מאושר. אין ליצור איורים ב-ChatGPT או להשתמש ב-TinyFish.
+
+**בדיקת merge נוספת:** ההרצה של main **לאחר** הקומיט 68796d4 תיבדק בסבב הבא או בהמשך הריצה הזו; אין להסיק מהצלחה בענף שה-main החדש עבר בלי בדיקתו.
 
 **סגירת בדיקת ההרצה, לאחר התיקון:** [CI #41335400511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335400511) נכשל משום שבדיקת שער ה-render החדשה ניסתה לקרוא manifest זמני שלא נוצר. תוקנה סביבת הניסוי ב-`tests/test_replace_opn01_preview.py` בקומיט [00c399a](https://github.com/barkinam21-pixel/project-mishna/commit/00c399afef77e504e745bdef431844846e85a48a). [CI #41335471923](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335471923) על הקומיט הזה הסתיים **success בשלושת ה-jobs**; ב-`preflight` **284 בדיקות עברו ואחת דולגה**. נבדק לוג ולא נמצאו כשלי טסט. הכשל הראשון היה ב-fixture בלבד; הוא אינו הוכחת כשל בשער האבטחה. שינוי תיעוד זה עצמו יוצר SHA נוסף, לכן אם נוצר CI נוסף יש לאמת גם אותו לפני מיזוג.
 
@@ -27,10 +29,10 @@
 
 ### הוראות לשעה הבאה — לפעול מהמצב הנוכחי, לא לפתוח מחדש את הפרויקט
 
-1. **אמת CI של [PR #36](https://github.com/barkinam21-pixel/project-mishna/pull/36)**: בדוק [41335400511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/41335400511) ואת HEAD החדש אם השתנה; תנאי קבלה: 3/3 jobs success, כל הבדיקות החדשות של `test_replace_opn01_preview.py`, `test_validate_opening_director_pack.py`, `test_validate_opn01_single_use_approval.py` עוברות; רק artifacts של דוחות. אם כשל, קרא לוגים ותקן באותו ענף, בלי חיוב.
+1. **אמת CI של main לאחר PR #36**: בדוק `docs/hourly-production-continuity-and-qa-2026-11-01.md`, את קומיט `68796d4` ואת הרצת GitHub Actions האחרונה על main; תנאי קבלה 3/3 jobs success, 284+ בדיקות (1 skipped), artifacts מסוג reports-only. אם נכשל, תקן בלי להחזיר נתיב תשלום ישן.
 2. **חסום מסירה לא מאושרת של OPN01**: אמת ש-`tools/replace_opn01_preview.py --render` נכשל ללא `--visual-review-json` ושה-`finish_opn01_private.py` מעביר אישור פרטני תואם SHA; תנאי קבלה: אפס פלט MP4 מפעולה לא מאושרת, ועצירת ffmpeg לפני ריצה; אם יש מעקף נוסף, הוסף regression.
 3. **בדיקת תיקון הלימה וקריאות פתיח**: השווה את 7 השוטים ב-`opening-45s-director-pack-v1.json` לנעילת הסגנון ול-`opening-45s-caption-cues-draft.json` שב-PR #33; תנאי קבלה: מתחילים OPN01 עם אדם אחד בלבד, OPN02 פותח לשניים, 24fps/1080 frames, עד שתי שורות עבריות; הוסף מדידה רק אם קיימת הקלטת קול אמיתית (כרגע אין).
-4. **סגירת handoff מאומת**: רענן את המסמך הזה לאחר CI ואת PR #36 בלי לדרוס #32/#33; שמור `OPN01=REJECTED` עד ביקורת אנושית על **נכס חדש** אם תינתן **הרשאה מפורשת חדשה**. ללא הרשאה — dry-run וקוד בלבד, ללא יצירת תיק אישור או קריאה בתשלום. ארטיפקטים ישנים נשארים חוב אבטחה.
+4. **סגירת handoff מאומת**: רענן את המסמך הזה לאחר CI של main; PR #36 מוזג ואין לכתוב אותו מחדש, לא לדרוס #32/#33; שמור `OPN01=REJECTED` עד ביקורת אנושית על **נכס חדש** אם תינתן **הרשאה מפורשת חדשה**. ללא הרשאה — dry-run וקוד בלבד, ללא יצירת תיק אישור או קריאה בתשלום. ארטיפקטים ישנים נשארים חוב אבטחה.
 
 ---
 
