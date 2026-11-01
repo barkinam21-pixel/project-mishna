@@ -30,6 +30,13 @@ class ReferenceGuidedTests(unittest.TestCase):
         self.plan = rg.build_plan(reference=self.ref, out_root=self.root)
         self.out = Path(self.plan["output_dir"])
 
+    def test_backend_license_and_low_memory_default_are_explicit(self):
+        import inspect
+        self.assertIn("openrail++", rg.BACKEND["controlnet_license"].lower())
+        runner_source = inspect.getsource(rg.default_runner)
+        self.assertIn("enable_model_cpu_offload()", runner_source)
+        self.assertNotIn('.to("cuda")', runner_source)
+
     def test_mode_selection_and_reference_hash(self):
         self.assertEqual(self.plan["mode"], rg.MODE_IMG2IMG)
         self.assertEqual(self.plan["references"][0]["sha256"], rg.sha256(b"private reference bytes"))
