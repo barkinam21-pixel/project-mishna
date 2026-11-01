@@ -181,6 +181,23 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 namespace["save_zip"]()
 
+    def test_sh09_has_two_explicit_upgrades_and_prompt_priority(self):
+        shot = next(s for s in self.pack["shots"] if s["shot_id"] == "SH09")
+        self.assertIn("TWO distinct adult men", shot["shot_prompt"])
+        self.assertIn("STONE HOUSE", shot["shot_prompt"])
+        self.assertIn("AFTER DARK", shot["shot_prompt"])
+        self.assertIn("oil lamp", shot["shot_prompt"])
+        self.assertIn("cinematic chiaroscuro", shot["shot_prompt"])
+        self.assertIn("single person", shot["shot_negative_prompt"])
+        self.assertIn("sunny day", shot["shot_negative_prompt"])
+        self.assertEqual(shot["guidance_scale"], 7.0)
+        source = "".join(self.cells["render"]["source"])
+        self.assertIn('full_prompt = shot["shot_prompt"] + ". Visual treatment: " + plan["style_lock"]', source)
+        self.assertIn('negative_prompt = plan["negative_prompt"] + (', source)
+        self.assertIn('negative_prompt=negative_prompt,', source)
+        self.assertIn('guidance_scale=guidance_scale,', source)
+        self.assertIn('"prompt_order": "shot_first_v2"', source)
+
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])
         plan = "".join(self.cells["plan"]["source"])
