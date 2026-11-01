@@ -14,6 +14,22 @@ class OpeningDirectorPackValidation(unittest.TestCase):
     def copy(self): return copy.deepcopy(PACK)
     def valid(self,x): return MODULE.validate(x)["status"]=="PASS_DRY_RUN_ONLY"
     def test_original_pack_passes(self): self.assertTrue(self.valid(self.copy()))
+    def test_opn01_ambiguous_two_traveler_frame_rejected(self):
+        d=self.copy()
+        d["shots"][0]["prompt_subject_en"]="TWO ANONYMOUS travelers in a close shot" * 10
+        self.assertFalse(self.valid(d))
+    def test_opn01_extra_leg_contract_rejected(self):
+        d=self.copy()
+        d["shots"][0]["anatomy_contract"]["visible_legs"]=3
+        self.assertFalse(self.valid(d))
+    def test_prior_spend_cannot_be_erased(self):
+        d=self.copy()
+        d["production_history"]["previous_opn01_paid_attempts"]=0
+        self.assertFalse(self.valid(d))
+    def test_no_new_paid_approval_may_be_claimed(self):
+        d=self.copy()
+        d["production_history"]["new_opn01_paid_authorization"]=True
+        self.assertFalse(self.valid(d))
     def test_schema_rejects_paid_authorization(self):
         d=self.copy();d["privacy"]["fal_paid_approval_granted"]=True;self.assertFalse(self.valid(d))
     def test_schema_rejects_any_image_generation(self):
