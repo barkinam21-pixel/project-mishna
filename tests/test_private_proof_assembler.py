@@ -50,6 +50,37 @@ class PrivateProofTests(unittest.TestCase):
             self.assertEqual(cue["end_frame"], shot["end_frame"])
             self.assertFalse(cue["source_approved"])
 
+    def test_private_caption_master_must_match_episode_and_each_shot(self):
+        # The generic subtitle validator deliberately permits gaps and does
+        # not know the video shot IDs. The private renderer must not silently
+        # show valid Hebrew captions over the wrong illustration or episode.
+        from tools import hebrew_captions
+        draft = json.loads(
+            (proof.ROOT / "episodes/berakhot-01-01/private-proof-caption-draft.json")
+            .read_text(encoding="utf-8")
+        )
+        for case in ("timing_shift", "repeated_shot", "wrong_episode"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                altered = copy.deepcopy(draft)
+                if case == "timing_shift":
+                    altered["cues"][2]["start_frame"] += 24  # legal gap, wrong shot timing
+                elif case == "repeated_shot":
+                    altered["cues"][2]["shot_id"] = altered["cues"][1]["shot_id"]
+                else:
+                    altered["episode_id"] = "berakhot-01-02"
+                # Each mutation remains well-formed Hebrew subtitle data.
+                self.assertTrue(hebrew_captions.validate(altered, require_approval=False)["valid"])
+                root = Path(directory)
+                (root / "captions.json").write_text(
+                    json.dumps(altered, ensure_ascii=False), encoding="utf-8"
+                )
+                config = copy.deepcopy(self.example)
+                config["caption_master"] = "captions.json"
+                report = proof.audit(config, self.blueprint, root)
+                self.assertEqual(report["status"], "INVALID", report)
+                self.assertTrue(any("caption" in error.lower()
+                                    for error in report["errors"]), report)
+
     def test_external_spend_or_release_cannot_be_enabled(self):
         for key in ("external_spend_enabled", "release_authorized"):
             config = copy.deepcopy(self.example)
