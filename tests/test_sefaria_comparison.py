@@ -23,6 +23,11 @@ UNIT = "מאימתי קורין את שמע בערבית משעה שהכהנים
        "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר " + \
        "אם כן למה אמרו חכמים עד חצות כדי להרחיק את האדם מן העבירה"
 
+LIVE_ONE_DAY_CLAUSES = (
+    "וְכָל הַנֶּאֱכָלִים לְיוֹם אֶחָד, מִצְוָתָן עַד שֶׁיַּעֲלֶה עַמּוּד הַשָּׁחַר",
+    "כָּל הַנֶּאֱכָלִים לְיוֹם אֶחָד, מִצְוָתָן עַד שֶׁיַּעֲלֶה עַמּוּד הַשַּׁחַר",
+)
+
 
 class ComparisonTests(unittest.TestCase):
     def example(self):
@@ -88,6 +93,29 @@ class ComparisonTests(unittest.TestCase):
         self.assertTrue(edition["coverage"]["one_day_offerings"])
         self.assertEqual(report["status"], "three_versions_received_pending_human_review")
         self.assertIn(printed_clause, edition["full_text"])
+
+    def test_exact_live_vocalized_one_day_clauses_are_covered(self):
+        baseline_clause = "וכל הנאכלין ליום אחד מצותן עד שיעלה עמוד השחר"
+        for edition_index, live_clause in enumerate(LIVE_ONE_DAY_CLAUSES):
+            with self.subTest(edition=TITLES[edition_index]):
+                payload = self.example()
+                payload["versions"][edition_index]["text"] = [
+                    UNIT.format(response=("חיבין", "חייבין", "מתרין")[edition_index])
+                    .replace(baseline_clause, live_clause)
+                ]
+                report = compare(payload)
+                edition = report["editions"][edition_index]
+                self.assertEqual(
+                    report["status"],
+                    "three_versions_received_pending_human_review",
+                )
+                self.assertTrue(edition["coverage"]["one_day_offerings"])
+                self.assertIn(live_clause, edition["full_text"])
+                self.assertIn(live_clause, render_html(report))
+                self.assertTrue(edition["source_text_sha256"])
+                self.assertFalse(edition["text_verified"])
+                self.assertFalse(edition["torah_approved"])
+                self.assertFalse(edition["release_authorized"])
 
     def test_one_day_clause_word_match_requires_attested_word_boundary(self):
         payload = self.example()
