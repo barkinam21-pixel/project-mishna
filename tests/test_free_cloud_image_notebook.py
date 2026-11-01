@@ -3,6 +3,7 @@ import ast
 import hashlib
 import json
 import tempfile
+import zipfile
 from pathlib import Path
 import unittest
 
@@ -140,6 +141,45 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
         ))
         self.assertIn("zipfile.ZIP_DEFLATED", source)
         self.assertIn('"accepted": False', source)
+
+    def test_zip_export_excludes_old_shots_without_gpu(self):
+        # Execute the actual notebook ZIP writer with test bytes only.
+        render_ast = ast.parse("".join(self.cells["render"]["source"]))
+        fn = next(node for node in render_ast.body
+                  if isinstance(node, ast.FunctionDef) and node.name == "save_zip")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in ("prompt-pack-snapshot.json", "usage-ledger.jsonl",
+                         "SH09.png", "SH01.png", "SH10.png",
+                         "SH09.superseded-deadbeef1234.png",
+                         "review-contact-sheet.jpg"):
+                (root / name).write_bytes(b"test-only:" + name.encode("ascii"))
+            namespace = {
+                "OUT": root, "LEDGER": root / "usage-ledger.jsonl",
+                "SHEET": root / "review-contact-sheet.jpg",
+                "ZIP_PATH": root / "delivery.zip",
+                "successful": [root / "SH09.png"],
+                "zipfile": zipfile, "os": __import__("os"),
+            }
+            exec(compile(ast.Module(body=[fn], type_ignores=[]),
+                         "<notebook-zip-writer>", "exec"), namespace)
+            namespace["save_zip"]()
+            with zipfile.ZipFile(namespace["ZIP_PATH"]) as zf:
+                self.assertEqual(set(zf.namelist()), {
+                    "SH09.png", "prompt-pack-snapshot.json",
+                    "usage-ledger.jsonl", "review-contact-sheet.jpg"
+                })
+            # A retry with an additional verified shot exports that shot,
+            # never an unrelated legacy or superseded file.
+            namespace["successful"] = [root / "SH09.png", root / "SH10.png"]
+            namespace["save_zip"]()
+            with zipfile.ZipFile(namespace["ZIP_PATH"]) as zf:
+                self.assertIn("SH10.png", zf.namelist())
+                self.assertNotIn("SH01.png", zf.namelist())
+                self.assertNotIn("SH09.superseded-deadbeef1234.png", zf.namelist())
+            namespace["successful"] = []
+            with self.assertRaises(RuntimeError):
+                namespace["save_zip"]()
 
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])
