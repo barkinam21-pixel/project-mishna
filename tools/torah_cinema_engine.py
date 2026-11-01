@@ -84,11 +84,12 @@ def validate_manifest(doc:dict, *,require_assets:bool=False):
   used[aid]=used.get(aid,0)+1
   if s.get('motion') not in ('locked','push','track','close','reveal','title'):errors.append('unknown camera motion '+str(sid))
   if s.get('source_status') not in ('dramatization','source_paraphrase','visual_metaphor','unverified_reconstruction'):errors.append('source-status missing '+str(sid))
+  if not isinstance(s.get('tag'),str) or not s.get('tag','').strip():errors.append('visible source/dramatization tag required '+str(sid))
   lines=s.get('lines',[])
   if not isinstance(lines,list) or not (1<=len(lines)<=2):errors.append('subtitle lines 1-2 required '+str(sid))
   else:
    for line in lines:
-    if not isinstance(line,str) or len(line)>72:errors.append('invalid long line '+str(sid));continue
+    if not isinstance(line,str) or len(line)>42:errors.append('invalid long line '+str(sid));continue
     if unicodedata.normalize('NFC',line)!=line:errors.append('line not NFC '+str(sid))
     if any(ord(c) in list(range(0x202a,0x202f))+[0xfffd] for c in line):errors.append('bidi control in '+str(sid))
   if s.get('asset_is_new_original') is True:errors.append('cannot claim existing painting as newly generated '+str(sid))
