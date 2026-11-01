@@ -33,6 +33,10 @@ class SharedCinemaContracts(unittest.TestCase):
   d=self.fresh();d['private_key']='BEGIN SECRETS';self.assertBlocked(d)
  def test_footstep_outside_scene(self):
   d=self.fresh();d['audio_design']['footsteps_seconds']=[34.0];self.assertBlocked(d)
+ def test_required_visible_source_tag(self):
+  d=self.fresh();d['shots'][2]['tag']='';self.assertBlocked(d)
+ def test_caption_too_long_for_mobile(self):
+  d=self.fresh();d['shots'][1]['lines']=['א'*43];self.assertBlocked(d)
  def test_no_remote_urls(self):
   d=self.fresh();d['assets']['SH01']['path']='https://example.org/signed';self.assertBlocked(d)
  def test_gap_rejected(self):
