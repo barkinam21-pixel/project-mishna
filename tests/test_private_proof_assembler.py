@@ -30,6 +30,26 @@ class PrivateProofTests(unittest.TestCase):
         self.assertFalse(report["release_authorized"])
         self.assertNotIn("video", report)
 
+    def test_private_hebrew_caption_rehearsal_covers_all_16_shots_without_false_approval(self):
+        from tools import hebrew_captions
+        filename = proof.ROOT / "episodes/berakhot-01-01/private-proof-caption-draft.json"
+        draft = json.loads(filename.read_text(encoding="utf-8"))
+        self.assertFalse(draft["source_text_locked"])
+        self.assertFalse(draft["human_torah_review_approved"])
+        self.assertFalse(draft["caption_text_approved"])
+        self.assertFalse(draft["release_authorized"])
+        result = hebrew_captions.validate(draft, require_approval=False)
+        self.assertTrue(result["valid"], result["errors"])
+        self.assertFalse(result["warnings"], result["warnings"])
+        shots = {item["id"]: item for item in self.blueprint["shots"]}
+        self.assertEqual(len(draft["cues"]), 16)
+        self.assertEqual(set(shots), {cue["shot_id"] for cue in draft["cues"]})
+        for cue in draft["cues"]:
+            shot = shots[cue["shot_id"]]
+            self.assertEqual(cue["start_frame"], shot["start_frame"])
+            self.assertEqual(cue["end_frame"], shot["end_frame"])
+            self.assertFalse(cue["source_approved"])
+
     def test_external_spend_or_release_cannot_be_enabled(self):
         for key in ("external_spend_enabled", "release_authorized"):
             config = copy.deepcopy(self.example)
