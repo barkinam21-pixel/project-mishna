@@ -45,6 +45,11 @@ class SharedCinemaContracts(unittest.TestCase):
   d=self.fresh();d['shots'][1]['asset_id']='MISSING';self.assertBlocked(d)
  def test_motion_factor_must_be_finite(self):
   d=self.fresh();d['render']['camera_speed_vs_v10']=float('nan');self.assertBlocked(d)
+ def test_h264_color_matrix_regression(self):
+  self.assertIn('colour_primaries=1',mod.BT709_BSF)
+  self.assertIn('transfer_characteristics=1',mod.BT709_BSF)
+  self.assertIn('matrix_coefficients=1',mod.BT709_BSF)
+  self.assertIn("'-bsf:v',BT709_BSF",S.read_text(encoding='utf8'))
  def test_correct_speed(self):
   self.assertEqual(self.doc['render']['camera_speed_vs_v10'],1.15)
  def test_must_mark_source_status(self):
