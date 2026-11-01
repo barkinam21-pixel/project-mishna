@@ -76,7 +76,7 @@ def constraints_for(shot, pack):
     size = pack["image_size"]
     return SceneConstraints(
         shot_id=shot["shot_id"], figures=2, time_of_day="night",
-        setting="modest ancient stone courtyard house", door_side="left",
+        setting="modest ancient stone courtyard house", door_side="right",
         lamp="amber oil lamp at door", width=size["width"], height=size["height"])
 
 
@@ -345,7 +345,12 @@ def main(argv=None):
     else:
         result = generate_one(plan, a.allow_generate, a.reference)
         print(json.dumps(result, indent=2))
-        if a.phase == "all" and result.get("status") == "GENERATED_UNAPPROVED":
+        # A blocked/failed attempt must fail the CLI too. Colab checks the exit
+        # code before exporting; returning 0 could falsely expose a stale ZIP
+        # from an earlier successful run in the same runtime.
+        if result.get("status") != "GENERATED_UNAPPROVED":
+            return 2
+        if a.phase == "all":
             print(json.dumps(evaluate(out / "candidate.png"), indent=2))
             print(json.dumps(export(plan), indent=2))
     return 0
