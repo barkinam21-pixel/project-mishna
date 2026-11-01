@@ -185,6 +185,11 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
             spec = record.get("generation_spec")
             if not isinstance(spec, dict):
                 raise ArchiveError(shot_id + ": missing reproducible generation specification")
+            variation_index = spec.get("variation_index")
+            if (type(variation_index) is not int or variation_index not in (0, 1, 2)
+                    or (variation_index > 0 and shot_id != "SH09")):
+                raise ArchiveError(shot_id + ": unsupported alternative-seed request")
+            expected_seed = shot["seed"] + 1009 * variation_index
             scene_prompt = shot["render_lead"]
             style_prompt = shot.get("render_style", pack["render_style"])
             negative_prompt = shot.get("render_negative_prompt", pack["render_negative_prompt"])
@@ -203,7 +208,9 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                     or record.get("negative_prompt_2_sha256") != expected_negative
                     or spec.get("negative_prompt_2_sha256") != expected_negative
                     or spec.get("prompt_strategy") != "dual_encoder_scene_style_v1"
-                    or spec.get("seed") != shot["seed"]
+                    or spec.get("seed") != expected_seed
+                    or record.get("seed") != expected_seed
+                    or record.get("variation_index") != variation_index
                     or spec.get("model_id") != pack["model_id"]
                     or record.get("model_id") != pack["model_id"]
                     or record.get("model_license") != pack["model_license"]
@@ -230,6 +237,8 @@ def audit_archive(archive, pack_path=PACK, trials_path=TRIALS):
                 "model_revision": "unknown",
                 "model_license_reported": record.get("model_license", ""),
                 "generation_spec_sha256": spec_sha,
+                "variation_index": variation_index,
+                "seed": expected_seed,
                 "provenance": "Colab ZIP sha256:" + archive_sha,
                 "status": "draft_needs_visual_rights_source_review",
             })

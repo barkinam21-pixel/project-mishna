@@ -266,6 +266,30 @@ class FreeCloudImageNotebookTests(unittest.TestCase):
             self.assertNotIn("accepted", data)
             self.assertNotIn("release_authorized", data)
 
+    def test_three_sh09_variations_are_bounded_without_cloud_use(self):
+        settings = "".join(self.cells["settings"]["source"])
+        plan = "".join(self.cells["plan"]["source"])
+        render = "".join(self.cells["render"]["source"])
+        self.assertIn('TAKE = "ניסיון 1 - seed בסיסי"', settings)
+        self.assertIn('if TAKE_INDEX and SELECTED_IDS != ["SH09"]:', plan)
+        self.assertIn('seed = planned_seed(shot["seed"], TAKE_INDEX)', render)
+        self.assertIn('"variation_index": TAKE_INDEX', render)
+        parsed = ast.parse(plan)
+        seed_fn = next(
+            node for node in parsed.body
+            if isinstance(node, ast.FunctionDef) and node.name == "planned_seed"
+        )
+        scope = {}
+        exec(compile(ast.Module(body=[seed_fn], type_ignores=[]),
+                     "<planned-seed-function>", "exec"), scope)
+        for index in (0, 1, 2):
+            with self.subTest(index=index):
+                self.assertEqual(scope["planned_seed"](173109, index), 173109 + 1009*index)
+        for invalid in (-1, 3, True, "2"):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(ValueError):
+                    scope["planned_seed"](173109, invalid)
+
     def test_new_default_does_not_repeat_rejected_sh01(self):
         settings = "".join(self.cells["settings"]["source"])
         plan = "".join(self.cells["plan"]["source"])

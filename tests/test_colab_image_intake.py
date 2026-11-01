@@ -35,7 +35,7 @@ class ColabImageIntakeTests(unittest.TestCase):
     def setUpClass(cls):
         cls.pack = json.loads(intake.PACK.read_text(encoding="utf-8"))
 
-    def make_archive(self, folder, shot_id="SH09", mutate=None, more=None):
+    def make_archive(self, folder, shot_id="SH09", mutate=None, more=None, variation_index=0):
         folder = Path(folder)
         plan = copy.deepcopy(self.pack)
         image = fake_png()
@@ -52,7 +52,8 @@ class ColabImageIntakeTests(unittest.TestCase):
             "prompt_2_sha256": digest(style_prompt.encode("utf-8")),
             "negative_prompt_sha256": digest(negative_prompt.encode("utf-8")),
             "negative_prompt_2_sha256": digest(negative_prompt.encode("utf-8")),
-            "seed": shot["seed"], "width": 1024, "height": 576,
+            "seed": shot["seed"] + 1009 * variation_index,
+            "variation_index": variation_index, "width": 1024, "height": 576,
             "inference_steps": 24, "guidance_scale": shot.get("guidance_scale", 6.0),
         }
         record = {
@@ -64,6 +65,7 @@ class ColabImageIntakeTests(unittest.TestCase):
             "negative_prompt_2_sha256": spec["negative_prompt_2_sha256"],
             "generation_spec_sha256": digest(json.dumps(spec, sort_keys=True).encode("utf-8")),
             "generation_spec": spec, "image_size": [1024, 576],
+            "seed": spec["seed"], "variation_index": variation_index,
             "inference_steps": 24, "operation": "image_generate",
             "accepted": False, "public_release_authorized": False,
             "paid_api_calls": 0, "external_cash_spend_initiated_usd": 0,
@@ -141,6 +143,43 @@ class ColabImageIntakeTests(unittest.TestCase):
             self.assertEqual(record["generation_spec"]["guidance_scale"], 7.0)
             self.assertFalse(result["ready_for_render"])
             self.assertFalse(result["public_release_authorized"])
+
+    def test_three_tracked_sh09_seeds_accept_offline_without_media_approval(self):
+        for index in (0, 1, 2):
+            with self.subTest(index=index), tempfile.TemporaryDirectory() as tmp:
+                archive, _ = self.make_archive(tmp, variation_index=index)
+                report = intake.audit_archive(archive)
+                self.assertEqual(report["image_count"], 1)
+                self.assertEqual(report["draft_images"][0]["variation_index"], index)
+                self.assertEqual(
+                    report["draft_images"][0]["seed"],
+                    self.pack["shots"][8]["seed"] + 1009 * index,
+                )
+                self.assertFalse(report["ready_for_render"])
+
+    def test_variant_failures_are_rejected_even_with_matching_spec_sha(self):
+        def malformed(index, delta=0):
+            def mutate(plan, record, image):
+                spec = record["generation_spec"]
+                spec["variation_index"] = index
+                spec["seed"] = plan["shots"][8]["seed"] + 1009 * index + delta
+                record["seed"] = spec["seed"]
+                record["variation_index"] = index
+                record["generation_spec_sha256"] = digest(
+                    json.dumps(spec, sort_keys=True).encode("utf-8")
+                )
+            return mutate
+
+        for index, delta in ((3, 0), (-1, 0), (0, 1)):
+            with self.subTest(index=index, delta=delta), tempfile.TemporaryDirectory() as tmp:
+                archive, _ = self.make_archive(tmp, mutate=malformed(index, delta))
+                with self.assertRaises(intake.ArchiveError):
+                    intake.audit_archive(archive)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            archive, _ = self.make_archive(tmp, shot_id="SH10", variation_index=1)
+            with self.assertRaises(intake.ArchiveError):
+                intake.audit_archive(archive)
 
     def test_malformed_png_and_mismatched_dimensions_are_rejected(self):
         valid = fake_png()
