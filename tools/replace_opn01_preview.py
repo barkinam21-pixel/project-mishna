@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 FPS = 24
 TOTAL = 1080
@@ -36,7 +37,7 @@ def sha256_file(path):
 
 def json_probe(path, ffprobe='ffprobe'):
     cmd=[ffprobe,'-v','error','-show_entries',
-         'format=duration:stream=index,codec_name,codec_type,width,height,nb_frames,r_frame_rate,sample_rate,channels,color_primaries,color_transfer,color_space',
+         'format=duration:stream=index,codec_name,codec_type,width,height,nb_frames,r_frame_rate,avg_frame_rate,duration,sample_rate,channels,color_primaries,color_transfer,color_space',
          '-of','json',str(path)]
     result=subprocess.run(cmd,check=True,capture_output=True,text=True)
     return json.loads(result.stdout)
@@ -103,7 +104,7 @@ def render(image_path,expected_sha,source_path,manifest_path,output_path,*,dry_r
     output_path.parent.mkdir(parents=True,exist_ok=True)
     stamp=output_path.with_suffix('.firstshot.ass')
     ass_stamp(stamp)
-    # Pass video to ffmpeg in a single render; 96 frames of original private
+    # One H.264 encode plus lossless MP4 remux; 96 frames of original private
     # illustration + 984 original blockout frames, same original scratch audio.
     subtitle=str(stamp.resolve()).replace(':','\\:').replace("'",r"\'")
     filt=(f"[0:v]scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
@@ -112,25 +113,40 @@ def render(image_path,expected_sha,source_path,manifest_path,output_path,*,dry_r
           f"fade=t=in:st=0:d=0.35,ass='{subtitle}'[hero];"
           f"[1:v]trim=start_frame={FIRST}:end_frame={TOTAL},setpts=PTS-STARTPTS[tail];"
           f"[hero][tail]concat=n=2:v=1:a=0[v]")
-    cmd=[ffmpeg,'-hide_banner','-loglevel','error','-y',
-         '-loop','1','-framerate',str(FPS),'-i',str(image_path),
-         '-i',str(source_path),'-filter_complex',filt,
-         '-map','[v]','-map','1:a:0',
-         '-c:v','libx264','-preset','fast','-crf','21','-pix_fmt','yuv420p',
-         '-x264-params','colorprim=bt709:transfer=bt709:colormatrix=bt709',
-         '-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709',
-         '-c:a','aac','-b:a','128k','-ar','48000','-ac','2',
-         '-metadata:s:a:0','language=heb','-movflags','+faststart','-t','45',str(output_path)]
-    subprocess.run(cmd,check=True,timeout=180)
-    vp=json_probe(output_path)
-    v=next(s for s in vp['streams'] if s['codec_type']=='video')
-    if int(v.get('nb_frames',0))!=TOTAL or abs(float(vp['format']['duration'])-45)>.03:
-        raise UnsafeMedia('Rendered film has incorrect duration/frame count')
-    if any(v.get(k)!='bt709' for k in ('color_primaries','color_transfer','color_space')):
-        raise UnsafeMedia('Color tagging failed on delivery video')
-    # Decode every frame and audio sample; no playback only via filename extension.
-    subprocess.run([ffmpeg,'-hide_banner','-v','error','-i',str(output_path),'-f','null','-'],
-                   check=True,capture_output=True,timeout=180)
+    with tempfile.TemporaryDirectory(prefix='opn01_private_timing_',dir=output_path.parent) as td:
+        stage=Path(td)
+        encoded=stage/'encoded.mp4'
+        retimed=stage/'retimed.mp4'
+        cmd=[ffmpeg,'-hide_banner','-loglevel','error','-y',
+             '-loop','1','-framerate',str(FPS),'-i',str(image_path),
+             '-i',str(source_path),'-filter_complex',filt,
+             '-map','[v]','-map','1:a:0',
+             '-c:v','libx264','-preset','fast','-crf','21','-pix_fmt','yuv420p',
+             '-x264-params','colorprim=bt709:transfer=bt709:colormatrix=bt709',
+             '-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709',
+             '-c:a','aac','-b:a','128k','-ar','48000','-ac','2',
+             '-metadata:s:a:0','language=heb','-t','45',str(encoded)]
+        subprocess.run(cmd,check=True,timeout=180)
+        # concat may omit the last packet's duration in a 1MHz timebase.
+        # A packet-copy remux fixes the final 1/24s and MP4 sample durations
+        # without a second lossy encode or changing the soundtrack.
+        subprocess.run([ffmpeg,'-hide_banner','-loglevel','error','-y',
+                        '-i',str(encoded),'-map','0:v:0','-map','0:a:0',
+                        '-c','copy','-video_track_timescale','12288',
+                        '-movflags','+faststart',str(retimed)],check=True,timeout=90)
+        vp=json_probe(retimed)
+        v=next(s for s in vp['streams'] if s['codec_type']=='video')
+        if (int(v.get('nb_frames',0))!=TOTAL or v.get('r_frame_rate')!='24/1'
+                or v.get('avg_frame_rate')!='24/1'
+                or abs(float(v.get('duration','0'))-45.0)>.001
+                or abs(float(vp['format']['duration'])-45.0)>.03):
+            raise UnsafeMedia('Rendered film fails exact 24fps/45s stream-and-container timing')
+        if any(v.get(k)!='bt709' for k in ('color_primaries','color_transfer','color_space')):
+            raise UnsafeMedia('Color tagging failed on delivery video')
+        # Decode full video and audio before exposing any final output path.
+        subprocess.run([ffmpeg,'-hide_banner','-v','error','-i',str(retimed),'-f','null','-'],
+                       check=True,capture_output=True,timeout=180)
+        retimed.replace(output_path)
     completed={**plan,'status':'PRIVATE_DRAFT_1_OF_7_ILLUSTRATIONS_ATTACHED',
                'output_sha256':sha256_file(output_path),'actual_output':str(output_path)}
     output_path.with_suffix('.qa.json').write_text(json.dumps(completed,indent=2)+'\n')
