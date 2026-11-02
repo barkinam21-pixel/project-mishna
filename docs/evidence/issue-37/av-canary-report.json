@@ -1,0 +1,32 @@
+{
+  "status": "PRIVATE_SHORT_AV_TECHNICAL_CANARY_NOT_LEARNING_FILM",
+  "frames": 181,
+  "seconds": 7.541666666666667,
+  "voice_samples_48k": 344064,
+  "caption_qa": {
+    "valid": true,
+    "errors": [],
+    "warnings": [
+      "cues[0] duration 7.54s outside 0.83-7s"
+    ]
+  },
+  "images": 1,
+  "unique_original_images": 1,
+  "crops": 0,
+  "model": "facebook/mms-tts-heb",
+  "model_revision": "28f1fce7cf56b2a3a56e19a4a1405ed70b454853",
+  "audio_license": "CC-BY-NC-4.0",
+  "image_provenance": "Existing user-requested fal SH09 artifact 13078144368",
+  "image_publication_rights": "not cleared",
+  "source_quotation": false,
+  "release_authorized": false,
+  "audio_quality": "NOT_LISTENED_OR_APPROVED",
+  "gain_db": 8,
+  "voice_naturalness": "unverified",
+  "external_cash_spend_usd": 0,
+  "plan_usage": "unknown",
+  "video_sha256": "fea11e9ba44bb3f2d581ab8832209d5cb4641cd36b6eac1ae80dd3504c149ffc",
+  "image_sha256": "649ae6b2b53f2d06a62f0efaecb12d2a97c026cc3f942926e0bee695af55efab",
+  "voice_sha256": "4bb174c581f2c2d8d59b8fee1792d552e676e276154499734bc52dc4027ccb3b",
+  "limitation": "7.5s integration only; no source learning, dramatic scene coverage, music, multi-role voice or four-pass QA"
+}
