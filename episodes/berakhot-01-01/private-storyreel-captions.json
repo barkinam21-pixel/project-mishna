@@ -1,0 +1,26 @@
+{
+  "purpose": "temporary_private_storyreel_labels_not_approved_script",
+  "episode_id": "berakhot-01-01",
+  "source_text_locked": false,
+  "human_torah_review_approved": false,
+  "captions_approved": false,
+  "source_variant_open": "חייבין/מותרין",
+  "cues": [
+    {"shot_id":"SH01","text":"הלילה יורד, ושאלה עולה.","source_layer":"המחזה"},
+    {"shot_id":"SH02","text":"מתי קוראים שמע של ערב?","source_layer":"המחזה — לא ציטוט מדברי רבי"},
+    {"shot_id":"SH03","text":"המשנה פותחת בסימן מן החיים.","source_layer":"הסבר בן זמננו"},
+    {"shot_id":"SH04","text":"הכהנים נכנסים לאכול בתרומתם.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH05","text":"הסימן קשור לצאת הכוכבים.","source_layer":"פירוש מיוחס — בבלי ברכות ב ע״א"},
+    {"shot_id":"SH06","text":"רבי אליעזר: עד סוף האשמורה הראשונה.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH07","text":"וחכמים אומרים: עד חצות.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH08","text":"רבן גמליאל: עד שיעלה עמוד השחר.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH09","text":"ואז שבו בניו מבית המשתה.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH10","text":"הם עוד לא קראו קריאת שמע.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH11","text":"האם הזמן כבר עבר?","source_layer":"שאלת המחשה"},
+    {"shot_id":"SH12","text":"רבן גמליאל משיב להם.","source_layer":"פרפרזה מן המשנה"},
+    {"shot_id":"SH13","text":"כל עוד אין שחר, עוד אפשר לקרוא.","source_layer":"פרפרזה שאינה מכריעה נוסח"},
+    {"shot_id":"SH14","text":"אז מדוע קבעו חכמים גבול מוקדם?","source_layer":"הסבר בן זמננו"},
+    {"shot_id":"SH15","text":"כדי שלא נדחה ונחמיץ את הזמן.","source_layer":"פירוש מיוחס — ברטנורא"},
+    {"shot_id":"SH16","text":"וכך מרחיקים את האדם מן העבירה.","source_layer":"פרפרזה מסכמת"}
+  ]
+}

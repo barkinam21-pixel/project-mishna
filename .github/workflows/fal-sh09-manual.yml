@@ -1,0 +1,23 @@
+name: DEPRECATED - old SH09 raw-artifact pilot is BLOCKED
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_paid:
+        description: "Legacy workflow retired for privacy and storyboard mismatch; no paid calls"
+        required: true
+        default: "NO"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  blocked_legacy_sh09:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject legacy paid flow
+        run: |
+          echo "The original SH09 workflow was retired: it used an unsafe raw artifact upload and a storyboard-misaligned reference."
+          echo "The only allowed paid route after specific fresh consent is fal-private-opn01-single-use-push.yml; do not manually dispatch legacy workflows."
+          exit 1

@@ -1,0 +1,65 @@
+# Codex and agent instructions — Mishnah Film Studio
+
+## Mandatory single control room and no-repeat rule
+- The ONLY active Mishnah production repository is `barkinam21-pixel/project-mishna` and the ONLY human operator dashboard is [README.md](README.md). Read it FIRST every session, then the episode manifest and `episodes/berakhot-01-01/trials.json` evidence ledger before proposing any user action.
+- **SH01 is DONE as a technical GPU trial**: a user-uploaded ZIP containing a real SDXL/Tesla T4 image was inspected and SHA-256 verified; it is **not** an approved production asset. Never ask Bar to rerun the one-image Colab trial because an old document says GPU was not yet tested.
+- `START_HERE.md` is a link-only alias. Background documents in `docs/` are not competing live project states. Keep useful evidence; don't create parallel tracking files, projects, repos, or duplicative status pages.
+- Compare proposed work with verified milestones; skip already completed work. Technical code checks do not equal Torah or film approval. No local setup, no spending, no unapproved publication.
+
+
+Read this file before changing the repository. The owner prefers **cloud-first, low-click** operation due to pain. Do not ask them to install local tools, copy logs, manage timelines, or repeatedly approve intermediate steps.
+
+## Mission and stage
+- A Hebrew, serious, warm, historically careful cinematic illustrated Mishnah series, starting **Mishnah Berakhot 1:1**. Distinguish Mishnah text, named commentaries, modern explanation, historical reconstruction and explicitly labeled `המחזה`.
+- **Current source approval gate is not complete.** The existing 75-second pilot and 13.5-minute scripts are exploratory drafts, NOT signed-off production masters. Never turn a draft into approved scripture, narration or a published episode merely because tests pass.
+- Authoritative state: `README.md` for routing, `episodes/berakhot-01-01/manifest.json` for approvals, `episodes/berakhot-01-01/trials.json` for verified external image trials, and `episodes/berakhot-01-01/source-dossier.md` for source work. The `docs/` files are historical/reference notes. Update a decision record only with evidence; do not fabricate approvals.
+- Variant `חייבין אתם לקרות` versus `מותרין אתם לקרות` remains material. Mechon Mamre segments differently. Source rights and human Torah review remain unresolved. Do not silently select a reading or reuse protected manuscript images.
+
+## Working rules
+1. **Default to safe, scoped engineering.** Work in a branch or task where possible, minimize touching unrelated files, and test every changed behavior. Use PR review for multi-file invasive changes.
+2. **No charges, purchases, secret creation, publication, automatic upload, or release** without explicit user approval. External spend allowance is **US$0**. Plan usage/quotas that cannot be measured are `unknown`, never `0`.
+3. **Do not use TinyFish** for any task in this project. Do not call ChatGPT image generation for Mishnah: the user explicitly prefers an external free-GPU pipeline and preserving their ChatGPT image allotment.
+4. **Do not assume GitHub Actions provides an AI video GPU.** FFmpeg/caption tests are allowed; generative models need separate access, measured cost, licensing and approval.
+5. Audio: 24fps and 48kHz = exactly 2,000 audio samples/frame; keep integer timing. Synthetic sine pulses and colored test frames are **not proof of real Hebrew voices, lip sync or cinematic quality**. Original recordings require actual listening and pronunciation review.
+6. Visuals: maintain source-to-scene mapping, character continuity, historically defensible design, and normally 4–7 distinct original illustrations per dramatic scene. A crop or push-in is not a new illustration.
+7. Preserve separate replaceable voice, caption, ambience, image and edit stems. Captions must be valid Hebrew RTL, with generated SRT/VTT/ASS and readable phone-safe contact sheets.
+8. Stop at approval gates. Public release requires human Torah review, voice approval, continuity review, rights checks, and a real final-video four-pass QA.
+
+## When to use Codex
+Use Codex **only for specific multi-file coding/engineering work**: manifest-driven renderer; FFmpeg/voice/asset integration; nontrivial CI regressions; data-driven test coverage; GPU notebook hardening after approval. It is NOT needed to decide a Torah variant, approve voices, generate images without authorization, or replace human cinematic review. Prefer the user's GitHub-connected workflow rather than invoking Codex needlessly or exhausting its quota.
+
+## Verification requirements
+- First inspect the manifest, source dossier, active stage and existing tests.
+- For changed Python: run `python -m unittest discover -s tests -v` and the relevant preflight scripts. Run FFmpeg tests where the environment supports it. Never conflate skipped/not-run with passed.
+- Cite the exact file/CI run and distinguish **tests passed** from **source verified**, **recording listened**, **visuals viewed**, **film watched** and **release approved**.
+- If an official asset/recording is missing, report `MISSING` or `BLOCKED_AS_DESIGNED`, never fake an approved sample or green release.
+- After each working session return five brief Hebrew items: **what changed; what was actually verified; what remains/next; whether Codex or another service is needed and why; whether Bar must do anything.** If no user action is required, say so clearly.
+- Keep a durable handoff record in `docs/session-handoff.md` whenever substantial decisions or status change. Do not claim autonomous future monitoring solely because a workflow exists.
+
+
+## Consolidated production contract (2026-11-01; mandatory)
+Read [the production pipeline decisions](docs/production-pipeline-decisions.md) before assigning any agent, drafting a script, choosing TTS/images, or modifying film-production code. This is the **standing specification**, not a competing status dashboard. Never infer approvals from that document: consult the manifest.
+
+Agent discipline: **one ChatGPT producer + existing Copilot for bounded engineering** at present; independent review roles are conditional, not subscriptions/agents to launch now. Human Torah review remains required. Preserve the user's 16:9 cinematic narrative rather than slides, complete Mishnah learning, Hebrew narration, distinct source/explainer/dramatization voices, scene continuity, original 4–7-illustration packs, and phone-accessible captions. Starting proof is 60–90 seconds; it is not permission to substitute a short clip for the eventual full series.
+
+Do **not** ask the user to install tools or choose between speculative service menus. State one recommended implementation and postpone unverified service selection until actual quality testing. Azure Hebrew TTS is only a future test candidate, not an approved voice or connected account. When a tool/Codex or user action becomes genuinely necessary, explain what and why in one short Hebrew instruction; otherwise explicitly say nothing is needed.
+
+
+## Mandatory end-of-session status to Bar (2026-11-01)
+At the end of **every interactive session** about this Mishnah project, provide a compact Hebrew handoff that unambiguously answers:
+1. **What was actually completed** in this session, with direct evidence/PR/commit/run links; distinguish plans from shipped code and from a playable film.
+2. **What Copilot is doing now**, in plain Hebrew, naming the exact PR/issue and expected concrete deliverable; verify status through GitHub rather than assuming background progress.
+3. **How long it may take:** state a clearly labeled *rough estimate only if grounded*, not a promise; GitHub Copilot has no reliable completion ETA from PR state alone. Say `אין זמן סיום מאומת` if unknown. If a workflow is in progress, report the current observed status.
+4. **Who must act next:** explicitly say one of `כדי שאמשיך עכשיו בשיחה, כתוב "תמשיך"`, `ממתינים ל-Copilot, לא צריך ללחוץ`, or `נדרשת פעולה אחת ממך: ...`. If an enabled automation exists, distinguish its next scheduled check from instant Copilot completion and never imply the assistant runs continuously between turns.
+5. **Correctness and next gate:** explain the concrete quality checks and what remains blocked (text/rights/human Torah approval, creative review, no film yet).
+Keep it short and candid; do not declare success solely from a Copilot checklist, green CI, or source text appearing online. Do not invent exact ETA or completion percentages.
+
+
+## Parallel work and Copilot delegation rule (2026-11-01)
+At each session handoff, **explicitly identify independent necessary work that can proceed in parallel** while Copilot is running. For each parallel track state: concrete deliverable, why it matters to the eventual film, owner (assistant vs Copilot), dependency/approval gate, and whether it can safely run now. Distinguish genuinely independent work from tasks that depend on a not-yet-approved text, images, or voice.
+
+Default coordination:
+- Copilot owns one bounded engineering PR at a time. The assistant can concurrently research primary sources, document pronunciation with citations, verify rights, or audit creative continuity **in separate files/areas**. Never edit Copilot's in-flight branch or the same files concurrently.
+- Do **not** assign a second Copilot task just because parallelism is possible. Add one only when it has a clearly independent deliverable, isolated files, explicit acceptance tests, and low risk of merge conflicts, quota contention, or wasted credits. State why it is worth doing and whether Copilot actually accepted it.
+- Never let Copilot silently approve Torah interpretation, source text, release rights, or creative direction. Do not generate final media before gates.
+- At end of session add: `עבודה מקבילה אפשרית כעת: ...` and `האם כדאי להפעיל Copilot נוסף: כן/לא, כי ...`, alongside current Copilot PR, observed status, honest ETA uncertainty, and whether Bar needs to say `תמשיך`.

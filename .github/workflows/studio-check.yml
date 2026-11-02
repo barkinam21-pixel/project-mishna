@@ -1,0 +1,137 @@
+name: Mishnah Studio - Safe Preflight
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency for encrypted-media unit tests
+        run: python -m pip install --disable-pip-version-check cryptography==46.0.4
+      - name: Verify public encryption key is valid (never read any private key here)
+        run: openssl pkey -pubin -in security/production_artifacts_public_key.pem -noout
+      - name: Generate truthful stage-gate and Codex session handoff (no spend)
+        run: python tools/session_handoff.py --out-json build/session-handoff.json --out-md build/session-handoff.md
+      - name: Upload durable session-handoff status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-session-handoff
+          path: |
+            build/session-handoff.json
+            build/session-handoff.md
+          if-no-files-found: error
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Zero-cost episode plan
+        run: python tools/studio.py episodes/berakhot-01-01/manifest.json --output build/preflight.json
+      - name: Validate editorial proof storyboard (no media creation)
+        run: python tools/validate_proof_blueprint.py episodes/berakhot-01-01/proof-blueprint.json --output build/editorial-plan-review.json
+      - name: Validate prepaid fal.ai shotpack is a SAFE dry run (no generation, no credits)
+        run: python tools/validate_external_shotpack.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --blueprint episodes/berakhot-01-01/proof-blueprint.json --output build/external-shotpack-preflight.json
+      - name: Upload external generation preflight status (no media and no credentials)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-shotpack-dry-plan
+          path: build/external-shotpack-preflight.json
+          if-no-files-found: warn
+      - name: Assemble official fal.ai FLUX.2 Pro SH01 payload OFFLINE (no network or credits)
+        run: python tools/fal_payload_preflight.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json --shot SH01 --output build/fal-sh01-payload-dry-run.json > /dev/null
+      - name: Validate full 75-second storyboard timing, without generating images
+        run: python tools/private_storyreel.py episodes/berakhot-01-01/fal-prepaid-shotpack-v1.json episodes/berakhot-01-01/private-storyreel-captions.json > build/private-storyreel-dry-plan.json
+      - name: Upload official API payload and storyboard dry plans (NO MEDIA)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fal-provider-schema-and-75s-storyreel-plans-only
+          path: |
+            build/fal-sh01-payload-dry-run.json
+            build/private-storyreel-dry-plan.json
+          if-no-files-found: warn
+      - name: Audit actual private movie inputs (read-only; NOT a film)
+        run: |
+          python -m tools.private_proof_assembler > build/private-film-readiness.json
+          python -c "import json; d=json.load(open('build/private-film-readiness.json')); assert d['status']=='BLOCKED_MISSING_REAL_MEDIA' and d['expected_shots']==16 and d['supplied_images']==0 and d['release_authorized'] is False"
+      - name: Upload real-media readiness blockers (NOT a film)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-film-readiness-not-a-movie
+          path: build/private-film-readiness.json
+          if-no-files-found: warn
+      - name: Upload editorial plan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-plan-review
+          path: build/editorial-plan-review.json
+      - name: Upload preflight report
+        uses: actions/upload-artifact@v4
+        with:
+          name: preflight-report
+          path: build/preflight.json
+  source_comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare three Sefaria editions (no publication, no approval)
+        run: python tools/compare_sefaria_editions.py
+      - name: Upload source evidence report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sefaria-three-edition-audit
+          path: |
+            build/sefaria-variant-comparison.html
+            build/sefaria-variant-comparison.json
+          if-no-files-found: error
+
+  voice_sync_diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit narration pacing in 12-sequence longform draft (no voice claimed)
+        run: python tools/pacing_audit.py scripts/episode-01-before-dawn.md --output build/episode-01-pacing-audit.json
+      - name: Validate WAV voice-take slots (explicitly blocked while recordings missing)
+        run: python tools/voice_take_audit.py episodes/berakhot-01-01/voice-rehearsal-draft.json --output build/voice-take-audit.json
+      - name: Install FFmpeg and Hebrew-capable fallback fonts on fresh runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          ffmpeg -hide_banner -filters | grep subtitles
+      - name: Smoke-check 48-frame real-media assembler filters (synthetic TEST ONLY; delete output)
+        run: python -m unittest discover -s tests -p 'test_private_proof_ffmpeg_smoke.py' -v
+      - name: Render Hebrew captions with sample-accurate synthetic sync markers
+        run: python tools/sync_probe.py --out-dir build/sync-probe
+      - name: Upload TEXT-ONLY voice and synchronization QA reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: voice-pacing-and-av-sync-reports-only
+          path: |
+            build/episode-01-pacing-audit.json
+            build/voice-take-audit.json
+            build/sync-probe/sync-qa.json
+            build/sync-probe/sync-test.srt
+          if-no-files-found: warn

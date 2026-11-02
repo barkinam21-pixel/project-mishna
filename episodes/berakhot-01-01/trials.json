@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "episode_id": "berakhot-01-01",
+  "purpose": "Externally inspected private image tests, NOT production assets",
+  "inspection_date": "2026-11-01",
+  "trials": [
+    {
+      "shot_id": "SH01",
+      "scene_id": "S01",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-10-31T19:52:21.966949+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M",
+      "seed": 173101,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 15.9,
+      "image_sha256": "e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d",
+      "evidence_type": "User-provided ZIP inspected in conversation; PNG SHA-256 recomputed and image opened",
+      "archive_entries": [
+        "SH01.png",
+        "prompt-pack-snapshot.json",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "needs_revision",
+      "artistic_issue": "Daylight/desert-like image does not match the planned twilight settlement",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Do not rerun simply to prove GPU works; do not mark as an approved asset."
+    },
+    {
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T05:54:21.096655+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M (per model card; release rights remain pending)",
+      "seed": 173109,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 50.7,
+      "image_sha256": "61f1eaa344ebf344169fd35ec9b392cf818e9c9734b51118c5bf0255b8f29717",
+      "archive_sha256": "add58bad280ce7cc7d6639010a1d3b9d7117c2c37278bc77396ce10d3231f299",
+      "generation_spec_sha256": "8635478684983ddb5954ab3e0e847fa25d09d9d0ef51984864bfc9c276f7feb7",
+      "evidence_type": "User-supplied ZIP inspected visually: PNG verified, image/ledger/spec/prompt SHA-256 recomputed",
+      "archive_entries": [
+        "SH09.png",
+        "prompt-pack-snapshot.json",
+        "review-contact-sheet.jpg",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "needs_revision",
+      "artistic_strengths": "Attractive warm painterly look, plausible anatomy, atmospheric depth",
+      "artistic_issue": "One man in bright open sandy landscape; intended two fictional adult sons arriving at modest stone courtyard after dark",
+      "diagnosis": "139-word prompt used 72 general style words before shot details; likely CLIP truncation, exact token lengths not logged in the old trial",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Number and appearance of real sons are not attested. Two adult men in the storyboard are fictional artistic stand-ins. Original image stays in private ZIP, not GitHub.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 77.8,
+        "luma_p10": 47,
+        "luma_p90": 179,
+        "luma_p90_p10_spread": 132,
+        "mean_neighbor_luma_delta": 7.14,
+        "method": "Pillow RGB thumbnail 128x72, per-pixel HSV-style saturation, Rec.709-weighted integer luminance, 10th/90th sorted percentile; mean nearest-neighbor luminance delta. These are descriptive signals, not an art or composition score.",
+        "semantic_qa": "human_review_only"
+      }
+    },
+    {
+      "trial_id": "SH09-20261101-dual-encoder-v1",
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T06:16:06.203220+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "model_license": "CreativeML Open RAIL++-M per model card; independent release rights review pending",
+      "seed": 173109,
+      "inference_steps": 24,
+      "gpu": "Tesla T4",
+      "resolution": [
+        1024,
+        576
+      ],
+      "duration_seconds_reported": 51.6,
+      "image_sha256": "0adcc4d008f9f8debbe0e991530c556c5001fdbf92f6fd7e11b7cf29ba0f5939",
+      "archive_sha256": "bb526f942e531c5062003107a8a537710c8b158fe2ddd98ecc6483a0ed43c38c",
+      "generation_spec_sha256": "1130896e74929643eb1dca130b6de98c7cdf3a5c94712950eac1a2c66aabda7b",
+      "evidence_type": "Second real user-uploaded Colab ZIP checked on 2026-11-01; PNG decoded and viewed; SHA-256 of PNG and ZIP recomputed; ledger confirms SDXL T4 dual-encoder_scene_style_v1",
+      "archive_entries": [
+        "SH09.png",
+        "prompt-pack-snapshot.json",
+        "review-contact-sheet.jpg",
+        "usage-ledger.jsonl"
+      ],
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "rejected_scene_content_and_low_color_presence",
+      "artistic_strengths": "Painterly atmosphere, restrained ancient robe on believable adult, spatial lighting",
+      "artistic_issue": "Again a single man in a broad sandy daylight landscape with water, without two sons, courtyard or a house door; the image also appears muted and washed out, with little strong subject color separation.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 34.1,
+        "luma_p10": 28,
+        "luma_p90": 190,
+        "luma_p90_p10_spread": 162,
+        "mean_neighbor_luma_delta": 9.32,
+        "method": "Pillow RGB thumbnail 128x72, per-pixel HSV-style saturation, Rec.709-weighted integer luminance, 10th/90th sorted percentile; mean nearest-neighbor luminance delta. These are descriptive signals, not an art or composition score.",
+        "semantic_qa": "human_review_only"
+      },
+      "creative_diagnosis": "Changing to SDXL dual encoders alone did not correct composition. Average saturation fell from 77.8 to 34.1 vs the first SH09 test; do not attribute the difference to any single setting because prompts also changed. Visual contrast and narrative accuracy still need actual human review.",
+      "corrective_direction": "Short architecture-dominant medium-wide NIGHT shot, two clearly separated figures, rich amber/blue color separation, no pastel haze. Experiment with per-shot guidance scale 7.0 vs 6.0, not a proven quality gain.",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Image stays private; do not upload PNG to GitHub or count as accepted source art. No automatic publication."
+    },
+    {
+      "trial_id": "SH09-20261101-modern-storefront-rejected",
+      "shot_id": "SH09",
+      "scene_id": "S04",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-01T07:23:22.331431+00:00",
+      "model_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "model_revision": "unknown",
+      "seed": 173109,
+      "variation_index": 0,
+      "resolution": [
+        1024,
+        576
+      ],
+      "image_sha256": "291a3612845d0852ba0942f0192bdae9d65add5e6f3495e919f9e0eedb0fb81a",
+      "generation_spec_sha256": "d7a20c9cd507d35fc6939e146df08db27cc092057fe35b77b8094a2989035eb6",
+      "evidence_type": "User uploaded ZIP (4); PNG decoded and directly inspected; ledger and prompt snapshot verified",
+      "archive_in_repository": false,
+      "production_asset_accepted": false,
+      "artistic_review": "rejected_wrong_period_and_scene",
+      "artistic_issue": "Ornate European-looking shopfront with display windows, decorative columns and a central door. No people, no two brothers, no modest Judean courtyard.",
+      "visual_diagnostics": {
+        "saturation_mean_0_255": 75.2,
+        "luma_p10": 18,
+        "luma_p90": 108,
+        "luma_p90_p10_spread": 90,
+        "mean_neighbor_luma_delta": 12.2,
+        "meaning": "descriptive_only_not_artistic_approval"
+      },
+      "creative_diagnosis": "Scene-first dual-encoder prompts plus guidance 7.0 still fail to enforce actors, location and period. Softening colors and trying alternate seeds are not verified fixes. Prioritize controlled layout using references/ControlNet or a stronger model; no new batch until validated.",
+      "paid_api_calls_reported": 0,
+      "external_cash_spend_reported_usd": 0,
+      "colab_gpu_quota_usage": "unknown",
+      "note": "Private PNG stays outside GitHub; no release approval."
+    }
+  ]
+}

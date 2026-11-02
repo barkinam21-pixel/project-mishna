@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "franchise": "torah-film-studio",
+  "episode": "mishnah-berakhot-01-01",
+  "purpose": "template_only_replace_sha256_and_local_paths",
+  "policy": {
+    "paid_requests_enabled": false,
+    "new_image_generation_enabled": false,
+    "publication_enabled": false,
+    "private_media_only": true
+  },
+  "render": {
+    "fps": 24,
+    "sample_rate": 48000,
+    "frame_size": [
+      1280,
+      720
+    ],
+    "camera_speed_vs_v10": 1.15
+  },
+  "duration_frames": 792,
+  "assets": {
+    "SH01": {
+      "path": "private-art/SH01.png",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "private": true,
+      "provenance": "USER-OWNED_EXISTING_MEDIA_MUST_BE_SUPPLIED"
+    },
+    "SH09": {
+      "path": "private-art/SH09.png",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "private": true,
+      "provenance": "USER-OWNED_EXISTING_MEDIA_MUST_BE_SUPPLIED"
+    }
+  },
+  "shots": [
+    {
+      "id": "dusk_opening",
+      "start_frame": 0,
+      "end_frame": 168,
+      "asset_id": "SH01",
+      "motion": "push",
+      "source_status": "unverified_reconstruction",
+      "lines": [
+        "לילה אחד. שאלה אחת."
+      ],
+      "tag": "שחזור אמנותי · ברכות א׳, א׳"
+    },
+    {
+      "id": "sons_arrival",
+      "start_frame": 168,
+      "end_frame": 312,
+      "asset_id": "SH09",
+      "motion": "track",
+      "source_status": "dramatization",
+      "lines": [
+        "הם שבו מבית המשתה.",
+        "קריאת שמע עדיין לא נאמרה."
+      ],
+      "tag": "מעשה במשנה · שחזור מומחז",
+      "crossfade_from_previous": true
+    },
+    {
+      "id": "question",
+      "start_frame": 312,
+      "end_frame": 480,
+      "asset_id": "SH09",
+      "motion": "close",
+      "source_status": "dramatization",
+      "lines": [
+        "״אם כבר עבר חצות... איחרנו?״"
+      ],
+      "tag": "דיאלוג מומחז — לא ציטוט מן המקור"
+    },
+    {
+      "id": "night_callback",
+      "start_frame": 480,
+      "end_frame": 648,
+      "asset_id": "SH01",
+      "motion": "reveal",
+      "source_status": "source_paraphrase",
+      "lines": [
+        "ורבן גמליאל?",
+        "עד שיעלה עמוד השחר."
+      ],
+      "tag": "פרפרזה של דעה במשנה — לא פסק הלכה",
+      "crossfade_from_previous": true
+    },
+    {
+      "id": "title_end",
+      "start_frame": 648,
+      "end_frame": 792,
+      "asset_id": "SH01",
+      "motion": "title",
+      "source_status": "visual_metaphor",
+      "lines": [
+        "קולנוע המשנה",
+        "לפני שעלה השחר"
+      ],
+      "tag": "טעימה פרטית · ללא דיבוב ואנימציית דמויות"
+    }
+  ],
+  "limitations": [
+    "Both existing paintings are art/mood candidates, not a 16-pose production scene",
+    "SH09 door RIGHT contradicts canonical sons-return exterior door LEFT",
+    "No character walking motion, facial animation or real human voice",
+    "Source edition not locked and human Torah review outstanding"
+  ],
+  "audio_design": {
+    "footsteps_seconds": [
+      7.45,
+      8.42,
+      9.28,
+      11.21,
+      12.3,
+      14.32,
+      15.41
+    ],
+    "original_score": true,
+    "recorded_dialogue": false
+  }
+}
