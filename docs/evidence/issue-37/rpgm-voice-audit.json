@@ -1,0 +1,21 @@
+{
+  "archive_sha256": "f48ecfe6c2b7561bf14c18f61628b23852c199fd8ca51d50ae03c2eee0a82082",
+  "files": [
+    "VOICE_UPGRADE.cmd",
+    "VOICE_UPGRADE.ps1",
+    "TTSMZBetter.js",
+    "README.txt"
+  ],
+  "azure_config_file_in_archive": false,
+  "language_of_existing_ssml": "en-US",
+  "voice_cast": "en-US voices",
+  "synthesis_api": "Official regional Microsoft Speech REST endpoint",
+  "cloud_fallback": "Browser speechSynthesis; not suitable as silent production fallback",
+  "account_F0_verified": false,
+  "live_synthesis_performed": false,
+  "key_from_chat_used": false,
+  "external_cash_spend_usd": 0,
+  "plan_usage": "unknown",
+  "implemented": "Hebrew audition SSML in existing voice_take_audit; NOT a live connection",
+  "human_voice_quality": "NOT_TESTED"
+}
