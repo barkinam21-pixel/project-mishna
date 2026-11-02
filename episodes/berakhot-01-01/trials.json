@@ -165,5 +165,15 @@
       "colab_gpu_quota_usage": "unknown",
       "note": "Private PNG stays outside GitHub; no release approval."
     }
+  ],
+  "voice_trials": [
+    {
+      "sha256": "4bb174c581f2c2d8d59b8fee1792d552e676e276154499734bc52dc4027ccb3b",
+      "model_id": "facebook/mms-tts-heb",
+      "status": "rejected_by_user",
+      "review": "Foreign accent and numerous Hebrew pronunciation errors reported after listening to 7.54s preview",
+      "license": "CC-BY-NC-4.0",
+      "accepted_for_private_preview": false
+    }
   ]
 }

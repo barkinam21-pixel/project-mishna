@@ -114,10 +114,14 @@ def audit(config, blueprint, root=ROOT):
         images, voices = [], []
     image_by_shot, seen_hashes = {}, set()
     rejected = set()
+    rejected_voices = set()
     rejected_ledger = root / "episodes/berakhot-01-01/trials.json"
     if rejected_ledger.is_file():
         try:
-            trials = json.loads(rejected_ledger.read_text(encoding="utf-8")).get("trials", [])
+            ledger = json.loads(rejected_ledger.read_text(encoding="utf-8"))
+            rejected_voices = {v.get("sha256") for v in ledger.get("voice_trials", [])
+                               if v.get("status") == "rejected_by_user"}
+            trials = ledger.get("trials", [])
             rejected = {t.get("image_sha256") for t in trials
                         if not t.get("production_asset_accepted")}
         except (ValueError, OSError, TypeError):
@@ -182,6 +186,8 @@ def audit(config, blueprint, root=ROOT):
                 or not item.get("speaker") or not item.get("provenance")):
             errors.append(name + ": real speech, speaker, rights and provenance required")
         sha = item.get("sha256")
+        if sha in rejected_voices:
+            errors.append(name + ": voice take rejected by human listening review")
         if not isinstance(sha, str) or not HASH.fullmatch(sha):
             errors.append(name + ": valid SHA256 required")
         target = file_under(root, item.get("path"))
@@ -218,15 +224,20 @@ def audit(config, blueprint, root=ROOT):
             if qa["valid"] and isinstance(cues, list):
                 shot_slots = {shot["id"]: (shot["start_frame"], shot["end_frame"])
                               for shot in shots}
-                cue_shots = [cue["shot_id"] for cue in cues]
-                if (len(cues) != len(shots)
-                        or len(set(cue_shots)) != len(cues)
-                        or set(cue_shots) != set(shot_slots)):
-                    errors.append("Private caption cues must cover each blueprint shot exactly once")
+                grouped = {sid: [] for sid in shot_slots}
                 for cue in cues:
-                    slot = shot_slots.get(cue["shot_id"])
-                    if slot and (cue["start_frame"], cue["end_frame"]) != slot:
-                        errors.append(cue["shot_id"] + ": caption timing differs from blueprint shot")
+                    if cue['shot_id'] not in grouped:
+                        errors.append('Private caption has unknown shot')
+                    else:
+                        grouped[cue['shot_id']].append(cue)
+                for sid, slot in shot_slots.items():
+                    position = slot[0]
+                    for cue in grouped[sid]:
+                        if cue['start_frame'] != position or cue['end_frame'] > slot[1]:
+                            errors.append(sid + ': caption timing differs from blueprint shot')
+                        position = cue['end_frame']
+                    if position != slot[1]:
+                        errors.append(sid + ': captions must cover each blueprint shot exactly once')
             if any(cue.get("end_frame", 0) > total for cue in master.get("cues", [])):
                 errors.append("Caption extends beyond 75-second film")
         except (ValueError, OSError, TypeError, AttributeError) as exc:
@@ -247,15 +258,39 @@ def audit(config, blueprint, root=ROOT):
             "release_authorized": False, "workspace_usage": "unknown"}
 
 
-def ffmpeg_args(config, blueprint, root, temp):
+def prepare_cameras(config, blueprint, root, temp):
+    from tools import private_subpixel_camera_v2 as camera
+    images = {item['shot_id']: item for item in config['images']}
+    inputs = {}
+    for shot in blueprint['shots']:
+        spec = shot.get('camera')
+        if spec is None:
+            continue
+        if not spec.get('reason'):
+            raise ValueError('Camera requires a dramatic purpose')
+        path = file_under(root, images[shot['id']]['path'])
+        destination = Path(temp) / ('camera-' + str(len(inputs)))
+        plan = camera.make_plan(path, destination.with_suffix('.mp4'), None,
+                                24, shot['duration_frames'], 1920, 1080,
+                                spec['mode'], spec['zoom_start'], spec['zoom_end'],
+                                spec.get('drift_x', 0), spec.get('drift_y', 0))
+        inputs[shot['id']] = camera.prepare_sequence(path, plan, destination)
+    return inputs
+
+
+def ffmpeg_args(config, blueprint, root, temp, camera_inputs=None):
     """Only called after a READY audit. Paths become argv, never shell fragments."""
     images = {item["shot_id"]: item for item in config["images"]}
     voices = config["voice_takes"]
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
+    camera_inputs = camera_inputs or {}
     for shot in blueprint["shots"]:
         img = file_under(root, images[shot["id"]]["path"])
         duration = format(shot["duration_frames"] / 24, ".8f")
-        cmd += ["-loop", "1", "-framerate", "24", "-t", duration, "-i", str(img)]
+        if shot["id"] in camera_inputs:
+            cmd += ["-framerate", "24", "-t", duration, "-i", camera_inputs[shot["id"]]]
+        else:
+            cmd += ["-loop", "1", "-framerate", "24", "-t", duration, "-i", str(img)]
     count = len(blueprint["shots"])
     for item in voices:
         cmd += ["-i", str(file_under(root, item["path"]))]
@@ -270,19 +305,24 @@ def ffmpeg_args(config, blueprint, root, temp):
     graph.append("[video]ass=filename=private-captions.ass,format=yuv420p,"
                  "setparams=range=limited:color_primaries=bt709:"
                  "color_trc=bt709:colorspace=bt709[vout]")
-    for i, take in enumerate(voices):
-        delay = take["start_frame"] * 2000
-        graph.append(f"[{count+i}:a]aresample=48000,aformat=channel_layouts=stereo,"
-                     f"adelay=delays={delay}S:all=1[a{i}]")
-    if len(voices) == 1:
-        mix = "[a0]"
-    else:
-        mix = "".join(f"[a{i}]" for i in range(len(voices)))
-        mix += f"amix=inputs={len(voices)}:duration=longest:normalize=0,"
-    samples = blueprint["target_duration_frames"] * 2000
-    graph.append(mix + f"atrim=end_sample={samples},apad=whole_len={samples}[aout]")
+    if not voices and config.get("intentional_silence") is not True:
+        raise ValueError("No voice: require explicit intentional_silence for visual review")
+    if voices:
+        for i, take in enumerate(voices):
+            delay = take["start_frame"] * 2000
+            graph.append(f"[{count+i}:a]aresample=48000,aformat=channel_layouts=stereo,"
+                         f"adelay=delays={delay}S:all=1[a{i}]")
+        if len(voices) == 1:
+            mix = "[a0]"
+        else:
+            mix = "".join(f"[a{i}]" for i in range(len(voices)))
+            mix += f"amix=inputs={len(voices)}:duration=longest:normalize=0,"
+        samples = blueprint["target_duration_frames"] * 2000
+        graph.append(mix + f"atrim=end_sample={samples},apad=whole_len={samples}[aout]")
     cmd += ["-filter_complex", ";".join(graph),
-            "-map", "[vout]", "-map", "[aout]", "-map", f"{count+len(voices)}:s:0",
+            "-map", "[vout]",
+            *(["-map", "[aout]"] if voices else ["-an"]),
+            "-map", f"{count+len(voices)}:s:0",
             "-frames:v", str(blueprint["target_duration_frames"]), "-r", "24",
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
             "-pix_fmt", "yuv420p", "-profile:v", "high",
@@ -357,7 +397,8 @@ def render_private(config, blueprint, root, out):
         temp = Path(folder)
         for ext, contents in caption_files.items():
             (temp / ("private-captions." + ext)).write_text(contents, encoding="utf-8")
-        subprocess.run(ffmpeg_args(config, blueprint, root, temp), cwd=temp,
+        camera_inputs = prepare_cameras(config, blueprint, root, temp)
+        subprocess.run(ffmpeg_args(config, blueprint, root, temp, camera_inputs), cwd=temp,
                        check=True, capture_output=True, text=True)
         video = temp / "private-review.mp4"
         if not video.is_file() or not verify_video(video):
