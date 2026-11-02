@@ -1,0 +1,27 @@
+{
+  "valid": true,
+  "status": "BLOCKED_AS_DESIGNED",
+  "episode_id": "berakhot-01-01",
+  "manifest_sha256": "b3f2203e30effacd6e972493154a38f822134e37242dcbffbb2c0e1ad119aa6e",
+  "errors": [],
+  "blockers": [
+    "Exact Mishnah text must be checked and locked",
+    "Textual variants must be reviewed",
+    "Rights and attribution must be reviewed",
+    "Human Torah review is required",
+    "creative.script_approved not approved",
+    "creative.visual_direction_approved not approved",
+    "creative.voice_approved not approved",
+    "creative.proof_approved not approved",
+    "Storyboard and shot manifest not prepared",
+    "No approved image assets",
+    "No checked narration or pronunciation track",
+    "No Hebrew subtitles",
+    "No approved audio clips; silent proof only if explicitly declared",
+    "Release is blocked pending rights, QA and final review",
+    "Release not authorized"
+  ],
+  "budget_usd_ceiling": 0,
+  "external_generation_calls": 0,
+  "workspace_usage": "unknown"
+}
