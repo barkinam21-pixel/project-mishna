@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 import subprocess
+import shutil
 import tempfile
 import unittest
 from PIL import Image
@@ -26,6 +27,7 @@ class CameraDeliveryTests(unittest.TestCase):
         self.assertIn('camera-x/%06d.png',args)
         self.assertNotIn('-loop',args)
 
+    @unittest.skipUnless(shutil.which("ffmpeg"), "FFmpeg unavailable: encoded motion not run")
     def test_encoded_motion_is_present_in_output_pixels(self):
         with tempfile.TemporaryDirectory() as folder:
             folder=Path(folder)
