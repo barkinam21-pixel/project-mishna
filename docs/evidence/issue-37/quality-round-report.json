@@ -1,0 +1,37 @@
+{
+  "status": "VISUAL_EDIT_REVIEW_ONLY",
+  "seconds": 12,
+  "frames": 288,
+  "original_images": 2,
+  "derived_crop_shots": 0,
+  "voice": "BLOCKED_NO_AUTHORIZED_QUALITY_BACKEND",
+  "mms": "REJECTED_BY_USER_NOT_REUSED",
+  "caption_units": 4,
+  "caption_seconds_each": 3,
+  "captions": "DRAFT_DISPLAY_ONLY_NOT_SPEECH_SYNCHRONIZED",
+  "motion": [
+    {
+      "first_last_mae": 15.769342105263158,
+      "median_step_mae": 0.5086184210526316,
+      "maximum_step_mae": 0.6514802631578948,
+      "frozen_steps": 0
+    },
+    {
+      "first_last_mae": 10.438552631578947,
+      "median_step_mae": 0.14677631578947367,
+      "maximum_step_mae": 0.2912171052631579,
+      "frozen_steps": 0
+    }
+  ],
+  "video_sha256": "c58d32a589d72e26793e83c5c77f236393f5491788f1825eb278345d6f02227c",
+  "source_review": "Existing dossier: two-source comparison and variant unresolved; no source quotation in preview",
+  "rights": "Private review only; publication rights not cleared",
+  "cost_usd": 0,
+  "workspace_usage": "unknown",
+  "limitations": [
+    "No voice or music",
+    "No character continuity proof between angles; only exterior-to-interior editorial geography",
+    "Architecture and lamp require historical review",
+    "No full-scene acting pack or Torah/publication approval"
+  ]
+}

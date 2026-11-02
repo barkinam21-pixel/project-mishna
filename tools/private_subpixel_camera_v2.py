@@ -69,13 +69,37 @@ def transform_at(t: float, src_w: int, src_h: int, plan: dict):
     cx = src_w * (0.5 + plan["drift_x"] * t)
     cy = src_h * (0.5 + plan["drift_y"] * t)
     # Fill the output aspect without using integer-rounded crop coordinates.
-    scale = max(src_w / plan["width"], src_h / plan["height"]) / zoom
+    scale = min(src_w / plan["width"], src_h / plan["height"]) / zoom
     cw, ch = scale * plan["width"], scale * plan["height"]
     left, top = cx - cw / 2, cy - ch / 2
     if min(left, top) < -0.001 or left + cw > src_w + 0.001 or top + ch > src_h + 0.001:
         raise ValueError("Camera motion would reveal an empty frame border")
     return [[cw / plan["width"], 0.0, left],
             [0.0, ch / plan["height"], top]]
+
+
+def sample_frame(image, plan, index):
+    """Pillow fallback using the same fractional inverse map; no integer crop steps."""
+    from PIL import Image
+    if not 0 <= index < plan['frames'] or plan['frames'] < 2:
+        raise ValueError('Invalid camera frame')
+    matrix = transform_at(index / (plan['frames'] - 1), *image.size, plan)
+    return image.transform((plan['width'], plan['height']), Image.Transform.AFFINE,
+                           tuple(v for row in matrix for v in row),
+                           resample=Image.Resampling.BICUBIC)
+
+
+def prepare_sequence(image_path, plan, directory):
+    """Lossless intermediate frames for the general assembler's single final encode."""
+    from PIL import Image
+    directory = Path(directory)
+    image = Image.open(image_path).convert('RGB')
+    for i in range(plan['frames']):
+        transform_at(i / (plan['frames'] - 1), *image.size, plan)
+    directory.mkdir(parents=True, exist_ok=False)
+    for i in range(plan['frames']):
+        sample_frame(image, plan, i).save(directory / f'{i:06d}.png', compress_level=1)
+    return str(directory / '%06d.png')
 
 
 def render(plan: dict) -> dict:
