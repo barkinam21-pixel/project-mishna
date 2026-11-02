@@ -16,6 +16,28 @@ SAMPLES_PER_FRAME = RATE // FPS
 HEBREW = re.compile(r"[\u0590-\u05ff]+(?:[׳״'-][\u0590-\u05ff]+)*")
 
 
+def hebrew_rehearsal_ssml(text, role, rate_percent=-3):
+    """Prepare an Azure audition, never synthesize or approve a voice.
+
+    RPGM's English style/phoneme heuristics are deliberately not copied.
+    Only the narrator/explainer audition roles are assigned, not a full cast.
+    """
+    import unicodedata
+    import xml.etree.ElementTree as ET
+    voices = {'narrator': 'he-IL-AvriNeural', 'explainer': 'he-IL-HilaNeural'}
+    if role not in voices or not isinstance(text, str) or not text.strip():
+        raise ValueError('Known audition role and nonempty text required')
+    if (len(text) > 500 or any(unicodedata.category(ch) in ('Cc', 'Cf') for ch in text)
+            or not isinstance(rate_percent, int) or not -15 <= rate_percent <= 10):
+        raise ValueError('Invalid audition text or rate')
+    root = ET.Element('speak', {'version': '1.0',
+        'xmlns': 'http://www.w3.org/2001/10/synthesis', 'xml:lang': 'he-IL'})
+    voice = ET.SubElement(root, 'voice', {'name': voices[role]})
+    prosody = ET.SubElement(voice, 'prosody', {'rate': f'{rate_percent:+d}%'})
+    prosody.text = unicodedata.normalize('NFC', text)
+    return ET.tostring(root, encoding='unicode')
+
+
 def is_pos_int(x):
     return isinstance(x, int) and not isinstance(x, bool) and x > 0
 
