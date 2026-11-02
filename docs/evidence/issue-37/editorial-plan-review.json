@@ -1,0 +1,20 @@
+{
+  "valid": true,
+  "status": "EDITORIAL_PLAN_VALID_BUT_BLOCKED",
+  "errors": [],
+  "blockers": [
+    "Exact Mishnah edition not locked or approved by human Torah reviewer",
+    "No approved original illustration, voice, pronunciation, caption or audio",
+    "Production budget and publication authorization not granted"
+  ],
+  "duration_frames": 1800,
+  "duration_seconds": 75.0,
+  "scene_count": 5,
+  "shot_count": 16,
+  "planned_original_images": 16,
+  "actual_generated_images": 0,
+  "actual_rendered_videos": 0,
+  "external_generation_calls": 0,
+  "external_spend_authorized_usd": 0,
+  "workspace_usage": "unknown"
+}

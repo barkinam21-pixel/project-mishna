@@ -1,0 +1,31 @@
+{
+  "status": "MISSING_RECORDINGS",
+  "errors": [],
+  "warnings": [],
+  "missing_recordings": 2,
+  "measured_recordings": 0,
+  "human_pronunciation_verified": false,
+  "expressive_performance_verified": false,
+  "lipsync_verified": false,
+  "source_release_authorized": false,
+  "rows": [
+    {
+      "id": "N01",
+      "speaker": "narrator",
+      "slot_frames": 240,
+      "slot_samples": 480000,
+      "words": 8,
+      "audio_path": "audio/rehearsals/n01.wav",
+      "voice_take_status": "MISSING_WAV"
+    },
+    {
+      "id": "N02",
+      "speaker": "narrator",
+      "slot_frames": 240,
+      "slot_samples": 480000,
+      "words": 10,
+      "audio_path": "audio/rehearsals/n02.wav",
+      "voice_take_status": "MISSING_WAV"
+    }
+  ]
+}
