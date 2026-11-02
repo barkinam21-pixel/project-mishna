@@ -9,7 +9,7 @@ from tools.seal_private_media import seal
 out = Path('private-media/mms-canary')
 out.mkdir(parents=True, exist_ok=True)
 model_id = 'facebook/mms-tts-heb'
-revision = 'main'  # Resolve current checkpoint; record immutable config commit below
+revision = '28f1fce7cf56b2a3a56e19a4a1405ed70b454853'
 text = 'זהו מבחן פרטי של קול ותמונה. האיור הוא שחזור אמנותי, ולא תיעוד היסטורי.'
 set_seed(37)
 torch.set_num_threads(2)
@@ -26,4 +26,3 @@ scipy.io.wavfile.write(out/'voice.wav', model.config.sampling_rate, samples)
     external_spend_usd=0,workspace_usage='unknown',approved=False),ensure_ascii=False))
 seal(out, Path('security/voice-canary-session-public.pem'), Path('build/voice-canary.bin'))
 print('ENCRYPTED_VOICE_CANARY_CREATED_NOT_APPROVED')
-
