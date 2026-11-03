@@ -16,12 +16,16 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--synthesize',action='store_true');a=p.parse_args()
     key=os.environ.get('AZURE_SPEECH_KEY','');region=os.environ.get('AZURE_SPEECH_REGION','')
     rid=os.environ.get('AZURE_SPEECH_RESOURCE_ID','')
-    if not key or not region or not rid:raise ValueError('Missing protected connection settings')
+    if not key or not rid:raise ValueError('Missing protected connection settings')
     import re
-    if not re.fullmatch('[a-z0-9-]{2,30}',region):raise ValueError('Invalid region')
+    if region and not re.fullmatch('[a-z0-9-]{2,30}',region):raise ValueError('Invalid region')
     # Live ARM read using the explicitly configured federated Azure identity.
     result=subprocess.run(['az','resource','show','--ids',rid,'--output','json'],capture_output=True,check=True,text=True)
-    verify_resource(json.loads(result.stdout),region)
+    resource=json.loads(result.stdout)
+    region=region or resource.get('location','').replace(' ','').lower()
+    if not re.fullmatch('[a-z0-9-]{2,30}',region):raise ValueError('Invalid resource region')
+    if resource.get('id','').lower()!=rid.lower():raise ValueError('Resource ID mismatch')
+    verify_resource(resource,region)
     base='https://'+region+'.tts.speech.microsoft.com/cognitiveservices/'
     headers={'Ocp-Apim-Subscription-Key':key}
     with urllib.request.urlopen(urllib.request.Request(base+'voices/list',headers=headers),timeout=20) as r:
