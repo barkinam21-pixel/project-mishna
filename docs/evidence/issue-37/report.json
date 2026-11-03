@@ -1,0 +1,41 @@
+{
+  "status": "BLOCKED_MISSING_REAL_MEDIA",
+  "errors": [],
+  "missing": [
+    "SH01: no accepted original illustration",
+    "SH02: no accepted original illustration",
+    "SH03: no accepted original illustration",
+    "SH04: no accepted original illustration",
+    "SH05: no accepted original illustration",
+    "SH06: no accepted original illustration",
+    "SH07: no accepted original illustration",
+    "SH08: no accepted original illustration",
+    "SH09: no accepted original illustration",
+    "SH10: no accepted original illustration",
+    "SH11: no accepted original illustration",
+    "SH12: no accepted original illustration",
+    "SH13: no accepted original illustration",
+    "SH14: no accepted original illustration",
+    "SH15: no accepted original illustration",
+    "SH16: no accepted original illustration",
+    "No real Hebrew spoken WAV takes",
+    "Private caption wording not checked"
+  ],
+  "expected_shots": 16,
+  "supplied_images": 0,
+  "real_voice_takes": 0,
+  "total_frames": 1800,
+  "release_authorized": false,
+  "workspace_usage": "unknown",
+  "movie_created": false,
+  "input_hashes": {
+    "assets": "47069ec5c5059ee7bbd969ff276985ae4d5991152b9dc6c3c305aec2ecd5e28f",
+    "blueprint": "3a067d74818100e763ba66368225242e423a1746be1031be843ff8b337ab5be0",
+    "renderer": "17bc6a06568bb4bf0f51940bd271c21989e3940d3b9a32fa50552522427b450a",
+    "captions": "e86eecaccca586d31bfd68dc392db201dd6495e62905cb8921688041bb921721"
+  },
+  "external_spend_usd": 0,
+  "generated_images": 0,
+  "generated_voice_takes": 0,
+  "voice_backend": "NONE_CONFIGURED_BY_THIS_OFFLINE_RUNNER"
+}

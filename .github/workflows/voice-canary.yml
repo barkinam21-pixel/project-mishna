@@ -1,0 +1,31 @@
+name: Private Hebrew voice canary - CPU only, encrypted output
+on:
+  push:
+    branches: ['codex/issue-37-cloud-proof']
+    paths: ['.github/workflows/voice-canary.yml', 'tools/voice_canary.py']
+permissions:
+  contents: read
+jobs:
+  canary:
+    # Completed bounded experiment. Session private key stays out of GitHub.
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU inference dependencies (no paid backend)
+        run: |
+          pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install transformers==4.46.3 scipy uroman cryptography==46.0.4
+      - name: Generate one noncommercial Hebrew sample and encrypt with session public key
+        run: python -m tools.voice_canary
+      - name: Transfer ciphertext only
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-hebrew-voice-canary-encrypted
+          path: build/voice-canary.bin
+          retention-days: 2
+          if-no-files-found: error
