@@ -25,7 +25,8 @@ class SpeechEnvironmentTests(unittest.TestCase):
   self.assertEqual(role['scope'],"[variables('speechId')]")
   self.assertIn('acdd72a7-3385-48ef-bd42-f606fba81ae7',template['variables']['readerRole'])
   fed=next(r for r in resources if r['type'].endswith('federatedIdentityCredentials'))
-  self.assertEqual(fed['properties']['subject'],'repo:barkinam21-pixel/project-mishna:environment:azure-speech')
+  self.assertEqual(fed['properties']['subject'],'repo:barkinam21-pixel@312509860/project-mishna@1342201292:environment:azure-speech')
+  self.assertEqual(template['parameters']['speechResourceName']['defaultValue'],'bar-universal-speech-2026')
  def test_no_pr_execution_or_repository_secret_exposure(self):
   root=Path(__file__).resolve().parents[1]
   workflow=(root/'.github/workflows/azure-speech-check.yml').read_text()
