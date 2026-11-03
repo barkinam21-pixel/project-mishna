@@ -43,7 +43,7 @@ def main():
     wav=out/'audition.wav';wav.write_bytes(data)
     info=inspect_wav(wav)
     if info['is_silent'] or info['sample_rate']!=48000:raise ValueError('Invalid audio')
-    seal(out,Path('security/production_artifacts_public_key.pem'),Path('build/azure-audition.bin'))
+    seal(out,Path('security/voice-canary-session-public.pem'),Path('build/azure-audition.bin'))
     print('ENCRYPTED_AUDITION_CREATED_NOT_LISTENED_OR_APPROVED')
 
 if __name__=='__main__':
