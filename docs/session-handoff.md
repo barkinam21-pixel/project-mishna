@@ -265,3 +265,7 @@ Run https://github.com/barkinam21-pixel/project-mishna/actions/runs/41797122669 
 Encrypted artifact 13305483923 recovered via connector and decrypted privately. Same text/settings: Andrew 9.258792 s; Brian 9.421167 s; 48 kHz mono PCM16. Fully decoded and no clipped samples. SHA256 respectively 8f0e3d19e9c4d6f5184cde3a9a64cfade771e82389f6b5c55d3b783093b661c8 and beec0c8e9b5fbc54a97d39833b149adc1dcc06caf805f0d9b8504df3f79767a5.
 
 Delivered one private MP3: Andrew first, two-second silence, Brian second. No narration labels synthesized, voice transformations, model changes or raw audio uploaded to GitHub. Original WAVs retained privately. Actual listening/ASR not performed; no claim of native Israeli accent, pronunciation correctness, age match, warmth or 60–90-second consistency approval. Owner has not selected a narrator. Old Avri configuration retained only as technical backup and rejected for main narration.
+
+
+## Further casting request — 2026-11-04
+Brian is closer but rejected as final; Andrew and Avri also not suitable. User requests three distinct new voices. Inspected connected Maudio canary (Gemini 3.1 Flash TTS; Charon/Iapetus/Sadaltager) and official Hebrew/voice/pricing documentation; account free tier cannot be verified, so no synthesis call submitted under $0/no-paid-services rule. Read-only HeyGen filtered catalog empty. No code/default/security changes or new real audio. Detailed evidence and one next gate in docs/narrator-voice-direction.md.
