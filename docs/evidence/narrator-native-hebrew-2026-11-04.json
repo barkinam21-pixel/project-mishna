@@ -1,0 +1,218 @@
+{
+  "date": "2026-11-04",
+  "repository": "barkinam21-pixel/project-mishna",
+  "continuation_pr": 43,
+  "starting_head": "5971af59a33c910dfb7ec89e9bd3eac271f85d9a",
+  "merged": false,
+  "selected_narrator": null,
+  "narrator_target_perceived_age": [
+    60,
+    68
+  ],
+  "experiment_engine": "BlueTTS ONNX v2; runtime Git V2.5.0",
+  "model_revision": "cd1093eaa920136e7a727dfb92d5f7879039e587",
+  "runtime_commit": "0e38dbf08ed53f85863d1eab092bd9572c53a503",
+  "renikudplus_revision": "679c56ca449d41873fb8ff7711ddf7563d28198f",
+  "native_reference": {
+    "dataset": "SASPEECH",
+    "id": "gold_001_line_339",
+    "speaker": "Shaul Amsterdamski donated research voice; NOT narrator casting or endorsement",
+    "permission_source": "https://www.openslr.org/resources/134/about.html",
+    "scope": "private noncommercial research only; no series publication/commercial clearance",
+    "sha256": "1d3b7865866cf72374089cfc41c77071132eff8c10896c7c02788ce4a94abb32"
+  },
+  "settings": {
+    "speed": 0.95,
+    "total_steps": 16,
+    "requested_cfg_scale": 4.0,
+    "seed_numpy": 731,
+    "chunk_count": 10,
+    "elapsed_seconds": 88.14120048500263,
+    "duration_seconds": 47.46482993197279,
+    "output_static_gain_db": -1.2622389686672526
+  },
+  "deliverables": {
+    "main_audio_url": "https://drive.google.com/file/d/1Y4BAv5nOWB8sgcdASu4MMr1_ZX-6TcXG/view?usp=drivesdk",
+    "same_text_comparison_url": "https://drive.google.com/file/d/1sitdqyw_0B6ETqaI4fCjWX15sTutMRyP/view?usp=drivesdk",
+    "private_evidence_archive_url": "https://drive.google.com/file/d/1zifDWFyp6sYuW-p_YwJnO9nVcfOC-YSa/view?usp=drivesdk",
+    "shared": false,
+    "drive_readback_verified": [
+      "id",
+      "MIME",
+      "byte size",
+      "shared=false"
+    ],
+    "server_sha256_verified": false,
+    "main_seconds": 41.881360544217685,
+    "same70words_blue_seconds": 32.94353741496599,
+    "same70words_iapetus_seconds": 38.21095833333333,
+    "comparison_seconds": 73.1545,
+    "extended_seconds": 47.46482993197279
+  },
+  "automatic_qa": {
+    "full_wav_and_mp3_decode": true,
+    "pcm_saturated_samples": 0,
+    "main_alignment": {
+      "expected_words": 86,
+      "recognized_tokens": 86,
+      "word_edit_distance": 1,
+      "word_error_rate": 0.011627906976744186,
+      "flags": [
+        {
+          "operation": "replace",
+          "expected": [
+            "שמע"
+          ],
+          "recognized": [
+            "שמה"
+          ]
+        }
+      ]
+    },
+    "same70words_alignment": {
+      "expected_words": 70,
+      "recognized_tokens": 70,
+      "word_edit_distance": 1,
+      "word_error_rate": 0.014285714285714285,
+      "flags": [
+        {
+          "operation": "replace",
+          "expected": [
+            "שמע"
+          ],
+          "recognized": [
+            "שמה"
+          ]
+        }
+      ]
+    },
+    "iapetus_same70words_alignment": {
+      "expected_words": 70,
+      "recognized_tokens": 70,
+      "word_edit_distance": 1,
+      "word_error_rate": 0.014285714285714285,
+      "flags": [
+        {
+          "operation": "replace",
+          "expected": [
+            "שמע"
+          ],
+          "recognized": [
+            "שמה"
+          ]
+        }
+      ]
+    },
+    "extended_literal_alignment": {
+      "expected_words": 96,
+      "recognized_tokens": 96,
+      "word_edit_distance": 2,
+      "word_error_rate": 0.020833333333333332,
+      "flags": [
+        {
+          "operation": "replace",
+          "expected": [
+            "שמע"
+          ],
+          "recognized": [
+            "שמה"
+          ]
+        },
+        {
+          "operation": "replace",
+          "expected": [
+            "מאתיים"
+          ],
+          "recognized": [
+            "200"
+          ]
+        }
+      ]
+    },
+    "extended_numeric_normalized_alignment": {
+      "expected_words": 96,
+      "recognized_tokens": 96,
+      "word_edit_distance": 1,
+      "word_error_rate": 0.010416666666666666,
+      "flags": [
+        {
+          "operation": "replace",
+          "expected": [
+            "שמע"
+          ],
+          "recognized": [
+            "שמה"
+          ]
+        }
+      ]
+    },
+    "numeric_equivalence_explicit": {
+      "200": "מאתיים"
+    },
+    "speaker_embedding_cosine_first_last8s": 0.9712018370628357,
+    "embedding_is_not_perceptual_approval": true
+  },
+  "human_critical_listening": false,
+  "perceptual_scores": {
+    "native_accent": null,
+    "stress": null,
+    "perceived_age": null,
+    "warmth": null,
+    "natural_depth": null,
+    "emotion": null,
+    "identity_stability": null,
+    "long_form_suitability": null
+  },
+  "f5_trial": {
+    "audio_created": true,
+    "seconds": 28.32,
+    "elapsed_seconds": 1207.756127413999,
+    "asr_word_error_rate": 0.9,
+    "qualified": false,
+    "caveats": [
+      "dynamic-int8 not calibrated for speech quality",
+      "single reference+target context about34s exceeded standard22s chunk target",
+      "float32 stopped without audio for runtime; model quality not isolated"
+    ],
+    "initial_timeout_wrapper_exit_code": 124,
+    "absolute_replacement_watchdog_limit_seconds": 1800
+  },
+  "other_candidates": [
+    {
+      "engine": "Mamre-TTS",
+      "synthesized": false,
+      "blocker": "requires NVIDIA6GB+; CPU-only workspace; NC weights"
+    },
+    {
+      "engine": "Phonikud-TTS",
+      "synthesized": false,
+      "blocker": "academic/educational use restriction, no clearance for nonacademic casting evaluation"
+    }
+  ],
+  "files": {
+    "BlueV2-42s-PRIVATE-RESEARCH.mp3": {
+      "bytes": 671610,
+      "sha256": "6af4dcc7cd989cb551f09ff65f0d6db2c4ce5599bd71c494e50da3b37c2ea806"
+    },
+    "Iapetus-then-BlueV2-PRIVATE-RESEARCH.mp3": {
+      "bytes": 1172323,
+      "sha256": "7d23fbdcc8547b9917dab844c4ba304e9c87de155b2a2ae15f0f69b939dbd8e6"
+    },
+    "BlueV2-review-private-research.wav": {
+      "bytes": 4186442,
+      "sha256": "db0a5180801faa47cedea97f8f719278f375870103f9c8366a3e5ffd8a8102ec"
+    },
+    "F5-private-research.wav": {
+      "bytes": 1359404,
+      "sha256": "d8c525959754ecd54703483aa7450add263075f6c6b8935161376960172cde23"
+    }
+  },
+  "external_new_spend_usd": 0,
+  "workspace_plan_usage": "unknown",
+  "new_accounts_or_paid_resources": false,
+  "production_code_changed": false,
+  "approval_flags_changed": false,
+  "audio_publication_authorized": false,
+  "background_tts_running": false,
+  "next_action": "listen only; no technical action required"
+}

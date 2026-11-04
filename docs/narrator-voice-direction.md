@@ -1,5 +1,10 @@
 # Main narrator: audition direction, not approved casting
 
+**Current owner brief (4 Nov 2026): perceived60–68, native Israeli Hebrew, warm mature male, emotionally expressive and stable. Earlier age ranges below are historical. No final narrator selected.**
+
+Current native-Hebrew engine/reference eligibility and bounded CPU experiment: [BlueTTS/F5 investigation](narrator-native-hebrew-candidates-2026-11-04.md). Blue male presets are English LibriTTS-derived, not newly found native older Israelis; a permitted SASPEECH reference enabled private Blue v2 synthesis after the preset gate. [42-second private sample](https://drive.google.com/file/d/1Y4BAv5nOWB8sgcdASu4MMr1_ZX-6TcXG/view?usp=drivesdk) and [same-text Iapetus→Blue comparison](https://drive.google.com/file/d/1sitdqyw_0B6ETqaI4fCjWX15sTutMRyP/view?usp=drivesdk). F5 produced audio but failed text QA; its long-context/int8 recipe does not isolate model quality. Neither trial is approved casting or commercial permission. No human critical listening, age60–68, native-accent, emotional or long-form stability approval; same שמע/שמה ASR flag as Iapetus.
+
+
 Bar requests an Israeli Hebrew narrator perceived around 55–65: warm, wise, kind, patient, moderately deep, quietly lively and clear. Avoid frailty, rasp, fatigue, exaggerated old age or monotony. The narrator is a separate contemporary guiding voice, not a named Tanna or an impersonation of a historical sage. Elder character voices remain separately cast; no character voice is approved by this experiment.
 
 The working Avri sample remains preserved and the default is unchanged. An optional comparison uses the same original generic audition text for both takes, avoiding unapproved Mishnah variants or historical claims. Baseline: Avri, rate -3%, default pitch. Candidate: same Avri, rate -6%, pitch -3%, default volume. These are experimental engineering choices, not a guarantee of age, warmth or human identity. No pitch-shifting postprocessing, cloning, unsupported expressive style or paid voice service.
