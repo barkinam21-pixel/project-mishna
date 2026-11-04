@@ -46,3 +46,12 @@ The corrected pinned form above updates the SAME `github-azure-speech` credentia
 Workflow code on main needs no change for this correction; it can retry the connection-only run after the Azure trust is updated, even before the small template-fix PR is merged. No merge of that PR is performed automatically.
 
 References: https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims ; https://learn.microsoft.com/entra/workload-id/workload-identities-github-immutable-subjects .
+
+
+## Owner-only manual dispatch without repeat reviewer approval — 2026-11-04
+
+Supersedes the owner-required-reviewer instructions above. Owner explicitly removed the review gate. Live GitHub metadata confirmed no required-reviewer rule, custom main-only deployment policy and admin bypass disabled. Run 41739138800 failed verification and skipped audition. The verifier now accepts the absence of reviewers while keeping main-only/no-tags/no-wildcards and no-admin-bypass checks. Both jobs additionally require workflow_dispatch and the repository owner as actor; PR code cannot receive credentials. Concurrency serializes auditions. No account/security settings were changed by this patch.
+
+ARM CLI now has a 30-second timeout; decoded WAV must have nonempty mono uncompressed PCM16 at 48kHz. Upload fails on missing ciphertext. Mock execution tests cover connection-only without audio, WAV synthesis/sealing, paid-tier rejection and unavailable voice. Mock sound is strictly test data, not a real audition.
+
+Main remains behind this patch; do not dispatch the old workflow expecting a fix, or dispatch this branch against the main-only secret boundary. Explicit merge approval is required. After merge run connection-only first, then at most one bounded synthesis after live F0 verification. Portal F0 was reported by owner; live F0 and remaining monthly quota are not yet verified. Never claim remaining quota from SKU alone or switch tiers on a quota error. Artifact remains encrypted; the retained session private key can recover it here. No Azure synthesis performed by this patch; no voice quality claim.
