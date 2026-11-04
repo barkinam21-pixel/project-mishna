@@ -7,7 +7,8 @@
       "minLength": 2,
       "metadata": {
         "description": "EXISTING Speech resource name in the selected EXISTING resource group. No Speech resource is created or changed."
-      }
+      },
+      "defaultValue": "bar-universal-speech-2026"
     },
     "identityName": {
       "type": "string",
@@ -37,7 +38,7 @@
       ],
       "properties": {
         "issuer": "https://token.actions.githubusercontent.com",
-        "subject": "repo:barkinam21-pixel/project-mishna:environment:azure-speech",
+        "subject": "repo:barkinam21-pixel@312509860/project-mishna@1342201292:environment:azure-speech",
         "audiences": [
           "api://AzureADTokenExchange"
         ]
