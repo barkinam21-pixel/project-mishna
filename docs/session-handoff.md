@@ -241,3 +241,17 @@ Playable copy delivered privately to owner; no raw audio or keys committed or up
 ## Main narrator audition — 2026-11-04
 
 Owner heard the original Avri and confirmed voice works. Requested a separate warm wise lively 55–65 narrator, distinct from elderly characters. Prepared optional same-text baseline/candidate comparison: unchanged -3% baseline vs -6% rate, -3% pitch candidate. Default and original recording preserved. See docs/narrator-voice-direction.md. No new synthesis yet: changed workflow must be explicitly approved for merge to main before access to secrets; do not bypass branch restrictions. No fixed voice approval, cast approval or release approval inferred.
+
+
+## Actual comparison delivered — 2026-11-04
+
+Merged with explicit owner approval: d09cee58b59a65384329435b41b314da117308f7. All three PR checks passed.
+Run https://github.com/barkinam21-pixel/project-mishna/actions/runs/41796105163 succeeded without manual environment review. Live ARM F0 and Hebrew voice verified; exactly two short synthesis requests, no retries or tier changes. Remaining F0 quota unknown; no paid service requested.
+
+Encrypted artifact 13305506705 downloaded via connector and decrypted with retained session key. Original defaults unchanged. Same audition text in both takes: baseline -3% rate/default pitch (10.774708 s), candidate -6% rate/-3% pitch (11.119 s). Both 48 kHz mono PCM16; fully decoded, no clipped samples. SHA256 respectively 39ce09a2b0e6809a5b61599d6b25923d63425d21494eaac70197d3e0cb2c5338 and febcf08d904aa22e0763face95052cb82f7c9c694eeb95556df9c4f122283f3a.
+
+Private combined MP3 delivered to owner: baseline first, two-second silence, candidate second. About 24 seconds total. No extra synthetic voice labels, music, pitch postprocessing or volume alteration. All original WAV stems preserved privately. Technical decoding is not human pronunciation/age/warmth approval; user has not yet chosen a take. No permanent narrator or character casting changes. No raw voice or keys published to GitHub.
+
+
+## Non-Avri casting requested — 2026-11-04
+Owner rejected Avri for main narration. Preserved existing system as backup. Prepared optional two-preset Andrew/Brian Hebrew audition with live catalog locale/gender validation, identical text/settings, no changes to defaults or security. Accent, age, warmth and stability unapproved; no new audio before merge approval. See docs/narrator-voice-direction.md for source and constraints. No external spend or paid engine calls.
