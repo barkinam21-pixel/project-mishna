@@ -4,11 +4,11 @@ Status: owner reports azure-speech environment created, owner required reviewer,
 
 ## 1. Azure identity in one Portal form, no commands
 
-[Open the pinned identity setup form](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbarkinam21-pixel%2Fproject-mishna%2F7fe7cc37caf6386d43f70369e2dd8adb96f1d0b8%2Finfrastructure%2Fazure-speech-identity.json)
+[Open the corrected pinned identity setup form](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbarkinam21-pixel%2Fproject-mishna%2Fffc4273851495941f7711857a968ef307c559ed5%2Finfrastructure%2Fazure-speech-identity.json)
 
 Choose the Speech resource's existing subscription and existing resource group. Enter its exact existing resource name in Speech Resource Name. Leave Identity Name unchanged unless that name is already used for a different purpose. Review + create. Do not create a Speech resource or change its tier.
 
-The template creates only: a user-assigned managed identity, a GitHub federated credential restricted to repo barkinam21-pixel/project-mishna environment azure-speech, and Reader scoped to the existing Speech resource. No role at subscription or resource-group scope, no app password, no key lookup permission. Identity resources have no added service charge per Microsoft; no compute/storage/inference is created. Owner/role-assignment permission on that resource is needed to deploy. The template is structurally tested; live ARM deployment/validation requires your authorized Azure session and has not been performed here.
+The template creates only: a user-assigned managed identity, a GitHub federated credential restricted to repo barkinam21-pixel/project-mishna environment azure-speech, with immutable owner/repository IDs, and Reader scoped to the existing Speech resource. No role at subscription or resource-group scope, no app password, no key lookup permission. Identity resources have no added service charge per Microsoft; no compute/storage/inference is created. Owner/role-assignment permission on that resource is needed to deploy. The template is structurally tested; live ARM deployment/validation requires your authorized Azure session and has not been performed here.
 
 After deployment: Outputs → AZURE_CONNECTION → copy the JSON value (clientId, tenantId, subscriptionId, resourceId).
 
@@ -35,3 +35,23 @@ After the successful connection-only run, synthesize=true requests exactly one s
 Current results: preparation only, no deployment, Azure login, key use, audition, new charges, merge or film publication. Platform quota usage unknown.
 
 References: [Microsoft Portal deployment buttons](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-azure-button), [managed identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust-user-assigned-managed-identity), [identity pricing](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview).
+
+
+## Correction after actual Azure login (2026-11-03)
+
+Owner approved the protected connection-only run. GitHub protections passed. Azure rejected login with AADSTS700213: its presented subject was `repo:barkinam21-pixel@312509860/project-mishna@1342201292:environment:azure-speech`, while our original template trusted the old name-only subject. This is a template defect, not a missing user approval or secret. GitHub's immutable-subject rollout applies to this repository. Do not downgrade GitHub's token format or loosen environment restrictions.
+
+The corrected pinned form above updates the SAME `github-azure-speech` credential on SAME `mishnah-speech-github` identity. Select existing resource group `universal-voice-hub`; Speech Resource Name now defaults to `bar-universal-speech-2026`. Review + create → Create. Existing client ID, Reader role and AZURE_CONNECTION/key do not need recopying if the same resource group/identity are selected. No Speech service creation, tier change or paid inference. This is an owner-approved Azure trust configuration update, not a new production environment. Live application is not yet verified.
+
+Workflow code on main needs no change for this correction; it can retry the connection-only run after the Azure trust is updated, even before the small template-fix PR is merged. No merge of that PR is performed automatically.
+
+References: https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims ; https://learn.microsoft.com/entra/workload-id/workload-identities-github-immutable-subjects .
+
+
+## Owner-only manual dispatch without repeat reviewer approval — 2026-11-04
+
+Supersedes the owner-required-reviewer instructions above. Owner explicitly removed the review gate. Live GitHub metadata confirmed no required-reviewer rule, custom main-only deployment policy and admin bypass disabled. Run 41739138800 failed verification and skipped audition. The verifier now accepts the absence of reviewers while keeping main-only/no-tags/no-wildcards and no-admin-bypass checks. Both jobs additionally require workflow_dispatch and the repository owner as actor; PR code cannot receive credentials. Concurrency serializes auditions. No account/security settings were changed by this patch.
+
+ARM CLI now has a 30-second timeout; decoded WAV must have nonempty mono uncompressed PCM16 at 48kHz. Upload fails on missing ciphertext. Mock execution tests cover connection-only without audio, WAV synthesis/sealing, paid-tier rejection and unavailable voice. Mock sound is strictly test data, not a real audition.
+
+Main remains behind this patch; do not dispatch the old workflow expecting a fix, or dispatch this branch against the main-only secret boundary. Explicit merge approval is required. After merge run connection-only first, then at most one bounded synthesis after live F0 verification. Portal F0 was reported by owner; live F0 and remaining monthly quota are not yet verified. Never claim remaining quota from SKU alone or switch tiers on a quota error. Artifact remains encrypted; the retained session private key can recover it here. No Azure synthesis performed by this patch; no voice quality claim.

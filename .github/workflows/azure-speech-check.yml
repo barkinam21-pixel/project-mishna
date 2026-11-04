@@ -8,9 +8,12 @@ on:
         default: false
 permissions:
   contents: read
+concurrency:
+  group: azure-speech-audition
+  cancel-in-progress: false
 jobs:
   verify_environment:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,7 +31,7 @@ jobs:
         run: python -m tools.verify_speech_environment
   audition:
     needs: verify_environment
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
     environment: azure-speech
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -66,3 +69,4 @@ jobs:
           name: encrypted-azure-audition
           path: build/azure-audition.bin
           retention-days: 7
+          if-no-files-found: error

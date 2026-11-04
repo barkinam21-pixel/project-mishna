@@ -20,7 +20,7 @@ def main():
     import re
     if region and not re.fullmatch('[a-z0-9-]{2,30}',region):raise ValueError('Invalid region')
     # Live ARM read using the explicitly configured federated Azure identity.
-    result=subprocess.run(['az','resource','show','--ids',rid,'--output','json'],capture_output=True,check=True,text=True)
+    result=subprocess.run(['az','resource','show','--ids',rid,'--output','json'],capture_output=True,check=True,text=True,timeout=30)
     resource=json.loads(result.stdout)
     region=region or resource.get('location','').replace(' ','').lower()
     if not re.fullmatch('[a-z0-9-]{2,30}',region):raise ValueError('Invalid resource region')
@@ -42,7 +42,8 @@ def main():
     out=Path('private-media/azure-audition');out.mkdir(parents=True,exist_ok=False)
     wav=out/'audition.wav';wav.write_bytes(data)
     info=inspect_wav(wav)
-    if info['is_silent'] or info['sample_rate']!=48000:raise ValueError('Invalid audio')
+    if (info['is_silent'] or info['sample_rate']!=48000 or info['channels']!=1
+        or info['sample_width_bytes']!=2 or info['compression']!='NONE' or info['frames']<=0):raise ValueError('Invalid audio')
     seal(out,Path('security/voice-canary-session-public.pem'),Path('build/azure-audition.bin'))
     print('ENCRYPTED_AUDITION_CREATED_NOT_LISTENED_OR_APPROVED')
 
