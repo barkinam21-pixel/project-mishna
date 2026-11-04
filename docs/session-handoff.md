@@ -223,3 +223,16 @@ Supersedes the owner-required-reviewer instructions above. Owner explicitly remo
 ARM CLI now has a 30-second timeout; decoded WAV must have nonempty mono uncompressed PCM16 at 48kHz. Upload fails on missing ciphertext. Mock execution tests cover connection-only without audio, WAV synthesis/sealing, paid-tier rejection and unavailable voice. Mock sound is strictly test data, not a real audition.
 
 Main remains behind this patch; do not dispatch the old workflow expecting a fix, or dispatch this branch against the main-only secret boundary. Explicit merge approval is required. After merge run connection-only first, then at most one bounded synthesis after live F0 verification. Portal F0 was reported by owner; live F0 and remaining monthly quota are not yet verified. Never claim remaining quota from SKU alone or switch tiers on a quota error. Artifact remains encrypted; the retained session private key can recover it here. No Azure synthesis performed by this patch; no voice quality claim.
+
+
+## Verified production result — 2026-11-04
+
+PR #40 merged with explicit owner approval (054ecefa5c20fb42feec41db2c73d9056b531a07). All three PR CI checks passed; 305 local unit tests passed before merge.
+
+Connection-only run https://github.com/barkinam21-pixel/project-mishna/actions/runs/41794326285 succeeded, including actual OIDC login, live ARM resource identity/kind/region/F0 verification and Hebrew voice availability. No manual environment approval was required.
+
+Exactly one synthesis run https://github.com/barkinam21-pixel/project-mishna/actions/runs/41794399901 succeeded. Encrypted artifact 13304414177 was downloaded through the GitHub connector (CLI blob download returned 403), decrypted with the retained private session key, and WAV fully decoded by FFmpeg.
+
+Actual Avri Hebrew WAV: 6.730708 seconds, 48000 Hz mono PCM16; peak 18827, clipped samples 0, RMS 2970.10. SHA256: 1124d7f34e5290be16a44c6f7077651c58d509242b48d8d0f0b9775b4de55dc7.
+
+Playable copy delivered privately to owner; no raw audio or keys committed or uploaded to public GitHub. No claim of human listening, natural pronunciation, stable perceived pitch, creative approval or film completion. Human listening remains necessary. Free F0 resource was verified; exact remaining monthly quota unknown. One short request, no retry, no resource creation or tier change; no paid synthesis requested.
