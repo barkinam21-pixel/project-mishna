@@ -255,3 +255,13 @@ Private combined MP3 delivered to owner: baseline first, two-second silence, can
 
 ## Non-Avri casting requested — 2026-11-04
 Owner rejected Avri for main narration. Preserved existing system as backup. Prepared optional two-preset Andrew/Brian Hebrew audition with live catalog locale/gender validation, identical text/settings, no changes to defaults or security. Accent, age, warmth and stability unapproved; no new audio before merge approval. See docs/narrator-voice-direction.md for source and constraints. No external spend or paid engine calls.
+
+
+## Actual non-Avri audition delivery — 2026-11-04
+
+PR #42 merged with explicit owner approval, merge 58af244974fe151d5e2b560172d97a63927198b1. Three CI checks passed; 312 local tests previously passed.
+Run https://github.com/barkinam21-pixel/project-mishna/actions/runs/41797122669 succeeded. Live F0 and Male/SecondaryLocaleList he-IL verified for AndrewMultilingualNeural and BrianMultilingualNeural. Exactly two short requests, no Avri audio, retries, resource changes or paid-tier fallback. Remaining F0 quota unknown.
+
+Encrypted artifact 13305483923 recovered via connector and decrypted privately. Same text/settings: Andrew 9.258792 s; Brian 9.421167 s; 48 kHz mono PCM16. Fully decoded and no clipped samples. SHA256 respectively 8f0e3d19e9c4d6f5184cde3a9a64cfade771e82389f6b5c55d3b783093b661c8 and beec0c8e9b5fbc54a97d39833b149adc1dcc06caf805f0d9b8504df3f79767a5.
+
+Delivered one private MP3: Andrew first, two-second silence, Brian second. No narration labels synthesized, voice transformations, model changes or raw audio uploaded to GitHub. Original WAVs retained privately. Actual listening/ASR not performed; no claim of native Israeli accent, pronunciation correctness, age match, warmth or 60–90-second consistency approval. Owner has not selected a narrator. Old Avri configuration retained only as technical backup and rejected for main narration.
