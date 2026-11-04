@@ -10,6 +10,10 @@ on:
         description: Optional two-take Avri comparison; requires synthesize
         type: boolean
         default: false
+      new_narrators:
+        description: Two non-Avri multilingual Hebrew casting probes (unapproved accents)
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -60,11 +64,15 @@ jobs:
           AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
           AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
           AZURE_SPEECH_RESOURCE_ID: ${{ fromJSON(vars.AZURE_CONNECTION || '{}').resourceId || vars.AZURE_SPEECH_RESOURCE_ID }}
+          NEW_NARRATORS: ${{ inputs.new_narrators }}
           COMPARE_NARRATOR: ${{ inputs.compare_narrator }}
           SYNTHESIZE: ${{ inputs.synthesize }}
         run: |
           if [ "$SYNTHESIZE" = true ]; then
-            if [ "$COMPARE_NARRATOR" = true ]; then
+            if [ "$NEW_NARRATORS" = true ]; then
+              if [ "$COMPARE_NARRATOR" = true ]; then exit 2; fi
+              python -m tools.azure_speech_check --synthesize --new-narrators
+            elif [ "$COMPARE_NARRATOR" = true ]; then
               python -m tools.azure_speech_check --synthesize --compare-narrator
             else
               python -m tools.azure_speech_check --synthesize

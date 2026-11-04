@@ -13,7 +13,8 @@ def verify_resource(resource,region):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--synthesize',action='store_true');p.add_argument('--compare-narrator',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--synthesize',action='store_true');p.add_argument('--compare-narrator',action='store_true');p.add_argument('--new-narrators',action='store_true');a=p.parse_args()
+    if a.new_narrators and (not a.synthesize or a.compare_narrator):raise ValueError('New casting requires explicit synthesis and no legacy comparison')
     if a.compare_narrator and not a.synthesize:raise ValueError('Comparison requires explicit synthesis')
     key=os.environ.get('AZURE_SPEECH_KEY','');region=os.environ.get('AZURE_SPEECH_REGION','')
     rid=os.environ.get('AZURE_SPEECH_RESOURCE_ID','')
@@ -31,7 +32,11 @@ def main():
     headers={'Ocp-Apim-Subscription-Key':key}
     with urllib.request.urlopen(urllib.request.Request(base+'voices/list',headers=headers),timeout=20) as r:
         voices=json.load(r)
-    if not any(v.get('ShortName')=='he-IL-AvriNeural' for v in voices):raise ValueError('Hebrew voice unavailable')
+    new_takes=None
+    if a.new_narrators:
+        from tools.new_narrator_auditions import audition_takes
+        new_takes=audition_takes(voices)
+    if not a.new_narrators and not any(v.get('ShortName')=='he-IL-AvriNeural' for v in voices):raise ValueError('Hebrew voice unavailable')
     print('LIVE_ARM_F0_AND_HEBREW_VOICE_CHECK_PASSED')
     if not a.synthesize:return
     # Default audition is unchanged. Optional comparison is exactly two requests.
@@ -40,6 +45,7 @@ def main():
     if a.compare_narrator:
         from tools.narrator_comparison import comparison_takes
         takes=comparison_takes()
+    if new_takes is not None:takes=new_takes
     headers.update({'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'riff-48khz-16bit-mono-pcm'})
     out=Path('private-media/azure-audition');out.mkdir(parents=True,exist_ok=False)
     for name,ssml in takes:
