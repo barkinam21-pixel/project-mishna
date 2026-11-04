@@ -13,7 +13,8 @@ def verify_resource(resource,region):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--synthesize',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--synthesize',action='store_true');p.add_argument('--compare-narrator',action='store_true');a=p.parse_args()
+    if a.compare_narrator and not a.synthesize:raise ValueError('Comparison requires explicit synthesis')
     key=os.environ.get('AZURE_SPEECH_KEY','');region=os.environ.get('AZURE_SPEECH_REGION','')
     rid=os.environ.get('AZURE_SPEECH_RESOURCE_ID','')
     if not key or not rid:raise ValueError('Missing protected connection settings')
@@ -33,17 +34,22 @@ def main():
     if not any(v.get('ShortName')=='he-IL-AvriNeural' for v in voices):raise ValueError('Hebrew voice unavailable')
     print('LIVE_ARM_F0_AND_HEBREW_VOICE_CHECK_PASSED')
     if not a.synthesize:return
-    # Exactly one short request, no retry, no fallback or pricing change.
+    # Default audition is unchanged. Optional comparison is exactly two requests.
     ssml=hebrew_rehearsal_ssml('ערב יורד על הכפר. רַבָּן גַּמְלִיאֵל, תְּרוּמָה, עַמּוּד הַשַּׁחַר.','narrator')
+    takes=[('audition',ssml)]
+    if a.compare_narrator:
+        from tools.narrator_comparison import comparison_takes
+        takes=comparison_takes()
     headers.update({'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'riff-48khz-16bit-mono-pcm'})
-    req=urllib.request.Request(base+'v1',data=ssml.encode(),headers=headers,method='POST')
-    with urllib.request.urlopen(req,timeout=30) as r:data=r.read(8*1024*1024+1)
-    if len(data)>8*1024*1024:raise ValueError('Excessive audio response')
     out=Path('private-media/azure-audition');out.mkdir(parents=True,exist_ok=False)
-    wav=out/'audition.wav';wav.write_bytes(data)
-    info=inspect_wav(wav)
-    if (info['is_silent'] or info['sample_rate']!=48000 or info['channels']!=1
-        or info['sample_width_bytes']!=2 or info['compression']!='NONE' or info['frames']<=0):raise ValueError('Invalid audio')
+    for name,ssml in takes:
+        req=urllib.request.Request(base+'v1',data=ssml.encode(),headers=headers,method='POST')
+        with urllib.request.urlopen(req,timeout=30) as r:data=r.read(8*1024*1024+1)
+        if len(data)>8*1024*1024:raise ValueError('Excessive audio response')
+        wav=out/(name+'.wav');wav.write_bytes(data)
+        info=inspect_wav(wav)
+        if (info['is_silent'] or info['sample_rate']!=48000 or info['channels']!=1
+            or info['sample_width_bytes']!=2 or info['compression']!='NONE' or info['frames']<=0):raise ValueError('Invalid audio')
     seal(out,Path('security/voice-canary-session-public.pem'),Path('build/azure-audition.bin'))
     print('ENCRYPTED_AUDITION_CREATED_NOT_LISTENED_OR_APPROVED')
 
