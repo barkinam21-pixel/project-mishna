@@ -236,3 +236,8 @@ Exactly one synthesis run https://github.com/barkinam21-pixel/project-mishna/act
 Actual Avri Hebrew WAV: 6.730708 seconds, 48000 Hz mono PCM16; peak 18827, clipped samples 0, RMS 2970.10. SHA256: 1124d7f34e5290be16a44c6f7077651c58d509242b48d8d0f0b9775b4de55dc7.
 
 Playable copy delivered privately to owner; no raw audio or keys committed or uploaded to public GitHub. No claim of human listening, natural pronunciation, stable perceived pitch, creative approval or film completion. Human listening remains necessary. Free F0 resource was verified; exact remaining monthly quota unknown. One short request, no retry, no resource creation or tier change; no paid synthesis requested.
+
+
+## Main narrator audition — 2026-11-04
+
+Owner heard the original Avri and confirmed voice works. Requested a separate warm wise lively 55–65 narrator, distinct from elderly characters. Prepared optional same-text baseline/candidate comparison: unchanged -3% baseline vs -6% rate, -3% pitch candidate. Default and original recording preserved. See docs/narrator-voice-direction.md. No new synthesis yet: changed workflow must be explicitly approved for merge to main before access to secrets; do not bypass branch restrictions. No fixed voice approval, cast approval or release approval inferred.

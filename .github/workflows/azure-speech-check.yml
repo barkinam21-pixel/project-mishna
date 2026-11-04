@@ -6,6 +6,10 @@ on:
         description: One short Hebrew audition after live F0 verification
         type: boolean
         default: false
+      compare_narrator:
+        description: Optional two-take Avri comparison; requires synthesize
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -56,10 +60,15 @@ jobs:
           AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
           AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
           AZURE_SPEECH_RESOURCE_ID: ${{ fromJSON(vars.AZURE_CONNECTION || '{}').resourceId || vars.AZURE_SPEECH_RESOURCE_ID }}
+          COMPARE_NARRATOR: ${{ inputs.compare_narrator }}
           SYNTHESIZE: ${{ inputs.synthesize }}
         run: |
           if [ "$SYNTHESIZE" = true ]; then
-            python -m tools.azure_speech_check --synthesize
+            if [ "$COMPARE_NARRATOR" = true ]; then
+              python -m tools.azure_speech_check --synthesize --compare-narrator
+            else
+              python -m tools.azure_speech_check --synthesize
+            fi
           else
             python -m tools.azure_speech_check
           fi
