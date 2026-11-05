@@ -40,6 +40,14 @@ class VoxCPMExperimentTests(unittest.TestCase):
         self.assertFalse(options['normalize'])
         self.assertFalse(options['denoise'])
 
+    def test_pointed_hebrew_regression_guard(self):
+        model = self.module()
+        self.assertEqual(model.validate_hebrew_tts_input('קריאת שמע'), 'קריאת שמע')
+        with self.assertRaisesRegex(ValueError, 'Pointed Hebrew rejected'):
+            model.validate_hebrew_tts_input('קְרִיאַת שְׁמַע')
+        with self.assertRaisesRegex(ValueError, 'Pointed Hebrew rejected'):
+            model.validate_hebrew_tts_input('שֱׁמַע')
+
     def test_newer_api_can_use_its_native_seed(self):
         def current(*, seed=None, **kwargs):
             pass
