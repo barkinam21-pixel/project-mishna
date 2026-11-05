@@ -38,6 +38,21 @@ VARIANTS = (
 )
 
 
+def validate_hebrew_tts_input(text):
+    """Block pointed Hebrew in this VoxCPM2 recipe after an observed regression.
+
+    In a controlled 12-word A/B test on 2026-11-05, adding Hebrew marks
+    increased token count 74 -> 148 and ASR edits 0 -> 9 (12 words).
+    This protects the research runner only; it is NOT a general claim that
+    every TTS model fails with niqqud. Keep the original source separately.
+    """
+    if any(0x0591 <= ord(ch) <= 0x05C7 for ch in text):
+        raise ValueError('Pointed Hebrew rejected for this VoxCPM2 experiment: '
+                         '2026-11-05 controlled A/B degraded 0 to 9 ASR edits/12 words. '
+                         'Use approved unpointed spoken text; preserve quoted source separately.')
+    return text
+
+
 def generation_options(generate_function, seed):
     """2.0.3 has no seed kwarg; newer upstream APIs do. Never request retries."""
     options = dict(cfg_value=2.0, inference_timesteps=10, max_len=1024,
@@ -63,6 +78,8 @@ def main(argv=None):
     if args.plan:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return 0
+    # Fail before imports/model loading when this failed pointed-Hebrew recipe is used.
+    validate_hebrew_tts_input(HEBREW_TEXT)
     # Heavy dependencies remain inside explicit execution, never import/--plan.
     import importlib.metadata
     import numpy as np
