@@ -13,7 +13,85 @@
         105,
         135
       ],
-      "notes": "No theatrical bombast; breathe around historical transitions"
+      "notes": "No theatrical bombast; breathe around historical transitions",
+      "retained_voice_profile": {
+        "profile_id": "series-narrator-alnilam-v1",
+        "scope": "series narrator leading baseline; retained in existing rehearsal registry; not episode audio-slot fulfillment",
+        "selection_status": "owner_selected_primary_baseline_and_fallback",
+        "owner_feedback_date": "2026-11-05",
+        "owner_exact_feedback": "הראשון ממש טוב, תשאיר אותו תמיד ותנסה למצוא ביחד איתו את הקול הזקן החמים והדרמטי, אם לא תצליח אז תמשיך ללכת על הקול הראשון ותתתאים אותו לסדרה",
+        "owner_confirmed_comparison_voice": {
+          "comparison_file_id": "1Y2lDTy4yXnfj-iAPhDBpPwqcmRyN40ik",
+          "position": 1,
+          "voice": "Alnilam"
+        },
+        "voice_name": "Alnilam",
+        "catalog_gender": "Male",
+        "catalog_style": "Firm",
+        "provider": "Gemini TTS through the existing anonymous public audition route",
+        "model_declared_by_host": "gemini-2.5-flash-preview-tts",
+        "provider_model_weights_revision": "not exposed",
+        "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+        "synthesis_settings": {
+          "speed_factor": 1.0,
+          "temperature": 1.0,
+          "seed": "not exposed",
+          "pitch_override": null,
+          "voice_reference_supplied": null
+        },
+        "original_audition_text": "מאחורי מילות המשנה עומד עולם שלם. מתי קוראים את קריאת שמע? רבן גמליאל אומר: עד שיעלה עמוד השחר.",
+        "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה עומד עולם שלם. מתי קוראים את קְרִיאַת שְׁמַע? רַבָּן גַּמְלִיאֵל אומר: עַד שֶׁיַּעֲלֶה עַמּוּד הַשָּׁחַר.",
+        "reference_audition_prompt": "הוראות ביצוע בלבד — אין להקריא אותן. קרא רק את הטקסט שמופיע לאחר \"טקסט להקראה\".\nזה אודישן לקריין גברי ישראלי בוגר, חכם וחביב, בעל חמימות אבהית וסמכות שקטה, בתחושת גיל שישים עד שבעים. שמור על הגוון הטבעי של הקול שנבחר; אין לחקות אדם אמיתי, לייצר בס מלאכותי, צרידות, רעד, חולשה או לחישה.\nעברית ישראלית ילידית, הגייה בהירה וחיבור טבעי בין המילים, בלי מבטא זר או חיקוי מבטא עדתי. ניקוד המונחים מכוון להגייה בלבד. אל תשנה, תוסיף או תחסיר מילים.\nהפתיחה מסקרנת ומהורהרת. בשאלה יש סקרנות וחיוך עדין של מורה ותיק. דברי המשנה נאמרים בכבוד ובבהירות, עם רגש מאופק. שמור על אותה זהות קולית, חיוניות ועוצמה לאורך הקטע. קצב דיבור טבעי, לא האטה מלאכותית, הפסקות קצרות לפי המשמעות.\n\nטקסט להקראה:\nמאחורי מילות הַמִּשְׁנָה עומד עולם שלם. מתי קוראים את קְרִיאַת שְׁמַע? רַבָּן גַּמְלִיאֵל אומר: עַד שֶׁיַּעֲלֶה עַמּוּד הַשָּׁחַר.",
+        "original_wav": {
+          "drive_url": "https://drive.google.com/file/d/1azGM67nrIajJ4zyATqhOiku2kosNQ0BJ/view?usp=drivesdk",
+          "sha256": "1a31a31839e565add6736cdda8465d4be04f0d90f3c3bb0416b6ebc721442dd6",
+          "seconds": 12.330958333333333,
+          "sample_rate": 24000,
+          "channels": 1,
+          "codec": "PCM16 WAV",
+          "must_not_overwrite": true,
+          "purpose": "approved-by-owner auditory baseline/comparison only, not permission to clone this voice into another model"
+        },
+        "review_mp3": {
+          "drive_url": "https://drive.google.com/file/d/1Uia07L4eY0UJOO_gt-Ik3sW1_gkdTbLF/view?usp=drivesdk",
+          "static_gain_db": -4.367164741871195,
+          "processing": "constant gain and MP3 encoding only; original unchanged"
+        },
+        "preservation_policy": {
+          "retain_original_and_versioned_settings": true,
+          "older_voice_search_must_keep_this_baseline": true,
+          "replacement_requires_demonstrated_improvement_and_owner_choice": true,
+          "if_no_better_eligible_voice": "continue with Alnilam and adapt scene-level delivery",
+          "do_not_age_with_pitch_or_slowdown": true,
+          "do_not_use_narrator_to_impersonate_elder_characters": true,
+          "stable_vendor_id_is_not_immutable_weights_guarantee": true
+        },
+        "series_performance_direction": {
+          "status": "directions planned from existing owner brief, not yet synthesized/validated as five emotional takes",
+          "historical_mystery": "quiet curiosity and wonder; clear healthy voice, no whisper",
+          "transmission_and_awe": "restrained emotional rise through emphasis and meaningful pauses, same identity",
+          "destruction_and_memory": "human restrained pain, short silence, preserve warmth/strength; no tremor or forced rasp",
+          "patient_mishnah_teaching": "clear native Hebrew, gentle smile, explain terms, questions sound like questions",
+          "discovery_and_hope": "interest and warmth with quiet confidence, no advertising delivery",
+          "tempo": "respect the liked natural delivery; time each passage by meaning, no artificial time stretch or fixed aging rate",
+          "engine_interface": "natural-language delivery prompt; no SSML/phoneme lexicon or unsupported3.8speech_metadata in the tested2.5route"
+        },
+        "gates": {
+          "owner_approved_retention_and_further_adaptation": true,
+          "final_perceived_age60to70_verified": false,
+          "full_human_linguistic_review_complete": false,
+          "long_form30to40min_stability_verified": false,
+          "all_five_emotional_modes_heard": false,
+          "torah_source_approval": false,
+          "publication_rights_approval": false,
+          "release_authorized": false
+        },
+        "cost_and_access": {
+          "new_caller_direct_charge_usd": 0,
+          "production_free_quota": "not established",
+          "user_api_key_or_billing_account_supplied": false
+        }
+      }
     },
     "rabbi_host": {
       "voice_character": "Older warm male; measured teacher; clearly labeled dramatization",
@@ -70,5 +148,5 @@
       "audio_path": "audio/rehearsals/n02.wav"
     }
   ],
-  "notes": "TWO sample units of original editorial narration for later WAV measurement. No actual WAV exists, no real voice tested; timings and text are provisional, do not equate this file to approved episode captions."
+  "notes": "N01/N02 remain two earlier unapproved rehearsal slots with provisional text/timing and no matching WAVs. The separately retained Alnilam v1 audition/profile was selected by the owner for the series narrator baseline; it does not fill these slots, lock source text, approve captions or authorize release."
 }
