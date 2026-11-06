@@ -469,3 +469,15 @@ Default real manifest now has7shot/2voice/caption placeholders and null unmeasur
 Cloud run42224885051 actually executed assembly-test successfully, including4render/cache checks. Generalpreflight42224893315 failed because its runner does not installFFmpeg; integration test now explicitly skips whenFFmpeg/FFprobe/fontconfig absent, while dedicatedassemblyworkflow installs all and executes it. This is not proof from a skip; dedicated run is actual rendering evidence. Verify newhead runs after compatibilityfix.
 
 Actions also wires actual production render conditionally on render_enabled readiness, into separate private output folder, never public media upload. Current absent real assets safely skip this production step; synthetic integration remains explicit. Private asset injection/persistence still unconfigured, no credentials requested or exposed.
+
+
+## OPN02 — בקשה מוכנה, יצירה נעצרה בתנאי התקציב (6.11.2026)
+
+- הוראת בר האחרונה מאשרת תמונת ניסיון אחת מתוך קרדיטים קיימים בלבד; אין אישור לחיוב חדש, לששת האיורים האחרים, למיזוג או לפרסום. הכיוון החזותי אושר, אך נכס מוגמר עדיין אינו קיים או מאושר.
+- נבדקו מסמכי הסגנון ושלושת מפרטי הפתיחה, מסלול fal הישן, תיעוד החיוב והמחירון וסכמת FLUX.2 Pro. הוכנה [בקשת OPN02](../episodes/berakhot-01-01/opn02-style-candidate-plan.json): שני בגירים, המבוגר משמאל, הליכה ימינה, אור מאחור ומשמאל, 1024×576, PNG, ללא טקסט או תמונות ייחוס. מגבלת ניסיון אחת, ללא ניסיון חוזר אוטומטי. לפי הסכמה העדכנית אין פרמטר `num_images` או `negative_prompt`; מגבלות התוכן נמצאות ב־prompt.
+- אומדן מחירון ציבורי לתמונה: $0.03. זה אינו מחיר חשבון מאומת או עלות שנגבתה. סיווג הקטלוג הוא `commercial`, בכפוף לתנאי הספק והמודל; אין טענה לבלעדיות בזכויות או אישור פרסום.
+- **חסם ממשי:** אין חיבור fal מורשה זמין בסביבת העבודה. בדיקת מטא־נתוני סודות GitHub נדחתה ב־403; אין להסיק מכך שהסוד אינו קיים. API החיוב המתועד מחזיר יתרה ומטבע, אך אינו מספק כשלעצמו הוכחת עצירת חיוב או מצב טעינה אוטומטית. לא ניתן היה לאמת יתרה, מחיר חשבון והבטחת אי־חיוב. המסלול הישן מוגבל ל־OPN01; הרזרבה המקומית בו אינה תקרת חיוב של הספק, ולכן לא הופעל או הוסב.
+- **לא נשלחה בקשת יצירה; לא נוצרה תמונה; נצרכו אפס קרדיטים ובוצע אפס חיוב חיצוני ביוזמת העבודה הזאת.** אין hash תמונה, seed בפועל או ביקורת אנטומיה/סגנון. שימוש סביבת העבודה אינו ידוע. [ראיות וקישורי מקורות ציבוריים עם hashes](evidence/opn02-style-preflight-2026-11-06.json).
+- הושלמו ללא קרדיטים: תרשים ציר ועמדת מצלמה, מפרט רציפות מוצע לשתי הדמויות, ותכנון התאמה לששת השוטים האחרים במסמך סקירת הבימוי הקיים. אלה תוכניות בלבד; פנים, לבוש ואביזרים לא ננעלו כנכסים חזותיים.
+- Alnilam ופרופיל הרציפות המאושר לא שונו. לא שונו מנוע הרינדור, workflows, מפתחות או הגנות. לא בוצע ניסוי קול, מיזוג או פרסום. המשך היצירה תלוי בגישה מורשית לנתוני חיוב ובאימות שמגבלת הקרדיטים אכן נאכפת; אין צורך באישור חזותי חוזר או בשליחת מפתח לצ'אט.
+- בדיקות ההכנה המקומיות עברו: שדות API ושדות חובה מול הסכמה החיה, hash בקשה בקידוד JSON קנוני מתועד, יחס 16:9 וכפולות 16, ניסיון יחיד ללא retries, שער יצירה חסום, ואימות hash של WAV ה־Alnilam המאושר ללא שינוי. לא הורצה שוב חבילת הבדיקות המלאה כי לא שונו קוד או workflows; אין בכך בדיקת יצירה או ביקורת תמונה. PR43 נבדק ונשאר פתוח.

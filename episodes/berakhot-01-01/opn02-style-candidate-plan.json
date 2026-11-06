@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "scene": "INTRO-A1-S01",
+  "shot": "OPN02",
+  "source_layer": "symbolic_dramatization_not_documented_event",
+  "model": "fal-ai/flux-2-pro",
+  "model_weights_revision": "not exposed",
+  "payload": {
+    "prompt": "Wide establishing shot, two adult anonymous travelers on a dusty path in a non-identifiable dry landscape before dawn. Older adult on frame left (approx. 55–65) and younger adult on frame right (approx. 25–35), both moving left-to-right. Quiet shared journey, thoughtful reserved expressions, credible adult anatomy, simple non-period-specific woven garments, practical sandals, small plain travel bundle and unmarked water vessel. Subtle warm pre-dawn rim light from behind-left, muted ochre earth and cool blue-violet dawn shadows, natural skin and cloth colors. Painterly cinematic semi-realism with hand-painted texture, slightly desaturated, restrained contrast, elegant visual depth and foreground/midground/background separation. Original 16:9 film composition, no exaggerated poses, no historical person or site identification, no scroll/tablet/book transfer, no architecture, no text or watermark. This is an explicitly symbolic dramatization, not a documented historical event. Avoid children, teenage faces, cartoon eyes, glossy plastic CGI, theatrical rays, text, pseudo-text, symbols, architecture, identifiable historical people or sites.",
+    "image_size": {
+      "width": 1024,
+      "height": 576
+    },
+    "output_format": "png",
+    "enable_safety_checker": true,
+    "sync_mode": false
+  },
+  "payload_sha256": "7f3794cf7d79282fb61d8e66b21fc87c9bac0cbe7cb5b8f376d2c8223ed9b3c2",
+  "maximum_generation_submissions": 1,
+  "automatic_retries": false,
+  "reference_images_uploaded": false,
+  "seed_planned": null,
+  "seed_actual": null,
+  "accepted": false,
+  "asset_status": "NOT_GENERATED",
+  "authorization": {
+    "visual_direction_approved": true,
+    "one_existing_prepaid_credit_image_authorized": true,
+    "new_external_charge_authorized": false,
+    "six_other_images_authorized": false,
+    "release_authorized": false
+  },
+  "funding": {
+    "public_list_estimate_usd": 0.03,
+    "public_price_rule": "$0.03 first 1024x1024 output MP, rounded up; $0.015 each additional input/outputMP",
+    "account_specific_price_usd": null,
+    "current_credit_balance": null,
+    "currency": null,
+    "automatic_recharge_state": "UNKNOWN",
+    "provider_enforced_credit_only_guarantee": "UNVERIFIED",
+    "generation_gate": "BLOCKED_BILLING_ACCESS"
+  },
+  "results": {
+    "provider_submissions": 0,
+    "image_files_created": 0,
+    "new_external_charge_usd": 0,
+    "credits_consumed": 0,
+    "image_sha256": null,
+    "actual_generation_price": null,
+    "anatomy_style_lighting_review": "NOT_POSSIBLE_NO_IMAGE"
+  },
+  "payload_hash_encoding": "SHA-256 of UTF-8 JSON; sort_keys=True, ensure_ascii=False, separators=(comma,colon)"
+}
