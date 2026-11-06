@@ -1,0 +1,70 @@
+{
+  "first": {
+    "sidecars": {
+      "private-captions.srt": "e7357552b05dcaef9778026e5840879e6b335f3f16266344850663e4cf6a4c2e",
+      "private-captions.vtt": "cd466e779616a12a0a1ec5e84d39701d8f00b3c76003bfbbc7ed6422580fe350",
+      "private-captions.ass": "8d36cfa3c362c92fba23d30ed570885ee5d7e16366250e5df8445cfe61f31924"
+    },
+    "key": "4a4ea8d9f6101dcb1f9bc081b62887d26987e3f0ebe1d4726423712fb95b039f",
+    "video_sha256": "90a49d994c313ca89064eb3489931015379d47c5aa2d4624a071543acbce886f",
+    "cache_hit": false,
+    "normalized_images_created": 7,
+    "test_fixture": true,
+    "frames": 168,
+    "audio_samples": 336000,
+    "release_authorized": false
+  },
+  "second": {
+    "sidecars": {
+      "private-captions.srt": "e7357552b05dcaef9778026e5840879e6b335f3f16266344850663e4cf6a4c2e",
+      "private-captions.vtt": "cd466e779616a12a0a1ec5e84d39701d8f00b3c76003bfbbc7ed6422580fe350",
+      "private-captions.ass": "8d36cfa3c362c92fba23d30ed570885ee5d7e16366250e5df8445cfe61f31924"
+    },
+    "key": "4a4ea8d9f6101dcb1f9bc081b62887d26987e3f0ebe1d4726423712fb95b039f",
+    "video_sha256": "90a49d994c313ca89064eb3489931015379d47c5aa2d4624a071543acbce886f",
+    "cache_hit": true,
+    "normalized_images_created": 0,
+    "test_fixture": true,
+    "frames": 168,
+    "audio_samples": 336000,
+    "release_authorized": false
+  },
+  "one_image_replaced": {
+    "sidecars": {
+      "private-captions.srt": "e7357552b05dcaef9778026e5840879e6b335f3f16266344850663e4cf6a4c2e",
+      "private-captions.vtt": "cd466e779616a12a0a1ec5e84d39701d8f00b3c76003bfbbc7ed6422580fe350",
+      "private-captions.ass": "8d36cfa3c362c92fba23d30ed570885ee5d7e16366250e5df8445cfe61f31924"
+    },
+    "key": "a7fc6aacd831d54c52732fe72eac5173a3754e8ab5a58eaca1ed908ecae1a12b",
+    "video_sha256": "6eeeecd3e634c042053f18db7ca4928f50b4929681c64a8436f68b130143651b",
+    "cache_hit": false,
+    "normalized_images_created": 1,
+    "test_fixture": true,
+    "frames": 168,
+    "audio_samples": 336000,
+    "release_authorized": false
+  },
+  "one_audio_replaced": {
+    "sidecars": {
+      "private-captions.srt": "e7357552b05dcaef9778026e5840879e6b335f3f16266344850663e4cf6a4c2e",
+      "private-captions.vtt": "cd466e779616a12a0a1ec5e84d39701d8f00b3c76003bfbbc7ed6422580fe350",
+      "private-captions.ass": "8d36cfa3c362c92fba23d30ed570885ee5d7e16366250e5df8445cfe61f31924"
+    },
+    "key": "23336729e02d682f49fb586986f2f94ef4a990bdd150a4de9c9280b1e29667f2",
+    "video_sha256": "8cc5af228a8937f526b1206492ed7834a11a33d8604d86d7c921fc66c63bb4d8",
+    "cache_hit": false,
+    "normalized_images_created": 0,
+    "test_fixture": true,
+    "frames": 168,
+    "audio_samples": 336000,
+    "release_authorized": false
+  },
+  "test_only": true,
+  "private_test_video_url": "https://drive.google.com/file/d/1gT0yx0gfPPRU_RogGpjZSj0fEjhuagAY/view",
+  "video_bytes": 73523,
+  "video_sha256": "8cc5af228a8937f526b1206492ed7834a11a33d8604d86d7c921fc66c63bb4d8",
+  "local_tests_passed": 322,
+  "scope": "Synthetic technical fixture, NOT approved film",
+  "frame_inspected_seconds": 0.4,
+  "cache_scope": "persistent local output; within Actions job, not cross-run private asset storage"
+}

@@ -84,6 +84,10 @@
 
 **סבב איכות לאחר האזנת בר:** קול MMS הקודם נדחה ונחסם לפי hash. מנוע ההרכבה מחובר כעת למצלמה תת־פיקסלית הקיימת ולכמה כתוביות בכל שוט. הופקה תצוגת עריכה פרטית בת 12 שניות משני איורים מקוריים: תנועה אופקית ואחריה התקרבות. **ללא קריינות — חסם הקול עדיין פתוח**, לא הצלחת הפקת סרט לימודי. ראיות ומגבלות: [דוח הסבב](docs/evidence/issue-37/quality-round-report.json), [מסירת מצב](docs/session-handoff.md). PR #38 נשאר ללא מיזוג; אין שינוי באישורי מקור/זכויות/פרסום.
 
-## בדיקת מוכנות עצמאית לסצנת הפתיחה
+## מנוע הרכבת הפתיחה — נבדק בפועל
 
-`python -m tools.introduction_proof` מפיק דוח חסרים ושומר מצב אטומית ב־`build/introduction-proof-state.json`, ללא API או Codex. [הרצה בענן](https://github.com/barkinam21-pixel/project-mishna/actions/workflows/introduction-proof.yml) מעלה את הדוח כארטיפקט. הקלט ב־`episodes/berakhot-01-01/introduction-proof.json`. הרינדור עדיין חסום: חסרים7איורים,2הקלטות תואמות,כתוביות ותזמון מאומת. חיבור argvלמנועFFmpegקיים; עדיין אין מסלול רינדור/קאש מלא מאומת למבוא. Alnilamרציפותv2הוא הבסיס; ניסיון הנוכחות הילדותי נדחה ואין ניסויי קול נוספים.
+[MP4 טכני פרטי — 7 שניות](https://drive.google.com/file/d/1gT0yx0gfPPRU_RogGpjZSj0fEjhuagAY/view): כרטיסים צבעוניים וצלילים מלאכותיים, עם כיתוב בדיקה טכנית בלבד. אינו Alnilam או סרט אמנותי. [ראיות ארבע הרצות](docs/evidence/introduction-render-integration-2026-11-06.json): הרצה ראשונה, שנייה cache hit, החלפת תמונה אחת (נגזרת אחת), החלפת WAV אחד (אפס תמונות חדשות). 322 בדיקות מקומיות עברו. H264/AAC/כתוביות, 168 פריימים ו־336000 דגימות בציר הזמן; פענוח מלא ובדיקת מסגרת עם עברית.
+
+[הוראות ההרכבה והקאש](docs/introduction-renderer.md) · [GitHub Actions](https://github.com/barkinam21-pixel/project-mishna/actions/workflows/introduction-proof.yml) · [מפרטי שבעת האיורים](docs/introduction-opening-illustration-specs.md). הפקודה python -m tools.introduction_render CONFIG פועלת ללא Codex או API. אחרי שינוי נכס נדרש קידוד סופי מחדש, אך יתר הנכסים המעובדים נשמרים. Actions מעלה דוחות וכיתוב בלבד, ללא מדיה פרטית לארטיפקט ציבורי.
+
+לסרט האמיתי חסרים: שבעה איורים מאושרים; שתי הקלטות Alnilam רציפות v2 התואמות ל־N01/N02; אישור מקור/תסריט/חזות/זכויות; תזמון מדוד וכתוביות תואמות; גישה מורשית למדיה פרטית ברץ הענן. אין ניסויי קול, חיוב, פרסום או מיזוג. הקאש מוכח באותה ספריית פלט; עדיין אין שימור מדיה פרטית אוטומטי בין רצי Actions נפרדים.

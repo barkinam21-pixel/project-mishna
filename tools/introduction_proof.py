@@ -40,7 +40,7 @@ def plan(config, root, previous=None):
         actual = digest(path)
         if actual != item.get('sha256') or actual in rejected:
             errors.append(uid+': mismatched/rejected hash')
-        if item.get('accepted') is not True or item.get('rights_verified') is not True or not item.get('license') or not item.get('provenance'):
+        if item.get('accepted') is not True or item.get('rights_verified') is not True or str(item.get('license','')).lower() in ('','unknown','pending','unverified') or not item.get('provenance'):
             missing.append(uid+': review/rights')
         if uid in CUES:
             if item.get('text_sha256') != hashes[uid] or item.get('profile') != PROFILE:
@@ -61,12 +61,15 @@ def plan(config, root, previous=None):
     image_hashes=[assets[x] for x in SHOTS if x in assets]
     if len(set(image_hashes))!=len(image_hashes): errors.append('Seven distinct originals required')
     timing=config.get('shots', [])
-    if not timing: missing.append('Measured shot/voice/caption timing')
+    if not timing or any(x.get('duration_frames') is None for x in timing): missing.append('Measured shot/voice/caption timing')
     elif [x.get('id') for x in timing]!=SHOTS or any(type(x.get('duration_frames')) is not int or x['duration_frames']<=0 for x in timing): errors.append('Invalid ordered integer shot timing')
-    # READY is deliberately not asserted before caption/voice-slot integration is validated.
-    status='INVALID' if errors else 'BLOCKED_MISSING_REAL_MEDIA'
+    if not errors and not missing:
+        from tools.introduction_render import validate
+        try: validate(config,root)
+        except (ValueError,KeyError,TypeError,OSError) as exc: errors.append('Timing/caption/approval gate: '+str(exc))
+    status='INVALID' if errors else ('BLOCKED_MISSING_REAL_MEDIA' if missing else 'READY_PRIVATE_RENDER_ONLY')
     fingerprint=hashlib.sha256(json.dumps({'config':config,'assets':assets},sort_keys=True).encode()).hexdigest()
-    return {'status':status,'errors':errors,'missing':missing,'assets':assets,'changed_assets':changed,'build_key':fingerprint,'cache_hit':False,'assembly_adapter':'tools.private_proof_assembler.ffmpeg_args','render_enabled':False,'remaining_gate':'caption/voice-slot QA and real-media review before render','release_authorized':False}
+    return {'status':status,'errors':errors,'missing':missing,'assets':assets,'changed_assets':changed,'build_key':fingerprint,'cache_hit':False,'assembly_adapter':'tools.private_proof_assembler.ffmpeg_args','render_enabled':status=='READY_PRIVATE_RENDER_ONLY','remaining_gate':'caption/voice-slot QA and real-media review before render','release_authorized':False}
 
 def assembly_command(config, root, temp):
     """Reuse existing assembly graph, without calling it or changing the75s contract."""
