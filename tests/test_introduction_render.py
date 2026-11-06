@@ -1,7 +1,8 @@
-import copy,json,unittest
+import copy,json,unittest,shutil
 from pathlib import Path
 from tools.introduction_render import validate,render
 from tools.introduction_fixture import run
+@unittest.skipUnless(all(shutil.which(x) for x in ['ffmpeg','ffprobe','fc-match']), 'Requires FFmpeg/FFprobe/fontconfig; dedicated assembly workflow installs them')
 class RenderIntegration(unittest.TestCase):
  def test_actual_mp4_cache_and_replacement(self):
   root=Path(__file__).resolve().parents[1]
