@@ -478,7 +478,7 @@
     {
       "trial_id": "alnilam-one-continuous-correction-2026-11-06",
       "date": "2026-11-06",
-      "status": "audio_generated_awaiting_owner_identity_review",
+      "status": "owner_approved_production_voice_baseline",
       "voice_id": "Alnilam",
       "profile_id": "series-narrator-alnilam-v1",
       "model_id": "gemini-2.5-flash-preview-tts",
@@ -623,12 +623,15 @@
       ],
       "review": {
         "owner_approved_general_previous_direction": true,
-        "owner_listened_to_this_fix": false,
+        "owner_listened_to_this_fix": true,
         "identity_fixed": false,
         "native_accent_and_stress_approved": false,
         "more_mature_perceived_delivery_approved": false,
         "long_form_stability_approved": false,
-        "assistant_critical_listening": false
+        "assistant_critical_listening": false,
+        "owner_approved_as_production_voice_reference": true,
+        "owner_feedback": "Loved the latest continuous take; authorizes it as the preserved baseline for continuing film work. No claim of universal/long-form stability or full source/episode approval.",
+        "identity_fixed_scope": "Short reference subjectively accepted by owner, not proof of absolute identity stability across all future synthesis."
       },
       "accepted_for_private_preview": false,
       "rights_and_cost": {
@@ -654,7 +657,82 @@
         "only_own_one_task_deleted_after_backup": true,
         "http_status": 200,
         "provider_log_erasure_claimed": false
-      }
+      },
+      "approved_reference_profile_id": "series-narrator-alnilam-continuous-v2"
+    },
+    {
+      "trial_id": "alnilam-one-subtle-presence-2026-11-06",
+      "date": "2026-11-06",
+      "status": "not_applied_approved_baseline_retained",
+      "voice_id": "Alnilam",
+      "model_id": "gemini-2.5-flash-preview-tts",
+      "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+      "reference_profile": "series-narrator-alnilam-continuous-v2",
+      "source_sha256": "dc6d8bed55de08a5ab87ada035b36f6d5c788cee5ddfd7fa53b7d775e5dde120",
+      "sha256": "dc6d8bed55de08a5ab87ada035b36f6d5c788cee5ddfd7fa53b7d775e5dde120",
+      "seconds": 51.610958333333336,
+      "base_settings": {
+        "speed_factor": 1.0,
+        "temperature": 1.0,
+        "seed": "not exposed"
+      },
+      "same_text_words": 87,
+      "only_direction_append_changed": true,
+      "artistic_reference": "quiet authority/maturity/restraint inspired by Korra opening, no Tenzin/actor imitation or recording/reference input",
+      "direction": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.\nדיוק ביצוע עדין בלבד: שים מעט יותר משקל במילים המרכזיות, קצב שקול ונוכחות מאופקת של מספר בעל ניסיון חיים. החמימות נשארת אישית וטבעית; פחות קפיציות והתלהבות, יותר הקשבה ומרחב למחשבה. עומק רגשי דרך משמעות והדגשה, לא דרך קול נמוך יותר או תהודה חדשה. שמור בדיוק על הזהות והגוון הטבעיים של Alnilam, ללא שינוי גיל מלאכותי, ללא בס מאולץ וללא חיקוי של קול אחר. באזכור החורבן אותו אדם ממש ממשיך לדבר.",
+      "request_sha256": "ef587ec9659b7e78451b4688c5fe5c5f4c66047aab6680181105b45fb9bb99e5",
+      "generation_submissions": 1,
+      "retries": 0,
+      "extra_corrections": 0,
+      "listen_url": "https://drive.google.com/file/d/17Gq6dKTStiME6ebFTixjCr22CoyTby_7/view?usp=drivesdk",
+      "approved_baseline_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "approved_baseline_unchanged": true,
+      "candidate_promoted": false,
+      "why_not_promoted": "No verified human benefit or absence of timbre regression. Uncalibrated signal/ASR observations cannot certify a better/more mature identity. Keep approved49s profile by default; optional listening does not block film preparation.",
+      "technical_qa": {
+        "literal_word_edits": 0,
+        "full_decode_audio_files": 2,
+        "source_peak": 0.9212646484375,
+        "source_saturated_samples": 0,
+        "paragraph_rms_dbfs": [
+          -18.163148473576705,
+          -16.960166866083362,
+          -16.279265561793366
+        ],
+        "speaker_observations": {
+          "approved_first_last": 0.844589114189148,
+          "candidate_first_last": 0.8250339031219482,
+          "approved_pre_post_destruction": 0.8284922242164612,
+          "candidate_pre_post_destruction": 0.8095903396606445,
+          "approved_vs_candidate_first4": 0.78340744972229,
+          "approved_vs_candidate_last4": 0.783905565738678
+        },
+        "hebrew_calibrated_threshold": null,
+        "human_critical_listening": false,
+        "maturity_accent_stress_identity_improved": false
+      },
+      "accepted_for_private_preview": false,
+      "cost": {
+        "new_direct_caller_external_charge_usd": 0,
+        "caller_key_account_or_payment_supplied": false,
+        "host_cost_quota": "unknown",
+        "workspace_usage": "unknown"
+      },
+      "backup": {
+        "url": "https://drive.google.com/file/d/1SMF3YHvx4Z60jHTkUcuZQ44EjKBzO_X4/view?usp=drivesdk",
+        "bytes": 5237663,
+        "files": 22,
+        "sha256": "d1a033186955138f56f197995ead7245bbba0b7800e06223aec868dd128dbed2",
+        "crc": "passed",
+        "drive_mime_size_shared_false_verified": true,
+        "server_sha_exposed": false
+      },
+      "cleanup": {
+        "own_one_job_deleted_after_backup": true,
+        "http_status": 200,
+        "provider_log_erasure_claimed": false
+      },
+      "production_default_profile_unchanged": "series-narrator-alnilam-continuous-v2"
     }
   ]
 }

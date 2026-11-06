@@ -13,7 +13,7 @@
         105,
         135
       ],
-      "notes": "No theatrical bombast; breathe around historical transitions",
+      "notes": "No theatrical bombast; breathe around historical transitions Active production narrator reference is now production_baseline_profile / continuous-v2, explicitly approved by owner. v1 remains immutable history; audition samples do not fulfill any differently worded intro/episode recording.",
       "retained_voice_profile": {
         "profile_id": "series-narrator-alnilam-v1",
         "scope": "series narrator leading baseline; retained in existing rehearsal registry; not episode audio-slot fulfillment",
@@ -111,12 +111,75 @@
           "voice_id": "Alnilam",
           "profile_id": "series-narrator-alnilam-v1",
           "combined_url": "https://drive.google.com/file/d/1_vnyhDvoRQmWQsY8dEY0Ainhq8i6tcwE/view?usp=drivesdk",
-          "status": "audio_generated_awaiting_owner_identity_review",
+          "status": "owner_approved_production_voice_baseline",
           "seconds": 49.25095833333334,
-          "owner_review_pending": true,
-          "source_slots_N01_N02_unchanged": true
+          "owner_review_pending": false,
+          "source_slots_N01_N02_unchanged": true,
+          "approved_reference_profile_id": "series-narrator-alnilam-continuous-v2"
+        },
+        {
+          "trial_id": "alnilam-one-subtle-presence-2026-11-06",
+          "ledger": "trials.json#voice_trials",
+          "voice_id": "Alnilam",
+          "reference_profile_id": "series-narrator-alnilam-continuous-v2",
+          "url": "https://drive.google.com/file/d/17Gq6dKTStiME6ebFTixjCr22CoyTby_7/view?usp=drivesdk",
+          "seconds": 51.610958333333336,
+          "status": "not_applied_approved_baseline_retained",
+          "optional_listening_does_not_block_production_preparation": true,
+          "promoted": false
         }
-      ]
+      ],
+      "production_baseline_profile": {
+        "profile_id": "series-narrator-alnilam-continuous-v2",
+        "status": "owner_approved_reference_for_continuing_production",
+        "supersedes_as_active_baseline": "series-narrator-alnilam-v1",
+        "retain_all_previous_profiles_and_sources": true,
+        "owner_approval_date": "2026-11-06",
+        "owner_instruction": "ההקלטה האחרונה היא מעכשיו בסיס הקריינות המאושר להמשך העבודה. שמור אותה ללא שינוי.",
+        "source_trial_id": "alnilam-one-continuous-correction-2026-11-06",
+        "voice_name": "Alnilam",
+        "model_declared_by_host": "gemini-2.5-flash-preview-tts",
+        "model_weights_revision": "not exposed",
+        "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+        "synthesis_settings": {
+          "speed_factor": 1.0,
+          "temperature": 1.0,
+          "seed": "not exposed",
+          "reference_audio": null,
+          "pitch_override": null
+        },
+        "exact_direction": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.",
+        "original_audition_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+        "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+        "approved_wav": {
+          "url": "https://drive.google.com/file/d/1ZniX8Len9_NRCJwemNdiuXdnhmKYJffz/view?usp=drivesdk",
+          "sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "bytes": 2364090,
+          "seconds": 49.25095833333334,
+          "native_sample_rate": 24000,
+          "channels": 1,
+          "format": "PCM16 WAV",
+          "must_not_overwrite": true
+        },
+        "approved_listening_mp3": "https://drive.google.com/file/d/1_vnyhDvoRQmWQsY8dEY0Ainhq8i6tcwE/view?usp=drivesdk",
+        "fallback_policy": {
+          "default_during_any_experiment": true,
+          "no_automatic_candidate_promotion": true,
+          "return_to_this_exact_profile_if_regression": true,
+          "no_artificial_pitch_aging_or_identity_change": true,
+          "no_regeneration_of_approved_source_required": true
+        },
+        "scope": {
+          "voice_reference_approved_by_owner": true,
+          "full_intro_spoken_text_approved": false,
+          "torah_review_complete": false,
+          "publication_rights_approved": false,
+          "long_form_identity_guaranteed": false,
+          "release_authorized": false,
+          "old_N01_N02_slots_fulfilled": false
+        },
+        "commercial_free_production_access": "not established; current auditions require fresh no-charge access verification"
+      }
     },
     "rabbi_host": {
       "voice_character": "Older warm male; measured teacher; clearly labeled dramatization",

@@ -1,0 +1,900 @@
+{
+  "date": "2026-11-06",
+  "scope": "offline source/script cue index, NOT a renderable production manifest or approved audio inventory",
+  "master": "scripts/introduction-working-draft.md",
+  "master_sha256": "ff4b99f5dd03acdef3ca0835b76297c943148ad82fcc63ffee822e7dba787347",
+  "voice_reference_profile": "series-narrator-alnilam-continuous-v2",
+  "scenes": 12,
+  "spoken_hebrew_words": 3353,
+  "cue_count": 44,
+  "preserved_previous_cues": 10,
+  "all_previous_cue_text_hashes_unchanged": true,
+  "speech_only_minutes_at135wpm": 24.83703703703704,
+  "speech_only_minutes_at105wpm": 31.933333333333334,
+  "planned_meaningful_visual_and_quiet_minutes": [
+    2,
+    5
+  ],
+  "provisional_total_minutes_rounded": [
+    27,
+    37
+  ],
+  "actual_audio_runtime_measured": false,
+  "release_authorized": false,
+  "cues": [
+    {
+      "id": "INTRO-A1-S01-N01",
+      "scene_id": "INTRO-A1-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M04"
+      ],
+      "display_text_sha256": "62ca7d76e207958dbae8d7d1d8b876bf150114356d966ba59481e1b6e28e0877",
+      "hebrew_words": 74,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S01-N02",
+      "scene_id": "INTRO-A1-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M04"
+      ],
+      "display_text_sha256": "16c54320af77e95e066b48071280e853559106471fd883b042d1eb3d5d1a8c5a",
+      "hebrew_words": 35,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S02-N01",
+      "scene_id": "INTRO-A1-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M05",
+        "M06"
+      ],
+      "display_text_sha256": "5ccd5ee70181815c8475da5a06f94266b59249bb7baeea980e4260b5a21cc5f6",
+      "hebrew_words": 84,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S02-N02",
+      "scene_id": "INTRO-A1-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M05",
+        "M06"
+      ],
+      "display_text_sha256": "e25c82e2a22c50738612565e007d9d8bc3db5638536ee2275d799f9469b66f90",
+      "hebrew_words": 6,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S02-Q01",
+      "scene_id": "INTRO-A1-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "exact_source_candidate",
+      "source_ids": [
+        "M03",
+        "M05",
+        "M06"
+      ],
+      "display_text_sha256": "8669930ef69b41d43dddcc004ee340265fbcd6a9d5f5798311d7c1d7799387c8",
+      "hebrew_words": 11,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S02-N03",
+      "scene_id": "INTRO-A1-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M05",
+        "M06"
+      ],
+      "display_text_sha256": "19d03a3edcabd02206c546319e0a07beb8bc13fb31f6db7150d90e0550864b08",
+      "hebrew_words": 54,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S03-N01",
+      "scene_id": "INTRO-A1-S03",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M02"
+      ],
+      "display_text_sha256": "8da652007485006fd088378aa933adcf859bde148e18d5d3b2b45bbce0bf9187",
+      "hebrew_words": 116,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-N01",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "ac55b16048a7f5d01bb19503a85c3f3d03b30a73a779bb32503e94909a32b141",
+      "hebrew_words": 8,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-Q01",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "exact_source_candidate",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "90013d61b2409da655bf9e7263699b7e100720593a640b3ce06447d4966c0ffa",
+      "hebrew_words": 22,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-N02",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "48e125c569a3dc6fc1927690a169c2b6aebdac443fd838c50f2177e0ef5eab99",
+      "hebrew_words": 72,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-N03",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "40f9ed33bdf67591d44365282c842d5af0a8f07cee0187cbdc019ec1e9f77dac",
+      "hebrew_words": 94,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-N04",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "8b614819dd386378687a53fdd8475a8363a0326f830af1147892e2f58e64fc2e",
+      "hebrew_words": 102,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A2-S01-N05",
+      "scene_id": "INTRO-A2-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M04",
+        "M07",
+        "M11",
+        "M15"
+      ],
+      "display_text_sha256": "70471a71a8bc6ad3e7c60735aa358c2b0e7a727ee5f35cb354c24f48b48a34ef",
+      "hebrew_words": 95,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S01-N01",
+      "scene_id": "INTRO-A3-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M04",
+        "M07",
+        "M11",
+        "M12"
+      ],
+      "display_text_sha256": "139f4917d0c02dbd07cd0b9c21a02573f5993f50b5b711f81ef7ed2a6e50c259",
+      "hebrew_words": 96,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S01-N02",
+      "scene_id": "INTRO-A3-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M04",
+        "M07",
+        "M11",
+        "M12"
+      ],
+      "display_text_sha256": "da070cc7bc49a2e505295198cf1ee01a8cc18df906eb5e1baeabb012d3e2e7ff",
+      "hebrew_words": 88,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S01-N03",
+      "scene_id": "INTRO-A3-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M04",
+        "M07",
+        "M11",
+        "M12"
+      ],
+      "display_text_sha256": "5797f10a78600e2b4c652555d77dff1bd31f1abdea3eba1914838699558025b4",
+      "hebrew_words": 88,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S02-N01",
+      "scene_id": "INTRO-A3-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "47da9cbe415fbd24eb2551f727df1c69cac8071d752c6f41b522c20a9d9cf634",
+      "hebrew_words": 85,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S02-N02",
+      "scene_id": "INTRO-A3-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "3e7307d3ef92f0330e6d09babb16290105532c67473e7b5c5c6fc9aabead4090",
+      "hebrew_words": 92,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A3-S02-N03",
+      "scene_id": "INTRO-A3-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "f2166d7b28782b1cce3c54d938172d40312e9a24367209703a8558f5b9f8a87e",
+      "hebrew_words": 73,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S01-N01",
+      "scene_id": "INTRO-A4-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "8d1682b120081786f793a613b3c7e246ebfa40b9fca26f8e99558b2b64cfbc39",
+      "hebrew_words": 91,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S01-N02",
+      "scene_id": "INTRO-A4-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "a1feb4d15b0d7ea661ad2d2763ff28d3e105307dd9e1a8f273a2dca39db99336",
+      "hebrew_words": 78,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S01-N03",
+      "scene_id": "INTRO-A4-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07",
+        "M08"
+      ],
+      "display_text_sha256": "289cf11b44b0bed4e5e09ab0159bfb57c4dee60909e39431fb84e9a1b8110620",
+      "hebrew_words": 83,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S02-N01",
+      "scene_id": "INTRO-A4-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07"
+      ],
+      "display_text_sha256": "c19b1fe648b6cca55edfdcb6c92ec2e65c426acf969be1f84dfb9471f4de5892",
+      "hebrew_words": 92,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S02-N02",
+      "scene_id": "INTRO-A4-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07"
+      ],
+      "display_text_sha256": "4245966d5a7422c4eb44faf74e655f622161723d7cca432dc1d9ad6cf5f27807",
+      "hebrew_words": 77,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A4-S02-N03",
+      "scene_id": "INTRO-A4-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M05",
+        "M07"
+      ],
+      "display_text_sha256": "b960aee79745f3ada809b14eae9d62e82abc6805a99c5eba264ad9595bb85aab",
+      "hebrew_words": 85,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S01-N01",
+      "scene_id": "INTRO-A5-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M02",
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "39d684ef41165fbc8c2925f1c812fbc78c92d6c073edb20d3bff42c951477df8",
+      "hebrew_words": 92,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S01-N02",
+      "scene_id": "INTRO-A5-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M02",
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "782bf0d4053f3e8f63b43d45d59cec2a018194f8758aaa2f646559cb6c9318c9",
+      "hebrew_words": 86,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S01-N03",
+      "scene_id": "INTRO-A5-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M02",
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "f8935a343c4866db24fb6f87b54157f7e8e71b36d92dc13f7c9a0b785040fc79",
+      "hebrew_words": 87,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S01-N04",
+      "scene_id": "INTRO-A5-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M02",
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "53eea82127cec8a91485fd536f09609f80a61bbc79a7c85bb3a9150a51f7b50a",
+      "hebrew_words": 54,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S02-N01",
+      "scene_id": "INTRO-A5-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "d18c140fc4d87b17d325701893ef6e5672c0e5891fc3814fc7c6a4f511bbdd77",
+      "hebrew_words": 74,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S02-N02",
+      "scene_id": "INTRO-A5-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "f7931ed544446e449371a930750cebd50ac38e62c100b61270ab0a96a87176ec",
+      "hebrew_words": 79,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S02-N03",
+      "scene_id": "INTRO-A5-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "267b31dc0ca41bdd614093b8fffdb1d9af24aba8ac161d7bb4c452ebee143305",
+      "hebrew_words": 77,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A5-S02-N04",
+      "scene_id": "INTRO-A5-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M07",
+        "M15"
+      ],
+      "display_text_sha256": "8c73b2ec44f2382535c40e5a7ac01d3454bf67a4b9bbdb0b80eecc2023fa0c82",
+      "hebrew_words": 81,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S01-N01",
+      "scene_id": "INTRO-A6-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M06",
+        "M16",
+        "M17",
+        "M18"
+      ],
+      "display_text_sha256": "cb6998a2fc04e01ede1db14726dcecc39f1580898eccfce23e5f5977dd2f1270",
+      "hebrew_words": 87,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S01-N02",
+      "scene_id": "INTRO-A6-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M06",
+        "M16",
+        "M17",
+        "M18"
+      ],
+      "display_text_sha256": "990d7a85b5e4e4c3456a4265117e342f8b8205b8629e3234c05143d606cd6b1d",
+      "hebrew_words": 85,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S01-N03",
+      "scene_id": "INTRO-A6-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M06",
+        "M16",
+        "M17",
+        "M18"
+      ],
+      "display_text_sha256": "f8347c1f378a9d272da5ed8e72179ef0000dbb1a68676026aa3040d86457fdce",
+      "hebrew_words": 76,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S01-N04",
+      "scene_id": "INTRO-A6-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M06",
+        "M16",
+        "M17",
+        "M18"
+      ],
+      "display_text_sha256": "4a316e9271267fe324f2c166d55d265e8e1fe33a802213a796c3b01be7753925",
+      "hebrew_words": 84,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S01-N05",
+      "scene_id": "INTRO-A6-S01",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M01",
+        "M02",
+        "M06",
+        "M16",
+        "M17",
+        "M18"
+      ],
+      "display_text_sha256": "e0c9b99867e2cd712c392dbc5d83863a10786c80bae601304c555ce7e397943e",
+      "hebrew_words": 178,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-N01",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "5a809b2e81320abaecc1c5a081ee25c389db879c0f67daccaffab51949f8e71d",
+      "hebrew_words": 106,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-N02",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "ce53164251f99fafd8c4d4f1485411d8c33b8cb6f6c6eb774ffc9343668b8914",
+      "hebrew_words": 96,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-N03",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "e6f5800c7ae3b882210b0137cf19cca72b490b7dd076e67112b54dc94d0d229e",
+      "hebrew_words": 30,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-Q01",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "exact_source_candidate",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "495ad1472eeac30c1056ac110252b694546aff8c97f94f1b07e974a675e73b79",
+      "hebrew_words": 5,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-N04",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "de08c922e71b0239ffb2327b0dc505ef30a90d7181a03132878b3b3359ec00bb",
+      "hebrew_words": 86,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A6-S02-N05",
+      "scene_id": "INTRO-A6-S02",
+      "speaker": "narrator",
+      "voice_profile_id": "series-narrator-alnilam-continuous-v2",
+      "kind": "modern_narration",
+      "source_ids": [
+        "M03",
+        "M06",
+        "M09",
+        "M13",
+        "M15"
+      ],
+      "display_text_sha256": "97a7c8fac87e0fee582091bd805e4bca63a783e51f55741e6148f0e4945f50b5",
+      "hebrew_words": 89,
+      "matching_recording": "MISSING",
+      "start_frame": null,
+      "end_frame": null,
+      "timing_state": "not recorded or measured",
+      "source_text_approved": false
+    }
+  ],
+  "comparison_base_commit": "9156ba6f186c30da18a58e6704437a54124bdbcc"
+}
