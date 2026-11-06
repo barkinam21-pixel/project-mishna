@@ -178,7 +178,7 @@
     {
       "trial_id": "alnilam-three-emotions-2026-11-06",
       "date": "2026-11-06",
-      "status": "audio_generated_awaiting_owner_review",
+      "status": "owner_liked_direction_identity_correction_requested",
       "voice_id": "Alnilam",
       "profile_id": "series-narrator-alnilam-v1",
       "model_id": "gemini-2.5-flash-preview-tts",
@@ -434,13 +434,15 @@
       },
       "review": {
         "owner_approved_original_baseline": true,
-        "owner_listened_to_this_round": false,
+        "owner_listened_to_this_round": true,
         "assistant_critical_listening_performed": false,
         "same_person_three_emotions_approved": false,
         "pronunciation_stress_native_accent_approved": false,
         "perceived_age_approved": false,
         "acting_approved": false,
-        "long_form_stability_approved": false
+        "long_form_stability_approved": false,
+        "owner_approved_general_emotional_direction": true,
+        "owner_feedback": "Loved the overall three-mode Alnilam direction; heard recognizable identity/timbre change in destruction and somewhat child-story delivery. Requests one continuity/adult-restraint correction; no voice replacement."
       },
       "accepted_for_private_preview": false,
       "rights_and_cost": {
@@ -472,6 +474,187 @@
         "provider_log_erasure_claimed": false
       },
       "next_gate": "owner listening; if satisfactory, bounded several-minute continuity test after renewed cost/access check, not full episode"
+    },
+    {
+      "trial_id": "alnilam-one-continuous-correction-2026-11-06",
+      "date": "2026-11-06",
+      "status": "audio_generated_awaiting_owner_identity_review",
+      "voice_id": "Alnilam",
+      "profile_id": "series-narrator-alnilam-v1",
+      "model_id": "gemini-2.5-flash-preview-tts",
+      "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+      "provider_weights_revision": "not exposed",
+      "base_settings": {
+        "speed_factor": 1.0,
+        "temperature": 1.0,
+        "seed": "not exposed"
+      },
+      "source_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "seconds": 49.25095833333334,
+      "native_sample_rate": 24000,
+      "native_channels": 1,
+      "codec": "PCM16 WAV",
+      "retained_original_sha256": "1a31a31839e565add6736cdda8465d4be04f0d90f3c3bb0416b6ebc721442dd6",
+      "retained_original_unchanged": true,
+      "generation_submissions": 1,
+      "automatic_submit_retries": 0,
+      "additional_corrections": 0,
+      "original_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+      "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+      "direction": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.",
+      "request_sha256": "e32f8019512c82f7196c246afaa70c49c17d7ddec23624d82950c2cbc5d7834f",
+      "diagnosis": {
+        "known": {
+          "previous_voice_id": "Alnilam",
+          "previous_model": "gemini-2.5-flash-preview-tts",
+          "previous_host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+          "previous_speed_factor": 1.0,
+          "previous_temperature": 1.0,
+          "base_parameters_same_across_three": true,
+          "previous_emotion_prompts_differed": true,
+          "previous_generation_contexts_separate": true,
+          "shared_reference_or_fixed_seed_supported": false,
+          "owner_heard_previous_destruction_identity_change": true
+        },
+        "uncertain": "Separate generation contexts, emotion instructions and model stochasticity can all contribute; same client configuration does not pin vendor weights. No causal isolation from the prior samples.",
+        "single_test_change": "All87same words in one context with one restrained adult prompt; no artificial aging/deepening. Both context and direction changed, so causal effects cannot be separated by this one allowed trial.",
+        "result": "Real audio created; content/decode passed; acoustic transition results mixed, not a demonstrated perceptual fix. Owner listening required.",
+        "no_further_trial_in_this_round": true
+      },
+      "comparison_baseline": "alnilam-three-emotions-2026-11-06",
+      "listening": {
+        "new_continuous": "https://drive.google.com/file/d/1_vnyhDvoRQmWQsY8dEY0Ainhq8i6tcwE/view?usp=drivesdk",
+        "destruction_begins_seconds": 34.01,
+        "old_then_new_transition": "https://drive.google.com/file/d/1UHx98hUDvAaEGLOyLxj1bO1PdGqepjwR/view?usp=drivesdk",
+        "transition_old_seconds": 15.810958333333334,
+        "transition_separator_seconds": 1.0,
+        "transition_new_seconds": 13.52,
+        "common_static_gain_db": -0.3060910817640984,
+        "music_pitch_eq_or_time_stretch": false
+      },
+      "technical_qa": {
+        "all_expected_words": 87,
+        "recognized_words": 87,
+        "literal_word_edits": 0,
+        "full_decode_audio_files": 7,
+        "source_saturated_samples": 0,
+        "source_peak": 0.80810546875,
+        "source_rms_dbfs": -18.679841273321657,
+        "asr": "ivrit-ai/whisper-large-v3-turbo-ct2,revision72ad623a37947395efcc3933132353790e5a12f5,CPUint8,he,beam5,temp0,no initial prompt",
+        "paragraphs": [
+          {
+            "id": 1,
+            "source_start_seconds": 0,
+            "source_end_seconds": 17.04,
+            "rms_dbfs": -18.75527165022325
+          },
+          {
+            "id": 2,
+            "source_start_seconds": 17.04,
+            "source_end_seconds": 34.01,
+            "rms_dbfs": -19.401920426655938
+          },
+          {
+            "id": 3,
+            "source_start_seconds": 34.01,
+            "source_end_seconds": 49.25095833333334,
+            "rms_dbfs": -17.925077203199983
+          }
+        ],
+        "transition_observations": {
+          "old_pre_post_destruction_cosine": 0.7849075794219971,
+          "new_pre_post_destruction_cosine": 0.8284944891929626,
+          "old_warmth_last4_vs_drama_first4": 0.8093327283859253,
+          "new_warmth_last4_vs_drama_first4": 0.7635152339935303
+        },
+        "new_drama_original_pair_cosines": [
+          0.8201197981834412,
+          0.7565170526504517,
+          0.8290725946426392,
+          0.7755438089370728
+        ],
+        "calibrated_hebrew_threshold": null,
+        "metric_interpretation": "Mixed: speech-aligned pre/post cosine0.785→0.828; fixed paragraph-boundary4s cosine0.809→0.764. No cherry-picked pass or proof of natural age/accent/identity."
+      },
+      "replaceable_audition_cues": [
+        {
+          "id": "continuity-audition-N01",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 0,
+          "source_end_sample": 408960,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "5075cc978a2325e58ca0a48545ef08c0e854ec6d8d98b052f98c1267435a7118",
+          "derived_wav_frames": 408960,
+          "display_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        },
+        {
+          "id": "continuity-audition-N02",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 408960,
+          "source_end_sample": 816240,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "49e2f5947be64241e772a64581e6b21cf7775aaa44419a924223563dac818943",
+          "derived_wav_frames": 407280,
+          "display_text": "כדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "pronunciation_text": "כדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        },
+        {
+          "id": "continuity-audition-N03",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 816240,
+          "source_end_sample": 1182023,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "1e78a4a2dbd84ddc6914e0aaadfeaea86ca0d2fc544276e94133a2b72e1082e8",
+          "derived_wav_frames": 365783,
+          "display_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "pronunciation_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        }
+      ],
+      "review": {
+        "owner_approved_general_previous_direction": true,
+        "owner_listened_to_this_fix": false,
+        "identity_fixed": false,
+        "native_accent_and_stress_approved": false,
+        "more_mature_perceived_delivery_approved": false,
+        "long_form_stability_approved": false,
+        "assistant_critical_listening": false
+      },
+      "accepted_for_private_preview": false,
+      "rights_and_cost": {
+        "private_trial_authorized": true,
+        "publication_authorized": false,
+        "new_caller_external_charge_usd": 0,
+        "user_key_account_or_payment_supplied": false,
+        "host_underlying_cost_and_production_free_quota": "unknown",
+        "workspace_plan_usage": "unknown"
+      },
+      "backup": {
+        "url": "https://drive.google.com/file/d/1rCelF_XXnSV2pujgKCl5fXkZBSA7uJGb/view?usp=drivesdk",
+        "bytes": 8548114,
+        "files": 30,
+        "sha256": "47595a48bbbcf12cb27a559aeb482d1253ee5574e7d0cec3d2786a3378b6e08f",
+        "local_crc": "passed",
+        "drive_mime_size_shared_false_verified": true,
+        "server_sha_exposed": false,
+        "contains_original_and_prior_transition_source": true
+      },
+      "production_integration": "Audition editing derivatives only, NOT matching voice slots of introductory working script or existing N01/N02",
+      "remote_cleanup": {
+        "only_own_one_task_deleted_after_backup": true,
+        "http_status": 200,
+        "provider_log_erasure_claimed": false
+      }
     }
   ]
 }

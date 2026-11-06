@@ -99,8 +99,20 @@
           "voice_id": "Alnilam",
           "profile_id": "series-narrator-alnilam-v1",
           "combined_url": "https://drive.google.com/file/d/1BoLaY5q-ADc634G7T9Gm32z0iuVpJOoE/view?usp=drivesdk",
-          "status": "audio_generated_awaiting_owner_review",
+          "status": "owner_liked_direction_identity_correction_requested",
           "seconds": 58.232875,
+          "owner_review_pending": false,
+          "source_slots_N01_N02_unchanged": true,
+          "identity_correction_pending": true
+        },
+        {
+          "trial_id": "alnilam-one-continuous-correction-2026-11-06",
+          "ledger": "trials.json#voice_trials",
+          "voice_id": "Alnilam",
+          "profile_id": "series-narrator-alnilam-v1",
+          "combined_url": "https://drive.google.com/file/d/1_vnyhDvoRQmWQsY8dEY0Ainhq8i6tcwE/view?usp=drivesdk",
+          "status": "audio_generated_awaiting_owner_identity_review",
+          "seconds": 49.25095833333334,
           "owner_review_pending": true,
           "source_slots_N01_N02_unchanged": true
         }
