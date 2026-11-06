@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class OpeningTests(unittest.TestCase):
  def setUp(self): self.config=json.loads((ROOT/'episodes/berakhot-01-01/introduction-proof.json').read_text())
  def test_missing_truthful(self):
-  r=plan(self.config,ROOT);self.assertEqual(r['status'],'BLOCKED_MISSING_REAL_MEDIA');self.assertEqual(len(r['missing']),10);self.assertFalse(r['render_enabled'])
+  r=plan(self.config,ROOT);self.assertEqual(r['status'],'BLOCKED_MISSING_REAL_MEDIA');self.assertEqual(len(r['missing']),11);self.assertFalse(r['render_enabled'])
  def test_spend_release_profile(self):
   for key,value in [('profile','rejected'),('external_spend_usd',1),('release_authorized',True)]:
    c=copy.deepcopy(self.config);c[key]=value;self.assertEqual(plan(c,ROOT)['status'],'INVALID')
