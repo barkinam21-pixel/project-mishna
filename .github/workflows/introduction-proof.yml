@@ -1,0 +1,20 @@
+name: Introduction proof offline readiness
+on:
+  workflow_dispatch:
+  push:
+    paths: ['tools/introduction_proof.py', 'episodes/berakhot-01-01/introduction-proof.json', 'tests/test_introduction_proof.py']
+permissions:
+  contents: read
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m tools.introduction_proof
+      - uses: actions/upload-artifact@v4
+        with:
+          name: introduction-proof-readiness
+          path: build/introduction-proof-state.json
