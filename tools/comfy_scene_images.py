@@ -27,6 +27,7 @@ def atomic(path, value):
     tmp = path.with_suffix('.tmp')
     tmp.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n')
     tmp.replace(path)
+    if 'private-media' in path.parts: path.chmod(0o600)
 
 
 def specifications(manifest, root):
@@ -37,7 +38,7 @@ def specifications(manifest, root):
     if model['id'] != 'black-forest-labs/FLUX.2-klein-4B':
         raise ValueError('Only verified Klein 4B family supported')
     backend = manifest.get('backend', {'type':'comfyui'})
-    if backend.get('type') not in ('comfyui', 'hf-zero'):
+    if backend.get('type') not in ('comfyui', 'hf-zero', 'cloudflare'):
         raise ValueError('Unsupported image backend')
     seen = set()
     results = []
@@ -82,6 +83,11 @@ def specifications(manifest, root):
                 'style': manifest['style'], 'characters': characters,
                 'prompt': shot['prompt'], 'seed': shot['seed'], 'references': list(unique.values())}
         if shot.get('visual_direction'): spec['visual_direction'] = shot['visual_direction']
+        if shot.get('director'):
+            from tools.shot_controls import validate
+            missing.extend(validate(shot['director'],shot,manifest))
+            spec['director']=shot['director']
+        if backend['type']=='cloudflare' and not shot.get('director'): missing.append('Director controls required')
         if backend['type'] != 'comfyui': spec['backend'] = backend
         results.append({'id': uid, 'key': key(spec), 'spec': spec, 'missing': missing})
     return results
@@ -91,6 +97,7 @@ def prompt_text(spec):
     text = spec['style']+' '+spec['prompt']+' '+json.dumps(
         {c:v['description'] for c,v in spec['characters'].items()}, ensure_ascii=False)
     if spec.get('visual_direction'): text += ' '+json.dumps(spec['visual_direction'],ensure_ascii=False)
+    if spec.get('director'): text += ' STRUCTURED DIRECTION: '+json.dumps(spec['director'],ensure_ascii=False,sort_keys=True)
     return text
 
 
@@ -140,6 +147,12 @@ def run(manifest, root, out, client=None, generate=False):
     try:
         handle.close()
         return _run(manifest,root,out,client,generate)
+    except Exception as error:
+        import datetime
+        atomic(out/'last-error.json', {'status':'BLOCKED_OR_UNCERTAIN','error_type':type(error).__name__,
+            'code':str(error) if type(error).__name__=='CloudflareBlocked' else 'INSPECT_STATE_NO_BLIND_RETRY',
+            'finished_at':datetime.datetime.now(datetime.timezone.utc).isoformat()})
+        raise
     finally:
         lock.unlink(missing_ok=True)
 
@@ -149,7 +162,7 @@ def _run(manifest, root, out, client, generate):
     state_path = out/'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'entries':{}}
     report = {'shots': [], 'submissions':0, 'accepted_cache_hits':0,
-              'candidate_reuses':0, 'external_charge_usd':0, 'workspace_usage':'unknown'}
+              'candidate_reuses':0, 'external_charge_usd':None if manifest.get('backend',{}).get('type')=='cloudflare' else 0, 'workspace_usage':'unknown'}
     for row in rows:
         entry = state['entries'].get(row['key'])
         if entry and entry.get('status') in ('CANDIDATE','ACCEPTED'):
@@ -185,7 +198,7 @@ def _run(manifest, root, out, client, generate):
                 report['submissions'] += 1
                 atomic(state_path,state)
                 with (out/'usage.jsonl').open('a') as log:
-                    log.write(json.dumps({'operation':'queued','key':row['key'],'prompt_id':pid,'external_charge_usd':0,'workspace_usage':'unknown'})+'\n')
+                    log.write(json.dumps({'operation':'queued','key':row['key'],'prompt_id':pid,'external_charge_usd':None if getattr(client,'engine_name','')=='Cloudflare Workers AI' else 0,'workspace_usage':'unknown'})+'\n')
             history = client.wait(entry['prompt_id'])
             result = client.result(history)
             if result.get('seed') not in (None,row['spec']['seed']):
@@ -197,11 +210,11 @@ def _run(manifest, root, out, client, generate):
                 native_format = im.format
                 if list(im.size)!=manifest['size'] or im.mode not in ('RGB','RGBA'):
                     raise ValueError('Unexpected image dimensions or color mode')
-                if native_format not in ('PNG','WEBP') or (native_format=='WEBP' and row['spec'].get('backend',{}).get('type')!='hf-zero'):
+                if native_format not in ('PNG','WEBP','JPEG') or (native_format=='WEBP' and row['spec'].get('backend',{}).get('type') not in ('hf-zero','cloudflare')) or (native_format=='JPEG' and row['spec'].get('backend',{}).get('type')!='cloudflare'):
                     raise ValueError('Unexpected provider image format')
                 pixels = im.tobytes()
-                if native_format=='WEBP':
-                    original=out/(row['key']+'.original.webp')
+                if native_format in ('WEBP','JPEG'):
+                    original=out/(row['key']+'.original.'+('webp' if native_format=='WEBP' else 'jpg'))
                     temp=original.with_suffix('.tmp');temp.write_bytes(raw);temp.replace(original)
                     buffer=io.BytesIO();im.save(buffer,format='PNG');raw=buffer.getvalue()
                     with Image.open(io.BytesIO(raw)) as converted:
@@ -216,10 +229,16 @@ def _run(manifest, root, out, client, generate):
                          accepted=False,rights_verified=False,continuity_review='PENDING_HUMAN',
                          model=manifest['model'],seed=row['spec']['seed'],
                          native_format=native_format,native_sha256=native_sha,
-                         png_is_converted=native_format=='WEBP',
-                         native_path=str(original.relative_to(root)) if native_format=='WEBP' else str(path.relative_to(root)))
+                         png_is_converted=native_format in ('WEBP','JPEG'),
+                         native_path=str(original.relative_to(root)) if native_format in ('WEBP','JPEG') else str(path.relative_to(root)))
+            from tools.shot_controls import visual_qa
+            entry['qa']=visual_qa(path,[under(root,r['path']) for r in row['spec']['references']])
+            if result.get('receipt'): entry['provider_receipt']=result['receipt']
             atomic(state_path,state)
-        report['shots'].append({'id':row['id'],'key':row['key'],'missing':row['missing'],**(entry or {})})
+        public_entry=dict(entry or {})
+        if row['spec'].get('backend',{}).get('type')=='cloudflare' and isinstance(public_entry.get('prompt_id'),dict):
+            public_entry['prompt_id']='synchronous-response:'+public_entry.get('native_sha256','pending')
+        report['shots'].append({'id':row['id'],'key':row['key'],'missing':row['missing'],'spec':row['spec'],**public_entry})
     atomic(out/'report.json',report)
     return report
 
