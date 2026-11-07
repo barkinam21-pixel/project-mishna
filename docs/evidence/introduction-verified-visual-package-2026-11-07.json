@@ -62,12 +62,12 @@
   },
   "alternatives": [
     {
-      "name": "authorized private ComfyUI GPU",
-      "status": "no endpoint/GPU bound in current runtime"
-    },
-    {
       "name": "existing Kaggle GPU account",
       "status": "no authorized account binding or verified quota; not scheduled"
+    },
+    {
+      "name": "existing Cloudflare connection",
+      "status": "UNAUTHORIZED: app requires reauthentication; account plan, private image API support and free allowance could not be verified; no compute called"
     }
   ],
   "verification": {
@@ -75,10 +75,17 @@
     "local_full_suite_result": "PASS",
     "seconds": 33.028,
     "actual_archive_restore_cli": "VERIFIED_PRIVATE_INTAKE;2 references",
-    "real_model_quality": "NOT_EVALUATED_NO_NEW_IMAGE"
+    "real_model_quality": "NOT_EVALUATED_NO_NEW_IMAGE",
+    "hosted_ci": {
+      "code_commit": "bb18fba7a760e4fade47c4eb2d70309577319bcd",
+      "assembly_run": 42418776306,
+      "general_run": 42418780876,
+      "both_conclusions": "success"
+    }
   },
   "external_paid_calls": 0,
   "new_external_charge_initiated_usd": 0,
   "workspace_and_existing_storage_usage": "unknown",
-  "release_authorized": false
+  "release_authorized": false,
+  "native_backend": "No private ComfyUI GPU endpoint connected"
 }
