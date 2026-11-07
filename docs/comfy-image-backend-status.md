@@ -53,3 +53,39 @@ The current managed environment reports no GPU capability, no provider bindings,
 4. Actual inspection of identity, costume, hands, eyelines and lighting. Seeds and hashes do not prove visual consistency.
 
 Alnilam's accepted continuity baseline, all existing release gates and PR43 remain unchanged. Zero real image generations and zero new charges were initiated.
+
+
+## Live GPU/access investigation — 2026-11-07 follow-up
+
+Evidence: [actual HTTP/hardware observations](evidence/comfy-gpu-live-readiness-2026-11-07.json). No inference request was submitted; no model executed, no image produced, no measured GPU time/VRAM. Do not confuse a RUNNING demo with allocation for this task.
+
+| Route | Verified fact | Why not an operational ComfyUI GPU here |
+|---|---|---|
+| Current executor | No NVIDIA devices/nvidia-smi/provider bindings; cgroup RAM limit16GiB, CPU quota4 cores | No GPU. Installing ComfyUI or tens of GB of weights cannot create one; CPU-only Klein execution not attempted or benchmarked. |
+| Official BFL Klein4B ZeroGPU demo | Live metadata RUNNING / zero-a10g; config and public `/infer` API returned HTTP200; source loads Klein4B/distilled | It runs Diffusers, not a shell/server where we can install ComfyUI. It can be a future limited fallback, not a proven permanent worker. No GPU allocation requested because the approved reference/rights gate remains unsatisfied. |
+| Own Hugging Face ZeroGPU Space | Current official docs allow qualifying free personal accounts (verified, over30days) to host up to2 Spaces; anonymous demo usage2min/day, free accounts5min/day | No authorized HF account binding available to create/deploy a worker. This is not a claim that Bar has no account. Eligibility, quota and storage must be checked on an authorized account; no signup/subscription initiated. |
+| Kaggle | Official CLI supports `kernels push` with accelerator selection | No authorized Kaggle connection available here; cannot verify account GPU quota, schedule a notebook or attach persistent datasets. No account created. |
+| GitHub GPU runners | GPU is a larger-runner offering, not GPU supplied by our existing ubuntu-latest job | No verified zero-cost GPU runner attached; no billing-enabled provisioning. |
+| Existing local/donated GPU | Can host our existing ComfyUI CLI and persistent private files without per-image API fees | None is connected with permission. No software installed on Bar's machine. Hardware/electricity/storage are not automatically free. |
+
+Weak-GPU options were checked against current ComfyUI CLI: `--cpu-vae`, `--novram`, `--cpu`; `--lowvram` now explicitly does nothing when dynamic VRAM is enabled. Offloading can move memory pressure to RAM and increase latency; it does not guarantee Klein will fit a particular GPU or this16GiB CPU container. No4GB/8GB success is claimed. SDXL's completed trials were not repeated, and no unverified quantized model/licence was substituted.
+
+Reference discovery covered accessible attachments, image entries in their ZIPs, known local filename and connected Drive searches. Inspected SP01 images show earlier interiors/landscapes, not the approved two-traveler combined frame. No match in these searches is not proof that the image is absent from all private storage. ChatGPT Library is not exposed as a file source here. No unrelated image was silently relabeled as the approved reference or uploaded.
+
+Practical next step: recover the original combined reference and bind an eligible existing free HF account or an already-owned/authorized GPU. The official demo is a possible quota-limited fallback once the reference gate is satisfied; it is not a guarantee of unattended long-term ComfyUI hosting. No recurring automatic generation has been deployed.
+
+New operator commands (not manual tasks for Bar):
+
+```sh
+# Read-only real endpoint/hardware diagnosis; exit2 means blocked, never a generation call.
+python -m tools.comfy_runtime --out build/comfy-runtime.json
+python -m tools.comfy_runtime --endpoint https://AUTHORIZED-COMFY-HOST --out build/comfy-runtime.json
+# Copy an accessible original image privately, preserve its exact bytes/hash and keep approval false.
+python -m tools.comfy_runtime --reference /AUTHORIZED/PATH/original.png
+```
+
+Reference intake does not edit an image, overwrite existing rights evidence, approve faces or update production manifests. Permission can be recorded only with explicit synthesis-rights confirmation plus provenance. Existing receipts require separate review to change. No image reference was ingested during this session because the actual approved source was not found.
+
+Live protocol check: pointing the existing ComfyUI client at the official demo failed on `/system_stats` with JSONDecodeError (non-Comfy response); exit2 and no submission. This confirms that a live public Gradio API is not a drop-in ComfyUI endpoint. [Space storage documentation](https://huggingface.co/docs/hub/spaces-storage) distinguishes ephemeral free disk from persistent storage: do not assume model caches or results survive rebuild/restart. Keep originals and receipts in our private store; paid persistent-storage upgrades were not enabled.
+
+Verification for this follow-up: 348 local tests passed; the real runtime probe and public-demo ComfyUI protocol check both correctly returned blocked/exit2. These do not establish GPU inference or image quality.
