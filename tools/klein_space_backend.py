@@ -55,10 +55,15 @@ class KleinSpaceClient:
         images=[c for c in config.get('components',[]) if c.get('type')=='image' and c.get('props',{}).get('label')=='Result']
         if len(images)!=1 or images[0]['props'].get('format') not in ('png','webp'):
             raise ProviderBlocked('UNSUPPORTED_OUTPUT_FORMAT')
-        return {'endpoint_reachable':True,'gpu_allocation':'NOT_TESTED','anonymous':True}
+        return {'endpoint_reachable':True,'gpu_allocation':'NOT_TESTED','anonymous':True,
+                'private_reference_uploads_supported':False}
 
     def prepare(self, spec, reference_paths):
         self.readiness()  # before uploading references or consuming GPU quota
+        # Public Gradio upload-cache files are anonymously downloadable.
+        # A hidden/unguessable URL is not private storage.
+        if not spec.get('references') or any(r.get('privacy','private')!='public' for r in spec['references']):
+            raise ProviderBlocked('PRIVATE_REFERENCES_UNSUPPORTED_BY_PUBLIC_SPACE')
         if spec['seed']>2**31-1:raise ProviderBlocked('SEED_OUTSIDE_SPACE_RANGE')
         gallery=[]
         for path in reference_paths:

@@ -1,5 +1,7 @@
 # Visual style lock candidate — merged reference approved by Bar (2026-11-06)
 
+> **עדכון קליטה מאומת:** חבילת ה־ZIP של בר התקבלה. המקור אומת כ־1672×941 וב־SHA-256 הצפוי `e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3`; הלוח גם1672×941, SHA-256 `1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5`. שני המקורות נצפו בגודל המקורי, נשמרו פרטית וגובו ב־Drive; הורדה חוזרת אימתה את הבתים. הערות חוסר הגישה שבהמשך הן היסטוריית הסבבים הקודמים. אישור הייחוס אינו אישור לאיור חדש או לשחזור היסטורי.
+
 Bar supplied five still-image references and two videos and requested a combination. A new combined illustration was generated in the conversation; Bar responded **"נהדר"**. This approves the **direction** as a style reference, not every downstream asset, not historical authenticity, and not publication.
 
 ## Expected source identity supplied by Bar — not yet verified

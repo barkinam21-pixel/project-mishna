@@ -101,15 +101,73 @@ def bind_reference(manifest, receipt):
     return result
 
 
+def intake_package(archive, root, manifest, *, rights_uri, synthesis_rights_confirmed,
+                   expected_package_sha256=None):
+    """Restore verified references from a private ZIP without arbitrary extraction."""
+    import io
+    import zipfile
+    if not synthesis_rights_confirmed or not rights_uri:
+        raise ValueError('Owner synthesis authorization and provenance required')
+    raw=Path(archive).read_bytes()
+    package_sha=hashlib.sha256(raw).hexdigest()
+    if expected_package_sha256 and package_sha!=expected_package_sha256:
+        raise ValueError('PACKAGE_HASH_MISMATCH')
+    master_name='a_cinematic_detailed_illustration_in_the_same_rea.png'
+    board_name='a_cinematic_storyboard_collage_with_four_panels_t.png'
+    staged=[]
+    with zipfile.ZipFile(io.BytesIO(raw)) as package:
+        entries=package.infolist()
+        if len(entries)!=2 or {x.filename for x in entries}!={master_name,board_name}:
+            raise ValueError('Unexpected ZIP entries')
+        for item in entries:
+            if item.file_size>10*1024*1024 or ((item.external_attr>>16)&0o170000)==0o120000:
+                raise ValueError('Unsafe ZIP entry')
+            data=package.read(item);digest=hashlib.sha256(data).hexdigest()
+            with Image.open(io.BytesIO(data)) as image:
+                image.load();size=list(image.size)
+                if image.format!='PNG':raise ValueError('Reference must be PNG')
+            master=item.filename==master_name
+            expected=manifest['references'][0] if master else manifest['direction_board']
+            expected_hash=expected.get('expected_sha256') if master else expected.get('sha256')
+            expected_size=expected.get('expected_size') if master else expected.get('dimensions')
+            if expected_hash and digest!=expected_hash:raise ValueError('REFERENCE_HASH_MISMATCH')
+            if expected_size and size!=expected_size:raise ValueError('REFERENCE_DIMENSIONS_MISMATCH')
+            staged.append((item.filename,data,master))
+    # Only write after all ZIP members, CRCs, image decodes and expected identities pass.
+    receipts=[];bound=manifest
+    for name,data,master in staged:
+        source=under(root,'private-media/introduction/verified-inputs/'+name)
+        source.parent.mkdir(parents=True,exist_ok=True);source.parent.chmod(0o700)
+        source.write_bytes(data);source.chmod(0o600)
+        receipt=intake(source,root,rights_uri=rights_uri,synthesis_rights_confirmed=True,
+            expected_sha256=manifest['references'][0]['expected_sha256'] if master else None,
+            expected_size=manifest['references'][0]['expected_size'] if master else None,
+            role='approved_style_and_character_master' if master else 'direction_board',
+            source_uri='owner-provided ZIP sha256:'+package_sha+' / '+name)
+        under(root,receipt['path']).chmod(0o600)
+        bound=bind_reference(bound,receipt);receipts.append(receipt)
+    return bound,{'package_sha256':package_sha,'references':receipts,'release_authorized':False}
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--endpoint');p.add_argument('--out',default='build/comfy-runtime.json')
     p.add_argument('--reference');p.add_argument('--rights-uri')
+    p.add_argument('--package');p.add_argument('--expected-package-sha256')
     p.add_argument('--expected-sha256');p.add_argument('--expected-size',nargs=2,type=int)
     p.add_argument('--role',default='unspecified');p.add_argument('--source-uri')
     p.add_argument('--confirm-synthesis-rights',action='store_true')
     p.add_argument('--bind-manifest');p.add_argument('--bound-out')
     a=p.parse_args();root=Path.cwd()
+    if a.package:
+        if not a.bind_manifest or not a.bound_out or not a.bound_out.startswith('private-media/'):
+            p.error('Package intake requires --bind-manifest and private --bound-out')
+        bound,receipt=intake_package(a.package,root,json.loads(Path(a.bind_manifest).read_text()),
+            rights_uri=a.rights_uri,synthesis_rights_confirmed=a.confirm_synthesis_rights,
+            expected_package_sha256=a.expected_package_sha256)
+        atomic(under(root,a.bound_out),bound)
+        atomic(under(root,'private-media/introduction/verified-inputs/package-receipt.json'),receipt)
+        print(json.dumps({'status':'VERIFIED_PRIVATE_INTAKE','package_sha256':receipt['package_sha256'],'reference_count':len(receipt['references'])}));return 0
     if a.reference:
         result=intake(a.reference,root,rights_uri=a.rights_uri,
                       synthesis_rights_confirmed=a.confirm_synthesis_rights,

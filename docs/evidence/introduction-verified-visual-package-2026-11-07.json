@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-07",
+  "scope": "actual owner ZIP intake, authenticated private backup readback and live public-upload privacy test",
+  "zip": {
+    "sha256": "0470b210d977dc1d3311638e33dd7de7a632c8acaa53e47ea1f0e6df4d57298d",
+    "bytes": 5214491,
+    "entry_count": 2,
+    "crc_verified": true
+  },
+  "references": [
+    {
+      "role": "approved_style_and_character_master",
+      "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "original_bytes_preserved": true,
+      "rights_basis": "owner provided originals and explicitly authorized private preservation and OPN02 conditioning; no publication licence inferred",
+      "generation_model": "unknown",
+      "seed": "unknown"
+    },
+    {
+      "role": "direction_board",
+      "sha256": "1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "original_bytes_preserved": true,
+      "rights_basis": "owner provided originals and explicitly authorized private preservation and OPN02 conditioning; no publication licence inferred",
+      "generation_model": "unknown",
+      "seed": "unknown"
+    }
+  ],
+  "private_backup": {
+    "provider": "Google Drive",
+    "url": "https://drive.google.com/file/d/1Enbrzl3h2iCybflc_c4y_-b6vmecgwfb/view",
+    "shared": false,
+    "observed_permissions": "one owner user only",
+    "authenticated_readback_sha256_matches": true,
+    "both_reference_hashes_verified_after_readback": true,
+    "unattended_runtime_oauth_not_configured": true
+  },
+  "actual_upload_access_control_probe": {
+    "anonymous_upload_read_http_status": 200,
+    "downloaded_bytes_match": true,
+    "authenticated": false,
+    "private_project_files_uploaded": 0,
+    "model_inference_requests": 0,
+    "probe_file": "non-sensitive synthetic8x8 PNG; not a film asset or GPU trial",
+    "conclusion": "public Gradio cache cannot satisfy private-reference-storage requirement"
+  },
+  "generation": {
+    "private_reference_uploads": 0,
+    "inference_submissions": 0,
+    "gpu_allocated_for_task": "NOT_TESTED_PRIVACY_GATE_FAILED",
+    "gpu_seconds": null,
+    "peak_vram_bytes": null,
+    "new_OPN02": false,
+    "live_preflight_error": "PRIVATE_REFERENCES_UNSUPPORTED_BY_PUBLIC_SPACE"
+  },
+  "alternatives": [
+    {
+      "name": "authorized private ComfyUI GPU",
+      "status": "no endpoint/GPU bound in current runtime"
+    },
+    {
+      "name": "existing Kaggle GPU account",
+      "status": "no authorized account binding or verified quota; not scheduled"
+    }
+  ],
+  "verification": {
+    "local_full_suite_tests": 363,
+    "local_full_suite_result": "PASS",
+    "seconds": 33.028,
+    "actual_archive_restore_cli": "VERIFIED_PRIVATE_INTAKE;2 references",
+    "real_model_quality": "NOT_EVALUATED_NO_NEW_IMAGE"
+  },
+  "external_paid_calls": 0,
+  "new_external_charge_initiated_usd": 0,
+  "workspace_and_existing_storage_usage": "unknown",
+  "release_authorized": false
+}

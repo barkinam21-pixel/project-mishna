@@ -20,17 +20,19 @@
   "style": "Original mature hand-painted cinematic semi-realism, textured cloth and stone, muted ochre bronze slate-blue and violet, natural adult anatomy, restrained expressions, no text, glyphs or logos. Symbolic dramatization, not a documented event. Sunset near a generic stone hillside village; same soft light from behind-left. Do not copy existing animation frames or characters.",
   "references": [
     {
-      "path": "private-media/introduction/references/a_cinematic_detailed_illustration_in_the_same_rea.png",
-      "sha256": null,
+      "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+      "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
       "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
       "expected_size": [
         1672,
         941
       ],
-      "synthesis_rights_confirmed": false,
+      "synthesis_rights_confirmed": true,
       "role": "approved_style_and_character_master",
-      "access_status": "MISSING_ORIGINAL_BYTES",
-      "rights_basis": "owner authorizes verified original for this private OPN02 trial; receipt pending actual access"
+      "access_status": "VERIFIED_ORIGINAL",
+      "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+      "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+      "privacy": "private"
     }
   ],
   "characters": {
@@ -38,17 +40,19 @@
       "description": "Mature adult male traveler, gray beard, weathered contemplative face, sand-colored wrapped headcloth, dark indigo robe over light beige tunic, simple travel satchel. Preserve exact facial structure, relative height, headwrap folds, strap and satchel placement from the verified master. Frame left, no historical identity.",
       "references": [
         {
-          "path": "private-media/introduction/references/a_cinematic_detailed_illustration_in_the_same_rea.png",
-          "sha256": null,
+          "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+          "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
           "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
           "expected_size": [
             1672,
             941
           ],
-          "synthesis_rights_confirmed": false,
+          "synthesis_rights_confirmed": true,
           "role": "approved_style_and_character_master",
-          "access_status": "MISSING_ORIGINAL_BYTES",
-          "rights_basis": "owner authorizes verified original for this private OPN02 trial; receipt pending actual access"
+          "access_status": "VERIFIED_ORIGINAL",
+          "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+          "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+          "privacy": "private"
         }
       ]
     },
@@ -56,17 +60,19 @@
       "description": "Adult male traveler with dark hair and beard, brown headwrap and shawl over light tunic, travel bag. Serious restrained expressions, never a boy or teenager. Preserve exact facial structure, relative height, costume and straps from the verified master. Frame right, no historical identity.",
       "references": [
         {
-          "path": "private-media/introduction/references/a_cinematic_detailed_illustration_in_the_same_rea.png",
-          "sha256": null,
+          "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+          "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
           "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
           "expected_size": [
             1672,
             941
           ],
-          "synthesis_rights_confirmed": false,
+          "synthesis_rights_confirmed": true,
           "role": "approved_style_and_character_master",
-          "access_status": "MISSING_ORIGINAL_BYTES",
-          "rights_basis": "owner authorizes verified original for this private OPN02 trial; receipt pending actual access"
+          "access_status": "VERIFIED_ORIGINAL",
+          "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+          "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+          "privacy": "private"
         }
       ]
     }
@@ -310,13 +316,19 @@
     }
   },
   "direction_board": {
-    "path": "private-media/introduction/references/four-shot-direction-board.png",
-    "sha256": null,
+    "path": "private-media/introduction/references/1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5.png",
+    "sha256": "1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5",
     "expected_sha256": null,
-    "dimensions": null,
+    "dimensions": [
+      1672,
+      941
+    ],
     "role": "direction_only_not_generation_input",
-    "access_status": "VISIBLE_IN_CHAT_ORIGINAL_BYTES_UNAVAILABLE",
-    "crop_as_film_frame_allowed": false
+    "access_status": "VERIFIED_ORIGINAL",
+    "crop_as_film_frame_allowed": false,
+    "synthesis_rights_confirmed": true,
+    "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+    "privacy": "private"
   },
   "continuity": {
     "setting": "symbolic anonymous hillside stone village at sunset",
@@ -329,5 +341,14 @@
     "source_layer": "symbolic_dramatization_not_documented_event",
     "narrator_profile": "series-narrator-alnilam-continuous-v2",
     "timing_status": "UNMEASURED"
+  },
+  "private_reference_package": {
+    "provider": "google_drive",
+    "file_id": "1Enbrzl3h2iCybflc_c4y_-b6vmecgwfb",
+    "archive_sha256": "0470b210d977dc1d3311638e33dd7de7a632c8acaa53e47ea1f0e6df4d57298d",
+    "shared": false,
+    "requires_authorized_read": true,
+    "restore_command": "tools.comfy_runtime --package",
+    "unattended_download_credentials_configured": false
   }
 }

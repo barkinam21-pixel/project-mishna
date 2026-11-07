@@ -134,3 +134,9 @@ class SpaceTests(unittest.TestCase):
             m['shots'][0]['prompt']='changed'
             with self.assertRaisesRegex(ValueError,'Total authorized'):run(m,root,out,client,True)
             self.assertEqual(client.count,1)
+
+    def test_private_reference_never_uploaded_to_public_space(self):
+        self.client.readiness=lambda:{'endpoint_reachable':True}
+        self.client.open=lambda *a,**kw: self.fail('Private reference must not reach upload endpoint')
+        with self.assertRaisesRegex(ProviderBlocked,'PRIVATE_REFERENCES_UNSUPPORTED'):
+            self.client.prepare({'references':[{'privacy':'private'}],'seed':7},[Path('never-open.png')])
