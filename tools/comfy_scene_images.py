@@ -156,6 +156,8 @@ def _run(manifest, root, out, client, generate):
             path = under(root,entry['path'])
             if not path.is_file() or sha(path) != entry['sha256']:
                 raise ValueError('Cached image missing/changed; review before regenerating')
+            if entry.get('png_is_converted') and (not under(root,entry['native_path']).is_file() or sha(under(root,entry['native_path']))!=entry['native_sha256']):
+                raise ValueError('Native provider original missing/changed')
             report['accepted_cache_hits' if entry['status']=='ACCEPTED' else 'candidate_reuses'] += 1
         elif not generate:
             entry = entry or {'status':'BLOCKED' if row['missing'] else 'NEEDS_GENERATION'}
@@ -189,17 +191,33 @@ def _run(manifest, root, out, client, generate):
             if result.get('seed') not in (None,row['spec']['seed']):
                 raise ValueError('Provider changed requested seed')
             raw = client.download(result)
+            native_sha = hashlib.sha256(raw).hexdigest()
             with Image.open(io.BytesIO(raw)) as im:
                 im.load()
-                if im.format!='PNG' or list(im.size)!=manifest['size']:
-                    raise ValueError('Unexpected image format/dimensions')
+                native_format = im.format
+                if list(im.size)!=manifest['size'] or im.mode not in ('RGB','RGBA'):
+                    raise ValueError('Unexpected image dimensions or color mode')
+                if native_format not in ('PNG','WEBP') or (native_format=='WEBP' and row['spec'].get('backend',{}).get('type')!='hf-zero'):
+                    raise ValueError('Unexpected provider image format')
+                pixels = im.tobytes()
+                if native_format=='WEBP':
+                    original=out/(row['key']+'.original.webp')
+                    temp=original.with_suffix('.tmp');temp.write_bytes(raw);temp.replace(original)
+                    buffer=io.BytesIO();im.save(buffer,format='PNG');raw=buffer.getvalue()
+                    with Image.open(io.BytesIO(raw)) as converted:
+                        converted.load()
+                        if converted.mode!=im.mode or converted.size!=im.size or converted.tobytes()!=pixels:
+                            raise ValueError('PNG conversion changed decoded pixels')
             if any(e.get('sha256')==hashlib.sha256(raw).hexdigest() and k!=row['key'] for k,e in state['entries'].items()):
                 raise ValueError('Duplicate original across shots')
             path = out/(row['key']+'.png')
             tmp = path.with_suffix('.tmp');tmp.write_bytes(raw);tmp.replace(path)
             entry.update(status='CANDIDATE',path=str(path.relative_to(root)),sha256=sha(path),
                          accepted=False,rights_verified=False,continuity_review='PENDING_HUMAN',
-                         model=manifest['model'],seed=row['spec']['seed'])
+                         model=manifest['model'],seed=row['spec']['seed'],
+                         native_format=native_format,native_sha256=native_sha,
+                         png_is_converted=native_format=='WEBP',
+                         native_path=str(original.relative_to(root)) if native_format=='WEBP' else str(path.relative_to(root)))
             atomic(state_path,state)
         report['shots'].append({'id':row['id'],'key':row['key'],'missing':row['missing'],**(entry or {})})
     atomic(out/'report.json',report)

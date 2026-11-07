@@ -305,7 +305,8 @@
       "app_sha256": "54bd7de69240aee6cf4f543060af945d3ae3625768d3d6a9f68e7936a98c5336",
       "protocol": "gradio-call-v1",
       "deployed_weights_revision": null,
-      "original_png_required": true
+      "original_png_required": false,
+      "output_contract": "Preserve original PNG/WebP; PNG conversion must preserve decoded RGB/RGBA pixels, remain unapproved and retain native hash/path"
     }
   },
   "direction_board": {

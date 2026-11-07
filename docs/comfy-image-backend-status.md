@@ -106,3 +106,8 @@ Reference intake now accepts expected SHA/dimensions, source and role. Mismatch 
 The Visual Bible and full seven-shot map now use sunset/village, consistent light/axis, and an older-listening OPN04. Only the opening script's visual stage direction changed; all44 narrated text blocks were compared to the previous Git version and are identical. Cue hashes were preserved, the document hash updated with change provenance. Frames, matching Alnilam scene recordings and artistic-video readiness remain unmeasured/missing. No new voice synthesis or approved-baseline processing occurred.
 
 Existing CI runs both adapter-contract tests and the original assembly checks. These verify software behavior, not live GPU inference, visual identity, pronunciation or release readiness. The live Space source/API inspection is read-only and distinct from fixture tests.
+
+
+## WebP contract update — owner-authorized follow-up
+The earlier ORIGINAL_PNG_UNAVAILABLE blocker is superseded explicitly: the hosted adapter accepts valid PNG or WebP. Original WebP bytes/hash/path are retained privately; a true PNG conversion is checked for identical dimensions, RGB/RGBA mode and decoded pixels. This cannot recover compression already present in the source. Metadata labels the PNG as converted, never provider-original. Candidate approval remains false. Cache reuse also verifies the native original hash. Native ComfyUI still requires PNG.
+No real image inference was submitted: approved reference bytes remain inaccessible. A reference-free GPU trial would consume quota and is not authorized by the current instruction. Public readiness is not GPU allocation. Alnilam and the44 narration blocks are unchanged. No new paid service, merge or publication.

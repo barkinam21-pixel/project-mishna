@@ -53,8 +53,8 @@ class KleinSpaceClient:
             raise ProviderBlocked('INFERENCE_SCHEMA_CHANGED')
         config=self.get_json(HOST+'/config')
         images=[c for c in config.get('components',[]) if c.get('type')=='image' and c.get('props',{}).get('label')=='Result']
-        if len(images)!=1 or images[0]['props'].get('format')!='png':
-            raise ProviderBlocked('ORIGINAL_PNG_UNAVAILABLE')
+        if len(images)!=1 or images[0]['props'].get('format') not in ('png','webp'):
+            raise ProviderBlocked('UNSUPPORTED_OUTPUT_FORMAT')
         return {'endpoint_reachable':True,'gpu_allocation':'NOT_TESTED','anonymous':True}
 
     def prepare(self, spec, reference_paths):

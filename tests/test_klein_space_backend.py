@@ -25,10 +25,9 @@ class SpaceTests(unittest.TestCase):
     def test_readiness_not_gpu_allocation(self):
         self.assertEqual(self.client.readiness()['gpu_allocation'],'NOT_TESTED')
 
-    def test_actual_demo_webp_blocks_before_upload_or_inference(self):
+    def test_actual_demo_webp_is_supported_without_inference(self):
         self.documents[HOST+'/config']['components'][0]['props']['format']='webp'
-        with self.assertRaisesRegex(ProviderBlocked,'ORIGINAL_PNG_UNAVAILABLE'):
-            self.client.prepare({},[Path('must-not-be-opened.png')])
+        self.assertTrue(self.client.readiness()['endpoint_reachable'])
 
     def test_revision_change_blocks(self):
         self.documents['https://huggingface.co/api/spaces/'+SPACE]['sha']='b'*40
@@ -110,7 +109,7 @@ class SpaceTests(unittest.TestCase):
                'authorization':{'approved_shot_ids':['OPN02'],'generation_approved':True,
                   'zero_cost_compute_verified':True,'component_licenses_verified':True,
                   'max_submissions':1,'total_submissions_limit':1}}
-            output=io.BytesIO();Image.new('RGB',(512,288),'red').save(output,format='PNG')
+            output=io.BytesIO();Image.new('RGB',(512,288),'red').save(output,format='WEBP')
             class Adapter:
                 engine_name='TEST hosted Diffusers'
                 count=0
@@ -121,6 +120,12 @@ class SpaceTests(unittest.TestCase):
                 def download(s,result):return output.getvalue()
             client=Adapter();out=root/'private'
             first=run(m,root,out,client,True)
+            entry=first['shots'][0]
+            self.assertTrue(entry['png_is_converted'])
+            self.assertEqual((root/entry['native_path']).read_bytes(),output.getvalue())
+            self.assertFalse(entry['accepted'])
+            with Image.open(root/entry['path']) as converted, Image.open(io.BytesIO(output.getvalue())) as native:
+                self.assertEqual(converted.tobytes(),native.tobytes())
             accept(root,out,first['shots'][0]['key'],'TEST',True,True)
             second=run(m,root,out,client,True)
             self.assertEqual(client.count,1);self.assertEqual(second['accepted_cache_hits'],1)
