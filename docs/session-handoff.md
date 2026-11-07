@@ -481,3 +481,6 @@ Actions also wires actual production render conditionally on render_enabled read
 - הושלמו ללא קרדיטים: תרשים ציר ועמדת מצלמה, מפרט רציפות מוצע לשתי הדמויות, ותכנון התאמה לששת השוטים האחרים במסמך סקירת הבימוי הקיים. אלה תוכניות בלבד; פנים, לבוש ואביזרים לא ננעלו כנכסים חזותיים.
 - Alnilam ופרופיל הרציפות המאושר לא שונו. לא שונו מנוע הרינדור, workflows, מפתחות או הגנות. לא בוצע ניסוי קול, מיזוג או פרסום. המשך היצירה תלוי בגישה מורשית לנתוני חיוב ובאימות שמגבלת הקרדיטים אכן נאכפת; אין צורך באישור חזותי חוזר או בשליחת מפתח לצ'אט.
 - בדיקות ההכנה המקומיות עברו: שדות API ושדות חובה מול הסכמה החיה, hash בקשה בקידוד JSON קנוני מתועד, יחס 16:9 וכפולות 16, ניסיון יחיד ללא retries, שער יצירה חסום, ואימות hash של WAV ה־Alnilam המאושר ללא שינוי. לא הורצה שוב חבילת הבדיקות המלאה כי לא שונו קוד או workflows; אין בכך בדיקת יצירה או ביקורת תמונה. PR43 נבדק ונשאר פתוח.
+
+## ComfyUI adapter — 7.11.2026, partial
+Added `tools/comfy_image_backend.py` and six offline tests: dry planning, reference hash/rights validation, stable keys and gated ComfyUI queue/history transport. See `docs/comfy-image-backend-status.md` for unimplemented components. No GPU/model/image generation was performed. No fal.ai, voice changes, spend or merge. The end-to-end autonomous image engine is not complete.
