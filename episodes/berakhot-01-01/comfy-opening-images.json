@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "scene": "INTRO-A1-S01",
+  "size": [
+    1024,
+    576
+  ],
+  "model": {
+    "id": "black-forest-labs/FLUX.2-klein-4B",
+    "revision": "UNVERIFIED",
+    "unet": "flux-2-klein-4b.safetensors",
+    "text_encoder": "qwen_3_4b.safetensors",
+    "vae": "flux2-vae.safetensors",
+    "component_sha256": {
+      "unet": null,
+      "text_encoder": null,
+      "vae": null
+    }
+  },
+  "style": "Original mature hand-painted cinematic semi-realism, textured cloth and stone, muted ochre bronze slate-blue and violet, natural adult anatomy, restrained expressions, no text, glyphs or logos. Symbolic dramatization, not a documented event. Sunset near a generic stone hillside village; same soft light from behind-left. Do not copy existing animation frames or characters.",
+  "references": [
+    {
+      "path": "private-media/introduction/references/approved-combined-style.png",
+      "sha256": null,
+      "synthesis_rights_confirmed": false
+    }
+  ],
+  "characters": {
+    "A": {
+      "description": "Older anonymous adult traveler frame-left, gray beard, tan wrapped headcloth, dark indigo outer robe over beige tunic, plain satchel; unchanged identity and wardrobe.",
+      "references": [
+        {
+          "path": "private-media/introduction/references/traveler-A-sheet.png",
+          "sha256": null,
+          "synthesis_rights_confirmed": false
+        }
+      ]
+    },
+    "B": {
+      "description": "Younger adult traveler frame-right, dark beard, brown head wrap and shawl, beige tunic and shoulder bag; unchanged identity and wardrobe.",
+      "references": [
+        {
+          "path": "private-media/introduction/references/traveler-B-sheet.png",
+          "sha256": null,
+          "synthesis_rights_confirmed": false
+        }
+      ]
+    }
+  },
+  "authorization": {
+    "generation_approved": false,
+    "zero_cost_compute_verified": false,
+    "component_licenses_verified": false,
+    "max_submissions": 1,
+    "approved_shot_ids": []
+  },
+  "shots": [
+    {
+      "id": "OPN01",
+      "prompt": "Original ground-level insert: practical sandals and weighted steps on dusty path. Show only travelers feet, natural proportions, no extra limbs.",
+      "seed": 73001,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN02",
+      "prompt": "Original wide master: two adult travelers, older left younger right, moving left to right toward a generic hillside village. Restrained shared journey.",
+      "seed": 73002,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN03",
+      "prompt": "Original medium: younger adult on right, looking left toward older companion; intimate listening moment, no invented documented dialogue.",
+      "seed": 73003,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN04",
+      "prompt": "Original over-shoulder: older traveler left foreground, younger right, eyelines consistent, remain on same side of travel axis.",
+      "seed": 73004,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN05",
+      "prompt": "Original closer reaction: younger adult on right, subtle discovery in restrained expression. Same face, no teenage proportions.",
+      "seed": 73005,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN06",
+      "prompt": "Original insert: restrained adult hand gesture beside the same satchel and garment folds; anatomically plausible fingers.",
+      "seed": 73006,
+      "characters": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "OPN07",
+      "prompt": "Original new wide composition: the same travelers continue rightward toward the hillside village, greater depth and renewed purpose; not a crop of master.",
+      "seed": 73007,
+      "characters": [
+        "A",
+        "B"
+      ]
+    }
+  ]
+}

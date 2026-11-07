@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-07",
+  "model": "FLUX.2 Klein 4B",
+  "model_license": "Apache-2.0",
+  "gpu_vram_publisher_claim_gb": 13,
+  "gpu_vram_measured": null,
+  "runtime_gpu_capability": false,
+  "nvidia_smi_available": false,
+  "nvidia_devices": [],
+  "new_generation_submissions": 0,
+  "external_charge_initiated_usd": 0,
+  "workspace_usage": "unknown",
+  "reference_conditioning_quality": "NOT_TESTED_WITH_MODEL",
+  "model_component_licenses": "PENDING_DEPLOYED_COMPONENT_REVIEW",
+  "sources": [
+    {
+      "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/raw/main/README.md",
+      "sha256": "bd447051cf2db4bf67b992e563d89c35ebf1123f009c063361a222ab14e1c4f7"
+    },
+    {
+      "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/raw/main/LICENSE.md",
+      "sha256": "ca02bc51900ab07789d1b70283329e7137f5af98f5161c23a1c81fc38a4af1fe"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Comfy-Org/workflow_templates/main/templates/image_flux2_klein_image_edit_4b_distilled.json",
+      "sha256": "cfb8f471eee1abdb96aa3d7b990b6b61a94d55e2ef30b5d39653a4f89f0bcc76"
+    },
+    {
+      "url": "https://research.google.com/colaboratory/faq.html",
+      "sha256": "150773dc37f78d255b606a980c361d3a60d93ab227c10bcce706ddda080d43bd"
+    }
+  ],
+  "verification": {
+    "local_full_suite": {
+      "tests": 344,
+      "result": "PASS",
+      "duration_seconds": 27.624
+    },
+    "http_integration": "fake local ComfyUI server; original synthetic PNG only",
+    "cache_repeated_run": "zero new submissions after acceptance",
+    "one_changed_shot": "one new submission; unchanged shot accepted cache hit",
+    "queued_timeout": "resumed existing prompt ID",
+    "uncertain_submission": "blocked automatic resubmit",
+    "dry_run": "all seven real shots blocked; zero submissions",
+    "approved_alnilam_wav_hash_unchanged": true,
+    "actual_model_gpu_test": "NOT_RUN",
+    "actual_images_generated": 0
+  }
+}

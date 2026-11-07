@@ -484,3 +484,14 @@ Actions also wires actual production render conditionally on render_enabled read
 
 ## ComfyUI adapter — 7.11.2026, partial
 Added `tools/comfy_image_backend.py` and six offline tests: dry planning, reference hash/rights validation, stable keys and gated ComfyUI queue/history transport. See `docs/comfy-image-backend-status.md` for unimplemented components. No GPU/model/image generation was performed. No fal.ai, voice changes, spend or merge. The end-to-end autonomous image engine is not complete.
+
+
+## השלמת מסלול ComfyUI — 7.11.2026
+- נוסף `tools/comfy_scene_images.py`: מניפסט -> גרף API של Klein 4B עם ReferenceLatent, העלאות ייחוס, בדיקת זמינות nodes ומשקלי loader, הורדת PNG מקורי ובדיקת ממדים/hash, מצב אטומי וקאש. אין הורדת משקולות/פריסה/יצירת תמונות אמיתית.
+- candidate נשמר לבדיקה ואינו accepted-cache hit; אישור אנושי מפורש בלבד מעבירו לקאש המאושר. חידוש prompt_id אינו שולח POST נוסף, ושליחה שתוצאתה אינה ידועה עוצרת עד בדיקת התור. נעילה מונעת ריצות מקבילות כפולות. שינוי שוט אחד אינו מבטל שוט אחר; שינוי קריינות/כתוביות אינו מבטל תמונות.
+- `attach` ו־CLI יוצרים מניפסט חדש עבור מרכיב הסרט הקיים, בלי לשנות שערי תסריט/סצנה/פרסום או קול Alnilam. אין רינדור סרט אוטומטי מתוך תמונה לא מאושרת.
+- נבנה `comfy-opening-images.json` לשבעה איורים מקוריים בכיוון המשולב העדכני, כפר בשקיעה, עם כל שערי היצירה כבויים. הרצת dry-run בפועל חסמה את כל השבעה: משקלים/רביזיה ותמונות ייחוס/זכויות חסרים. תמונת השיחה אינה נכס נגיש ויש לשמר עותק מורשה לפני conditioning.
+- רישיון Klein 4B וכרטיס המודל נמשכו: Apache 2.0, תמיכה מוצהרת במספר ייחוסים וכ־13GB VRAM לפי היצרן בלבד. רישיונות/גרסאות רכיבי הפריסה המדויקים טרם ננעלו. מקור ו־hash ב־`docs/evidence/comfy-image-backend-2026-11-07.json`.
+- אין התקני NVIDIA, nvidia-smi או capability/חיבור GPU בסביבה. Colab חינמי מגביל remote-control/web-UI bypass ואינו משמש כשרת ComfyUI אוטומטי. אין סביבת GPU חינמית מורשית זמינה שאומתה; מכסות לא ידועות.
+- workflow ההרכבה הקיים הורחב לבדיקות CPU מול שרת מדומה ו־dry-run, ללא סודות/איורים בארטיפקטים. הוכחו בקוד HTTP וקאש, לא איכות אמנותית או יציבות פנים. לא הופעל Copilot נוסף; אין זמן סיום מאומת לפריסת GPU. עבודה עצמאית נוספת תלויה ב־GPU ובנכסי ייחוס מורשים, לא בהוראת המשך חוזרת.
+- אימות סופי מקומי: 344 בדיקות עברו ב־27.624 שניות, כולל 22 בדיקות ComfyUI/מסלול התמונות ושרת HTTP מדומה. hash ה־WAV המאושר של Alnilam זהה. בדיקת שתי תמונות מקור סינתטיות הוכיחה accepted-cache hit בשתיהן בהרצה זהה, ורק משימה אחת חדשה לאחר שינוי שוט אחד. אישור יצירה נבדק בנפרד עבור כל shot ID. לא נוצר איור אמיתי ולא בוצע חיוב.
