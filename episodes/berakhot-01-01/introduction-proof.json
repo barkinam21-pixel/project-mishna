@@ -1,0 +1,158 @@
+{
+  "scene": "INTRO-A1-S01",
+  "profile": "series-narrator-alnilam-continuous-v2",
+  "release_authorized": false,
+  "external_spend_usd": 0,
+  "assets": {
+    "OPN01": {
+      "path": "private-media/introduction/OPN01.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN02": {
+      "path": "private-media/introduction/OPN02.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN03": {
+      "path": "private-media/introduction/OPN03.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN04": {
+      "path": "private-media/introduction/OPN04.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN05": {
+      "path": "private-media/introduction/OPN05.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN06": {
+      "path": "private-media/introduction/OPN06.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "OPN07": {
+      "path": "private-media/introduction/OPN07.png",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    },
+    "INTRO-A1-S01-N01": {
+      "path": "private-media/introduction/INTRO-A1-S01-N01.wav",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null,
+      "profile": "series-narrator-alnilam-continuous-v2",
+      "text_sha256": "62ca7d76e207958dbae8d7d1d8b876bf150114356d966ba59481e1b6e28e0877",
+      "real_hebrew_speech_confirmed": false
+    },
+    "INTRO-A1-S01-N02": {
+      "path": "private-media/introduction/INTRO-A1-S01-N02.wav",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null,
+      "profile": "series-narrator-alnilam-continuous-v2",
+      "text_sha256": "16c54320af77e95e066b48071280e853559106471fd883b042d1eb3d5d1a8c5a",
+      "real_hebrew_speech_confirmed": false
+    },
+    "captions": {
+      "path": "private-media/introduction/captions.json",
+      "sha256": null,
+      "accepted": false,
+      "rights_verified": false,
+      "license": "pending",
+      "provenance": null
+    }
+  },
+  "shots": [
+    {
+      "id": "OPN01",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN02",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN03",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN04",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN05",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN06",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    },
+    {
+      "id": "OPN07",
+      "start_frame": null,
+      "end_frame": null,
+      "duration_frames": null
+    }
+  ],
+  "voice_takes": [
+    {
+      "id": "INTRO-A1-S01-N01",
+      "path": "private-media/introduction/INTRO-A1-S01-N01.wav",
+      "start_frame": null,
+      "end_frame": null,
+      "start_sample": null,
+      "end_sample": null
+    },
+    {
+      "id": "INTRO-A1-S01-N02",
+      "path": "private-media/introduction/INTRO-A1-S01-N02.wav",
+      "start_frame": null,
+      "end_frame": null,
+      "start_sample": null,
+      "end_sample": null
+    }
+  ],
+  "script_approved": false,
+  "visual_approved": false
+}
