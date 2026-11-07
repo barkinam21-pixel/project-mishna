@@ -45,7 +45,8 @@ def inspect(endpoint=None):
     return report
 
 
-def intake(source, root, *, rights_uri=None, synthesis_rights_confirmed=False):
+def intake(source, root, *, rights_uri=None, synthesis_rights_confirmed=False,
+           expected_sha256=None, expected_size=None, role='unspecified', source_uri=None):
     """Copy original bytes; never approve a character design or alter a production manifest."""
     source=Path(source)
     with Image.open(source) as image:
@@ -54,6 +55,10 @@ def intake(source, root, *, rights_uri=None, synthesis_rights_confirmed=False):
     if synthesis_rights_confirmed and not rights_uri:
         raise ValueError('Rights provenance required for synthesis permission')
     raw=source.read_bytes();sha=hashlib.sha256(raw).hexdigest()
+    if expected_sha256 is not None and sha != expected_sha256:
+        raise ValueError('REFERENCE_HASH_MISMATCH')
+    if expected_size is not None and size != list(expected_size):
+        raise ValueError('REFERENCE_DIMENSIONS_MISMATCH')
     extension={'PNG':'.png','JPEG':'.jpg','WEBP':'.webp'}[fmt]
     rel='private-media/introduction/references/'+sha+extension
     dest=under(root,rel);dest.parent.mkdir(parents=True,exist_ok=True)
@@ -64,22 +69,57 @@ def intake(source, root, *, rights_uri=None, synthesis_rights_confirmed=False):
     receipt={'path':rel,'sha256':sha,'dimensions':size,'original_bytes_preserved':True,
              'synthesis_rights_confirmed':synthesis_rights_confirmed,
              'rights_uri':rights_uri,'visual_identity_approved':False,
-             'production_manifest_changed':False}
+             'production_manifest_changed':False,'role':role,'source_uri':source_uri,
+             'expected_sha256':expected_sha256,'expected_size':expected_size}
     # Keep an earlier rights receipt unchanged until separately reviewed.
     receipt_path=dest.with_suffix(dest.suffix+'.json')
     if not receipt_path.exists(): atomic(receipt_path,receipt)
     return json.loads(receipt_path.read_text())
 
 
+def bind_reference(manifest, receipt):
+    """Bind verified private bytes to a copy; never grant generated-image/release approval."""
+    import copy
+    result=copy.deepcopy(manifest)
+    if not receipt.get('original_bytes_preserved') or not receipt.get('synthesis_rights_confirmed'):
+        raise ValueError('Reference bytes and explicit synthesis rights required')
+    role=receipt.get('role')
+    if role=='approved_style_and_character_master':
+        expected=manifest['references'][0]
+        if receipt['sha256']!=expected['expected_sha256'] or receipt['dimensions']!=expected['expected_size']:
+            raise ValueError('Approved original identity mismatch')
+        ref={**expected,'path':receipt['path'],'sha256':receipt['sha256'],
+             'synthesis_rights_confirmed':True,'access_status':'VERIFIED_ORIGINAL',
+             'rights_uri':receipt['rights_uri']}
+        result['references']=[ref]
+        for character in result['characters'].values():character['references']=[copy.deepcopy(ref)]
+    elif role=='direction_board':
+        result['direction_board'].update(path=receipt['path'],sha256=receipt['sha256'],
+            dimensions=receipt['dimensions'],access_status='VERIFIED_ORIGINAL',
+            synthesis_rights_confirmed=True,rights_uri=receipt['rights_uri'])
+    else:raise ValueError('Unknown reference role')
+    return result
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--endpoint');p.add_argument('--out',default='build/comfy-runtime.json')
     p.add_argument('--reference');p.add_argument('--rights-uri')
+    p.add_argument('--expected-sha256');p.add_argument('--expected-size',nargs=2,type=int)
+    p.add_argument('--role',default='unspecified');p.add_argument('--source-uri')
     p.add_argument('--confirm-synthesis-rights',action='store_true')
+    p.add_argument('--bind-manifest');p.add_argument('--bound-out')
     a=p.parse_args();root=Path.cwd()
     if a.reference:
         result=intake(a.reference,root,rights_uri=a.rights_uri,
-                      synthesis_rights_confirmed=a.confirm_synthesis_rights)
+                      synthesis_rights_confirmed=a.confirm_synthesis_rights,
+                      expected_sha256=a.expected_sha256,expected_size=a.expected_size,
+                      role=a.role,source_uri=a.source_uri)
+        if a.bind_manifest:
+            if not a.bound_out or not a.bound_out.startswith('private-media/'):
+                p.error('--bound-out must be a private-media path')
+            manifest=json.loads(Path(a.bind_manifest).read_text())
+            atomic(under(root,a.bound_out),bind_reference(manifest,result))
         print(json.dumps(result));return 0
     result=inspect(a.endpoint);atomic(under(root,a.out),result);print(json.dumps(result))
     return 0 if result['ready'] else 2

@@ -2,7 +2,7 @@
   "date": "2026-11-06",
   "scope": "offline source/script cue index, NOT a renderable production manifest or approved audio inventory",
   "master": "scripts/introduction-working-draft.md",
-  "master_sha256": "ff4b99f5dd03acdef3ca0835b76297c943148ad82fcc63ffee822e7dba787347",
+  "master_sha256": "988190ce0c8feb7b518ca8a937cd868117bd91da0a3a19d987de2fa9bab2ec7c",
   "voice_reference_profile": "series-narrator-alnilam-continuous-v2",
   "scenes": 12,
   "spoken_hebrew_words": 3353,
@@ -896,5 +896,11 @@
       "source_text_approved": false
     }
   ],
-  "comparison_base_commit": "9156ba6f186c30da18a58e6704437a54124bdbcc"
+  "comparison_base_commit": "9156ba6f186c30da18a58e6704437a54124bdbcc",
+  "visual_revision_2026_11_07": {
+    "previous_master_sha256": "ff4b99f5dd03acdef3ca0835b76297c943148ad82fcc63ffee822e7dba787347",
+    "reason": "owner approved sunset/village visual stage direction replaces predawn; no narrated text changes",
+    "all_44_narrated_text_blocks_verified_unchanged": true,
+    "existing_cue_hash_fields": "preserved without recalculation"
+  }
 }

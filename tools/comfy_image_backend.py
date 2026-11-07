@@ -80,6 +80,31 @@ class ComfyClient:
         if len(data)>32*1024*1024: raise ValueError('Image exceeds32MiB')
         return data
 
+    engine_name = 'ComfyUI'
+
+    def prepare(self, spec, reference_paths):
+        from tools.comfy_scene_images import compile_klein
+        refs = [self.upload(path) for path in reference_paths]
+        graph = compile_klein(spec, refs)
+        info = self.request('/object_info')
+        if any(n['class_type'] not in info for n in graph.values()):
+            raise ValueError('Required native ComfyUI nodes unavailable')
+        for node_id, field in [('1','unet_name'),('2','clip_name'),('3','vae_name')]:
+            node = graph[node_id]
+            choices = info[node['class_type']].get('input',{}).get('required',{}).get(field)
+            if not choices or node['inputs'][field] not in choices[0]:
+                raise ValueError('Configured model component not installed')
+        return graph
+
+    def result(self, history):
+        images = history.get('outputs',{}).get('13',{}).get('images',[])
+        if len(images) != 1 or images[0].get('type') != 'output':
+            raise ValueError('Expected exactly one saved output image')
+        return {'image': images[0], 'seed': None}
+
+    def download(self, result):
+        return self.image(result['image'])
+
     def submit(self, workflow, *, zero_cost_verified=False, authorized=False):
         if not zero_cost_verified or not authorized:
             raise ValueError('Verified zero-cost compute and generation authorization required')

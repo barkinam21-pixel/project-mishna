@@ -1,5 +1,8 @@
 # ביקורת בימוי — שבעת איורי הפתיחה OPN01–OPN07
 
+> **עדכון מחייב 7.11.2026:** הוראת בר המאוחדת מחליפה את מפרט השחר בכפר בשקיעה ואת מסלול fal במסלול חינמי מאומת בלבד. OPN02 יחיד מורשה כניסיון מותנה; שאר השוטים והפרסום אינם מאושרים. פירוט פעיל ב־[מפרט השוטים](introduction-opening-illustration-specs.md) וב־[Visual Bible](introduction-combined-style-direction-2026-11-06.md#visual-bible--implementation-revision-7112026). יתר המסמך נשמר כתיעוד ההחלטות הקודמות, ואינו עוקף את העדכון. OPN04 מתמקד כעת במבוגר המקשיב, לא בצעיר מעבר לכתף המבוגר.
+
+
 תאריך: 2026-11-06. **סטטוס: מפרטים ראויים לשלב style/continuity approval, לא אישור יצירה/הוצאה/פרסום.** בסיס: `docs/introduction-opening-illustration-specs.md`, `docs/introduction-first-proof-production-pack-2026-11-06.md`, `scripts/introduction-scene-map.md`, `docs/animation-direction-bible-v1-2026-11-01.md`.
 
 ## ממצאים

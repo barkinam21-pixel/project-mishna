@@ -36,6 +36,9 @@ def specifications(manifest, root):
     model = manifest['model']
     if model['id'] != 'black-forest-labs/FLUX.2-klein-4B':
         raise ValueError('Only verified Klein 4B family supported')
+    backend = manifest.get('backend', {'type':'comfyui'})
+    if backend.get('type') not in ('comfyui', 'hf-zero'):
+        raise ValueError('Unsupported image backend')
     seen = set()
     results = []
     for shot in manifest['shots']:
@@ -54,14 +57,21 @@ def specifications(manifest, root):
         references = manifest['references'] + [r for c in characters.values() for r in c['references']]
         unique = {r['path']: r for r in references}
         missing = []
-        if not model.get('revision') or model['revision'] == 'UNVERIFIED':
+        if backend['type'] == 'comfyui' and (not model.get('revision') or model['revision'] == 'UNVERIFIED'):
             missing.append('Model revision unverified')
-        if not isinstance(model.get('component_sha256'),dict) or any(not re.fullmatch(r'[0-9a-f]{64}', str(model['component_sha256'].get(k,''))) for k in ('unet','text_encoder','vae')):
+        if backend['type'] == 'comfyui' and (not isinstance(model.get('component_sha256'),dict) or any(not re.fullmatch(r'[0-9a-f]{64}', str(model['component_sha256'].get(k,''))) for k in ('unet','text_encoder','vae'))):
             missing.append('Model component hashes unverified')
+        if backend['type'] == 'hf-zero' and (not re.fullmatch(r'[0-9a-f]{40}', str(backend.get('revision',''))) or not re.fullmatch(r'[0-9a-f]{64}', str(backend.get('app_sha256','')))):
+            missing.append('Hosted deployment provenance unverified')
         for ref in unique.values():
+            if ref.get('expected_sha256') and ref.get('sha256') != ref['expected_sha256']:
+                missing.append('Original reference not hash-verified: '+ref['path'])
             path = under(root, ref['path'])
             if not path.is_file() or sha(path) != ref['sha256']:
                 missing.append('Missing/changed reference: '+ref['path'])
+            if path.is_file() and ref.get('expected_size'):
+                with Image.open(path) as image:
+                    if list(image.size) != ref['expected_size']: missing.append('Reference dimensions mismatch: '+ref['path'])
             if ref.get('synthesis_rights_confirmed') is not True:
                 missing.append('Reference rights: '+ref['path'])
         if not references:
@@ -71,8 +81,17 @@ def specifications(manifest, root):
         spec = {'compiler_version': 1, 'model': model, 'size': manifest['size'],
                 'style': manifest['style'], 'characters': characters,
                 'prompt': shot['prompt'], 'seed': shot['seed'], 'references': list(unique.values())}
+        if shot.get('visual_direction'): spec['visual_direction'] = shot['visual_direction']
+        if backend['type'] != 'comfyui': spec['backend'] = backend
         results.append({'id': uid, 'key': key(spec), 'spec': spec, 'missing': missing})
     return results
+
+
+def prompt_text(spec):
+    text = spec['style']+' '+spec['prompt']+' '+json.dumps(
+        {c:v['description'] for c,v in spec['characters'].items()}, ensure_ascii=False)
+    if spec.get('visual_direction'): text += ' '+json.dumps(spec['visual_direction'],ensure_ascii=False)
+    return text
 
 
 def compile_klein(spec, references):
@@ -80,8 +99,7 @@ def compile_klein(spec, references):
     model = spec['model']
     def node(kind, **inputs): return {'class_type': kind, 'inputs': inputs}
     w,h = spec['size']
-    prompt = spec['style']+' '+spec['prompt']+' '+json.dumps(
-        {c: v['description'] for c,v in spec['characters'].items()}, ensure_ascii=False)
+    prompt = prompt_text(spec)
     graph = {
         '1': node('UNETLoader', unet_name=model['unet'], weight_dtype='default'),
         '2': node('CLIPLoader', clip_name=model['text_encoder'], type='flux2', device='default'),
@@ -153,18 +171,12 @@ def _run(manifest, root, out, client, generate):
             if not entry:
                 if report['submissions'] >= policy['max_submissions']:
                     raise ValueError('Submission limit reached')
-                refs = [client.upload(under(root,r['path'])) for r in row['spec']['references']]
-                graph = compile_klein(row['spec'],refs)
-                info = client.request('/object_info')
-                if any(n['class_type'] not in info for n in graph.values()):
-                    raise ValueError('Required native ComfyUI nodes unavailable')
-                for node_id, field in [('1','unet_name'),('2','clip_name'),('3','vae_name')]:
-                    node=graph[node_id]
-                    choices=info[node['class_type']].get('input',{}).get('required',{}).get(field)
-                    if not choices or node['inputs'][field] not in choices[0]:
-                        raise ValueError('Configured model component not installed')
-                entry = {'status':'SUBMISSION_UNCERTAIN','spec':row['spec'],'workflow':graph}
+                if len(state.get('attempts',[])) >= policy.get('total_submissions_limit',2**63):
+                    raise ValueError('Total authorized submission limit reached; no new attempt')
+                graph = client.prepare(row['spec'], [under(root,r['path']) for r in row['spec']['references']])
+                entry = {'status':'SUBMISSION_UNCERTAIN','spec':row['spec'],'workflow':graph, 'backend':getattr(client,'engine_name','ComfyUI')}
                 state['entries'][row['key']] = entry
+                state.setdefault('attempts',[]).append({'key':row['key'],'shot':row['id'],'backend':entry['backend']})
                 atomic(state_path,state)
                 pid = client.submit(graph,zero_cost_verified=True,authorized=True)
                 entry.update(status='QUEUED',prompt_id=pid)
@@ -173,10 +185,10 @@ def _run(manifest, root, out, client, generate):
                 with (out/'usage.jsonl').open('a') as log:
                     log.write(json.dumps({'operation':'queued','key':row['key'],'prompt_id':pid,'external_charge_usd':0,'workspace_usage':'unknown'})+'\n')
             history = client.wait(entry['prompt_id'])
-            images = history.get('outputs',{}).get('13',{}).get('images',[])
-            if len(images)!=1 or images[0].get('type')!='output':
-                raise ValueError('Expected exactly one saved output image')
-            raw = client.image(images[0])
+            result = client.result(history)
+            if result.get('seed') not in (None,row['spec']['seed']):
+                raise ValueError('Provider changed requested seed')
+            raw = client.download(result)
             with Image.open(io.BytesIO(raw)) as im:
                 im.load()
                 if im.format!='PNG' or list(im.size)!=manifest['size']:
@@ -215,7 +227,7 @@ def attach(config, report):
         if uid not in result['assets']: raise ValueError('Unknown renderer asset')
         result['assets'][uid].update(path=item['path'],sha256=item['sha256'],accepted=True,
             rights_verified=True,license='reviewed model and references; see provenance',
-            provenance={'engine':'ComfyUI','spec_key':item['key'],'model':item['model'],
+            provenance={'engine':item.get('backend','ComfyUI'),'spec_key':item['key'],'model':item['model'],
                         'prompt_id':item['prompt_id'],'seed':item['seed']})
     return result
 
@@ -225,19 +237,34 @@ def main():
     p.add_argument('manifest');p.add_argument('--root',default='.')
     p.add_argument('--out',default='private-media/comfy-images')
     p.add_argument('--endpoint');p.add_argument('--generate',action='store_true')
+    p.add_argument('--backend',choices=['comfyui','hf-zero'])
     p.add_argument('--shot', help='Restrict this invocation to one manifest shot')
     p.add_argument('--renderer-config');p.add_argument('--renderer-out')
     a=p.parse_args();root=Path(a.root).resolve()
     manifest=json.loads(Path(a.manifest).read_text())
+    if a.backend:
+        manifest['backend']=({'type':'comfyui'} if a.backend=='comfyui' else manifest['available_backends']['hf-zero'])
     if a.shot:
         manifest['shots']=[s for s in manifest['shots'] if s['id']==a.shot]
         if not manifest['shots']: p.error('Shot not found')
-    report=run(manifest,root,under(root,a.out),
-               ComfyClient(a.endpoint) if a.endpoint else None,a.generate)
+    client=None
+    if manifest.get('backend',{}).get('type')=='hf-zero':
+        if a.endpoint: p.error('Hosted endpoint is pinned by manifest; --endpoint not allowed')
+        from tools.klein_space_backend import KleinSpaceClient
+        client=KleinSpaceClient(manifest['backend'])
+    elif a.endpoint: client=ComfyClient(a.endpoint)
+    report=run(manifest,root,under(root,a.out),client,a.generate)
     if a.renderer_config:
         if not a.renderer_out: p.error('--renderer-out required')
         atomic(under(root,a.renderer_out),attach(json.loads(Path(a.renderer_config).read_text()),report))
     print(json.dumps({'shots':[{'id':r['id'],'status':r['status'],'missing':r['missing']} for r in report['shots']],
                       'submissions':report['submissions'],'accepted_cache_hits':report['accepted_cache_hits']}))
 
-if __name__=='__main__': main()
+if __name__=='__main__':
+    try: main()
+    except (ValueError, TimeoutError, OSError) as error:
+        # Request errors can contain URLs/headers: emit only safe fixed codes/types.
+        import sys
+        code=str(error) if type(error).__name__=='ProviderBlocked' else type(error).__name__
+        print(json.dumps({'status':'BLOCKED','code':code,'next':'inspect dry-run report and saved state; do not blindly resubmit'}))
+        sys.exit(2)

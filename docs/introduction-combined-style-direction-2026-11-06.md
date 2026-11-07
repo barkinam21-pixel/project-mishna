@@ -2,6 +2,14 @@
 
 Bar supplied five still-image references and two videos and requested a combination. A new combined illustration was generated in the conversation; Bar responded **"נהדר"**. This approves the **direction** as a style reference, not every downstream asset, not historical authenticity, and not publication.
 
+## Expected source identity supplied by Bar — not yet verified
+
+- Filename: `a_cinematic_detailed_illustration_in_the_same_rea.png`.
+- Expected SHA-256: `e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3`.
+- Expected original dimensions:1672×941. Preserve those exact original bytes; do not stretch/re-encode or substitute the1280-wide chat preview to obtain a matching file.
+- The four-shot board is a separate direction reference. No expected hash was supplied; compute it from accessible original bytes and record it separately. Do not pass the collage to the generator by default.
+- Both images have been visually inspected in the conversation; neither original file has been verified or privately copied in this execution. Their model/seed remain unknown.
+
 ## Reference identity
 - Chat-generated combined image: `/mnt/data/a_cinematic_detailed_illustration_in_the_same_rea.png` **is a conversation-local path, not a repository asset**. Do not assume it is available to GitHub Actions. Its model/seed are unknown. Before automated use, obtain a durable user-authorized copy with provenance and SHA256; do not fabricate a repo URL or hash.
 - The five supplied stills and two videos are visual references only; their rights/provenance for public reuse have not been independently established. Do not automatically embed source imagery in released film.
@@ -24,3 +32,47 @@ Bar supplied five still-image references and two videos and requested a combinat
 5. Produce a 60–90-second private artistic proof only when 7 licensed images, matching Alnilam narration, subtitles and timings exist and have passed review. No publication, PR merge, new paid service or silent billing.
 
 **Approval state:** combined style direction liked by Bar; film assets pending. 
+
+
+## Visual Bible — implementation revision 7.11.2026
+
+**בסיס:** שתי התמונות המוצגות בשיחה והוראת בר המאוחדת. הניתוח החזותי להלן נעשה מתצוגת השיחה. הוא אינו אימות של קובצי המקור: PNG המקור והלוח אינם נגישים כרגע כבתים, ולא חושבו להם hash או מידות בפועל. ה־hash והמידות שסיפק בר הם ערכים צפויים, לא תוצאת בדיקה. הכיוון מאושר; זהות מדויקת ברמת פרטי הפנים תינעל כנכס ממוחשב רק לאחר אימות הקובץ.
+
+### Character Bible
+
+| מזהה | זהות והופעה מחייבת | רציפות וביקורת |
+|---|---|---|
+| A · הנוסע המבוגר | גבר מבוגר, זקן אפור מלא, פנים חרושות קווים והבעה מהורהרת; כיסוי ראש בגוון חול, גלימת אינדיגו כהה מעל טוניקה בהירה ותיק מסע פשוט. | אין לתת לו פנים חדשות, להצעירו, להקצין זקנה או להוסיף סמל. מבנה אף/לחיים/גבות, קו הזקן, קפלי הכיסוי, הגובה היחסי ומסלול הרצועה ייבדקו מול המקור המאומת. |
+| B · הנוסע הצעיר | גבר בוגר בעל שיער וזקן כהים, כיסוי ראש ושכבות בגוני חום, טוניקה בהירה ותיק; סקרנות רצינית ולא פליאה ילדותית. | אינו ילד/נער. לשמור על אותו קו לסת, זקן, שיער, כתפיים, קפלי בגד ורצועות; אין להחליף גיל, מבטא חזותי או פרופורציות בין שוטים. |
+
+אין שמות, זהות של תנא או ביוגרפיה מדומה. הייחוס המשולב ישמש לשתי הדמויות, בלי לייצר דפי דמות חדשים ובלי לדרוש אותם כתנאי מלאכותי לפני ניסיון OPN02. צד הנשיאה האנטומי המדויק ופרטים זעירים שלא נראים בבירור לא יומצאו מן התצוגה המוקטנת; המקור המאומת יהיה הסמכות.
+
+### Environment Bible ו־Color Script
+
+- כפר אבן אנונימי על צלע הר, דרך מאובקת מתפתלת, גבעות, זיתים וצמחייה ים־תיכונית. אין לזהות אתר, מאה או שיטת בנייה כאמת היסטורית ללא מקור. הקשתות, המבנים והבגדים הם בחירות אמנותיות בהמחזה סמלית.
+- חזית: ענפי זית/דרך ואבן במינון שאינו מסתיר פנים; אמצע: שני הנוסעים; רקע: שכבות כפר וגבעות. עומק נוצר מגודל, חפיפה וניגודיות אטמוספרית, לא מטשטוש קיצוני שמבטל את הציוריות.
+- פתיחה OPN01–02: אדמה ואוכרה, שולי אור זהובים, אינדיגו בבגד ובצל. OPN03–05: אותה שעה ואותו אור, עם הפרדה מקומית של הפנים מן הרקע. OPN06: חום בד ועור, אור טבעי רך. OPN07: הרחבת הכחול־סגול בנוף בלי להפוך ללילה.
+- הפלטה היא הוראת אמנות, לא מדידת צבע מן PNG המקור: אוכרה/ברונזה, זהב מאופק, אינדיגו וסגול מעושן. טקסטורות בד ואבן מצוירות, לא עור פוטוריאליסטי, פלסטיק או 3D מבריק.
+- אור מפתח: שמש שקיעה משמאל ומאחור, אור שמיים קר ורך בצל; חלונות חמים חלשים משניים. אין להזיז את השמש לצד אחר בקלוז־אפ או להפוך חלון למקור key בלתי מוסבר.
+- לילה/אש: מחקר הבימוי D שומר מסה כחולה כהה סביב אור אש חם ומקומי. הוא מיועד לרצף לילי נפרד בעתיד, ולא קפיצת זמן בתוך שבעת שוטי הפתיחה.
+
+### מפת העמדה וציר
+
+תרשים עליון סמלי: הדרך היא ציר X, כיוון המסע +X; A ב־(0,0), B ב־(1,0), מצלמת בסיס ב־(0.5,-4), הכפר במרחק לכיוון +X, מקור האור ב־(-3,+3). כל מצלמות הפתיחה נשארות בצד Y השלילי. אין כאן קואורדינטות של אתר אמיתי.
+
+בפריים הבסיס A משמאל ו־B מימין. B מחפש את מבט A שמאלה; A מקשיב לכיוון ימין. ל־OPN04 ניתן לשים את כתף B בימין הקדמי ו־A משמאל ברקע: זהו שוט הקשבה של המבוגר, ולא חזרה על שוט מעבר כתף המבוגר אל הצעיר. שוט אחורי אינו היתר אוטומטי להפוך את הציר. שינוי גובה מצלמה מותר כאשר הוא מסביר מקום או קשב, בלי להזיז את השמש או להחליף צדדים.
+
+### ניתוח לוח A–D — השראת בימוי, לא חומרי הסרט
+
+| לוח | מה נלמד | שימוש מקורי מתוכנן |
+|---|---|---|
+| A · דיוקן המבוגר | פנים בעלות משקל, מבט מהורהר, סמכות ללא פאתוס; הפרדת אור חם מן נוף צללי. | שוט הקשבה בגובה העיניים, מבט וחלל נשימה לכיוון הצעיר. לא לחתוך את אזור A מן הלוח ולכנותו איור חדש. |
+| B · שני הנוסעים | יחס אנושי בין מבטים, ידיים ומטען; קומפוזיציה המסבירה קשר בלי דיאלוג. | master חדש של OPN02 עם אותה זהות ולבוש, עומק ותחושת תנועה מקוריים. |
+| C · המסע | אנשים קטנים מול דרך וגאוגרפיה, שכבות מרחק ותחושת המשך. | רחב חדש ל־OPN07. הזווית האחורית והמיקומים בלוח אינם מחייבים החלפת צדדים ביחס ל־master; יש לשמר את הציר שננעל. |
+| D · המדורה | אור אש קרוב, אזור חשוך בעל תפקיד, הקשבה ושתיקה במקום מלודרמה. | מילון בימוי לסצנה לילית נפרדת בעתיד, עם מעבר זמן מתוכנן. לא להכניס מדורה לפתיחה רק כדי לחקות את הלוח. |
+
+השפעת קורה/אווטאר נשארת ברמת קנה מידה, מעברי רחב–אינטימי, שינויי גובה וקצב רגשי. אין העתקת דמויות, עיצובים, פריימים, מנגינות או קול מדבב.
+
+### מצב הפקה ושער ראשון
+
+שבעת השוטים מפורטים במניפסט הקיים ובמפרט האיורים המעודכן. OPN02 בלבד מורשה כניסיון אחד, בכפוף למקור המאומת, מסלול ללא חיוב והתאמת הספק. אף איור לא נוצר בסבב זה. אין תזמון מדוד, קריינות פתיחה תואמת או מוזיקה חדשה. Alnilam רציפות v2 נשמר ללא שינוי.
