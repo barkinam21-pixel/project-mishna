@@ -175,6 +175,8 @@ def _run(manifest, root, out, client, generate):
         elif not generate:
             entry = entry or {'status':'BLOCKED' if row['missing'] else 'NEEDS_GENERATION'}
         else:
+            synchronous = False
+            pid = None
             policy = manifest['authorization']
             if row['id'] not in policy.get('approved_shot_ids', []):
                 raise ValueError('Shot not authorized for generation: '+row['id'])
@@ -194,12 +196,25 @@ def _run(manifest, root, out, client, generate):
                 state.setdefault('attempts',[]).append({'key':row['key'],'shot':row['id'],'backend':entry['backend']})
                 atomic(state_path,state)
                 pid = client.submit(graph,zero_cost_verified=True,authorized=True)
-                entry.update(status='QUEUED',prompt_id=pid)
+                # Cloudflare returns the entire image synchronously. Never journal the
+                # base64 image (or receipt with private prompts) as a queue identifier.
+                # A crash before saving the final candidate is non-replayable and
+                # must remain uncertain; automatic resubmission could burn quota.
+                synchronous = getattr(client,'engine_name','') == 'Cloudflare Workers AI'
+                if synchronous:
+                    entry.update(status='SUBMISSION_UNCERTAIN',prompt_id='SYNCHRONOUS_RESPONSE_NOT_REPLAYABLE')
+                else:
+                    entry.update(status='QUEUED',prompt_id=pid)
                 report['submissions'] += 1
                 atomic(state_path,state)
                 with (out/'usage.jsonl').open('a') as log:
-                    log.write(json.dumps({'operation':'queued','key':row['key'],'prompt_id':pid,'external_charge_usd':None if getattr(client,'engine_name','')=='Cloudflare Workers AI' else 0,'workspace_usage':'unknown'})+'\n')
-            history = client.wait(entry['prompt_id'])
+                    log.write(json.dumps({'operation':'received_unpersisted' if synchronous else 'queued',
+                                          'key':row['key'],'prompt_id':entry['prompt_id'],
+                                          'external_charge_usd':None if synchronous else 0,
+                                          'workspace_usage':'unknown'})+'\n')
+            # Synchronous bytes exist in memory only for this submission.
+            # Existing asynchronous providers still resume through a durable ID.
+            history = client.wait(pid if synchronous else entry['prompt_id'])
             result = client.result(history)
             if result.get('seed') not in (None,row['spec']['seed']):
                 raise ValueError('Provider changed requested seed')
@@ -226,6 +241,7 @@ def _run(manifest, root, out, client, generate):
             path = out/(row['key']+'.png')
             tmp = path.with_suffix('.tmp');tmp.write_bytes(raw);tmp.replace(path)
             entry.update(status='CANDIDATE',path=str(path.relative_to(root)),sha256=sha(path),
+                         prompt_id=('synchronous-response:'+native_sha if getattr(client,'engine_name','')=='Cloudflare Workers AI' else entry['prompt_id']),
                          accepted=False,rights_verified=False,continuity_review='PENDING_HUMAN',
                          model=manifest['model'],seed=row['spec']['seed'],
                          native_format=native_format,native_sha256=native_sha,
