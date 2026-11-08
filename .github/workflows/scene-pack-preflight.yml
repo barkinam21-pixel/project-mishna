@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/scene_pack_preflight.py'
       - 'tests/test_scene_pack_preflight.py'
+      - 'tools/scene_review_board.py'
+      - 'tests/test_scene_review_board.py'
       - 'episodes/berakhot-01-01/comfy-opening-images.json'
       - 'episodes/berakhot-01-01/introduction-proof.json'
       - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
@@ -30,9 +32,13 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install Pillow==12.0.0
       - name: Test no-charge, fail-closed preflight
-        run: python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
+          python -m unittest discover -s tests -p 'test_scene_review_board.py' -v
       - name: Summarize all seven opening shots without model calls
         run: python -m tools.scene_pack_preflight
+      - name: Build private-path-only placeholder review board (no image assets in CI)
+        run: python -m tools.scene_review_board
       - uses: actions/upload-artifact@v4
         with:
           name: OFFLINE-ONLY-scene-pack-preflight
