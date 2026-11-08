@@ -19,8 +19,12 @@ on:
     paths:
       - 'tools/scene_pack_preflight.py'
       - 'tools/scene_asset_bridge.py'
+      - 'tools/private_scene_review.py'
+      - 'tests/test_private_scene_review.py'
       - 'tests/test_scene_asset_bridge.py'
       - 'tests/test_scene_pack_preflight.py'
+      - 'tools/scene_review_board.py'
+      - 'tests/test_scene_review_board.py'
       - 'episodes/berakhot-01-01/comfy-opening-images.json'
       - 'episodes/berakhot-01-01/introduction-proof.json'
       - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
