@@ -60,7 +60,9 @@
       "first_caption_card_id": "INTRO-A1-S01-N01-C01",
       "caption_card_ids_until_next_shot": [
         "INTRO-A1-S01-N01-C01"
-      ]
+      ],
+      "provisional_spoken_words_in_shot": 3,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN02",
@@ -76,45 +78,51 @@
       "first_caption_card_id": "INTRO-A1-S01-N01-C02",
       "caption_card_ids_until_next_shot": [
         "INTRO-A1-S01-N01-C02",
-        "INTRO-A1-S01-N01-C03",
-        "INTRO-A1-S01-N01-C04",
-        "INTRO-A1-S01-N01-C05",
-        "INTRO-A1-S01-N01-C06",
-        "INTRO-A1-S01-N01-C07"
-      ]
+        "INTRO-A1-S01-N01-C03"
+      ],
+      "provisional_spoken_words_in_shot": 16,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN03",
       "voice_id": "INTRO-A1-S01-N01",
-      "spoken_phrase_anchor": "עכשיו מישהו הולך לצדו.",
-      "editorial_intent": "הקשר האנושי מתגלה",
-      "shot_direction_for_review_only": "Adult younger traveler stops, stays screen-right",
+      "spoken_phrase_anchor": "ויש דברים שהוא נושא בלי שיוכל להניח אותם",
+      "editorial_intent": "משא לא נראה; הצעיר נעצר",
+      "shot_direction_for_review_only": "Adult younger traveler pauses, stays screen-right; metaphor, not a source fact",
       "source_layer": "symbolic_dramatization",
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
       "needs_measured_alignment": true,
-      "first_caption_card_id": "INTRO-A1-S01-N01-C08",
+      "first_caption_card_id": "INTRO-A1-S01-N01-C04",
       "caption_card_ids_until_next_shot": [
-        "INTRO-A1-S01-N01-C08",
-        "INTRO-A1-S01-N01-C09"
-      ]
+        "INTRO-A1-S01-N01-C04",
+        "INTRO-A1-S01-N01-C05",
+        "INTRO-A1-S01-N01-C06"
+      ],
+      "provisional_spoken_words_in_shot": 17,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN04",
       "voice_id": "INTRO-A1-S01-N01",
-      "spoken_phrase_anchor": "יום אחד גם הוא יצטרך לבחור",
-      "editorial_intent": "המבוגר קשוב ללומד",
-      "shot_direction_for_review_only": "Elder listens; original reverse/OTS camera, fixed axis",
+      "spoken_phrase_anchor": "דרך שלמד להבחין בה בין טוב לרע.",
+      "editorial_intent": "הקשב מתעורר בין הדורות",
+      "shot_direction_for_review_only": "Elder notices the younger traveler; original OTS, fixed 180-degree axis",
       "source_layer": "symbolic_dramatization",
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
       "needs_measured_alignment": true,
-      "first_caption_card_id": "INTRO-A1-S01-N01-C10",
+      "first_caption_card_id": "INTRO-A1-S01-N01-C07",
       "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C07",
+        "INTRO-A1-S01-N01-C08",
+        "INTRO-A1-S01-N01-C09",
         "INTRO-A1-S01-N01-C10"
-      ]
+      ],
+      "provisional_spoken_words_in_shot": 21,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN05",
@@ -131,7 +139,9 @@
       "caption_card_ids_until_next_shot": [
         "INTRO-A1-S01-N01-C11",
         "INTRO-A1-S01-N01-C12"
-      ]
+      ],
+      "provisional_spoken_words_in_shot": 17,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN06",
@@ -148,7 +158,9 @@
       "caption_card_ids_until_next_shot": [
         "INTRO-A1-S01-N02-C01",
         "INTRO-A1-S01-N02-C02"
-      ]
+      ],
+      "provisional_spoken_words_in_shot": 15,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     },
     {
       "shot_id": "OPN07",
@@ -165,7 +177,9 @@
       "caption_card_ids_until_next_shot": [
         "INTRO-A1-S01-N02-C03",
         "INTRO-A1-S01-N02-C04"
-      ]
+      ],
+      "provisional_spoken_words_in_shot": 20,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
     }
   ],
   "caption_card_count": 16,
