@@ -60,9 +60,10 @@ class OpeningVoicePreparationTests(unittest.TestCase):
         original = json.loads(registry_path.read_text())
         changed = copy.deepcopy(original)
         changed["speakers"]["narrator"]["production_baseline_profile"]["voice_name"] = "Different"
-        with patch("tools.opening_voice_take_prepare.json.loads", wraps=json.loads) as loads:
+        original_loads = json.loads
+        with patch("tools.opening_voice_take_prepare.json.loads") as loads:
             def safe_loads(s, *a, **k):
-                result = json.loads(s, *a, **k)
+                result = original_loads(s, *a, **k)
                 if isinstance(result, dict) and "speakers" in result:
                     return changed
                 return result
