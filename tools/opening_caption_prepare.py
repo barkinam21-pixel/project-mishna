@@ -14,6 +14,7 @@ SCENE = "INTRO-A1-S01"
 VOICE = ("INTRO-A1-S01-N01", "INTRO-A1-S01-N02")
 PROFILE = "series-narrator-alnilam-continuous-v2"
 MAX_LINE = 42
+MAX_CARD_VISIBLE = 60  # ~4.6s at 13 chars/s; still requires actual audio alignment
 WORD_RE = re.compile(r"\S+", flags=re.UNICODE)
 
 
@@ -67,6 +68,31 @@ def caption_lines(text):
     return lines
 
 
+def split_long_sentence(sentence):
+    """Prefer natural punctuation breaks to keep draft cards readable.
+
+    Exact words and punctuation remain unchanged, and no frame timing is inferred.
+    """
+    remaining = sentence.strip()
+    chunks = []
+    while len(remaining) > MAX_CARD_VISIBLE:
+        punct = [m.end() for m in re.finditer(r"(?<=[,:;!?])\s+", remaining)
+                 if 12 <= m.end() <= MAX_CARD_VISIBLE
+                 and len(remaining[m.end():].strip()) >= 10]
+        choices = punct or [m.end() for m in re.finditer(r"\s+", remaining)
+                            if 12 <= m.end() <= MAX_CARD_VISIBLE]
+        if not choices:
+            raise ValueError("Unbreakable sentence exceeds card length")
+        boundary = min(choices, key=lambda pos: abs(pos - len(remaining) / 2))
+        chunks.append(remaining[:boundary].rstrip())
+        remaining = remaining[boundary:].lstrip()
+    if remaining:
+        chunks.append(remaining)
+    if " ".join(chunks) != " ".join(sentence.split()):
+        raise ValueError("Clause splitting altered source words")
+    return chunks
+
+
 def cue_cards(text, uid):
     cards = []
     # Sentence boundary is only a presentation hint, never a text change.
@@ -75,15 +101,15 @@ def cue_cards(text, uid):
     for sentence in sentences:
         if not sentence.strip():
             continue
-        lines = caption_lines(sentence)
-        for start in range(0, len(lines), 2):
-            pair = lines[start:start + 2]
-            card_text = " ".join(pair)
+        for chunk in split_long_sentence(sentence):
+            lines = caption_lines(chunk)
+            if len(lines) > 2 or len(chunk) > MAX_CARD_VISIBLE:
+                raise ValueError("Untimed caption card exceeds safe reading limit")
             cards.append({
                 "card_id": uid + "-C" + f"{len(cards) + 1:02d}",
                 "voice_id": uid,
-                "spoken_text": card_text,
-                "display_text": "\n".join(pair),
+                "spoken_text": " ".join(lines),
+                "display_text": "\n".join(lines),
                 "start_frame": None,
                 "end_frame": None,
                 "timing_status": "UNALIGNED_WITH_REAL_WAV",
