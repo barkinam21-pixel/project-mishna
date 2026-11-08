@@ -1,5 +1,8 @@
 # Codex and agent instructions — Mishnah Film Studio
 
+## Mandatory: production must survive without Codex
+Before editing any generation, automation or rendering pipeline, read [the no-Codex production contract](docs/no-codex-production-contract-2026-11-08.md). Codex is an optional developer, **never a runtime dependency**. Do not claim an autonomous free image studio until the one-command Python run/resume flow, no-GPU fallback, independent recovery tests, private asset restoration and real GPU trial are verified. Preserve the existing ComfyUI/preflight/FFmpeg modules and do not introduce another competing control room.
+
 ## Mandatory single control room and no-repeat rule
 - The ONLY active Mishnah production repository is `barkinam21-pixel/project-mishna` and the ONLY human operator dashboard is [README.md](README.md). Read it FIRST every session, then the episode manifest and `episodes/berakhot-01-01/trials.json` evidence ledger before proposing any user action.
 - **SH01 is DONE as a technical GPU trial**: a user-uploaded ZIP containing a real SDXL/Tesla T4 image was inspected and SHA-256 verified; it is **not** an approved production asset. Never ask Bar to rerun the one-image Colab trial because an old document says GPU was not yet tested.
