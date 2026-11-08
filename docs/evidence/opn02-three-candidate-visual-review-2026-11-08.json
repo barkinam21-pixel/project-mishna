@@ -1,0 +1,59 @@
+{
+  "date_utc": "2026-11-08",
+  "shot": "OPN02",
+  "privacy": "OWNER_ONLY_VISUAL_REVIEW",
+  "qa_board": {
+    "url": "https://drive.google.com/file/d/10KmzacXMeTI13Mz5Kv1dEBJky-nbO_qq/view?usp=drivesdk",
+    "sha256": "e2087e8c9430ef134daacf5a27b541082bf9220ceed5b7062bb88df65680f90b",
+    "drive_shared": false,
+    "permissions": [
+      "owner"
+    ]
+  },
+  "style_master": {
+    "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+    "role": "REFERENCE_ONLY_NOT_FILM_FRAME"
+  },
+  "candidates": [
+    {
+      "drive_file_id": "1JU0l1c7doBX6modUyPu6s_I1wscOJ8PW",
+      "sha256": "46d1f6d1e03f8b3d5f4bf1042e75802a1425cfc32fbca3b83fbaca3aa1e9c7e8",
+      "approved": false,
+      "findings": [
+        "Nearly duplicates master framing and front-facing actors",
+        "Not a rear-view wide establishing shot",
+        "Large figures"
+      ]
+    },
+    {
+      "drive_file_id": "1SLQPmpbF-KcQc8gbuUGCoLb0hs51c312",
+      "sha256": "0fe76e365115f20199e7d77e19e020dab67c9014e7bf52a956c3c8ac12fdbbfd",
+      "approved": false,
+      "findings": [
+        "Retains front-facing figures and upper-left tree",
+        "Architecture too close to foreground",
+        "Does not meet camera and scale requirements"
+      ]
+    },
+    {
+      "drive_file_id": "1O8eqa7Fobugf2-OOFxMYv_tXpP5tw18-",
+      "sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+      "approved": false,
+      "findings": [
+        "Rear-view full-body shot achieved",
+        "Figures approximately 70-80% frame height instead of about 30%",
+        "Rendering more photorealistic than approved painterly target"
+      ]
+    }
+  ],
+  "next_production_constraint": "Prompt already explicitly says full bodies approx 30%, very-wide rear view and no photorealism. Repeating the same instructions is not a demonstrated fix; use stronger spatial composition/reference-control or targeted approved repair only with verified compute/rights authorization.",
+  "status": "NO_APPROVED_OPN02_SHOT",
+  "outputs": {
+    "new_images_generated": 0,
+    "reference_images_transformed": 0,
+    "provider_requests": 0,
+    "external_spend_initiated_usd": 0,
+    "workspace_usage": "unknown"
+  },
+  "release_authorized": false
+}
