@@ -1,0 +1,41 @@
+{
+  "started_at": "2026-11-08T00:09:47.417Z",
+  "finished_at": "2026-11-08T00:09:56.185Z",
+  "api_elapsed_ms": 8142,
+  "model": "@cf/black-forest-labs/flux-2-klein-4b",
+  "spec_key": "ba3e8ed56438f25e45ae96251e1e9892af509631a0f6ea421651c66b4914d565",
+  "seed": 73002,
+  "guidance": 1,
+  "neurons_before": 0,
+  "estimated_neurons": 109.57,
+  "request_count": 1,
+  "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+  "conditioning_sha256": "0f90de18cf67f607dfab74e3f14d074650e825ab9ab84533c5e3f5a1e9f6192c",
+  "account_plan_basis": "Owner confirmed Free plan on 2026-11-08",
+  "provider_success": true,
+  "provider_task_id": null,
+  "local_task_id": "OPN02-20261108-01",
+  "accepted": false,
+  "dimensions": [
+    1024,
+    576
+  ],
+  "native_format": "JPEG",
+  "native_sha256": "b7ef400071bc2424e13fded242d804c9ec0d2adb0545e9ac9c83eebfb8c9d117",
+  "png_sha256": "0fe76e365115f20199e7d77e19e020dab67c9014e7bf52a956c3c8ac12fdbbfd",
+  "png_is_converted": true,
+  "decoded_pixels_equal": true,
+  "private_png": "https://drive.google.com/file/d/1SLQPmpbF-KcQc8gbuUGCoLb0hs51c312/view",
+  "private_native": "https://drive.google.com/file/d/1Q2UhCgz8c0o0caI3H33R8xxw_PzViMeF/view",
+  "review_status": "NEEDS_COMPOSITION_REVIEW_NOT_APPROVED",
+  "visual_review": {
+    "two_adult_characters": true,
+    "older_character": "gray-white beard, mature, restrained; warmth subjective",
+    "style": "mature painterly sunset preserved",
+    "composition": "FAILED wider original composition target; closely follows master reference, bodies cropped",
+    "anatomy": "No obvious gross extra limbs, facial or eye distortion at 1024x576; detailed hand accuracy requires human review"
+  },
+  "qa_flag": "REFERENCE_COMPOSITION_SIMILARITY_REVIEW",
+  "billing": "Owner confirmed Free plan; recorded usage before 0, estimated109.57/10000 daily. No quota/charge warning returned. Invoice amount unobservable.",
+  "execution": "Existing director specification and deterministic QA used via authenticated Cloudflare connector; standalone unattended token not provisioned"
+}
