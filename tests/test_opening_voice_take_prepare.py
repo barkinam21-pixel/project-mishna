@@ -85,6 +85,13 @@ class OpeningVoicePreparationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Script master modified"):
                 build(root)
 
+    def test_saved_voice_take_packet_matches_source_locked_generator(self):
+        saved = json.loads((ROOT / "episodes/berakhot-01-01/opening-voice-take-prep.json")
+                           .read_text(encoding="utf-8"))
+        self.assertEqual(saved, build(ROOT))
+        self.assertFalse(saved["tts_submission_permitted"])
+
+
 
 if __name__ == "__main__":
     unittest.main()
