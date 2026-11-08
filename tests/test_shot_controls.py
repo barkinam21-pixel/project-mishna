@@ -26,6 +26,17 @@ class ControlsTests(unittest.TestCase):
     def test_no_charge_gate_before_any_network(self):
         client=CloudflareClient(self.m['available_backends']['cloudflare'],request=lambda *a: self.fail('Network must not be called'))
         with self.assertRaisesRegex(CloudflareBlocked,'HARD_CAP'):client.readiness({'size':[1024,576],'references':[{}]})
+    def test_partner_privacy_gate_blocks_before_network_even_when_free_cap_attested(self):
+        import datetime as dt
+        cfg=copy.deepcopy(self.m['available_backends']['cloudflare'])
+        cfg['safety'].update(
+            free_hard_cap_verified=True,
+            partner_private_reference_terms_verified=False,
+            verified_at=dt.datetime.now(dt.timezone.utc).isoformat())
+        c=CloudflareClient(cfg,request=lambda *args: self.fail('Private reference network forbidden'))
+        with self.assertRaisesRegex(CloudflareBlocked,'PARTNER_PRIVATE_REFERENCE_TERMS_UNVERIFIED'):
+            c.readiness({'size':[1024,576],'references':[{}]})
+
     def test_no_unapproved_submit(self):
         with self.assertRaises(CloudflareBlocked):CloudflareClient({}).submit({})
     def test_invalid_or_empty_provider_response(self):
@@ -41,7 +52,9 @@ class ControlsTests(unittest.TestCase):
     def test_readiness_fresh_success_and_usage_failure(self):
         import datetime as dt
         cfg=copy.deepcopy(self.m['available_backends']['cloudflare'])
-        cfg['safety'].update(free_hard_cap_verified=True,verified_at=dt.datetime.now(dt.timezone.utc).isoformat())
+        cfg['safety'].update(free_hard_cap_verified=True,
+                             partner_private_reference_terms_verified=True,
+                             verified_at=dt.datetime.now(dt.timezone.utc).isoformat())
         for used,ok in [(0,True),(9999,False),(float('nan'),False)]:
             def request(method,path,*args):
                 if method=='GET': return {'result':[{'name':'@cf/black-forest-labs/flux-2-klein-4b'}]}
