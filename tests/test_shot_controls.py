@@ -62,7 +62,10 @@ class ControlsTests(unittest.TestCase):
             for c in m['characters'].values():c['references']=[r]
             d=m['shots'][0]['director'];d['reference_images']=[r['sha256']]
             d['style_lock']=hashlib.sha256(json.dumps({k:m[k] for k in ['style','characters','references']},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
-            m['authorization'].update(zero_cost_compute_verified=True,component_licenses_verified=True)
+            # Synthetic in-memory fake client only: the real manifest remains closed.
+            m['authorization'].update(zero_cost_compute_verified=True,
+                                       component_licenses_verified=True,
+                                       generation_approved=True)
             b=io.BytesIO();Image.new('RGB',(1024,576),'blue').save(b,format='JPEG');native=b.getvalue()
             class Fake(CloudflareClient):
                 calls=0
