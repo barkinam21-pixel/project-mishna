@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-from tools.comfy_scene_images import under
+from tools.comfy_scene_images import under, sha
 from tools.scene_pack_preflight import EXPECTED_IDS, verified_entry
 
 CELL_W, CELL_H = 480, 315
@@ -16,7 +16,13 @@ IMAGE_W, IMAGE_H = 456, 256
 MARGIN, HEADER = 12, 54
 
 
-def render_board(report, state, root, output):
+def render_board(report, state, root, output, candidates=None):
+    """Candidate previews require explicit private paths and exact SHA-256."""
+    if candidates is None:
+        candidates = {}
+    if not isinstance(candidates, dict) or set(candidates) - set(EXPECTED_IDS):
+        raise ValueError("Unexpected candidate identifiers")
+
     if [s.get("shot_id") for s in report.get("shots", [])] != EXPECTED_IDS:
         raise ValueError("Unexpected scene shot list")
     root = Path(root).resolve()
@@ -38,6 +44,19 @@ def render_board(report, state, root, output):
         src = None
         if status in ("VERIFIED_LOCAL_ACCEPTED", "CANDIDATE_NEEDS_HUMAN_REVIEW"):
             src = under(root, entry["path"])
+        if src is None and shot["shot_id"] in candidates:
+            item = candidates[shot["shot_id"]]
+            if not isinstance(item, dict) or item.get("status") != "CANDIDATE":
+                raise ValueError("Only explicitly unapproved candidates may be previewed")
+            candidate = under(root, item.get("path", ""))
+            if "private-media" not in candidate.relative_to(root).parts:
+                raise ValueError("Candidate bytes must remain under private-media")
+            if (candidate.is_file() and
+                    isinstance(item.get("sha256"), str) and
+                    len(item["sha256"]) == 64 and
+                    sha(candidate) == item["sha256"]):
+                src = candidate
+                status = "CANDIDATE_NEEDS_HUMAN_REVIEW"
         if src:
             with Image.open(src) as im:
                 im.load()
@@ -75,12 +94,19 @@ def main():
     p.add_argument("--report", default="build/scene-pack-preflight.json")
     p.add_argument("--state", default="private-media/director-images/state.json")
     p.add_argument("--out", default="private-media/scene-review/scene-contact-sheet.png")
+    p.add_argument("--candidates", help="Optional private JSON {shot_id: {path, sha256, status:CANDIDATE}}")
     args = p.parse_args()
     root = Path(args.root).resolve()
     report = json.loads(under(root, args.report).read_text(encoding="utf-8"))
     state_path = under(root, args.state)
     state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-    result = render_board(report, state, root, args.out)
+    candidates = {}
+    if args.candidates:
+        candidate_manifest = under(root, args.candidates)
+        if "private-media" not in candidate_manifest.relative_to(root).parts:
+            raise ValueError("Candidate manifest must remain under private-media")
+        candidates = json.loads(candidate_manifest.read_text(encoding="utf-8"))
+    result = render_board(report, state, root, args.out, candidates)
     print(json.dumps(result, ensure_ascii=False))
 
 
