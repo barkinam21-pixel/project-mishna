@@ -54,6 +54,30 @@ class OpeningVoicePreparationTests(unittest.TestCase):
         self.assertFalse(result["scene_specific_direction_approved"])
         self.assertFalse(result["tts_submission_permitted"])
 
+    def test_seven_shots_cover_all_sixteen_cards_without_an_unreasonably_long_single_hold(self):
+        report = build(ROOT)
+        segments = json.loads(
+            (ROOT / "episodes/berakhot-01-01/opening-caption-draft.json")
+            .read_text(encoding="utf-8"))["segments"]
+        all_card_ids = [card["card_id"] for segment in segments
+                        for card in segment["cards"]]
+        shots = report["beat_anchors_provisional"]
+        assigned_ids = [card_id for shot in shots
+                        for card_id in shot["caption_card_ids_until_next_shot"]]
+        self.assertEqual(assigned_ids, all_card_ids)
+        self.assertTrue(report["all_untimed_caption_cards_assigned_to_shots"])
+        self.assertTrue(report["caption_alignment_is_semantic_not_measured"])
+        self.assertEqual(report["caption_card_count"], 16)
+        counts = [x["provisional_spoken_words_in_shot"] for x in shots]
+        self.assertEqual(counts, [3, 16, 17, 21, 17, 15, 20])
+        self.assertEqual(sum(counts), 109)
+        self.assertLessEqual(max(counts), 22)
+        for shot in shots:
+            self.assertEqual(shot["first_caption_card_id"],
+                             shot["caption_card_ids_until_next_shot"][0])
+            self.assertIsNone(shot["exact_cut_frame"])
+            self.assertEqual(shot["pacing_status"], "UNMEASURED_REVIEW_AFTER_WAV")
+
     def test_previous_audition_is_not_repurposed_as_scene_recording(self):
         result = build(ROOT)
         old_audition = json.loads((ROOT / "episodes/berakhot-01-01/voice-rehearsal-draft.json")
