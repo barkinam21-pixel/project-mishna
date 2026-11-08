@@ -95,6 +95,18 @@ class ScenePackPreflightTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "OPN01"):
                 report_scene(manifest, rows, {}, proof, evidence, Path(tmp))
 
+    def test_one_shot_generation_permission_is_closed_after_documented_use(self):
+        import json
+        root = Path(__file__).resolve().parents[1]
+        path = root / "episodes/berakhot-01-01/comfy-opening-images.json"
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        auth = manifest["authorization"]
+        self.assertFalse(auth["generation_approved"])
+        self.assertTrue(auth["previous_one_shot_authorization_consumed"])
+        self.assertTrue(auth["new_generation_requires_new_explicit_owner_authorization"])
+        self.assertEqual(auth["consumed_shot_id"], "OPN02")
+        self.assertTrue((root / auth["consumed_evidence"]).is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
