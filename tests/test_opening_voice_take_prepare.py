@@ -43,6 +43,17 @@ class OpeningVoicePreparationTests(unittest.TestCase):
                          ["OPN01", "OPN02", "OPN03", "OPN04", "OPN05", "OPN06", "OPN07"])
         self.assertEqual(result, build(ROOT))
 
+    def test_scene_draft_removes_unrelated_calamity_direction_without_altering_approved_master(self):
+        result = build(ROOT)
+        self.assertIn("ואז הגיע החורבן",
+                      result["approved_performance_direction_unchanged"])
+        self.assertNotIn("ואז הגיע החורבן",
+                         result["scene_specific_direction_draft"])
+        self.assertIn("מסירת הלימוד לדור הבא",
+                      result["scene_specific_direction_draft"])
+        self.assertFalse(result["scene_specific_direction_approved"])
+        self.assertFalse(result["tts_submission_permitted"])
+
     def test_previous_audition_is_not_repurposed_as_scene_recording(self):
         result = build(ROOT)
         old_audition = json.loads((ROOT / "episodes/berakhot-01-01/voice-rehearsal-draft.json")
