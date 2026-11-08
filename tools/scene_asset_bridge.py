@@ -28,10 +28,12 @@ def reconcile(root):
     registry_path = under(root, "episodes/berakhot-01-01/introduction-proof.json")
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
     entries = state.get("entries", {})
+    if not isinstance(entries, dict) or not isinstance(registry.get("assets"), dict):
+        raise ValueError("Malformed private state or film registry")
     results = []
     for shot in report["shots"]:
         sid, key = shot["shot_id"], shot["key"]
-        record = registry["assets"].get(sid, {})
+        record = registry.get("assets", {}).get(sid) or {}
         entry = entries.get(key)
         status, reason = verified_entry(entry, root)
         registry_path_value = record.get("path")
@@ -88,21 +90,29 @@ def reconcile(root):
                               for v in voice_timing))
     approvals_ready = (registry.get("script_approved") is True and
                        registry.get("visual_approved") is True)
-    film_ready = (all(r["ready_for_render"] for r in results) and
-                  not missing_media and timing_ready and
-                  voice_timing_ready and approvals_ready)
+    preliminary_ready = (all(r["ready_for_render"] for r in results) and
+                         not missing_media and timing_ready and
+                         voice_timing_ready and approvals_ready)
+    # The authoritative validator also checks real WAV, spoken text, captions,
+    # image decoding, distinct originals, correct frame boundaries and safety.
+    film_gate_status = "BLOCKED_PRELIMINARY_GATES"
+    if preliminary_ready:
+        from tools.introduction_proof import plan
+        film_gate_status = plan(registry, root)["status"]
+    film_ready = preliminary_ready and film_gate_status == "READY_PRIVATE_RENDER_ONLY"
     return {
         "schema_version": 1,
         "mode": "READ_ONLY_NO_APPROVAL_NO_UPLOAD",
         "ready": film_ready,
+        "film_gate_status": film_gate_status,
         "scene_images_ready": all(r["ready_for_render"] for r in results),
         "missing_or_unapproved_media": missing_media,
         "shot_timing_ready": timing_ready,
         "voice_timing_ready": voice_timing_ready,
         "script_and_visual_approvals_ready": approvals_ready,
         "shots": results,
-        "next_action": "Run existing introduction_proof gate" if film_ready
-                       else "Review candidates and reconcile private asset hashes and approvals",
+        "next_action": "Use existing private renderer for review only" if film_ready
+                       else "Review candidate, missing media, timing, rights, and film validation gates",
         "provider_calls": 0,
         "workspace_usage": "unknown",
     }
