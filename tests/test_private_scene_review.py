@@ -129,15 +129,22 @@ class PrivateSceneReviewTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             archive, digest = archive_fixture()
-            self.restore(root, archive, digest)
+            original_unpack = unpack_verified_bundle
+            bundle = self.install(root, archive)
             shots = [{"shot_id": uid, "key": "k" + uid, "status": "MISSING"}
                      for uid in EXPECTED_IDS]
+            def restore_fixture(path, target):
+                return original_unpack(path, target,
+                    expected_archive_sha256=hashlib.sha256(archive).hexdigest(),
+                    expected_image_sha256=digest)
             with patch("tools.private_scene_review.unpack_verified_bundle",
-                       return_value={"status": "TEST_VERIFIED", "accepted": False,
-                                     "provider_calls": 0}), \
+                       side_effect=restore_fixture), \
                  patch("tools.scene_pack_preflight.build",
                        return_value={"shots": shots}):
-                result = review_private_scene(root, root / "candidate.zip")
+                result = review_private_scene(root, bundle)
+            self.assertEqual(result["status"], "RESTORED_UNAPPROVED_CANDIDATE")
+            self.assertEqual(result["verified_sha256"], digest)
+            self.assertTrue((root / IMAGE).is_file())
             self.assertEqual(result["review_board"]["images_shown"], ["OPN02"])
             self.assertEqual(result["review_board"]["placeholders"], 6)
             self.assertFalse(result["review_board"]["approval_granted"])
