@@ -84,8 +84,8 @@ class ComfyClient:
 
     def prepare(self, spec, reference_paths):
         from tools.comfy_scene_images import compile_klein
-        refs = [self.upload(path) for path in reference_paths]
-        graph = compile_klein(spec, refs)
+        # Verify nodes/model choices before transmitting private reference bytes.
+        graph = compile_klein(spec, ['reference.png']*len(reference_paths))
         info = self.request('/object_info')
         if any(n['class_type'] not in info for n in graph.values()):
             raise ValueError('Required native ComfyUI nodes unavailable')
@@ -94,7 +94,8 @@ class ComfyClient:
             choices = info[node['class_type']].get('input',{}).get('required',{}).get(field)
             if not choices or node['inputs'][field] not in choices[0]:
                 raise ValueError('Configured model component not installed')
-        return graph
+        refs=[self.upload(path) for path in reference_paths]
+        return compile_klein(spec,refs)
 
     def result(self, history):
         images = history.get('outputs',{}).get('13',{}).get('images',[])

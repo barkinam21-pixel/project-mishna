@@ -30,6 +30,32 @@ def atomic(path, value):
     if 'private-media' in path.parts: path.chmod(0o600)
 
 
+def conditioning_inputs(spec, root):
+    """Verify originals and deterministically derive recorded identity crops in memory.
+
+    No file upload or invented model control. Empty list means original references.
+    """
+    prep=spec.get('director',{}).get('reference_preparation')
+    if prep is None:return []
+    crops=prep.get('crops',[])
+    if not isinstance(crops,list) or not 1<=len(crops)<=4:raise ValueError('Invalid conditioning crop count')
+    originals={r['sha256']:r for r in spec['references']};result=[]
+    for crop in crops:
+        ref=originals.get(crop.get('source_sha256'))
+        if ref is None or ref.get('synthesis_rights_confirmed') is not True:raise ValueError('Unapproved crop source')
+        source=under(root,ref['path'])
+        if not source.is_file() or sha(source)!=ref['sha256']:raise ValueError('Changed crop source')
+        box=crop.get('crop_box')
+        with Image.open(source) as im:
+            im.load()
+            if not isinstance(box,list) or len(box)!=4 or any(type(x) is not int for x in box) or not 0<=box[0]<box[2]<=im.width or not 0<=box[1]<box[3]<=im.height:raise ValueError('Invalid conditioning crop box')
+            derived=im.crop(box).convert('RGB');derived.thumbnail((511,511),Image.Resampling.LANCZOS)
+            buffer=io.BytesIO();derived.save(buffer,format='PNG');raw=buffer.getvalue()
+            if list(derived.size)!=crop.get('size') or hashlib.sha256(raw).hexdigest()!=crop.get('sha256'):raise ValueError('Conditioning pixels/encoder differ from recorded hash')
+        result.append((raw,crop['sha256']))
+    return result
+
+
 def specifications(manifest, root):
     """Resolve visual dependencies only; narration/timing do not invalidate pictures."""
     if manifest.get('schema_version') != 1:
@@ -89,6 +115,9 @@ def specifications(manifest, root):
             spec['director']=shot['director']
         if backend['type']=='cloudflare' and not shot.get('director'): missing.append('Director controls required')
         if backend['type'] != 'comfyui': spec['backend'] = backend
+        if not missing:
+            try: conditioning_inputs(spec,root)
+            except (ValueError,OSError) as error: missing.append('Conditioning preparation failed: '+type(error).__name__)
         results.append({'id': uid, 'key': key(spec), 'spec': spec, 'missing': missing})
     return results
 
@@ -195,7 +224,16 @@ def _run(manifest, root, out, client, generate):
                     raise ValueError('Submission limit reached')
                 if len(state.get('attempts',[])) >= policy.get('total_submissions_limit',2**63):
                     raise ValueError('Total authorized submission limit reached; no new attempt')
-                graph = client.prepare(row['spec'], [under(root,r['path']) for r in row['spec']['references']])
+                prepared=conditioning_inputs(row['spec'],root)
+                reference_paths=[under(root,r['path']) for r in row['spec']['references']]
+                if prepared:
+                    reference_paths=[]
+                    for raw,digest in prepared:
+                        target=out/(digest+'.conditioning.png')
+                        if target.exists() and sha(target)!=digest:raise ValueError('Conditioning cache corrupted')
+                        if not target.exists():target.write_bytes(raw);target.chmod(0o600)
+                        reference_paths.append(target)
+                graph = client.prepare(row['spec'],reference_paths)
                 entry = {'status':'SUBMISSION_UNCERTAIN','spec':row['spec'],'workflow':graph, 'backend':getattr(client,'engine_name','ComfyUI')}
                 state['entries'][row['key']] = entry
                 state.setdefault('attempts',[]).append({'key':row['key'],'shot':row['id'],'backend':entry['backend']})

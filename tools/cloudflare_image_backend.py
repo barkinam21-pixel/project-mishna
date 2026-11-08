@@ -70,7 +70,7 @@ class CloudflareClient:
         except (KeyError, TypeError, AssertionError):
             raise CloudflareBlocked('USAGE_UNKNOWN') from None
         w,h = spec['size']
-        estimate = math.ceil(w/512)*math.ceil(h/512)*26.05 + len(spec['references'])*5.37
+        estimate = math.ceil(w/512)*math.ceil(h/512)*26.05 + len(spec.get('director',{}).get('reference_preparation',{}).get('crops') or spec['references'])*5.37
         if used + estimate + 1000 > 10000:
             raise CloudflareBlocked('FREE_ALLOWANCE_HEADROOM_INSUFFICIENT')
         self.receipt = {'started_at':now.isoformat(),'model':MODEL,'neurons_before':used,
@@ -83,14 +83,16 @@ class CloudflareClient:
         if not 1 <= len(reference_paths) <= 4:
             raise CloudflareBlocked('REFERENCE_COUNT_INVALID')
         images=[]
-        for path,ref in zip(reference_paths,spec['references']):
+        actual_refs=spec.get('director',{}).get('reference_preparation',{}).get('crops') or spec['references']
+        if len(actual_refs)!=len(reference_paths):raise CloudflareBlocked('REFERENCE_COUNT_MISMATCH')
+        for path,ref in zip(reference_paths,actual_refs):
             raw=path.read_bytes()
             if hashlib.sha256(raw).hexdigest()!=ref['sha256']:
                 raise CloudflareBlocked('REFERENCE_CHANGED')
             with Image.open(io.BytesIO(raw)) as im:
                 im.load(); im=im.convert('RGB'); im.thumbnail((511,511),Image.Resampling.LANCZOS)
                 b=io.BytesIO(); im.save(b,format='PNG'); images.append(b.getvalue())
-        self.receipt['references']=[{'sha256':r['sha256'],'role':r.get('role')} for r in spec['references']]
+        self.receipt['references']=[{'sha256':r['sha256'],'role':r.get('role')} for r in actual_refs]
         self.images=images
         return {'prompt':prompt_text(spec),'width':spec['size'][0],'height':spec['size'][1],
                 'seed':spec['seed'],'guidance':spec.get('director',{}).get('generation_parameters',{}).get('guidance',1.0)}

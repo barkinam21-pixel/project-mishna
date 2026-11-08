@@ -111,12 +111,24 @@ class Studio:
         candidates=load(self.work/'candidates.json')
         board=render_board(load(self.work/'scene-report.json'),state,self.root,
                            str((self.work/'review/contact-sheet.png').relative_to(self.root)),candidates)
+        observations=load(self.work/'composition-measurements.json')
+        composition={}
+        from tools.shot_controls import assess_composition
+        for uid,measurement in observations.items():
+            if uid!='OPN02':raise ValueError('Only OPN02 composition acceptance bounds configured')
+            candidate=candidates.get(uid)
+            if not candidate:
+                row=next(r for r in load(self.work/'scene-report.json')['shots'] if r['shot_id']==uid)
+                candidate=state.get('entries',{}).get(row['key'])
+            if not candidate:raise ValueError('Composition measurement has no local candidate')
+            composition[uid]=assess_composition(under(self.root,candidate['path']),measurement)
+        atomic(self.work/'review/composition-report.json',composition)
         directory=self.work/'review';out=directory/'index.html'
         # Relative local links only; no public HTTP server or remote embeds.
         text='<html lang="he" dir="rtl"><meta charset="utf-8"><title>ביקורת פרטית</title><h1>מסע אל המשנה — מועמדים בלבד</h1><p>אין אישור אוטומטי. משבצת חסרה אינה איור.</p><img style="max-width:100%" src="contact-sheet.png">'
         text+='<pre dir="ltr">'+html.escape(json.dumps(load(self.work/'queue.json'),ensure_ascii=False,indent=2))+'</pre></html>'
         out.write_text(text,encoding='utf-8');out.chmod(0o600)
-        return reply('REVIEW_READY',['Rendered private board from checksum-verified local media'],outputs={'html':str(out.relative_to(self.root)),'board':board})
+        return reply('REVIEW_READY',['Rendered private board from checksum-verified local media'],outputs={'html':str(out.relative_to(self.root)),'board':board,'composition_checks':composition})
 
     def run(self, resume=False):
         self.plan(); m,rows,_=self.inputs(); state=load(self.work/'images/state.json'); blocks=[]
@@ -211,6 +223,18 @@ class Studio:
         output=render(config,self.root,self.work/'proof')
         return reply('PROOF_RENDERED',['Assembled existing approved media without AI'],outputs=output)
 
+    def restore_references(self, archive):
+        """Owner-authorized original two-image ZIP; never grants generation permission."""
+        from tools.comfy_runtime import intake_package
+        m=load(self.manifest)
+        if not all(r.get('synthesis_rights_confirmed') is True and r.get('rights_uri') for r in m['references']):
+            raise ValueError('EXISTING_REFERENCE_RIGHTS_REQUIRED')
+        archive=under(self.root,archive)
+        if 'private-media' not in archive.relative_to(self.root).parts:raise ValueError('PRIVATE_REFERENCE_PACKAGE_REQUIRED')
+        bound,receipt=intake_package(archive,self.root,m,rights_uri=m['references'][0]['rights_uri'],synthesis_rights_confirmed=True)
+        atomic(self.work/'reference-intake.json',receipt)
+        return reply('REFERENCES_RESTORED',['Verified original reference hashes/dimensions; no approval or manifest change'],outputs={'receipt':str((self.work/'reference-intake.json').relative_to(self.root))})
+
     def backup(self, destination):
         destination=under(self.root,destination)
         if 'private-media' not in destination.relative_to(self.root).parts:raise ValueError('PRIVATE_BACKUP_REQUIRED')
@@ -219,11 +243,16 @@ class Studio:
         base=self.root/'private-media';files=[p for p in base.rglob('*') if p.is_file() and p!=destination and p.suffix!='.zip']
         if any(p.name=='running.lock' for p in files):raise ValueError('BACKUP_REQUIRES_IDLE_RUNTIME')
         files=[p for p in files if p.name!='runtime.json' and p.suffix.lower() not in ('.key','.pem','.env') and not any(x in p.name.lower() for x in ('credential','token','secret'))]
+        if any(p.is_symlink() or not p.resolve().is_relative_to(self.root) for p in files):raise ValueError('UNSAFE_BACKUP_SYMLINK')
         snapshot={str(p.relative_to(self.root)):sha(p) for p in files}
         destination.parent.mkdir(parents=True,exist_ok=True)
         tmp=destination.with_suffix('.tmp')
         with zipfile.ZipFile(tmp,'w',zipfile.ZIP_DEFLATED) as z:
-            for p in files:z.write(p,str(p.relative_to(self.root)))
+            for p in files:
+                if p.is_symlink() or not p.resolve().is_relative_to(self.root):raise ValueError('UNSAFE_BACKUP_SYMLINK')
+                raw=p.read_bytes();name=str(p.relative_to(self.root))
+                if hashlib.sha256(raw).hexdigest()!=snapshot[name]:raise ValueError('FILE_CHANGED_DURING_BACKUP')
+                z.writestr(name,raw)
             z.writestr('snapshot.json',json.dumps(snapshot,sort_keys=True))
         tmp.replace(destination);destination.chmod(0o600)
         return reply('BACKUP_CREATED',['Saved portable private data; runtime endpoint/secrets excluded'],outputs={'archive':str(destination.relative_to(self.root)),'sha256':sha(destination),'files':len(snapshot)})
@@ -232,6 +261,7 @@ class Studio:
         archive=under(self.root,archive)
         with zipfile.ZipFile(archive) as z:
             if len(z.namelist())!=len(set(z.namelist())) or sum(i.file_size for i in z.infolist())>4*1024**3:raise ValueError('INVALID_ARCHIVE')
+            if any(((i.external_attr>>16)&0o170000)==0o120000 for i in z.infolist()):raise ValueError('UNSAFE_ARCHIVE_SYMLINK')
             snapshot=json.loads(z.read('snapshot.json'));verified=[]
             if set(z.namelist())!=set(snapshot)|{'snapshot.json'}:raise ValueError('ARCHIVE_MEMBERS_MISMATCH')
             for name,expected in snapshot.items():
@@ -248,7 +278,7 @@ class Studio:
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['doctor','plan','run','resume','review','proof','backup','restore'])
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['doctor','plan','run','resume','review','proof','backup','restore','restore-references'])
     p.add_argument('--root',default='.');p.add_argument('--workspace',default='private-media/studio')
     p.add_argument('--online',action='store_true');p.add_argument('--archive')
     a=p.parse_args()
@@ -257,9 +287,9 @@ def main():
         if a.command=='doctor':r=s.doctor(a.online)
         elif a.command in ('run','resume'):r=s.run(a.command=='resume')
         elif a.command=='proof':r=s.proof_video()
-        elif a.command in ('backup','restore'):
+        elif a.command in ('backup','restore','restore-references'):
             if not a.archive:p.error('--archive required')
-            r=getattr(s,a.command)(a.archive)
+            r=getattr(s,a.command.replace('-','_'))(a.archive)
         else:r=getattr(s,a.command)()
     except Exception as error:
         if 's' in locals():atomic(s.work/'runtime-error.json',{'error_type':type(error).__name__,'at':dt.datetime.now(dt.timezone.utc).isoformat(),'command':a.command,'automatic_retry':False})

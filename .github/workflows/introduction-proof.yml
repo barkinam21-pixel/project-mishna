@@ -2,7 +2,7 @@ name: Introduction proof offline assembly
 on:
   workflow_dispatch:
   push:
-    paths: ['tools/studio.py', 'tools/studio_runtime.py', 'tests/test_studio_runtime.py', 'tools/introduction_*.py', 'tools/comfy_*.py', 'tools/klein_space_backend.py', 'tools/cloudflare_image_backend.py', 'tools/shot_controls.py', 'tools/scene_pack_preflight.py', 'tests/test_scene_pack_preflight.py', 'tests/test_shot_controls.py', 'tests/test_klein_space_backend.py', 'tests/test_comfy*.py', 'episodes/berakhot-01-01/comfy-opening-images.json', 'tests/test_introduction_*.py', 'episodes/berakhot-01-01/introduction-proof.json', '.github/workflows/introduction-proof.yml']
+    paths: ['tools/studio.py', 'tools/studio_runtime.py', 'tests/test_studio_runtime.py', 'tests/test_image_runtime_hardening.py', 'tools/introduction_*.py', 'tools/comfy_*.py', 'tools/klein_space_backend.py', 'tools/cloudflare_image_backend.py', 'tools/shot_controls.py', 'tools/scene_pack_preflight.py', 'tests/test_scene_pack_preflight.py', 'tests/test_shot_controls.py', 'tests/test_klein_space_backend.py', 'tests/test_comfy*.py', 'episodes/berakhot-01-01/comfy-opening-images.json', 'tests/test_introduction_*.py', 'episodes/berakhot-01-01/introduction-proof.json', '.github/workflows/introduction-proof.yml']
 permissions:
   contents: read
 jobs:
@@ -26,7 +26,7 @@ jobs:
           python -m tools.comfy_scene_images episodes/berakhot-01-01/comfy-opening-images.json --out build/comfy-opening-dry-run
       - name: Agent-free runtime acceptance (offline CPU, no secrets)
         run: |
-          python -m unittest tests.test_studio_runtime -v
+          python -m unittest tests.test_studio_runtime tests.test_image_runtime_hardening -v
           python -m tools.studio plan
           python -m tools.studio review
       - run: python -m tools.introduction_proof

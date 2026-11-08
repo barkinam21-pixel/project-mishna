@@ -100,3 +100,25 @@ if __name__=='__main__':
         import sys
         code=str(error) if type(error).__name__=='CloudflareBlocked' else type(error).__name__
         print(json.dumps({'status':'BLOCKED','code':code,'next':'Inspect private state; no automatic resubmission'}));sys.exit(2)
+
+
+def assess_composition(path, measurement):
+    """Validate explicit human bounding-box observations, never infer them from pixels."""
+    from tools.comfy_scene_images import sha
+    if measurement.get('image_sha256')!=sha(path) or not measurement.get('reviewer'):
+        raise ValueError('Composition measurements must identify image and reviewer')
+    if measurement.get('method')!='human_bounding_boxes':raise ValueError('Unsupported measurement method')
+    with Image.open(path) as im:width,height=im.size
+    boxes=measurement.get('boxes',[])
+    if len(boxes)!=2 or {b.get('character') for b in boxes}!={'A','B'}:raise ValueError('Two identified adult character boxes required')
+    flags=[];ratios={}
+    centers={}
+    for b in boxes:
+        xy=b.get('xyxy')
+        if not isinstance(xy,list) or len(xy)!=4 or any(type(v) is not int for v in xy) or not 0<=xy[0]<xy[2]<=width or not 0<=xy[1]<xy[3]<=height:raise ValueError('Invalid measurement box')
+        ratios[b['character']]=(xy[3]-xy[1])/height;centers[b['character']]=(xy[0]+xy[2])/2
+        if not .25<=ratios[b['character']]<=.35:flags.append('FIGURE_HEIGHT_OUTSIDE_25_35_PERCENT:'+b['character'])
+    if centers['A']>=centers['B']:flags.append('CHARACTER_LEFT_RIGHT_ORDER')
+    return {'status':'FLAG' if flags else 'PASS_MEASURED_GEOMETRY_ONLY','flags':flags,'height_ratios':ratios,
+            'measurement_method':'human_bounding_boxes','reviewer':measurement['reviewer'],
+            'identity_style_anatomy':'NOT_EVALUATED','approval_granted':False}

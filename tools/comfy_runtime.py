@@ -136,6 +136,9 @@ def intake_package(archive, root, manifest, *, rights_uri, synthesis_rights_conf
     # Only write after all ZIP members, CRCs, image decodes and expected identities pass.
     receipts=[];bound=manifest
     for name,data,master in staged:
+        existing=under(root,'private-media/introduction/verified-inputs/'+name)
+        if existing.exists() and existing.read_bytes()!=data:raise ValueError('REFERENCE_RESTORE_WOULD_OVERWRITE')
+    for name,data,master in staged:
         source=under(root,'private-media/introduction/verified-inputs/'+name)
         source.parent.mkdir(parents=True,exist_ok=True);source.parent.chmod(0o700)
         source.write_bytes(data);source.chmod(0o600)

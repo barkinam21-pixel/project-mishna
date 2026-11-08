@@ -1,0 +1,39 @@
+{
+  "status": "IMAGE_RUNTIME_HARDENED_NO_INFERENCE",
+  "base_commit": "c3e98556af2b48854e9a35a1dd45ecdb601de8ce",
+  "full_suite": {
+    "passed": 435,
+    "seconds": 26.287
+  },
+  "targeted_final": {
+    "passed": 13,
+    "seconds": 0.039
+  },
+  "verified": [
+    "derived-reference hash/count validation",
+    "Cloudflare binary conditioning preparation without inference",
+    "model validation before Comfy upload",
+    "private two-original reference restoration without chat or manifest changes",
+    "backup mutation rejection",
+    "hash-bound human composition measurements",
+    "existing queued resume and duplicate prevention tests"
+  ],
+  "real_inference_requests": 0,
+  "new_images": 0,
+  "model_quota_consumption_initiated": 0,
+  "new_external_charge": 0,
+  "workspace_usage": "unknown",
+  "authorization_changed": false,
+  "remaining": [
+    "private compute environment not connected",
+    "unattended remote storage credentials not configured",
+    "Cloudflare private terms/current usage/new authorization gates closed",
+    "native spatial composition control not proven"
+  ],
+  "not_attempted": [
+    "generation",
+    "video",
+    "deployment",
+    "merge"
+  ]
+}

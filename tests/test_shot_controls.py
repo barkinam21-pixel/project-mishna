@@ -60,7 +60,7 @@ class ControlsTests(unittest.TestCase):
             r=dict(m['references'][0],path='reference.png',sha256=sha(ref),expected_sha256=sha(ref))
             m['references']=[r]
             for c in m['characters'].values():c['references']=[r]
-            d=m['shots'][0]['director'];d['reference_images']=[r['sha256']]
+            d=m['shots'][0]['director'];d.pop('reference_preparation',None);d['reference_images']=[r['sha256']]
             d['style_lock']=hashlib.sha256(json.dumps({k:m[k] for k in ['style','characters','references']},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
             # Synthetic in-memory fake client only: the real manifest remains closed.
             m['authorization'].update(zero_cost_compute_verified=True,
