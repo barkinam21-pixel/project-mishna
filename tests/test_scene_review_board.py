@@ -53,5 +53,29 @@ class SceneReviewBoardTests(unittest.TestCase):
                 render_board(r, {}, root, "private-media/board.png")
 
 
+    def test_recovered_unapproved_candidate_shows_only_if_hash_verified(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            candidate = root / "private-media" / "recovered-opn02.png"
+            candidate.parent.mkdir(parents=True)
+            Image.new("RGB", (320, 180), "orange").save(candidate)
+            digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            entry = {"OPN02": {"status": "CANDIDATE",
+                    "path": "private-media/recovered-opn02.png", "sha256": digest}}
+            result = render_board(dummy_report(), {}, root,
+                                  "private-media/review/first.png", entry)
+            self.assertEqual(result["images_shown"], ["OPN02"])
+            self.assertEqual(result["placeholders"], 6)
+            self.assertFalse(result["approval_granted"])
+            with self.assertRaisesRegex(ValueError, "private-media"):
+                render_board(dummy_report(), {}, root,
+                             "private-media/review/unsafe.png",
+                             {"OPN02": dict(entry["OPN02"], path="outside.png")})
+            entry["OPN02"]["sha256"] = "0" * 64
+            blocked = render_board(dummy_report(), {}, root,
+                                   "private-media/review/blocked.png", entry)
+            self.assertEqual(blocked["images_shown"], [])
+            self.assertFalse(blocked["approval_granted"])
+
 if __name__ == "__main__":
     unittest.main()
