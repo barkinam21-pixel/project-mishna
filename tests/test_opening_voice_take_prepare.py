@@ -127,6 +127,15 @@ class OpeningVoicePreparationTests(unittest.TestCase):
         self.assertFalse(saved["tts_submission_permitted"])
 
 
+    def test_cli_cannot_overwrite_the_real_production_manifest(self):
+        from unittest.mock import patch
+        from tools.opening_voice_take_prepare import main
+        with patch("sys.argv", ["script", "--root", str(ROOT), "--out",
+                                "episodes/berakhot-01-01/introduction-proof.json"]):
+            with self.assertRaisesRegex(ValueError, "build/"):
+                main()
+
+
 
 if __name__ == "__main__":
     unittest.main()
