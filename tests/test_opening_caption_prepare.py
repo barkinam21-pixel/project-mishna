@@ -64,6 +64,13 @@ class OpeningCaptionPreparationTests(unittest.TestCase):
         self.assertEqual(" ".join(c["spoken_text"] for c in cards), text)
         self.assertTrue(all(len(c["display_text"].splitlines()) <= 2 for c in cards))
 
+    def test_persisted_caption_draft_is_exactly_generated_and_still_untimed(self):
+        saved = json.loads((ROOT / "episodes/berakhot-01-01/opening-caption-draft.json")
+                           .read_text(encoding="utf-8"))
+        self.assertEqual(saved, build(ROOT))
+        self.assertFalse(saved["release_authorized"])
+        self.assertFalse(saved["timing_measured"])
+
 
 if __name__ == "__main__":
     unittest.main()
