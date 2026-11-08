@@ -31,9 +31,9 @@
     "source_bytes_modified": false
   },
   "ci": {
-    "run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/42432976004",
+    "run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/42433139313",
     "scene_pack_test_count": 5,
-    "review_board_test_count": 3,
+    "review_board_test_count": 4,
     "bridge_test_count": 3,
     "all_passed": true,
     "github_actions_only_no_real_media": true
@@ -51,5 +51,17 @@
     "workspace_usage": "unknown"
   },
   "no_media_uploaded_to_github": true,
-  "next": "Obtain separately approved image shots, approved N01/N02 real voice and captions, complete timings and reviews; never infer approvals from hash verification."
+  "next": "Restore the private candidate bundle into an authorized offline workspace, run scene_review_board --candidates private-media/scene-review/verified-candidates.json; no automatic approval or new model calls. Then complete scene pack and voice/caption gates before private proof.",
+  "private_unapproved_candidate_bundle": {
+    "drive_url": "https://drive.google.com/file/d/1m4OPke-0eAuNzhcxKijwsDKCk8qScftL/view?usp=drivesdk",
+    "sha256": "370d9da290c0204b94ba72a0d4e7a5873abc9b75a44599fca2421ee111ebf0a2",
+    "bytes": 1042165,
+    "owner_only": true,
+    "shared": false,
+    "contained_paths": [
+      "private-media/introduction/OPN02-recovered.png",
+      "private-media/scene-review/verified-candidates.json"
+    ],
+    "purpose": "Rehydrate exactly one unapproved, locally hash-verifiable candidate; never promote acceptance"
+  }
 }
