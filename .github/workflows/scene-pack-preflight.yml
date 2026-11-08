@@ -6,6 +6,10 @@ on:
       - 'tools/scene_pack_preflight.py'
       - 'tools/scene_asset_bridge.py'
       - 'tools/opening_caption_prepare.py'
+      - 'tools/opening_voice_take_prepare.py'
+      - 'tests/test_opening_voice_take_prepare.py'
+      - 'episodes/berakhot-01-01/voice-rehearsal-draft.json'
+      - 'episodes/berakhot-01-01/opening-voice-take-prep.json'
       - 'tests/test_opening_caption_prepare.py'
       - 'scripts/introduction-working-draft.md'
       - 'episodes/berakhot-01-01/opening-caption-draft.json'
@@ -27,6 +31,10 @@ on:
       - 'tools/scene_pack_preflight.py'
       - 'tools/scene_asset_bridge.py'
       - 'tools/opening_caption_prepare.py'
+      - 'tools/opening_voice_take_prepare.py'
+      - 'tests/test_opening_voice_take_prepare.py'
+      - 'episodes/berakhot-01-01/voice-rehearsal-draft.json'
+      - 'episodes/berakhot-01-01/opening-voice-take-prep.json'
       - 'tests/test_opening_caption_prepare.py'
       - 'scripts/introduction-working-draft.md'
       - 'episodes/berakhot-01-01/opening-caption-draft.json'
@@ -63,8 +71,11 @@ jobs:
           python -m unittest discover -s tests -p 'test_private_scene_review.py' -v
           python -m unittest discover -s tests -p 'test_reference_pack_audit.py' -v
           python -m unittest discover -s tests -p 'test_opening_caption_prepare.py' -v
+          python -m unittest discover -s tests -p 'test_opening_voice_take_prepare.py' -v
       - name: Prepare exact untimed Hebrew opening captions from locked script
         run: python -m tools.opening_caption_prepare
+      - name: Prepare one locked Alnilam narration take and semantic shot anchors (no provider calls)
+        run: python -m tools.opening_voice_take_prepare
       - name: Summarize all seven opening shots without model calls
         run: python -m tools.scene_pack_preflight
       - name: Reconcile scene registry with film manifest (fail closed without private media)
@@ -78,3 +89,4 @@ jobs:
             build/scene-pack-preflight.json
             build/scene-asset-bridge.json
             build/opening-caption-draft.json
+            build/opening-voice-preparation.json
