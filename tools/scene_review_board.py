@@ -44,9 +44,12 @@ def render_board(report, state, root, output, candidates=None):
         src = None
         if status in ("VERIFIED_LOCAL_ACCEPTED", "CANDIDATE_NEEDS_HUMAN_REVIEW"):
             src = under(root, entry["path"])
+            if "private-media" not in src.relative_to(root).parts:
+                raise ValueError("Verified scene media must remain under private-media")
         if src is None and shot["shot_id"] in candidates:
             item = candidates[shot["shot_id"]]
-            if not isinstance(item, dict) or item.get("status") != "CANDIDATE":
+            if (not isinstance(item, dict) or item.get("status") != "CANDIDATE"
+                    or item.get("accepted") is True):
                 raise ValueError("Only explicitly unapproved candidates may be previewed")
             candidate = under(root, item.get("path", ""))
             if "private-media" not in candidate.relative_to(root).parts:
