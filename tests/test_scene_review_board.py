@@ -77,5 +77,34 @@ class SceneReviewBoardTests(unittest.TestCase):
             self.assertEqual(blocked["images_shown"], [])
             self.assertFalse(blocked["approval_granted"])
 
+
+    def test_candidate_marked_accepted_is_inconsistent_and_blocked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            image = root / "private-media" / "opn02.png"
+            image.parent.mkdir(parents=True)
+            Image.new("RGB", (320, 180), "green").save(image)
+            digest = hashlib.sha256(image.read_bytes()).hexdigest()
+            with self.assertRaisesRegex(ValueError, "unapproved candidates"):
+                render_board(dummy_report(), {}, root,
+                             "private-media/review/board.png",
+                             {"OPN02": {"status": "CANDIDATE",
+                                         "accepted": True,
+                                         "path": "private-media/opn02.png",
+                                         "sha256": digest}})
+
+    def test_local_state_candidate_must_not_point_outside_private_media(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            image = root / "public-image.png"
+            Image.new("RGB", (320, 180), "green").save(image)
+            digest = hashlib.sha256(image.read_bytes()).hexdigest()
+            state = {"entries": {"kOPN02": {"status": "CANDIDATE",
+                      "path": "public-image.png", "sha256": digest}}}
+            with self.assertRaisesRegex(ValueError, "private-media"):
+                render_board(dummy_report(), state, root,
+                             "private-media/review/board.png")
+
+
 if __name__ == "__main__":
     unittest.main()
