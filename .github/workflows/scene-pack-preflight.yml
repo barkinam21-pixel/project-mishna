@@ -1,0 +1,31 @@
+name: Mishnah scene-pack offline preflight
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/scene_pack_preflight.py'
+      - 'tests/test_scene_pack_preflight.py'
+      - 'episodes/berakhot-01-01/comfy-opening-images.json'
+      - 'episodes/berakhot-01-01/introduction-proof.json'
+      - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
+      - '.github/workflows/scene-pack-preflight.yml'
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Test no-charge, fail-closed preflight
+        run: python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
+      - name: Summarize all seven opening shots without model calls
+        run: python -m tools.scene_pack_preflight
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OFFLINE-ONLY-scene-pack-preflight
+          path: build/scene-pack-preflight.json
