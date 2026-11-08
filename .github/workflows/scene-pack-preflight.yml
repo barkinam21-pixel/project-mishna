@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/scene_pack_preflight.py'
       - 'tools/scene_asset_bridge.py'
+      - 'tools/private_scene_review.py'
+      - 'tests/test_private_scene_review.py'
       - 'tests/test_scene_asset_bridge.py'
       - 'tests/test_scene_pack_preflight.py'
       - 'tools/scene_review_board.py'
@@ -40,6 +42,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
           python -m unittest discover -s tests -p 'test_scene_review_board.py' -v
           python -m unittest discover -s tests -p 'test_scene_asset_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_private_scene_review.py' -v
       - name: Summarize all seven opening shots without model calls
         run: python -m tools.scene_pack_preflight
       - name: Reconcile scene registry with film manifest (fail closed without private media)
