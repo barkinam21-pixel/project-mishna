@@ -54,5 +54,76 @@ class SceneAssetBridgeTests(unittest.TestCase):
             self.assertIn("INTRO-A1-S01-N01", result["missing_or_unapproved_media"])
 
 
+    def test_authoritative_proof_validator_is_required_for_ready(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            film = root / "episodes/berakhot-01-01"
+            film.mkdir(parents=True)
+            media = root / "private-media/introduction"
+            media.mkdir(parents=True)
+            shots = []
+            assets = {}
+            entries = {}
+            for i in range(1, 8):
+                uid = f"OPN{i:02d}"
+                key = f"key{i}"
+                shot_bytes = ("synthetic-illustration-" + uid).encode()
+                target = media / (uid + ".png")
+                target.write_bytes(shot_bytes)
+                sha = hashlib.sha256(shot_bytes).hexdigest()
+                entries[key] = {"sha256": sha}
+                shots.append({"shot_id": uid, "key": key, "status": "CANDIDATE"})
+                assets[uid] = {
+                    "path": "private-media/introduction/" + uid + ".png",
+                    "sha256": sha, "accepted": True, "rights_verified": True,
+                    "provenance": "synthetic-test", "license": "test-fixture",
+                }
+            for uid, suffix in [("INTRO-A1-S01-N01", ".wav"),
+                                ("INTRO-A1-S01-N02", ".wav"),
+                                ("captions", ".json")]:
+                data = ("synthetic-only-" + uid).encode()
+                target = media / (uid + suffix)
+                target.write_bytes(data)
+                assets[uid] = {
+                    "path": "private-media/introduction/" + target.name,
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "accepted": True, "rights_verified": True,
+                    "provenance": "synthetic-test", "license": "test-fixture",
+                }
+            (root / "private-media/director-images").mkdir(parents=True)
+            (root / "private-media/director-images/state.json").write_text(
+                json.dumps({"entries": entries}))
+            registry = {
+                "assets": assets, "script_approved": True, "visual_approved": True,
+                "shots": [{"id": f"OPN{i:02d}", "duration_frames": 24}
+                          for i in range(1, 8)],
+                "voice_takes": [
+                    {"start_sample": 0, "end_sample": 48000},
+                    {"start_sample": 48000, "end_sample": 96000},
+                ],
+            }
+            (film / "introduction-proof.json").write_text(json.dumps(registry))
+            with patch("tools.scene_asset_bridge.build", return_value={"shots": shots}), \
+                 patch("tools.scene_asset_bridge.verified_entry",
+                       return_value=("VERIFIED_LOCAL_ACCEPTED", "verified")), \
+                 patch("tools.introduction_proof.plan",
+                       return_value={"status": "INVALID"}) as proof:
+                blocked = reconcile(root)
+                self.assertTrue(blocked["scene_images_ready"])
+                self.assertFalse(blocked["ready"])
+                self.assertEqual(blocked["film_gate_status"], "INVALID")
+                proof.assert_called_once()
+            with patch("tools.scene_asset_bridge.build", return_value={"shots": shots}), \
+                 patch("tools.scene_asset_bridge.verified_entry",
+                       return_value=("VERIFIED_LOCAL_ACCEPTED", "verified")), \
+                 patch("tools.introduction_proof.plan",
+                       return_value={"status": "READY_PRIVATE_RENDER_ONLY"}):
+                ready = reconcile(root)
+                self.assertTrue(ready["ready"])
+                self.assertEqual(ready["film_gate_status"],
+                                 "READY_PRIVATE_RENDER_ONLY")
+
+
 if __name__ == "__main__":
     unittest.main()
