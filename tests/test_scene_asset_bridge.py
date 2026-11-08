@@ -26,6 +26,10 @@ class SceneAssetBridgeTests(unittest.TestCase):
             self.assertEqual(len(result["shots"]), 7)
             self.assertFalse(any(s["ready_for_render"] for s in result["shots"]))
             self.assertEqual(result["provider_calls"], 0)
+            self.assertEqual(len(result["missing_or_unapproved_media"]), 10)
+            self.assertFalse(result["shot_timing_ready"])
+            self.assertFalse(result["voice_timing_ready"])
+            self.assertFalse(result["script_and_visual_approvals_ready"])
 
     def test_matching_hash_without_director_acceptance_still_blocked(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -46,6 +50,8 @@ class SceneAssetBridgeTests(unittest.TestCase):
                 result = reconcile(root)
             self.assertTrue(result["shots"][0]["registry_hash_verified"])
             self.assertFalse(result["shots"][0]["ready_for_render"])
+            self.assertFalse(result["ready"])
+            self.assertIn("INTRO-A1-S01-N01", result["missing_or_unapproved_media"])
 
 
 if __name__ == "__main__":
