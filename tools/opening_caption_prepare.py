@@ -176,8 +176,10 @@ def main():
     root = Path(args.root).resolve()
     report = build(root)
     out = (root / args.out).resolve()
-    if not out.is_relative_to(root) or out == root / "private-media/introduction/captions.json":
-        raise ValueError("Refusing unsafe/production caption output")
+    safe_build = (root / "build").resolve()
+    if (not safe_build.is_relative_to(root) or not out.is_relative_to(safe_build)
+            or out.suffix != ".json"):
+        raise ValueError("Draft captions may only be written as JSON inside build/")
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_suffix(".tmp")
     tmp.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
