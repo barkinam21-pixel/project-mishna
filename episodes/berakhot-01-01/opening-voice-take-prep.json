@@ -56,7 +56,11 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C01",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C01"
+      ]
     },
     {
       "shot_id": "OPN02",
@@ -68,7 +72,16 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C02",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C02",
+        "INTRO-A1-S01-N01-C03",
+        "INTRO-A1-S01-N01-C04",
+        "INTRO-A1-S01-N01-C05",
+        "INTRO-A1-S01-N01-C06",
+        "INTRO-A1-S01-N01-C07"
+      ]
     },
     {
       "shot_id": "OPN03",
@@ -80,7 +93,12 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C08",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C08",
+        "INTRO-A1-S01-N01-C09"
+      ]
     },
     {
       "shot_id": "OPN04",
@@ -92,7 +110,11 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C10",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C10"
+      ]
     },
     {
       "shot_id": "OPN05",
@@ -104,7 +126,12 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C11",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C11",
+        "INTRO-A1-S01-N01-C12"
+      ]
     },
     {
       "shot_id": "OPN06",
@@ -116,7 +143,12 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N02-C01",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N02-C01",
+        "INTRO-A1-S01-N02-C02"
+      ]
     },
     {
       "shot_id": "OPN07",
@@ -128,9 +160,17 @@
       "exact_cut_frame": null,
       "estimated_seconds": null,
       "shot_approved": false,
-      "needs_measured_alignment": true
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N02-C03",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N02-C03",
+        "INTRO-A1-S01-N02-C04"
+      ]
     }
   ],
+  "caption_card_count": 16,
+  "all_untimed_caption_cards_assigned_to_shots": true,
+  "caption_alignment_is_semantic_not_measured": true,
   "script_master_sha256": "988190ce0c8feb7b518ca8a937cd868117bd91da0a3a19d987de2fa9bab2ec7c",
   "expected_total_words": 109,
   "expected_segment_ids": [
