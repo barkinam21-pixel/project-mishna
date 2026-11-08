@@ -185,6 +185,11 @@ def _run(manifest, root, out, client, generate):
             if client is None: raise ValueError('No ComfyUI endpoint configured')
             if entry and entry['status']=='SUBMISSION_UNCERTAIN':
                 raise ValueError('Uncertain submission; inspect server queue, never blindly retry')
+            if entry and getattr(client,'engine_name','')=='Cloudflare Workers AI':
+                # A Cloudflare response has no provider queue ID to resume.
+                # Legacy QUEUED entries may hold private base64: never replay
+                # or serialise them into new reports.
+                raise ValueError('SYNCHRONOUS_RESPONSE_REQUIRES_MANUAL_RECOVERY')
             if not entry:
                 if report['submissions'] >= policy['max_submissions']:
                     raise ValueError('Submission limit reached')
