@@ -32,6 +32,14 @@ class RuntimeTests(unittest.TestCase):
             r=json.loads(p.stdout);self.assertIn('cost',r);self.assertEqual(r['cost']['provider_requests'],0)
         self.assertEqual(self.h.posts,0)
     def test_cloudflare_is_explicit_offline_and_never_falls_back_to_gpu(self):
+        # This isolated ComfyUI fixture lacks production provider metadata.
+        # Supply a synthetic Cloudflare configuration without credentials.
+        manifest=self.h.m
+        manifest['available_backends']={'cloudflare':{
+            'type':'cloudflare',
+            'model':'@cf/black-forest-labs/flux-2-klein-4b',
+            'safety':{'free_hard_cap_verified':False}}}
+        atomic(self.root/'episodes/berakhot-01-01/comfy-opening-images.json',manifest)
         # The ordinary studio stays on ComfyUI. Selecting Cloudflare is an
         # explicit opt-in; it must not require a GPU or attempt image inference
         # when image/rights approval is false.
