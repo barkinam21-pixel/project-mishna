@@ -1,0 +1,73 @@
+{
+  "zip_sha256": "8b6cd92c3318bf7ab0759ac9388dec5b4c3ba00ac77755c722934dbc9acedd87",
+  "verified_images": [
+    {
+      "path": "01_ACTIVE_GUIDES/1000139258.png",
+      "sha256": "92c49c0e3f11297703e7d84f630c2a7be771d967bfc00143481a42b18defe8fc",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "01_ACTIVE_GUIDES/1000140566.png",
+      "sha256": "075df5aa113d874b5e8f6014ab5bc196ba52142e4388e48c966ef4aad4f3d277",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "01_ACTIVE_GUIDES/1000139263.png",
+      "sha256": "17836ad16adc4b99d2e4e44bf24eafbe02d79dbd04b1129c38ca78f80a1f36f7",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "01_ACTIVE_GUIDES/1000139262.png",
+      "sha256": "62f3cb6c6427423f3120b2195af8980314409037cc2858787432470bfa83c0cf",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "01_ACTIVE_GUIDES/1000140597.png",
+      "sha256": "5f47c763270334c45f166cad98ef56a496d0532906d357e7a8b3900effe527f9",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "01_ACTIVE_GUIDES/1000140603.png",
+      "sha256": "c481d9b9c86d9f92cdcf090ac1293fb85c8de7ec7a890e443619a37a8479d63c",
+      "category": "01_ACTIVE_GUIDES"
+    },
+    {
+      "path": "00_PRIMARY_REFERENCE/a_cinematic_detailed_illustration_in_the_same_rea.png",
+      "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "category": "00_PRIMARY_REFERENCE"
+    },
+    {
+      "path": "00_PRIMARY_REFERENCE/a_cinematic_storyboard_collage_with_four_panels_t.png",
+      "sha256": "1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5",
+      "category": "00_PRIMARY_REFERENCE"
+    }
+  ],
+  "catalogued_but_not_packaged": [
+    "02_CONTEXT_ONLY/1000139244.png",
+    "02_CONTEXT_ONLY/1000140602.png",
+    "02_CONTEXT_ONLY/1000139251.png",
+    "02_CONTEXT_ONLY/1000139253.png",
+    "02_CONTEXT_ONLY/1000139243.png",
+    "02_CONTEXT_ONLY/1000139247.png",
+    "02_CONTEXT_ONLY/1000139245.png",
+    "02_CONTEXT_ONLY/1000139252.png",
+    "02_CONTEXT_ONLY/1000139248.png",
+    "02_CONTEXT_ONLY/1000139250.png",
+    "02_CONTEXT_ONLY/1000140598.png",
+    "02_CONTEXT_ONLY/1000140596.png",
+    "02_CONTEXT_ONLY/1000139261.png",
+    "02_CONTEXT_ONLY/1000140600.png",
+    "03_HOLD_NOT_FOR_MODEL/1000139257.png",
+    "03_HOLD_NOT_FOR_MODEL/1000139256.png",
+    "03_HOLD_NOT_FOR_MODEL/1000140595.png",
+    "03_HOLD_NOT_FOR_MODEL/1000140599.png",
+    "03_HOLD_NOT_FOR_MODEL/1000140601.png"
+  ],
+  "crc_verified": true,
+  "provider_upload_policy": "Primary master derived private conditioning only; no boards sent",
+  "private_drive_backup": "https://drive.google.com/file/d/1ut4t-AkQBC0cGNw6N03VHEdV99ouE3aX/view",
+  "backup_shared": false,
+  "backup_permissions": "owner only verified",
+  "active_guide_usage": "1000139258 lighting and1000140566 coverage viewed on index; text interpreted only as art direction, no boards sent",
+  "provider_upload_authorization": "Explicit current owner request plus previous authorization for verified primary master only; package provider_upload_allowed=false retained unchanged for archived boards"
+}

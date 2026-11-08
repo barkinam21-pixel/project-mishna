@@ -196,7 +196,7 @@
     },
     {
       "id": "OPN02",
-      "prompt": "New original wide composition of both adult travelers near hillside stone village at sunset, older left younger right. Preserve master identities, wardrobe, relative heights and satchels without copying its framing.",
+      "prompt": "Rear-view wide establishing shot: two anonymous adult travelers WALK AWAY from camera, entire bodies including feet, each approximately 30 percent of frame height. The elder remains left in indigo, the adult younger remains right in brown. A winding dusty path leads from lower-center through broad hills to a SMALL DISTANT hillside stone village. Gold-violet sunset. Landscape dominates. No overhead framing tree, no large near-right building, no front-facing or half-body figures. Preserve wardrobe and painterly identity from character-only reference crops; invent a new landscape layout. Symbolic dramatization, not Rabbi Judah the Patriarch or a documented historical meeting.",
       "seed": 73002,
       "characters": [
         "A",
@@ -204,13 +204,13 @@
       ],
       "story_emotion": "רחב שני הנוסעים — מקום, קשר ושאלה אנושית.",
       "visual_direction": {
-        "camera": "slightly below eye level, wide",
-        "positions": "A left and B right on path, village recedes upper-right; olive foreground separates planes.",
-        "eyelines_axis": "B looks left to A, A listens looking right or toward path; camera south of axis.",
+        "camera": "Behind both travelers at slightly elevated eye-level; camera remains south of travel axis; Very wide establishing, entire rear-view figures approximately 30 percent frame height",
+        "positions": "Figures in lower center-left, elder left younger right. Both full bodies approximately30% frame height. Winding path leads diagonally toward small distant village upper-right. Open hills dominate; no foreground tree canopy or near building.",
+        "eyelines_axis": "Both gaze forward along path away from camera; no faces turned toward viewer",
         "light": "same rear-left warm sunset and cool blue-violet fill",
         "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
       },
-      "motion_intent": "gentle lateral reveal only if narration motivates it",
+      "motion_intent": "forward walk away",
       "cut_reason": "Cut from shared geography to the younger traveler seeking understanding.",
       "narration_ids": [
         "INTRO-A1-S01-N01"
@@ -239,17 +239,19 @@
         "environment": "Anonymous hillside stone village, dusty path and olive trees",
         "time_of_day": "sunset",
         "mood": "Mature, warm, restrained curiosity",
-        "camera_distance": "Wide establishing, both complete bodies visible, each no taller than 45 percent frame height",
-        "camera_angle": "slightly below eye level, wide",
+        "camera_distance": "Very wide establishing, entire rear-view figures approximately 30 percent frame height",
+        "camera_angle": "Behind both travelers at slightly elevated eye-level; camera remains south of travel axis",
         "lens_feel": "Painted cinematic depth, natural proportions",
-        "composition_notes": "A in left middle third and B near center, both entire bodies on lower dusty path. Show generous landscape above and around; village small upper-right. Do not reuse reference camera position.",
+        "composition_notes": "Figures in lower center-left, elder left younger right. Both full bodies approximately30% frame height. Winding path leads diagonally toward small distant village upper-right. Open hills dominate; no foreground tree canopy or near building.",
         "continuity_requirements": [
-          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
-          "Camera south of travel axis; same rear-left sunset"
+          "Same indigo robe/sand wrap/light tunic/satchel elder and brown clothes/light tunic/satchel adult younger",
+          "Anonymous symbolic travelers, explicitly not Rabbi Judah the Patriarch",
+          "Same warm sunset and cool blue-violet shadows",
+          "Preserve left/right order and travel direction"
         ],
         "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
-        "gesture_notes": "New original wide composition of both adult travelers near hillside stone village at sunset, older left younger right. Preserve master identities, wardrobe, relative heights and satchels without copying its framing.",
-        "eye_line_notes": "B looks left to A, A listens looking right or toward path; camera south of axis.",
+        "gesture_notes": "Both walking away, relaxed arms, no hand raised in conversation",
+        "eye_line_notes": "Both gaze forward along path away from camera; no faces turned toward viewer",
         "forbidden_elements": [
           "text",
           "extra people",
@@ -275,21 +277,27 @@
           "A",
           "B"
         ],
-        "focal_action": "Travelers pause together on winding path; younger asks quietly, elder listens",
+        "focal_action": "Two travelers walking toward a distant village, backs to camera",
         "must_be_in_frame": [
-          "A left and B right on path, village recedes upper-right; olive foreground separates planes."
+          "Two full adult rear-view bodies including feet",
+          "Winding path",
+          "Wide hills",
+          "Small distant village",
+          "Gold-violet sky"
         ],
         "must_not_dominate_frame": [
-          "Faces",
-          "Torso portraits",
-          "Architecture"
+          "Figures larger than35% frame height",
+          "Tree framing upper-left",
+          "Large near-right building",
+          "Front faces",
+          "Half-body portraits"
         ],
-        "left_right_placement": "A left B right where visible; never invert axis",
-        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
-        "motion_implication": "gentle lateral reveal only if narration motivates it",
+        "left_right_placement": "Anonymous elder left, adult younger right, both walking away",
+        "depth_plan": "Foreground open stony path; small full-body pair lower-middle; serpentine path through rolling hills; distant village beneath broad gold-violet sky",
+        "motion_implication": "Forward progress into landscape; no implied speaking gesture",
         "cut_motivation": "Cut from shared geography to the younger traveler seeking understanding.",
         "emotional_beat": "רחב שני הנוסעים — מקום, קשר ושאלה אנושית.",
-        "new_relative_to_previous": "Reveal scale of journey after foot insert. Unlike reference medium two-shot: full bodies, more landscape and a lower winding path.",
+        "new_relative_to_previous": "Reverse/rear view instead of front two-shot; full bodies30% height, no foreground tree/building, landscape dominant",
         "preserve_character_identity": true,
         "preserve_costumes": true,
         "preserve_environment_style": true,
@@ -298,7 +306,46 @@
         "avoid_text_in_image": true,
         "avoid_extra_limbs_or_fingers": true,
         "avoid_face_distortion": true,
-        "avoid_reference_copy_too_closely": true
+        "avoid_reference_copy_too_closely": true,
+        "reference_preparation": {
+          "method": "two proportional identity/costume crops from verified master, no invented strength or controlnet",
+          "crops": [
+            {
+              "character": "elder",
+              "path": "private-media/introduction/opn02-rear-wide/elder-conditioning.png",
+              "sha256": "80c76c071061e12efa6f45d87f3681f8edb57877c2e0454e31158a22f64a28a9",
+              "source_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+              "crop_box": [
+                285,
+                90,
+                860,
+                941
+              ],
+              "size": [
+                345,
+                511
+              ],
+              "role": "identity_costume_only"
+            },
+            {
+              "character": "younger",
+              "path": "private-media/introduction/opn02-rear-wide/younger-conditioning.png",
+              "sha256": "82b5883412024e6b66a15c51104096f9d9aea9b1712810f444eea1781daad55c",
+              "source_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+              "crop_box": [
+                765,
+                180,
+                1245,
+                941
+              ],
+              "size": [
+                322,
+                511
+              ],
+              "role": "identity_costume_only"
+            }
+          ]
+        }
       }
     },
     {
