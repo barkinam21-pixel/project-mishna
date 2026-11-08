@@ -2,7 +2,7 @@ name: Introduction proof offline assembly
 on:
   workflow_dispatch:
   push:
-    paths: ['tools/introduction_*.py', 'tools/comfy_*.py', 'tools/klein_space_backend.py', 'tools/cloudflare_image_backend.py', 'tools/shot_controls.py', 'tests/test_shot_controls.py', 'tests/test_klein_space_backend.py', 'tests/test_comfy*.py', 'episodes/berakhot-01-01/comfy-opening-images.json', 'tests/test_introduction_*.py', 'episodes/berakhot-01-01/introduction-proof.json', '.github/workflows/introduction-proof.yml']
+    paths: ['tools/introduction_*.py', 'tools/comfy_*.py', 'tools/klein_space_backend.py', 'tools/cloudflare_image_backend.py', 'tools/shot_controls.py', 'tools/scene_pack_preflight.py', 'tests/test_scene_pack_preflight.py', 'tests/test_shot_controls.py', 'tests/test_klein_space_backend.py', 'tests/test_comfy*.py', 'episodes/berakhot-01-01/comfy-opening-images.json', 'tests/test_introduction_*.py', 'episodes/berakhot-01-01/introduction-proof.json', '.github/workflows/introduction-proof.yml']
 permissions:
   contents: read
 jobs:
@@ -21,6 +21,8 @@ jobs:
           python -m unittest discover -s tests -p 'test_comfy*.py' -v
           python -m unittest discover -s tests -p 'test_klein_space_backend.py' -v
           python -m unittest discover -s tests -p 'test_shot_controls.py' -v
+          python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
+          python -m tools.scene_pack_preflight
           python -m tools.comfy_scene_images episodes/berakhot-01-01/comfy-opening-images.json --out build/comfy-opening-dry-run
       - run: python -m tools.introduction_proof
       - name: Assemble real private scene only when readiness gates pass
@@ -43,6 +45,7 @@ jobs:
           name: TECHNICAL-TEST-NOT-APPROVED-introduction
           path: |
             build/introduction-proof-state.json
+            build/scene-pack-preflight.json
             build/comfy-opening-dry-run/report.json
             build/introduction-fixture/output/private-captions.*
             build/introduction-fixture/integration-result.json
