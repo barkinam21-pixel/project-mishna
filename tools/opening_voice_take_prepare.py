@@ -22,10 +22,10 @@ BEATS = (
      "צעד ראשון בדרך", "Locked detail; a grown traveler's foot and ground"),
     ("OPN02", SEGMENTS[0], "הוא יודע מה לקח בידיו:",
      "הדרך נפתחת למרחב", "Wide two-adult rear view; figures <=35% frame height"),
-    ("OPN03", SEGMENTS[0], "עכשיו מישהו הולך לצדו.",
-     "הקשר האנושי מתגלה", "Adult younger traveler stops, stays screen-right"),
-    ("OPN04", SEGMENTS[0], "יום אחד גם הוא יצטרך לבחור",
-     "המבוגר קשוב ללומד", "Elder listens; original reverse/OTS camera, fixed axis"),
+    ("OPN03", SEGMENTS[0], "ויש דברים שהוא נושא בלי שיוכל להניח אותם",
+     "משא לא נראה; הצעיר נעצר", "Adult younger traveler pauses, stays screen-right; metaphor, not a source fact"),
+    ("OPN04", SEGMENTS[0], "דרך שלמד להבחין בה בין טוב לרע.",
+     "הקשב מתעורר בין הדורות", "Elder notices the younger traveler; original OTS, fixed 180-degree axis"),
     ("OPN05", SEGMENTS[0], "מה מן הדברים יוכל לעבור אליו?",
      "שאלה שמבקשת תשובה", "Intimate reaction close-up; mature restrained emotion"),
     ("OPN06", SEGMENTS[1], "זה המסע שנצא אליו:",
@@ -128,6 +128,9 @@ def build(root):
             x["card_id"] for x in flat_cards[start:end]]
         if not beat["caption_card_ids_until_next_shot"]:
             raise ValueError("Shot would have no narration caption coverage")
+        beat["provisional_spoken_words_in_shot"] = sum(
+            len(card["spoken_text"].split()) for card in flat_cards[start:end])
+        beat["pacing_status"] = "UNMEASURED_REVIEW_AFTER_WAV"
     return {
         "schema_version": 1,
         "type": "PRIVATE_VOICE_PREPARATION_NOT_A_PROVIDER_REQUEST",
