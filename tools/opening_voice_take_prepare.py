@@ -199,10 +199,10 @@ def main():
     root = Path(args.root).resolve()
     result = build(root)
     destination = (root / args.out).resolve()
-    if not destination.is_relative_to(root) or "private-media" in destination.parts:
-        raise ValueError("Voice preparation report may not overwrite private media")
-    if destination.name in {"introduction-proof.json", "voice-rehearsal-draft.json"}:
-        raise ValueError("Refusing to change canonical production/voice approval files")
+    safe_build = (root / "build").resolve()
+    if (not safe_build.is_relative_to(root) or not destination.is_relative_to(safe_build)
+            or destination.suffix != ".json"):
+        raise ValueError("Voice preparation reports may only be written as JSON inside build/")
     destination.parent.mkdir(parents=True, exist_ok=True)
     tmp = destination.with_suffix(".tmp")
     tmp.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
