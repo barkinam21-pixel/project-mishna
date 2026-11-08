@@ -1,6 +1,14 @@
 name: Mishnah scene-pack offline preflight
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/scene_pack_preflight.py'
+      - 'tests/test_scene_pack_preflight.py'
+      - 'episodes/berakhot-01-01/comfy-opening-images.json'
+      - 'episodes/berakhot-01-01/introduction-proof.json'
+      - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
+      - '.github/workflows/scene-pack-preflight.yml'
   push:
     paths:
       - 'tools/scene_pack_preflight.py'
