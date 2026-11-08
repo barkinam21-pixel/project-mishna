@@ -53,6 +53,12 @@ class CloudflareClient:
         # Historic or delayed analytics alone cannot guarantee no billable overage.
         if policy.get('free_hard_cap_verified') is not True:
             raise CloudflareBlocked('NO_CHARGE_HARD_CAP_UNVERIFIED')
+        # A provider's "zero data retention" label does not settle the
+        # upstream partner license governing private image references.
+        # This is a separate, fail-closed approval gate, not a claim that
+        # any particular terms automatically override the provider policy.
+        if policy.get('partner_private_reference_terms_verified') is not True:
+            raise CloudflareBlocked('PARTNER_PRIVATE_REFERENCE_TERMS_UNVERIFIED')
         checked = dt.datetime.fromisoformat(policy.get('verified_at','').replace('Z','+00:00'))
         if checked.tzinfo is None or not 0 <= (now-checked).total_seconds() <= 86400:
             raise CloudflareBlocked('SAFETY_EVIDENCE_EXPIRED')
