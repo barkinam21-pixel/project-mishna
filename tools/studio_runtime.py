@@ -36,11 +36,18 @@ class Studio:
         self.manifest=under(self.root,manifest); self.proof=under(self.root,proof)
         self.runtime=load(self.work/'runtime.json')
         self.endpoint=os.environ.get('COMFY_ENDPOINT') or self.runtime.get('endpoint')
+        # Explicit opt-in only. Never silently switch from unavailable ComfyUI
+        # to another model provider or infer permissions from the Free plan.
+        self.image_backend=os.environ.get('MISHNAH_IMAGE_BACKEND','comfyui')
+        if self.image_backend not in ('comfyui','cloudflare'):
+            raise ValueError('UNSUPPORTED_IMAGE_BACKEND')
         for field,env in [('private_endpoint_verified','COMFY_PRIVATE_ENDPOINT_VERIFIED'),('zero_cost_verified','COMFY_ZERO_COST_VERIFIED')]:
             if env in os.environ:self.runtime[field]=os.environ[env]=='true'
 
     def inputs(self):
-        m=load(self.manifest); m['backend']={'type':'comfyui'}
+        m=load(self.manifest)
+        m['backend']=(m['available_backends']['cloudflare'] if self.image_backend=='cloudflare'
+                      else {'type':'comfyui'})
         return m, specifications(m,self.root), load(self.proof)
 
     def plan(self):
@@ -71,7 +78,18 @@ class Studio:
         result=self.plan(); blocks=[]
         for command in ('ffmpeg','ffprobe','fc-match'):
             if not shutil.which(command): blocks.append('MISSING_TOOL:'+command)
-        if not self.endpoint: blocks.append('BLOCKED_NO_GPU: no ComfyUI endpoint configured')
+        if self.image_backend=='cloudflare':
+            # Local doctor never contacts a paid API or uploads private data.
+            if not (os.environ.get('CLOUDFLARE_ACCOUNT_ID') and os.environ.get('CLOUDFLARE_API_TOKEN')):
+                blocks.append('CLOUDFLARE_CREDENTIALS_UNAVAILABLE')
+            m,_,_=self.inputs()
+            safety=m['backend'].get('safety',{})
+            if safety.get('free_hard_cap_verified') is not True:
+                blocks.append('NO_CHARGE_HARD_CAP_UNVERIFIED')
+            if not all(m['authorization'].get(k) is True for k in
+                       ('generation_approved','component_licenses_verified','zero_cost_compute_verified')):
+                blocks.append('GENERATION_OR_RIGHTS_NOT_AUTHORIZED')
+        elif not self.endpoint: blocks.append('BLOCKED_NO_GPU: no ComfyUI endpoint configured')
         elif online:
             if not self.runtime.get('private_endpoint_verified'):
                 blocks.append('PRIVATE_ENDPOINT_NOT_VERIFIED')
@@ -79,7 +97,9 @@ class Studio:
                 from tools.comfy_runtime import inspect
                 readiness=inspect(self.endpoint); result['outputs']['gpu']=readiness
                 if not readiness['ready']: blocks.append('BLOCKED_NO_GPU')
-        result['outputs']['network_checked']=bool(online and self.endpoint and self.runtime.get('private_endpoint_verified'))
+        result['outputs']['network_checked']=bool(
+            self.image_backend=='comfyui' and online and self.endpoint and self.runtime.get('private_endpoint_verified'))
+        result['outputs']['image_backend']=self.image_backend
         result['outputs']['backup']='Local portable ZIP supported; unattended remote storage is not configured'
         result['outputs']['inpainting']='BLOCKED_VERIFIED_WORKFLOW_REQUIRED'
         if any(t['missing'] for t in result['outputs']['tasks']): blocks.append('MISSING_OR_UNVERIFIED_INPUTS')
@@ -126,6 +146,35 @@ class Studio:
         if not targets:
             result=self.review();result['blocked_reason']=blocks
             result['status']='BLOCKED' if blocks else ('NO_QUEUED_TASKS' if resume else 'NO_GENERATION_NEEDED');return result
+        if self.image_backend=='cloudflare':
+            # The existing Cloudflare adapter already performs its model, quota
+            # and privacy checks; share the same private cache/queue/review path.
+            # No independent credential means stop, never fall back to a paid API.
+            if resume:
+                return reply('BLOCKED',blocked=blocks+['SYNCHRONOUS_CLOUDFLARE_NEVER_AUTO_RETRIED'])
+            if not all(m['authorization'].get(k) is True for k in
+                       ('generation_approved','zero_cost_compute_verified','component_licenses_verified')):
+                return reply('BLOCKED',blocked=blocks+['GENERATION_OR_RIGHTS_NOT_AUTHORIZED'])
+            from tools.cloudflare_image_backend import CloudflareClient,CloudflareBlocked
+            client=CloudflareClient(m['backend'])
+            if not client.account or not client.token:
+                return reply('BLOCKED',blocked=blocks+['CLOUDFLARE_CREDENTIALS_UNAVAILABLE'])
+            if len(targets)!=1 or m['authorization'].get('max_submissions')!=1:
+                return reply('BLOCKED',blocked=blocks+['CLOUDFLARE_SINGLE_SHOT_ONLY'])
+            m['shots']=[s for s in m['shots'] if s['id'] in targets]
+            try:
+                # Fails closed on unknown quota, missing privacy/legal evidence
+                # or a stale hard-cap attestation, before any image request.
+                client.readiness(next(r['spec'] for r in rows if r['id']==targets[0]))
+            except (CloudflareBlocked,ValueError) as error:
+                return reply('BLOCKED',blocked=blocks+[
+                    str(error) if type(error).__name__=='CloudflareBlocked' else 'CLOUDFLARE_READINESS_FAILED'])
+            report=images(m,self.root,self.work/'images',client,True)
+            result=self.review()
+            result['what_completed'].append('Ran existing synchronous Cloudflare adapter')
+            result['cost']['provider_requests']=report['submissions']
+            result['cost']['external_usd']='unknown'
+            return result
         if not self.endpoint:return reply('BLOCKED',blocked=blocks+['BLOCKED_NO_GPU'])
         if not all(self.runtime.get(k) is True for k in ('private_endpoint_verified','zero_cost_verified')):
             return reply('BLOCKED',blocked=blocks+['RUNTIME_PRIVACY_OR_ZERO_COST_UNVERIFIED'])
