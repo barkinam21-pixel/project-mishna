@@ -5,6 +5,14 @@
 
 **עודכן:** 31.10.2026. מסמך ידני יציב; הדוח הכי עדכני נוצר אוטומטית בכל [הרצת GitHub Actions](https://github.com/barkinam21-pixel/project-mishna/actions/workflows/studio-check.yml) תחת `studio-session-handoff` (`session-handoff.md` ו-`session-handoff.json`).
 
+
+## 2026-11-08 — בדיקת מוכנות מרוכזת לפתיח, ללא Codex
+- נוספו `tools/scene_pack_preflight.py`, בדיקות `tests/test_scene_pack_preflight.py`, ו־`.github/workflows/scene-pack-preflight.yml`. פקודה אחת: `python -m tools.scene_pack_preflight` יוצרת `build/scene-pack-preflight.json` בלי רשת/יצירת תמונות/שינוי אישורי מדיה.
+- המסלול מקבל ראיית OPN02 אמיתית ממסמך ההרצה `docs/evidence/opn02-rear-wide-2026-11-08.json`, אבל מסמן אותה כ־REMOTE_CANDIDATE_NOT_LOCALLY_VERIFIED — לא 'ACCEPTED'. תמונה אחרת לא נוצרה. הוא בודק hashes רק כשבתים קיימים בפועל בסביבה; לא מאמת את Google Drive דרך CI.
+- הבדיקה מתארת אילו מה־7 שוטים חסרים נכסים, קריינות או כתוביות מאושרות; ממשק הענן, חשבון ה־Free וחיבור unattended עדיין אינם מוכחים מתהליך זה.
+- בוצעה גם הוספה ל־`.github/workflows/introduction-proof.yml` כדי להריץ את בדיקת המוכנות ובדיקות היחידה לצד בדיקות ה־MP4 הקיימות. עד לקבלת תוצאה על הריצה המתאימה יש לציין 'בדיקות החדשות טרם אומתו בענן'.
+- אין שינוי ב־Alnilam או44מקטעים; אין קול חדש, תמונה חדשה, תשלום, מיזוג או פרסום. הבא: בדיקת CI החדשה, ולאחר מכן חיבור חבילה פרטית של4–7שוטים ותצוגת ביקורת אחת במקום אישורים חוזרים.
+
 ## אימות חדש — קובץ ניסיון אמיתי מ-Colab (31.10.2026)
 - בר העלה לשיחה את הארכיון `mishnah-free-image-trials.zip`; קובץ ZIP נפתח ונבדק ללא שגיאות ומכיל `SH01.png`, `prompt-pack-snapshot.json` ו-`usage-ledger.jsonl`. ה-PNG נצפה בפועל.
 - **איור SH01 נוצר בהצלחה** ברשומת ההרצה מ-2026-10-31T19:52:21Z: SDXL base 1.0, NVIDIA Tesla T4, 24 צעדים, 1024×576, משך מדווח 15.9 שניות, seed 173101. SHA-256 של `SH01.png`: `e3647bad6668aebd69810a105dba4df4bd2cfa73ba78cf18269171e73444166d` — אומת באופן בלתי תלוי מול הקובץ.
