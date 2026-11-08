@@ -77,3 +77,15 @@ class ControlsTests(unittest.TestCase):
             e=a['shots'][0];self.assertFalse(e['accepted']);self.assertEqual(e['native_format'],'JPEG')
             self.assertEqual((root/e['native_path']).read_bytes(),native)
             with Image.open(io.BytesIO(native)) as n,Image.open(root/e['path']) as png:self.assertEqual(n.tobytes(),png.tobytes())
+            # The image must never be serialized as a queue ID or usage log;
+            # prior synchronous behavior wrote full base64 into both files.
+            private_state=(root/'private/state.json').read_text()
+            usage=(root/'private/usage.jsonl').read_text()
+            report=(root/'private/report.json').read_text()
+            image_base64=base64.b64encode(native).decode()
+            self.assertNotIn(image_base64,private_state)
+            self.assertNotIn(image_base64,usage)
+            self.assertNotIn(image_base64,report)
+            self.assertIn('synchronous-response:',private_state)
+            self.assertIn('received_unpersisted',usage)
+            self.assertEqual(len(json.loads((root/'private/state.json').read_text())['attempts']),1)
