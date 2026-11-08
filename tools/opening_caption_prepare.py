@@ -28,8 +28,19 @@ def extract(script, uid):
                 if re.search(r"INTRO-A\d-S\d+-[NQ]\d+", part).group() == uid]
     if len(matching) != 1:
         raise ValueError("Expected exactly one narration block for " + uid)
-    body = " ".join(line[2:] for line in matching[0].splitlines()
-                    if line.startswith("> "))
+    paragraphs = []
+    current = []
+    for line in matching[0].splitlines():
+        if line.startswith("> "):
+            current.append(line[2:])
+        elif line == ">" and current:
+            paragraphs.append(" ".join(current))
+            current = []
+    if current:
+        paragraphs.append(" ".join(current))
+    # The archived cue digest preserves paragraph boundaries as two newlines.
+    # The renderer later normalizes whitespace to compare spoken captions.
+    body = "\n\n".join(paragraphs)
     if not body or unicodedata.normalize("NFC", body) != body:
         raise ValueError("Empty or non-NFC source for " + uid)
     return body
