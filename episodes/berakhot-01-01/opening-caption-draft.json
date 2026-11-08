@@ -29,8 +29,8 @@
         {
           "card_id": "INTRO-A1-S01-N01-C02",
           "voice_id": "INTRO-A1-S01-N01",
-          "spoken_text": "הוא יודע מה לקח בידיו: מעט מזון, כלי מים, דבר שיעזור לו להגיע אל המקום הבא.",
-          "display_text": "הוא יודע מה לקח בידיו: מעט מזון, כלי מים,\nדבר שיעזור לו להגיע אל המקום הבא.",
+          "spoken_text": "הוא יודע מה לקח בידיו: מעט מזון,",
+          "display_text": "הוא יודע מה לקח בידיו: מעט מזון,",
           "start_frame": null,
           "end_frame": null,
           "timing_status": "UNALIGNED_WITH_REAL_WAV",
@@ -38,6 +38,16 @@
         },
         {
           "card_id": "INTRO-A1-S01-N01-C03",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "כלי מים, דבר שיעזור לו להגיע אל המקום הבא.",
+          "display_text": "כלי מים, דבר שיעזור לו להגיע אל המקום הבא.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C04",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "ויש דברים שהוא נושא בלי שיוכל להניח אותם על הארץ.",
           "display_text": "ויש דברים שהוא נושא בלי שיוכל להניח אותם\nעל הארץ.",
@@ -47,7 +57,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C04",
+          "card_id": "INTRO-A1-S01-N01-C05",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "מילים ששמע בבית.",
           "display_text": "מילים ששמע בבית.",
@@ -57,7 +67,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C05",
+          "card_id": "INTRO-A1-S01-N01-C06",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "שאלה שלא עזבה אותו.",
           "display_text": "שאלה שלא עזבה אותו.",
@@ -67,7 +77,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C06",
+          "card_id": "INTRO-A1-S01-N01-C07",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "דרך שלמד להבחין בה בין טוב לרע.",
           "display_text": "דרך שלמד להבחין בה בין טוב לרע.",
@@ -77,7 +87,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C07",
+          "card_id": "INTRO-A1-S01-N01-C08",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "עכשיו מישהו הולך לצדו.",
           "display_text": "עכשיו מישהו הולך לצדו.",
@@ -87,7 +97,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C08",
+          "card_id": "INTRO-A1-S01-N01-C09",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "צעיר ממנו.",
           "display_text": "צעיר ממנו.",
@@ -97,7 +107,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C09",
+          "card_id": "INTRO-A1-S01-N01-C10",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "יום אחד גם הוא יצטרך לבחור, לשאול, ללמד.",
           "display_text": "יום אחד גם הוא יצטרך לבחור, לשאול, ללמד.",
@@ -107,7 +117,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C10",
+          "card_id": "INTRO-A1-S01-N01-C11",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "מה מן הדברים יוכל לעבור אליו?",
           "display_text": "מה מן הדברים יוכל לעבור אליו?",
@@ -117,7 +127,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N01-C11",
+          "card_id": "INTRO-A1-S01-N01-C12",
           "voice_id": "INTRO-A1-S01-N01",
           "spoken_text": "ומה יקרה כאשר האדם שלימד כבר לא יהיה שם כדי להשיב?",
           "display_text": "ומה יקרה כאשר האדם שלימד כבר לא יהיה שם\nכדי להשיב?",
@@ -146,8 +156,8 @@
         {
           "card_id": "INTRO-A1-S01-N02-C01",
           "voice_id": "INTRO-A1-S01-N02",
-          "spoken_text": "זה המסע שנצא אליו: אל המילים, אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה.",
-          "display_text": "זה המסע שנצא אליו: אל המילים, אל האנשים\nשלמדו אותן, ואל האחריות להעביר אותן הלאה.",
+          "spoken_text": "זה המסע שנצא אליו: אל המילים,",
+          "display_text": "זה המסע שנצא אליו: אל המילים,",
           "start_frame": null,
           "end_frame": null,
           "timing_status": "UNALIGNED_WITH_REAL_WAV",
@@ -155,6 +165,16 @@
         },
         {
           "card_id": "INTRO-A1-S01-N02-C02",
+          "voice_id": "INTRO-A1-S01-N02",
+          "spoken_text": "אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה.",
+          "display_text": "אל האנשים שלמדו אותן, ואל האחריות להעביר\nאותן הלאה.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N02-C03",
           "voice_id": "INTRO-A1-S01-N02",
           "spoken_text": "בדרך נפגוש עולם גדול של חיים, של אמונה ושל מחשבה.",
           "display_text": "בדרך נפגוש עולם גדול של חיים, של אמונה ושל\nמחשבה.",
@@ -164,7 +184,7 @@
           "approved": false
         },
         {
-          "card_id": "INTRO-A1-S01-N02-C03",
+          "card_id": "INTRO-A1-S01-N02-C04",
           "voice_id": "INTRO-A1-S01-N02",
           "spoken_text": "כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו הספר שנקרא משנה?",
           "display_text": "כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו\nהספר שנקרא משנה?",
@@ -180,7 +200,7 @@
       "source_text_approved": false
     }
   ],
-  "card_count": 14,
+  "card_count": 16,
   "fps_for_future_alignment": 24,
   "audio_sample_rate_for_future_alignment": 48000,
   "timing_measured": false,
