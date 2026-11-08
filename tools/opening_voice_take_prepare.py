@@ -106,6 +106,28 @@ def build(root):
             "exact_cut_frame": None, "estimated_seconds": None,
             "shot_approved": False, "needs_measured_alignment": True,
         })
+    # Editor bridge: link the semantic shot starts to exact caption-card
+    # boundaries. No timestamps or frame lengths are inferred from words.
+    flat_cards = [card for segment in segments for card in segment["cards"]]
+    boundaries = []
+    for beat in beats:
+        hits = [i for i, card in enumerate(flat_cards)
+                if card["voice_id"] == beat["voice_id"]
+                and card["spoken_text"].startswith(beat["spoken_phrase_anchor"])]
+        if len(hits) != 1:
+            raise ValueError("Shot/untimed-caption boundary mismatch: " + beat["shot_id"])
+        boundaries.append(hits[0])
+    if not boundaries or boundaries[0] != 0 or any(
+            boundaries[i] >= boundaries[i + 1] for i in range(len(boundaries) - 1)):
+        raise ValueError("Storyboard/caption sequence incomplete or reordered")
+    for i, beat in enumerate(beats):
+        start = boundaries[i]
+        end = boundaries[i + 1] if i + 1 < len(beats) else len(flat_cards)
+        beat["first_caption_card_id"] = flat_cards[start]["card_id"]
+        beat["caption_card_ids_until_next_shot"] = [
+            x["card_id"] for x in flat_cards[start:end]]
+        if not beat["caption_card_ids_until_next_shot"]:
+            raise ValueError("Shot would have no narration caption coverage")
     return {
         "schema_version": 1,
         "type": "PRIVATE_VOICE_PREPARATION_NOT_A_PROVIDER_REQUEST",
@@ -139,6 +161,9 @@ def build(root):
             "approved": False
         } for s in segments],
         "beat_anchors_provisional": beats,
+        "caption_card_count": len(flat_cards),
+        "all_untimed_caption_cards_assigned_to_shots": True,
+        "caption_alignment_is_semantic_not_measured": True,
         "script_master_sha256": captions["script_master_sha256"],
         "expected_total_words": 109,
         "expected_segment_ids": list(SEGMENTS),
