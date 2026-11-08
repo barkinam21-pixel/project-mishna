@@ -34,6 +34,8 @@ ffmpeg -nostdin -hide_banner -loglevel error -i approved-original.wav -map 0:a:0
 
 **אזהרת תוכן:** זהו קובץ ניסוי רציפות הקריין, לא קריינות N01/N02 התואמת לתסריט המאושר. אסור לשתול אותו במניפסט הסרט או להתייחס אליו כאל קריינות חדשה שאושרה.
 
+העתק טכני של ה־WAV הנגזר גובה גם ב־[Google Drive הפרטי](https://drive.google.com/file/d/1j0FbtXKA4di2CD022PXcq-HIWh-QVx_b/view?usp=drivesdk). קובץ ה־48kHz נבדק מחדש לאחר הורדה דרך החיבור המאומת: SHA-256 `86df885f38ad8dfa8759b8bf3e0be2dfd156fa4057d592e79c53628be79d6e95`, הרשאות owner בלבד ו־`shared=false`. המקור המקורי לא שונה והקובץ אינו N01 או N02.
+
 ## בקרה
 [הרצת GitHub Actions](https://github.com/barkinam21-pixel/project-mishna/actions/runs/42435032581): 20 בדיקות עברו (5 preflight, 4 review board, 3 asset bridge, 8 private restoration). זו בדיקת קוד ללא חשיפה של קובצי מדיה פרטיים, ולא אימות סרט מוכן. אין תמונה חדשה, רינדור סרט, חיוב חיצוני, מיזוג או פרסום בסבב זה.
 
@@ -45,3 +47,10 @@ ffmpeg -nostdin -hide_banner -loglevel error -i approved-original.wav -map 0:a:0
 - לא נוצרו תמונות חדשות; לא בוצע שינוי בקול, במועמדת OPN02, בזכויות או באישורי פרסום. דגלי העלאה לספק ופרסום נשארים `false`.
 - בודק משולש לקריאת ארכיון המקור, החבילה הישנה והחבילה המתוקנת: `python -m tools.reference_pack_audit --full <private-full.zip> --curated <private-old.zip> --corrected <private-corrected.zip>`. ללא רשת וללא העלאת החומרים ל־GitHub.
 - [דוח ביקורת ללא תמונות](evidence/private-reference-format-audit-2026-11-08.json).
+
+## אימות אינטגרציה לאחר סגירת ההרשאה
+- ניסיון יצירת OPN02 היחיד שנרשם ב־`docs/evidence/opn02-rear-wide-2026-11-08.json` **כבר נוצל**. ב־`episodes/berakhot-01-01/comfy-opening-images.json` הוגדר `generation_approved=false`; נדרש אישור חדש ומפורש לכל בקשת יצירה עתידית. `zero_cost_compute_verified=false` ו־`component_licenses_verified=false` נשארו סגורים.
+- הביקורת חשפה רגרסיית בדיקות: בדיקת ה־JPEG עם `Fake CloudflareClient` הניחה שהדגל בפרודקשן פתוח. כעת הבדיקה מאפשרת יצירה **רק בעותק בזיכרון של מניפסט סינתטי**, לא במניפסט האמיתי.
+- אימות CI על commit `217c85cfe7b7dedf1db4faf6a1acc35aeaeae6dd`: [בדיקות סצנה](https://github.com/barkinam21-pixel/project-mishna/actions/runs/42437428574), [400 בדיקות ומבחני מקור וקול](https://github.com/barkinam21-pixel/project-mishna/actions/runs/42437428564), [בדיקת הרכבה טכנית](https://github.com/barkinam21-pixel/project-mishna/actions/runs/42437424272) — כולם `success`. רינדור זה משתמש בנתוני ניסיון טכניים, **לא** במדיה המאושרת לסרט ואין טענה שהסרט המלא נוצר.
+- השוואה חזותית של שלוש גרסאות OPN02: [לוח פרטי](https://drive.google.com/file/d/10KmzacXMeTI13Mz5Kv1dEBJky-nbO_qq/view?usp=drivesdk) ו־[דוח הערכה](evidence/opn02-three-candidate-visual-review-2026-11-08.json). 0/3 מאושרות; הדרישה לדמויות בגובה כ־30% ומראה ציורי מופיעה כבר בפרומפט המקורי ולכן לא נטען שחזרה עליה לבדה תפתור את הכשל.
+- **מה עדיין חסר:** שישה שוטים נוספים וסיום תיקון OPN02, תמונות מאושרות בפועל, קריינות סצנה N01/N02, כתוביות ותזמונים, בחינת זכויות/תורה ואישור הסרט הפרטי. אין מיזוג, חיוב, יצירה חדשה או העלאת תמונות ל־GitHub.
