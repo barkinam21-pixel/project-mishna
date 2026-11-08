@@ -44,3 +44,25 @@ Backup requires an idle image engine, includes local private media/state and a c
 - Seven accepted distinct images, matching N01/N02 Hebrew audio, measured caption times and scene/source rights/approval gates are still required for an artistic proof. The earlier Alnilam audition is not a replacement for matching narration.
 - Existing camera motion/FFmpeg checks remain the source of rendering behavior. No new transitions, complete film or artistic quality improvement is claimed in this runtime integration.
 - Tests use CPU subprocesses with blocked networking and a fake local ComfyUI server, including a queued interruption and resume without another POST. A fake image or technical MP4 is never evidence of real model generation or an approved film.
+
+## Cloudflare adapter in the same studio CLI (2026-11-08)
+
+**Implemented, not yet a live unattended production service.** The primary `python -m tools.studio` commands now support explicitly selecting the already existing Cloudflare Workers AI adapter, without a separate system or Codex:
+
+```sh
+MISHNAH_IMAGE_BACKEND=cloudflare python -m tools.studio doctor
+MISHNAH_IMAGE_BACKEND=cloudflare python -m tools.studio plan
+MISHNAH_IMAGE_BACKEND=cloudflare python -m tools.studio run
+```
+
+On Windows CMD, use `set MISHNAH_IMAGE_BACKEND=cloudflare` before the `python -m tools.studio ...` command. These are **operator reference commands**, not steps the owner must perform in this session. The default without the explicit selector stays ComfyUI. The runtime never chooses Cloudflare as a silent paid or privacy fallback.
+
+Cloudflare selection reuses the same `tools.comfy_scene_images` specifications, private state/cache, review board, existing `CloudflareClient`, and candidate-only approval flow. There is no GPU/ComfyUI requirement on that branch. Credentials, if later provisioned safely to a private runner, are `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in **protected environment variables only**; the chat connector does **not** expose reusable unattended secrets. This revision has **not** created keys, obtained reference access in that runner, changed billing, or activated generation.
+
+**Safety:** the real image manifest has `generation_approved=false`, `zero_cost_compute_verified=false`, `component_licenses_verified=false`, and the Cloudflare backend has `free_hard_cap_verified=false`. Those gates remain deliberately closed; model discovery and the owner's Free-plan attestation do not turn them on. Missing credentials, unknown quota, unverified licenses/private reference conditions, stale hard-cap evidence and no new one-shot approval block **before image inference**. Even with all gates deliberately cleared by an authorized operator, the Cloudflare branch is limited to **one selected shot per run**, and a failed synchronous POST cannot be blindly retried by `resume`.
+
+**Important privacy/recovery bug fixed:** Cloudflare's synchronous `submit` returns the *full image as Base64*. Before this change the generic orchestrator wrote that response wholesale into `state.json` and `usage.jsonl` as a fake queue ID. It now keeps the synchronous bytes **only in memory** until saving the native image and hash-verified PNG; logs receive only a short non-replayable identifier, and a crash leaves `SUBMISSION_UNCERTAIN` rather than consuming another request. This fix is guarded by a regression test that checks all persisted JSON/text outputs. A pre-existing legacy queue entry does not authorize replay.
+
+**Existing remote Workers audited read-only:** the connected Cloudflare account already contains `mishnah-image-mcp`, `mishnah-image-view`, `mishnah-style-anchor`. The first has an `AI` binding, proving a Worker-bound deployment route exists without an external API token inside the Worker, but **its currently deployed script selects Klein 9B (not the verified 4B configuration)** and has publicly accessible-looking generation/MCP routes with `Access-Control-Allow-Origin: *` and no verified request-auth gate. Its source also carries inline base64 reference data. These are **security/privacy and quota-exhaustion concerns**, not evidence that a private autonomous studio is ready. **Do not connect the project, publish endpoint URLs, invoke test/generation routes, or silently repurpose this deployed Worker.** Its configuration and auth must be reviewed and hardened with owner authorization before reuse. No Worker was changed/deployed during this audit.
+
+**Remaining operational blockers:** private persistent image/reference storage for an independent runner; safe credentials or a hardened AI-binding Worker endpoint; explicit fresh one-shot approval; model-specific rights/privacy clarity; and source/style human review. The existing R2 listing returned 403 (access/plan not confirmed). Do not infer a free R2 store or any public upload permission. See [read-only account evidence](evidence/cloudflare-readonly-verified-2026-11-08.md). No new image, service payment, deployment, voice or PR merge was made.
