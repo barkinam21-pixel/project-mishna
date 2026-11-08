@@ -56,12 +56,52 @@ def reconcile(root):
                       (reason or "Missing, unapproved, or mismatched private media"),
         })
     assert [r["shot_id"] for r in results] == EXPECTED_IDS
+    # Image approval alone never grants a film render: audio, captions and
+    # explicit timing/review gates remain independent.
+    required = EXPECTED_IDS + ["INTRO-A1-S01-N01", "INTRO-A1-S01-N02", "captions"]
+    missing_media = []
+    for uid in required:
+        item = registry.get("assets", {}).get(uid, {})
+        valid = False
+        if isinstance(item, dict) and item.get("sha256") and item.get("path"):
+            try:
+                asset = under(root, item["path"])
+                valid = asset.is_file() and digest(asset) == item["sha256"]
+            except (OSError, ValueError, TypeError):
+                pass
+        if not (valid and item.get("accepted") is True and
+                item.get("rights_verified") is True and
+                item.get("provenance") and
+                str(item.get("license", "")).lower() not in
+                ("", "unknown", "pending", "unverified")):
+            missing_media.append(uid)
+    timing = registry.get("shots", [])
+    timing_ready = (len(timing) == len(EXPECTED_IDS) and
+                    [x.get("id") for x in timing] == EXPECTED_IDS and
+                    all(type(x.get("duration_frames")) is int and
+                        x["duration_frames"] > 0 for x in timing))
+    voice_timing = registry.get("voice_takes", [])
+    voice_timing_ready = (len(voice_timing) == 2 and
+                          all(type(v.get("start_sample")) is int and
+                              type(v.get("end_sample")) is int and
+                              v["end_sample"] > v["start_sample"] >= 0
+                              for v in voice_timing))
+    approvals_ready = (registry.get("script_approved") is True and
+                       registry.get("visual_approved") is True)
+    film_ready = (all(r["ready_for_render"] for r in results) and
+                  not missing_media and timing_ready and
+                  voice_timing_ready and approvals_ready)
     return {
         "schema_version": 1,
         "mode": "READ_ONLY_NO_APPROVAL_NO_UPLOAD",
-        "ready": all(r["ready_for_render"] for r in results),
+        "ready": film_ready,
+        "scene_images_ready": all(r["ready_for_render"] for r in results),
+        "missing_or_unapproved_media": missing_media,
+        "shot_timing_ready": timing_ready,
+        "voice_timing_ready": voice_timing_ready,
+        "script_and_visual_approvals_ready": approvals_ready,
         "shots": results,
-        "next_action": "Run existing introduction_proof gate" if all(r["ready_for_render"] for r in results)
+        "next_action": "Run existing introduction_proof gate" if film_ready
                        else "Review candidates and reconcile private asset hashes and approvals",
         "provider_calls": 0,
         "workspace_usage": "unknown",
