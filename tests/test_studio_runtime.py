@@ -31,6 +31,27 @@ class RuntimeTests(unittest.TestCase):
             p=subprocess.run([sys.executable,'-c',code,command,'--root',str(self.root)],cwd=REPO,capture_output=True,text=True)
             r=json.loads(p.stdout);self.assertIn('cost',r);self.assertEqual(r['cost']['provider_requests'],0)
         self.assertEqual(self.h.posts,0)
+    def test_cloudflare_is_explicit_offline_and_never_falls_back_to_gpu(self):
+        # The ordinary studio stays on ComfyUI. Selecting Cloudflare is an
+        # explicit opt-in; it must not require a GPU or attempt image inference
+        # when image/rights approval is false.
+        with patch.dict(os.environ,{'MISHNAH_IMAGE_BACKEND':'cloudflare',
+                                    'CLOUDFLARE_ACCOUNT_ID':'',
+                                    'CLOUDFLARE_API_TOKEN':''}):
+            studio=Studio(self.root)
+            self.assertEqual(studio.inputs()[0]['backend']['type'],'cloudflare')
+            with patch('tools.cloudflare_image_backend.CloudflareClient.submit',
+                       side_effect=AssertionError('INFERENCE_FORBIDDEN')):
+                result=studio.run()
+                doctor=studio.doctor()
+        self.assertEqual(result['status'],'BLOCKED')
+        self.assertEqual(result['cost']['provider_requests'],0)
+        self.assertIn('CLOUDFLARE_CREDENTIALS_UNAVAILABLE',doctor['blocked_reason'])
+        self.assertNotIn('BLOCKED_NO_GPU: no ComfyUI endpoint configured',doctor['blocked_reason'])
+        self.assertEqual(doctor['outputs']['image_backend'],'cloudflare')
+        self.assertEqual(doctor['outputs']['network_checked'],False)
+        self.assertEqual(self.h.posts,0)
+
     def test_resume_queued_http_without_duplicate(self):
         self.enable()
         with patch('tools.comfy_runtime.inspect',return_value={'ready':True}),patch('tools.comfy_image_backend.ComfyClient.wait',side_effect=TimeoutError):
