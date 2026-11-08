@@ -58,6 +58,20 @@ def build(root):
             settings.get("reference_audio") is not None or
             settings.get("seed") != "not exposed"):
         raise ValueError("Unexpected approved narrator synthesis settings")
+    legacy_scene_instruction = (
+        'במילים "ואז הגיע החורבן" נשאר בדיוק אותו אדם: רצינות וכאב מאופק '
+        'באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש.')
+    opening_instruction = (
+        "בשאלות על מסירת הלימוד לדור הבא, הדגש בעדינות את האחריות ואת "
+        "הסקרנות, בלי לשנות גוון קול ובלי להוסיף דרמה מלאכותית.")
+    if baseline.get("exact_direction", "").count(legacy_scene_instruction) != 1:
+        raise ValueError("Approved voice direction template changed; review before adapting")
+    # Retain the exact approved source while making an explicitly UNAPPROVED
+    # scene-specific direction that cannot accidentally request past narration.
+    scene_direction_draft = baseline["exact_direction"].replace(
+        legacy_scene_instruction, opening_instruction)
+    if "ואז הגיע החורבן" in scene_direction_draft:
+        raise ValueError("Unrelated previous audition instruction still present")
     original = baseline["approved_wav"]
     if original.get("sha256") != APPROVED_REFERENCE_SHA or not original.get("must_not_overwrite"):
         raise ValueError("Original owner-approved Alnilam recording is not locked")
@@ -103,6 +117,8 @@ def build(root):
         "approved_voice_trial_id": baseline["source_trial_id"],
         "baseline_settings_unchanged": settings,
         "approved_performance_direction_unchanged": baseline["exact_direction"],
+        "scene_specific_direction_draft": scene_direction_draft,
+        "scene_specific_direction_approved": False,
         "performance_context_note": (
             "Original direction refers to an old audition passage about the destruction; "
             "that passage is NOT in this scene. Keep one warm, serious Israeli narrator "
