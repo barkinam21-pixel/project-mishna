@@ -31,3 +31,24 @@ Scope: **read-only verification** for the existing Mishnah image pipeline and `t
 ## Owner-confirmed account plan (subsequent conversation)
 
 The owner explicitly confirmed that they already checked their Cloudflare account and it is **Workers Free**. Do not ask the owner to repeat this check. This is an owner attestation, not a successful Billing API read; the connector still lacks Billing Read. Cloudflare's official pricing states that Workers Free provides 10,000 Neurons/day and fails requests after its free allowance rather than charging overages. **This resolves the plan-type uncertainty at the owner-attestation level, but does not prove model-specific eligibility, current remaining allowance, or inference success.** No generation is authorized yet; require a separate explicit owner approval for the single OPN02 trial. No billing change or model inference performed.
+## Read-only model eligibility follow-up — 2026-11-08
+
+This section **adds to**, not supersedes, the historical account/catalog/schema checks above. It records new evidence without creating another status document, promoting rights/creative gates, or reproducing private media.
+
+### Historical cross-check that avoids unnecessary re-generation
+
+- The repository already records a successful **real** authenticated Cloudflare \`@cf/black-forest-labs/flux-2-klein-4b\` inference on 2026-11-07 in [opn02-cloudflare-real-candidate-2026-11-07.json](opn02-cloudflare-real-candidate-2026-11-07.json). A second prior successful trial on 2026-11-08 is in [opn02-private-2026-11-08.json](opn02-private-2026-11-08.json). These are historical operations, **not** requests made in this follow-up; both returned 1024×576 images, but neither is an accepted production image. [Three-candidate visual review](opn02-three-candidate-visual-review-2026-11-08.json) documents the remaining composition and style faults. The one-shot authorization was consumed, and \`generation_approved=false\` remains mandatory.
+- The owner confirmed the connected account is **Workers Free**. Historical successful inference and that owner attestation are **strong evidence of practical usability**; they are not a Billing API proof of the subscription state at the exact prior request timestamp, and they do not guarantee today's request success.
+
+### Newly checked read-only information
+
+- An authenticated **GET** to \`/accounts/{account_id}/ai/models/search?search=flux-2-klein-4b\` succeeded with the exact model name. The returned model has task \`Text-to-Image\`, an empty \`tags\` array, and \`properties\` limited to \`partner=true\` and a link to the BFL terms. **No Free/Paid entitlement, remaining Neurons or spending-cap field is exposed in this response.** No account ID, token or private reference is recorded here.
+- [Official Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/) (last updated 2026-10-20) explicitly lists **Workers Free: 10,000 Neurons/day**, with no excess-charge tier (\`N/A — Upgrade to Workers Paid\`), failing further requests on limit. Reset is 00:00 UTC. This verifies the **published plan policy**, not the account's actual live remaining balance.
+- [Cloudflare's 2026-07-28 Paid-only model announcement](https://developers.cloudflare.com/changelog/post/2026-07-28-models-require-workers-paid/) lists \`kimi-k2.6\`, \`kimi-k2.7-code\` and \`glm-5.2\` as restricted on Free; \`flux-2-klein-4b\` is **not** among the named restricted models. Absence from this announcement is supportive, **not** a per-account entitlement certificate or guarantee no newer restriction exists.
+- No supported read-only **Workers AI account-specific Neurons balance / model-entitlement** endpoint was found in the exposed Cloudflare OpenAPI \`GET /accounts/{account_id}/ai/*\` surface. The previous subscriptions \`403\` is preserved as an existing known permission limit rather than repeated. AI Gateway billing counters are not a reliable substitute for direct Workers AI inference usage.
+
+### Safe operational conclusion
+
+\`HISTORICAL_INFERENCE_SUCCESS_VERIFIED_FROM_REPO\` / \`OWNER_ATTESTED_WORKERS_FREE\` / \`CURRENT_CATALOG_DISCOVERABLE\` / \`PUBLISHED_FREE_HARD_LIMIT_CONFIRMED\` / \`CURRENT_ACCOUNT_SPECIFIC_ENTITLEMENT_AND_USAGE_UNKNOWN\`.
+
+This follow-up used **read-only** model discovery/documentation only; **0 new inference requests; 0 new private-reference uploads; 0 image outputs; no paid activation, payment change, PR merge, or approval-flag change**. It neither proves an invoice amount for prior trials nor clears source/privacy/licensing terms. Preserve the existing Cloudflare adapter and independent \`tools.studio\` runtime. For any future **new** OPN02 attempt, obtain fresh explicit owner authorization, verify private reference rights/provider terms and model-specific usage safety, and keep \`accepted=false\` pending visual review. Do not submit a probe image merely to test access without authorization.
