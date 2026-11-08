@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'tools/scene_pack_preflight.py'
+      - 'tools/scene_asset_bridge.py'
+      - 'tests/test_scene_asset_bridge.py'
       - 'tests/test_scene_pack_preflight.py'
       - 'tools/scene_review_board.py'
       - 'tests/test_scene_review_board.py'
@@ -14,6 +16,8 @@ on:
   push:
     paths:
       - 'tools/scene_pack_preflight.py'
+      - 'tools/scene_asset_bridge.py'
+      - 'tests/test_scene_asset_bridge.py'
       - 'tests/test_scene_pack_preflight.py'
       - 'episodes/berakhot-01-01/comfy-opening-images.json'
       - 'episodes/berakhot-01-01/introduction-proof.json'
@@ -35,11 +39,16 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
           python -m unittest discover -s tests -p 'test_scene_review_board.py' -v
+          python -m unittest discover -s tests -p 'test_scene_asset_bridge.py' -v
       - name: Summarize all seven opening shots without model calls
         run: python -m tools.scene_pack_preflight
+      - name: Reconcile scene registry with film manifest (fail closed without private media)
+        run: python -m tools.scene_asset_bridge
       - name: Build private-path-only placeholder review board (no image assets in CI)
         run: python -m tools.scene_review_board
       - uses: actions/upload-artifact@v4
         with:
           name: OFFLINE-ONLY-scene-pack-preflight
-          path: build/scene-pack-preflight.json
+          path: |
+            build/scene-pack-preflight.json
+            build/scene-asset-bridge.json
