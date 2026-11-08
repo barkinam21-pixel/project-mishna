@@ -78,14 +78,18 @@
     }
   },
   "authorization": {
-    "generation_approved": true,
+    "generation_approved": false,
     "zero_cost_compute_verified": false,
     "component_licenses_verified": false,
     "max_submissions": 1,
     "approved_shot_ids": [
       "OPN02"
     ],
-    "total_submissions_limit": 1
+    "total_submissions_limit": 1,
+    "previous_one_shot_authorization_consumed": true,
+    "consumed_shot_id": "OPN02",
+    "consumed_evidence": "docs/evidence/opn02-rear-wide-2026-11-08.json",
+    "new_generation_requires_new_explicit_owner_authorization": true
   },
   "shots": [
     {
@@ -161,7 +165,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -269,7 +273,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -421,7 +425,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -527,7 +531,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -633,7 +637,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -740,7 +744,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
@@ -846,7 +850,7 @@
         ],
         "output_aspect_ratio": "16:9",
         "generation_parameters": {
-          "guidance": 1.0,
+          "guidance": 1,
           "steps": 4
         },
         "review_status": "PENDING_HUMAN",
