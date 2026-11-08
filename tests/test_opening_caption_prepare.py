@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
-from tools.opening_caption_prepare import build, cue_cards, extract, MAX_LINE, VOICE
+from tools.opening_caption_prepare import build, cue_cards, extract, MAX_LINE, MAX_CARD_VISIBLE, VOICE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -63,6 +63,28 @@ class OpeningCaptionPreparationTests(unittest.TestCase):
         cards = cue_cards(text, VOICE[0])
         self.assertEqual(" ".join(c["spoken_text"] for c in cards), text)
         self.assertTrue(all(len(c["display_text"].splitlines()) <= 2 for c in cards))
+
+    def test_caption_cards_fit_short_reading_windows_without_fabricating_times(self):
+        result = build(ROOT)
+        self.assertEqual(result["card_count"], 16)
+        self.assertEqual([len(s["cards"]) for s in result["segments"]], [12, 4])
+        for segment in result["segments"]:
+            self.assertEqual(" ".join(c["spoken_text"] for c in segment["cards"]),
+                             " ".join(segment["source_text"].split()))
+            for card in segment["cards"]:
+                self.assertLessEqual(len(card["spoken_text"]), MAX_CARD_VISIBLE)
+                self.assertFalse(card["approved"])
+                self.assertIsNone(card["start_frame"])
+                self.assertIsNone(card["end_frame"])
+
+    def test_long_sentence_prefers_real_punctuation_without_word_loss(self):
+        first = "הוא יודע מה לקח בידיו: מעט מזון, כלי מים, דבר שיעזור לו להגיע אל המקום הבא."
+        second = "זה המסע שנצא אליו: אל המילים, אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה."
+        for source in (first, second):
+            cards = cue_cards(source, VOICE[0])
+            self.assertEqual(len(cards), 2)
+            self.assertEqual(" ".join(c["spoken_text"] for c in cards), source)
+            self.assertTrue(all(len(c["spoken_text"]) <= MAX_CARD_VISIBLE for c in cards))
 
     def test_persisted_caption_draft_is_exactly_generated_and_still_untimed(self):
         saved = json.loads((ROOT / "episodes/berakhot-01-01/opening-caption-draft.json")
