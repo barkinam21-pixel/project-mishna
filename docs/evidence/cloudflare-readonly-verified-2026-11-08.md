@@ -27,3 +27,7 @@ Scope: **read-only verification** for the existing Mishnah image pipeline and `t
 ## Status
 
 `ACCOUNT_AUTHENTICATED` / `MODEL_DISCOVERABLE` / `SCHEMA_READABLE`; **`GENERATION_BLOCKED_UNVERIFIED_ACCOUNT_BILLING_AND_FREE_HARD_CAP`**. External inference calls: **0**. Private reference uploads: **0**. New approved images: **0**. No subscription or billing changes.
+
+## Owner-confirmed account plan (subsequent conversation)
+
+The owner explicitly confirmed that they already checked their Cloudflare account and it is **Workers Free**. Do not ask the owner to repeat this check. This is an owner attestation, not a successful Billing API read; the connector still lacks Billing Read. Cloudflare's official pricing states that Workers Free provides 10,000 Neurons/day and fails requests after its free allowance rather than charging overages. **This resolves the plan-type uncertainty at the owner-attestation level, but does not prove model-specific eligibility, current remaining allowance, or inference success.** No generation is authorized yet; require a separate explicit owner approval for the single OPN02 trial. No billing change or model inference performed.
