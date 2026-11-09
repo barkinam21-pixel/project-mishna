@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "scene_id": "INTRO-A1-S01",
+  "shot_id": "OPN02",
+  "model": "black-forest-labs/flux-3-image-klein",
+  "source_layer": "symbolic_dramatization",
+  "canvas": {
+    "width": 1024,
+    "height": 576
+  },
+  "generation_authorized": false,
+  "reference_images_uploaded": false,
+  "caption": "A mature hand-painted cinematic wide establishing image at a gold-violet sunset, showing two anonymous adult male travelers walking away from the camera on a winding footpath: an older traveler in indigo <elder_1> stands on the left and a younger adult in brown <younger_1> on the right, both seen entirely including their feet, each about thirty percent of image height. Open rolling hills and a winding path <landscape_1> dominate the frame and lead toward a tiny distant stone village <village_1>. Rear-view full-body figures are small within the grand landscape. The lighting is warm amber from rear left with cool indigo shadows, visible painterly brush textures, restrained historic illustration rather than photorealism or glossy CGI. No foreground framing tree, no nearby building, no front-facing people, no added people, no lettering. Symbolic dramatization; no identifiable historical people or documented meeting.",
+  "boxes_1000": [
+    {
+      "id": "landscape_1",
+      "bbox": [
+        0,
+        0,
+        1000,
+        1000
+      ],
+      "desc": "Sweeping golden-violet sky and distant hills, winding dusty stone path with olive tones, strong pictorial depth and visibly painted textures."
+    },
+    {
+      "id": "elder_1",
+      "bbox": [
+        635,
+        390,
+        945,
+        485
+      ],
+      "desc": "Anonymous mature adult male traveler seen entirely from behind including feet, indigo woven outer garment, pale tunic, brown sandals, small practical satchel, walking away, no visible face."
+    },
+    {
+      "id": "younger_1",
+      "bbox": [
+        638,
+        515,
+        948,
+        610
+      ],
+      "desc": "Anonymous younger adult male traveler seen entirely from behind including feet, understated earth-brown garment, light woven tunic, sandals and modest satchel, walking away, no visible face."
+    },
+    {
+      "id": "village_1",
+      "bbox": [
+        335,
+        705,
+        430,
+        800
+      ],
+      "desc": "Tiny distant cluster of low stone dwellings on a hillside with no near-facing giant building, softly painted warm light and natural masonry."
+    }
+  ]
+}
