@@ -89,7 +89,8 @@
     "previous_one_shot_authorization_consumed": true,
     "consumed_shot_id": "OPN02",
     "consumed_evidence": "docs/evidence/opn02-rear-wide-2026-11-08.json",
-    "new_generation_requires_new_explicit_owner_authorization": true
+    "new_generation_requires_new_explicit_owner_authorization": true,
+    "bounded_modal_trial_approved": false
   },
   "shots": [
     {
