@@ -22,10 +22,10 @@ def digest(data):
 def fixture_records(*, permissions=False):
     files = {}
     records = []
-    for name in restore.FILE_SHA256:
+    for index, name in enumerate(restore.FILE_SHA256):
         out = io.BytesIO()
         is_png = name.endswith(".png")
-        Image.new("RGB", (16, 16), (30, 70, 100)).save(
+        Image.new("RGB", (16, 16), (30 + index * 10, 70, 100)).save(
             out, format="PNG" if is_png else "JPEG"
         )
         raw = out.getvalue()
