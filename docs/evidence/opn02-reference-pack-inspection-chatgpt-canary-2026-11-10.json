@@ -1,0 +1,58 @@
+{
+  "date_utc": "2026-11-10",
+  "shot": "OPN02",
+  "scene": "INTRO-A1-S01",
+  "source_layer": "symbolic_dramatization",
+  "source_reference_pack": {
+    "drive_url": "https://drive.google.com/file/d/1HDRDMWD3539nSNa2UnvrA8aGBozlopgn/view",
+    "sha256": "1394a144f2731d229d0a38179aa351a1f6ff37b53c629bf18ba108481c75d3ef",
+    "hash_checked_live": true,
+    "image_count": 8,
+    "primary_image_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+    "storyboard_sha256": "1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5",
+    "reference_pixels_inspected_before_new_candidate": true,
+    "storyboard_crop_role": "composition guide only, never identity master"
+  },
+  "candidate": {
+    "drive_url": "https://drive.google.com/file/d/13_XnnUJ_jC2mji58Bd95wGP9Xa7K4B09/view",
+    "sha256": "4d3a30973bff3f5df55d63a68a6da27fef1dd8495e47e659785f42605c5edee4",
+    "bytes": 2611176,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "provider": "ChatGPT built-in image generator",
+    "generation_requests_in_this_step": 1,
+    "modal_gpu_requests": 0,
+    "accepted": false,
+    "drive_owner_only_verified": true,
+    "drive_shared": false,
+    "drive_readback_sha256_verified": true,
+    "provider_reference_image_conditioning": "not independently verifiable; source images were inspected and consulted for art direction before generation"
+  },
+  "review": {
+    "benefits": [
+      "New candidate generated after inspection of originals",
+      "Wide landscape framing improved over prior oversized traveler candidate",
+      "No dominating foreground tree trunk"
+    ],
+    "blocking_differences": [
+      "Travelers appear substantially smaller than the OPN02 specification target of 25%-35% of image height",
+      "Older left traveler's pale wardrobe differs from indigo identity lock",
+      "Distant city visually extensive rather than a tiny isolated village",
+      "Painterly-versus-photo-real style parity needs human review"
+    ],
+    "decision": "NEEDS_REPAIR_NOT_APPROVED"
+  },
+  "financial": {
+    "external_modal_charge_usd": 0,
+    "chatgpt_plan_usage": "unknown",
+    "cloudflare_requests_in_this_step": 0
+  },
+  "caveats": [
+    "No private reference media uploaded to GitHub",
+    "New Drive upload verified owner-only",
+    "No Torah or publication approval"
+  ],
+  "next_action": "Human decision on visual direction, then targeted repair via approved image-conditioned path; do not scale image requests without reference conditioning verification."
+}
