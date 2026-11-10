@@ -21,9 +21,16 @@ jobs:
           python-version: '3.11'
       - name: Run offline preflight tests (no Modal API or GPU)
         run: python -m unittest discover -s tests -p 'test_modal_gpu_budget_gate.py' -v && python -m unittest discover -s tests -p 'test_flux3_layout_preflight.py' -v
-      - name: Confirm budget gate refuses generation without authorization
+      - name: Confirm budget gate explicitly blocks unauthorized generation
         run: |
-          if python -m tools.modal_gpu_budget_gate --hourly-usd 1 --max-seconds 60 --available-credit-usd 1 --hard-cap-usd 1; then
-            echo 'ERROR: authorization gate unexpectedly allowed execution'
-            exit 1
-          fi
+          set +e
+          result=$(python -m tools.modal_gpu_budget_gate --hourly-usd 1 --max-seconds 60 --available-credit-usd 1 --hard-cap-usd 1)
+          exit_code=$?
+          set -e
+          GATE_RESULT="$result" GATE_EXIT_CODE="$exit_code" python - <<'PY'
+          import json, os
+          result = json.loads(os.environ["GATE_RESULT"])
+          assert os.environ["GATE_EXIT_CODE"] == "2", "Expected a blocked exit code"
+          assert result == {"status": "BLOCKED_APPROVAL_OR_RIGHTS", "gpu_requests": 0}, result
+          print("Verified: authorization gate blocked with expected reason and zero GPU requests.")
+          PY
