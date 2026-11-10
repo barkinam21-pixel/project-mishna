@@ -16,6 +16,12 @@ class ModalBudgetGateTests(unittest.TestCase):
         self.assertEqual(check_trial(**self.args(owner_approved=False))["status"],
                          "BLOCKED_APPROVAL_OR_RIGHTS")
 
+    def test_truthy_nonboolean_approval_is_rejected(self):
+        for value in ("false", "true", 1, [], {"approved": True}):
+            with self.subTest(value=value):
+                self.assertEqual(check_trial(**self.args(owner_approved=value))["status"],
+                                 "BLOCKED_APPROVAL_OR_RIGHTS")
+
     def test_no_private_runtime(self):
         self.assertEqual(check_trial(**self.args(private_runtime_verified=False))["status"],
                          "BLOCKED_APPROVAL_OR_RIGHTS")
