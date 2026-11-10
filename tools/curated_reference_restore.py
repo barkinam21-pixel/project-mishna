@@ -35,7 +35,7 @@ def private_target(root, rel):
     if not isinstance(rel, str) or not rel.startswith("private-media/introduction/"):
         raise ValueError("PRIVATE_REFERENCE_PATH_REQUIRED")
     result = (root / rel).resolve()
-    if not result.is_relative_to(root / "private-media"):
+    if not result.is_relative_to(root / "private-media" / "introduction"):
         raise ValueError("REFERENCE_PATH_OUTSIDE_PRIVATE_ROOT")
     return result
 
