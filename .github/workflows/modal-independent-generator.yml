@@ -64,5 +64,8 @@ jobs:
           r=json.load(open('modal-doctor.json',encoding='utf-8'))
           assert r['status']=='BLOCKED',r
           assert r['cost']['provider_requests']==0,r
-          print('Modal doctor correctly blocked; zero provider calls')
+          assert 'MODAL_SAFETY_GATE_PRIVATE_RUNTIME_VERIFIED' in r['blocked_reason'], r
+          assert not any('RUNTIME_ERROR' in reason for reason in r['blocked_reason']),r
+          assert r['outputs']['image_backend']=='modal',r
+          print('Modal doctor correctly blocked for expected safety gate; zero provider calls')
           PY
