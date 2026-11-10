@@ -39,7 +39,7 @@ class Studio:
         # Explicit opt-in only. Never silently switch from unavailable ComfyUI
         # to another model provider or infer permissions from the Free plan.
         self.image_backend=os.environ.get('MISHNAH_IMAGE_BACKEND','comfyui')
-        if self.image_backend not in ('comfyui','cloudflare'):
+        if self.image_backend not in ('comfyui','cloudflare','modal'):
             raise ValueError('UNSUPPORTED_IMAGE_BACKEND')
         for field,env in [('private_endpoint_verified','COMFY_PRIVATE_ENDPOINT_VERIFIED'),('zero_cost_verified','COMFY_ZERO_COST_VERIFIED')]:
             if env in os.environ:self.runtime[field]=os.environ[env]=='true'
@@ -47,6 +47,7 @@ class Studio:
     def inputs(self):
         m=load(self.manifest)
         m['backend']=(m['available_backends']['cloudflare'] if self.image_backend=='cloudflare'
+                      else m['available_backends']['modal'] if self.image_backend=='modal'
                       else {'type':'comfyui'})
         return m, specifications(m,self.root), load(self.proof)
 
@@ -89,6 +90,14 @@ class Studio:
             if not all(m['authorization'].get(k) is True for k in
                        ('generation_approved','component_licenses_verified','zero_cost_compute_verified')):
                 blocks.append('GENERATION_OR_RIGHTS_NOT_AUTHORIZED')
+        elif self.image_backend=='modal':
+            from tools.modal_image_backend import ModalKleinClient, ModalBlocked
+            try:
+                ModalKleinClient(m['backend']).readiness(rows[0]['spec'] if rows else {})
+            except ModalBlocked as error:
+                blocks.append(str(error))
+            # No online GPU invocation in doctor; a successful doctor is not GPU proof.
+            blocks.append('MODAL_GPU_INFERENCE_NOT_YET_TESTED')
         elif not self.endpoint: blocks.append('BLOCKED_NO_GPU: no ComfyUI endpoint configured')
         elif online:
             if not self.runtime.get('private_endpoint_verified'):
@@ -158,6 +167,29 @@ class Studio:
         if not targets:
             result=self.review();result['blocked_reason']=blocks
             result['status']='BLOCKED' if blocks else ('NO_QUEUED_TASKS' if resume else 'NO_GENERATION_NEEDED');return result
+        if self.image_backend=='modal':
+            # Modal is a synchronous image provider, not a ComfyUI HTTP endpoint.
+            # Do not infer spending permission from successful token authentication.
+            if resume:
+                return reply('BLOCKED',blocked=blocks+['SYNCHRONOUS_MODAL_NEVER_AUTO_RETRIED'])
+            if len(targets)!=1 or m['authorization'].get('max_submissions')!=1:
+                return reply('BLOCKED',blocked=blocks+['MODAL_SINGLE_SHOT_ONLY'])
+            if not all(m['authorization'].get(k) is True for k in
+                       ('generation_approved','zero_cost_compute_verified','component_licenses_verified')):
+                return reply('BLOCKED',blocked=blocks+['GENERATION_OR_RIGHTS_NOT_AUTHORIZED'])
+            from tools.modal_image_backend import ModalKleinClient, ModalBlocked
+            client=ModalKleinClient(m['backend'])
+            m['shots']=[s for s in m['shots'] if s['id'] in targets]
+            try:
+                client.readiness(next(r['spec'] for r in rows if r['id']==targets[0]))
+            except ModalBlocked as error:
+                return reply('BLOCKED',blocked=blocks+[str(error)])
+            report=images(m,self.root,self.work/'images',client,True)
+            result=self.review()
+            result['what_completed'].append('Ran Modal FLUX.2 provider through existing private queue')
+            result['cost']['provider_requests']=report['submissions']
+            result['cost']['external_usd']='unknown'
+            return result
         if self.image_backend=='cloudflare':
             # The existing Cloudflare adapter already performs its model, quota
             # and privacy checks; share the same private cache/queue/review path.
