@@ -49,6 +49,19 @@ class ModalKleinClient:
                 raise ModalBlocked("MODAL_ENV_GATE_" + key)
         if not os.environ.get("MODAL_TOKEN_ID") or not os.environ.get("MODAL_TOKEN_SECRET"):
             raise ModalBlocked("MODAL_CREDENTIALS_UNAVAILABLE")
+        # Enforce the checked-in worker contract on EVERY actual request path,
+        # not only when the optional offline planning CLI is run.  The worker
+        # may have changed after a successful dry run.  A missing local worker
+        # source is NOT evidence that a prior deployment is safe.
+        try:
+            from tools.modal_one_dollar_policy import OWNER_LIMIT, worker_limits
+            if str(OWNER_LIMIT) != "1.00":
+                raise ValueError("OWNER_LIMIT_CHANGED")
+            worker_limits(Path(__file__).resolve().with_name("modal_flux2_worker.py"))
+        except (OSError, UnicodeError, SyntaxError, ValueError, ImportError) as exc:
+            # Never interpolate provider details, filesystem contents, or
+            # potentially sensitive exception strings into logs.
+            raise ModalBlocked("MODAL_WORKER_ONE_DOLLAR_POLICY_UNVERIFIED") from exc
         return {"status": "READY_TO_REQUEST_NOT_A_BILLING_GUARANTEE", "provider_requests": 0}
 
     def prepare(self, spec, reference_paths):
