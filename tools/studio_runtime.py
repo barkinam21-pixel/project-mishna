@@ -91,6 +91,9 @@ class Studio:
                        ('generation_approved','component_licenses_verified','zero_cost_compute_verified')):
                 blocks.append('GENERATION_OR_RIGHTS_NOT_AUTHORIZED')
         elif self.image_backend=='modal':
+            # Derive the actual manifest and shot specs in this branch too.
+            # Previously m/rows were only initialized in the Cloudflare branch.
+            m, rows, _ = self.inputs()
             from tools.modal_image_backend import ModalKleinClient, ModalBlocked
             try:
                 ModalKleinClient(m['backend']).readiness(rows[0]['spec'] if rows else {})
