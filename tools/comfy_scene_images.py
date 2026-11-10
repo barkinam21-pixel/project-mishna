@@ -211,7 +211,12 @@ def _run(manifest, root, out, client, generate):
             policy = manifest['authorization']
             if row['id'] not in policy.get('approved_shot_ids', []):
                 raise ValueError('Shot not authorized for generation: '+row['id'])
-            if row['missing'] or policy.get('zero_cost_compute_verified') is not True or policy.get('generation_approved') is not True or policy.get('component_licenses_verified') is not True:
+            # Modal uses a separately owner-approved bounded trial: never
+            # misrepresent paid/credit-backed GPU time as verified zero-cost compute.
+            compute_approved = (policy.get('bounded_modal_trial_approved') is True
+                                if manifest.get('backend',{}).get('type')=='modal'
+                                else policy.get('zero_cost_compute_verified') is True)
+            if row['missing'] or not compute_approved or policy.get('generation_approved') is not True or policy.get('component_licenses_verified') is not True:
                 raise ValueError('Missing references, rights, compute verification or authorization')
             if client is None: raise ValueError('No ComfyUI endpoint configured')
             if entry and entry['status']=='SUBMISSION_UNCERTAIN':
@@ -240,7 +245,7 @@ def _run(manifest, root, out, client, generate):
                 state['entries'][row['key']] = entry
                 state.setdefault('attempts',[]).append({'key':row['key'],'shot':row['id'],'backend':entry['backend']})
                 atomic(state_path,state)
-                pid = client.submit(graph,zero_cost_verified=True,authorized=True)
+                pid = client.submit(graph,zero_cost_verified=compute_approved,authorized=True)
                 # Cloudflare returns the entire image synchronously. Never journal the
                 # base64 image (or receipt with private prompts) as a queue identifier.
                 # A crash before saving the final candidate is non-replayable and
