@@ -12,7 +12,7 @@ from pathlib import Path
 MODEL = "black-forest-labs/FLUX.2-klein-4B"
 APP_NAME = "mishnah-flux2-klein4b"
 FUNCTION_NAME = "generate"
-HEX40 = re.compile(r"[0-9a-f]{40}\\Z")
+HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 
 
 class ModalBlocked(ValueError):
@@ -115,6 +115,10 @@ class ModalKleinClient:
         return response
 
     def result(self, history):
+        if (history.get("model") != MODEL or
+                history.get("model_revision") != self.backend.get("revision") or
+                history.get("reference_sha256") != self._reference_hashes):
+            raise ModalBlocked("MODAL_PROVENANCE_MISMATCH")
         image = history.get("image_base64")
         if not isinstance(image, str) or len(image) > 24 * 1024 * 1024:
             raise ModalBlocked("MODAL_IMAGE_RESPONSE_INVALID")
@@ -129,4 +133,7 @@ class ModalKleinClient:
             raise ModalBlocked("MODAL_IMAGE_BASE64_INVALID") from exc
         if len(raw) > 24 * 1024 * 1024:
             raise ModalBlocked("MODAL_IMAGE_TOO_LARGE")
+        expected = result.get("receipt", {}).get("native_sha256")
+        if expected and hashlib.sha256(raw).hexdigest() != expected:
+            raise ModalBlocked("MODAL_IMAGE_CHECKSUM_MISMATCH")
         return raw
