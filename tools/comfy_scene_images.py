@@ -64,7 +64,7 @@ def specifications(manifest, root):
     if model['id'] != 'black-forest-labs/FLUX.2-klein-4B':
         raise ValueError('Only verified Klein 4B family supported')
     backend = manifest.get('backend', {'type':'comfyui'})
-    if backend.get('type') not in ('comfyui', 'hf-zero', 'cloudflare'):
+    if backend.get('type') not in ('comfyui', 'hf-zero', 'cloudflare', 'modal'):
         raise ValueError('Unsupported image backend')
     seen = set()
     results = []
@@ -88,6 +88,8 @@ def specifications(manifest, root):
             missing.append('Model revision unverified')
         if backend['type'] == 'comfyui' and (not isinstance(model.get('component_sha256'),dict) or any(not re.fullmatch(r'[0-9a-f]{64}', str(model['component_sha256'].get(k,''))) for k in ('unet','text_encoder','vae'))):
             missing.append('Model component hashes unverified')
+        if backend['type'] == 'modal' and not re.fullmatch(r'[0-9a-f]{40}', str(backend.get('revision', ''))):
+            missing.append('Modal model revision not pinned')
         if backend['type'] == 'hf-zero' and (not re.fullmatch(r'[0-9a-f]{40}', str(backend.get('revision',''))) or not re.fullmatch(r'[0-9a-f]{64}', str(backend.get('app_sha256','')))):
             missing.append('Hosted deployment provenance unverified')
         for ref in unique.values():
@@ -191,7 +193,7 @@ def _run(manifest, root, out, client, generate):
     state_path = out/'state.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'entries':{}}
     report = {'shots': [], 'submissions':0, 'accepted_cache_hits':0,
-              'candidate_reuses':0, 'external_charge_usd':None if manifest.get('backend',{}).get('type')=='cloudflare' else 0, 'workspace_usage':'unknown'}
+              'candidate_reuses':0, 'external_charge_usd':None if manifest.get('backend',{}).get('type') in ('cloudflare','modal') else 0, 'workspace_usage':'unknown'}
     for row in rows:
         entry = state['entries'].get(row['key'])
         if entry and entry.get('status') in ('CANDIDATE','ACCEPTED'):
@@ -214,7 +216,7 @@ def _run(manifest, root, out, client, generate):
             if client is None: raise ValueError('No ComfyUI endpoint configured')
             if entry and entry['status']=='SUBMISSION_UNCERTAIN':
                 raise ValueError('Uncertain submission; inspect server queue, never blindly retry')
-            if entry and getattr(client,'engine_name','')=='Cloudflare Workers AI':
+            if entry and (getattr(client,'synchronous_response',False) or getattr(client,'engine_name','')=='Cloudflare Workers AI'):
                 # A Cloudflare response has no provider queue ID to resume.
                 # Legacy QUEUED entries may hold private base64: never replay
                 # or serialise them into new reports.
@@ -243,7 +245,7 @@ def _run(manifest, root, out, client, generate):
                 # base64 image (or receipt with private prompts) as a queue identifier.
                 # A crash before saving the final candidate is non-replayable and
                 # must remain uncertain; automatic resubmission could burn quota.
-                synchronous = getattr(client,'engine_name','') == 'Cloudflare Workers AI'
+                synchronous = getattr(client,'synchronous_response',False) or getattr(client,'engine_name','') == 'Cloudflare Workers AI'
                 if synchronous:
                     entry.update(status='SUBMISSION_UNCERTAIN',prompt_id='SYNCHRONOUS_RESPONSE_NOT_REPLAYABLE')
                 else:
@@ -263,6 +265,8 @@ def _run(manifest, root, out, client, generate):
                 raise ValueError('Provider changed requested seed')
             raw = client.download(result)
             native_sha = hashlib.sha256(raw).hexdigest()
+            if result.get('receipt',{}).get('native_sha256') and result['receipt']['native_sha256']!=native_sha:
+                raise ValueError('Native provider image hash mismatch')
             with Image.open(io.BytesIO(raw)) as im:
                 im.load()
                 native_format = im.format
@@ -284,7 +288,7 @@ def _run(manifest, root, out, client, generate):
             path = out/(row['key']+'.png')
             tmp = path.with_suffix('.tmp');tmp.write_bytes(raw);tmp.replace(path)
             entry.update(status='CANDIDATE',path=str(path.relative_to(root)),sha256=sha(path),
-                         prompt_id=('synchronous-response:'+native_sha if getattr(client,'engine_name','')=='Cloudflare Workers AI' else entry['prompt_id']),
+                         prompt_id=('synchronous-response:'+native_sha if synchronous else entry['prompt_id']),
                          accepted=False,rights_verified=False,continuity_review='PENDING_HUMAN',
                          model=manifest['model'],seed=row['spec']['seed'],
                          native_format=native_format,native_sha256=native_sha,
@@ -333,13 +337,13 @@ def main():
     p.add_argument('manifest');p.add_argument('--root',default='.')
     p.add_argument('--out',default='private-media/comfy-images')
     p.add_argument('--endpoint');p.add_argument('--generate',action='store_true')
-    p.add_argument('--backend',choices=['comfyui','hf-zero'])
+    p.add_argument('--backend',choices=['comfyui','hf-zero','modal'])
     p.add_argument('--shot', help='Restrict this invocation to one manifest shot')
     p.add_argument('--renderer-config');p.add_argument('--renderer-out')
     a=p.parse_args();root=Path(a.root).resolve()
     manifest=json.loads(Path(a.manifest).read_text())
     if a.backend:
-        manifest['backend']=({'type':'comfyui'} if a.backend=='comfyui' else manifest['available_backends']['hf-zero'])
+        manifest['backend']=({'type':'comfyui'} if a.backend=='comfyui' else manifest['available_backends'][a.backend])
     if a.shot:
         manifest['shots']=[s for s in manifest['shots'] if s['id']==a.shot]
         if not manifest['shots']: p.error('Shot not found')
@@ -348,6 +352,10 @@ def main():
         if a.endpoint: p.error('Hosted endpoint is pinned by manifest; --endpoint not allowed')
         from tools.klein_space_backend import KleinSpaceClient
         client=KleinSpaceClient(manifest['backend'])
+    elif manifest.get('backend',{}).get('type')=='modal':
+        if a.endpoint: p.error('Modal worker is selected by app name, not --endpoint')
+        from tools.modal_image_backend import ModalKleinClient
+        client=ModalKleinClient(manifest['backend'])
     elif a.endpoint: client=ComfyClient(a.endpoint)
     report=run(manifest,root,under(root,a.out),client,a.generate)
     if a.renderer_config:
