@@ -1,0 +1,39 @@
+name: Modal one-dollar policy contract (offline)
+
+on:
+  push:
+    branches: [feat/modal-one-dollar-budget-guard-20261110]
+  pull_request:
+    branches: [feat/non-avri-narrator-auditions]
+
+permissions:
+  contents: read
+
+jobs:
+  budget-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test dollar cap and worker safety contract (CPU-only)
+        run: python -m unittest discover -s tests -p 'test_modal_one_dollar_policy.py' -v
+      - name: Verify real Modal worker without deploying or installing Modal
+        shell: bash
+        run: |
+          mkdir -p build
+          set +e
+          python -m tools.modal_one_dollar_policy --worker tools/modal_flux2_worker.py > build/modal-one-dollar-preflight.json
+          status=$?
+          set -e
+          test "$status" -eq 2
+          python -c 'import json; r=json.load(open("build/modal-one-dollar-preflight.json")); assert r["owner_limit_usd"]=="1.00" and r["gpu_execution_authorized"] is False and r["provider_requests"]==0 and r["reason"]=="PROVIDER_WORKSPACE_BUDGET_NOT_INDEPENDENTLY_VERIFIED"; print("Offline policy correctly refuses GPU without provider budget evidence")'
+      - name: Preserve sanitized non-GPU readiness report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: modal-one-dollar-offline-preflight-not-a-generation
+          path: build/modal-one-dollar-preflight.json
+          if-no-files-found: warn
