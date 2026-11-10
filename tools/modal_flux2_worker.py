@@ -14,6 +14,7 @@ import modal
 
 app = modal.App("mishnah-flux2-klein4b")
 MODEL = "black-forest-labs/FLUX.2-klein-4B"
+PINNED_REVISION = "e7b7dc27f91deacad38e78976d1f2b499d76a294"
 
 image = (
     modal.Image.debian_slim(python_version="3.11")
@@ -29,8 +30,7 @@ def validate(payload):
     """Pure gate, runs before any model download or inference."""
     if not isinstance(payload, dict):
         raise ValueError("INVALID_PAYLOAD")
-    if payload.get("model") != MODEL or not re.fullmatch(
-            r"[0-9a-f]{40}", str(payload.get("model_revision", ""))):
+    if payload.get("model") != MODEL or payload.get("model_revision") != PINNED_REVISION:
         raise ValueError("MODEL_OR_REVISION_NOT_PINNED")
     if (payload.get("width"), payload.get("height")) != (1024, 576):
         raise ValueError("CANVAS_LOCK_MISMATCH")
