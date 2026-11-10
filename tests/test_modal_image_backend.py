@@ -66,6 +66,35 @@ class ModalIndependentBackendTests(unittest.TestCase):
             with self.assertRaisesRegex(ModalBlocked, "SAFETY_GATE"):
                 ModalKleinClient(backend(private_runtime_verified="true")).readiness(spec("b" * 64))
 
+    def test_runtime_checks_real_worker_contract_before_gpu(self):
+        from tools.modal_one_dollar_policy import worker_limits
+        with patch.dict(os.environ, ENVS, clear=True):
+            result = ModalKleinClient(backend()).readiness(spec("b" * 64))
+            self.assertEqual(result["provider_requests"], 0)
+            actual = worker_limits(Path("tools/modal_flux2_worker.py"))
+            self.assertEqual(actual["gpu"], "L4")
+            self.assertEqual(actual["max_containers"], 1)
+
+    def test_runtime_rejects_tampered_worker_even_with_auth_flags(self):
+        with patch.dict(os.environ, ENVS, clear=True), \
+             patch("tools.modal_one_dollar_policy.worker_limits",
+                   side_effect=ValueError("changed GPU")):
+            with self.assertRaisesRegex(ModalBlocked, "ONE_DOLLAR_POLICY_UNVERIFIED"):
+                ModalKleinClient(backend()).readiness(spec("b" * 64))
+
+    def test_submit_rechecks_worker_contract_after_preparation(self):
+        raw = b"ref-bytes"
+        digest = hashlib.sha256(raw).hexdigest()
+        with tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, ENVS, clear=True):
+            f = Path(temp) / "ref.png"
+            f.write_bytes(raw)
+            client = ModalKleinClient(backend())
+            prepared = client.prepare(spec(digest), [f])
+            with patch("tools.modal_one_dollar_policy.worker_limits",
+                       side_effect=ValueError("worker changed after prepare")):
+                with self.assertRaisesRegex(ModalBlocked, "ONE_DOLLAR_POLICY_UNVERIFIED"):
+                    client.submit(prepared, zero_cost_verified=True, authorized=True)
+
     def test_preparation_checks_bytes_and_never_persists_them_in_workflow(self):
         raw = b"verified-private-image-test-bytes"
         digest = hashlib.sha256(raw).hexdigest()
