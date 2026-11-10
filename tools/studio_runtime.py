@@ -259,16 +259,24 @@ class Studio:
         return reply('PROOF_RENDERED',['Assembled existing approved media without AI'],outputs=output)
 
     def restore_references(self, archive):
-        """Owner-authorized original two-image ZIP; never grants generation permission."""
+        """Restore exact owner-private two-image legacy or eight-image curated ZIP.
+
+        Only local hash verification/copy. Never contacts Modal, Drive, or a model.
+        """
         from tools.comfy_runtime import intake_package
+        from tools.curated_reference_restore import ARCHIVE_SHA256, restore_eight_reference_pack
         m=load(self.manifest)
         if not all(r.get('synthesis_rights_confirmed') is True and r.get('rights_uri') for r in m['references']):
             raise ValueError('EXISTING_REFERENCE_RIGHTS_REQUIRED')
         archive=under(self.root,archive)
         if 'private-media' not in archive.relative_to(self.root).parts:raise ValueError('PRIVATE_REFERENCE_PACKAGE_REQUIRED')
-        bound,receipt=intake_package(archive,self.root,m,rights_uri=m['references'][0]['rights_uri'],synthesis_rights_confirmed=True)
+        if sha(archive)==ARCHIVE_SHA256:
+            receipt=restore_eight_reference_pack(archive,self.root,m)
+        else:
+            _,receipt=intake_package(archive,self.root,m,
+                rights_uri=m['references'][0]['rights_uri'],synthesis_rights_confirmed=True)
         atomic(self.work/'reference-intake.json',receipt)
-        return reply('REFERENCES_RESTORED',['Verified original reference hashes/dimensions; no approval or manifest change'],outputs={'receipt':str((self.work/'reference-intake.json').relative_to(self.root))})
+        return reply('REFERENCES_RESTORED',['Verified exact private reference bytes, hashes and formats; no generation or manifest change'],outputs={'receipt':str((self.work/'reference-intake.json').relative_to(self.root))})
 
     def backup(self, destination):
         destination=under(self.root,destination)
