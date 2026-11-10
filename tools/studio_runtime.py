@@ -175,7 +175,7 @@ class Studio:
             if len(targets)!=1 or m['authorization'].get('max_submissions')!=1:
                 return reply('BLOCKED',blocked=blocks+['MODAL_SINGLE_SHOT_ONLY'])
             if not all(m['authorization'].get(k) is True for k in
-                       ('generation_approved','zero_cost_compute_verified','component_licenses_verified')):
+                       ('generation_approved','bounded_modal_trial_approved','component_licenses_verified')):
                 return reply('BLOCKED',blocked=blocks+['GENERATION_OR_RIGHTS_NOT_AUTHORIZED'])
             from tools.modal_image_backend import ModalKleinClient, ModalBlocked
             client=ModalKleinClient(m['backend'])
