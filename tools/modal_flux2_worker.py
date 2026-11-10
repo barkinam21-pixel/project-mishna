@@ -62,7 +62,8 @@ def validate(payload):
     return images
 
 
-@app.function(gpu="L4", image=image, timeout=600, retries=0, scaledown_window=15)
+@app.function(gpu="L4", image=image, timeout=600, retries=0, scaledown_window=15,
+              min_containers=0, max_containers=1, max_concurrency=1)
 def generate(payload):
     images = validate(payload)
     import torch
