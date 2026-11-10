@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "shot_id": "OPN02",
+  "model": "black-forest-labs/flux-3-image-klein",
+  "source_layer": "symbolic_dramatization_not_documented_event",
+  "width": 1024,
+  "height": 576,
+  "prompt": "Original 16:9 hand-painted historical cinematic illustration, not a photograph. A very wide rear-view establishing shot of two anonymous adult male travelers, both fully visible from head to sandals and occupying about 30 percent of frame height, on a long winding footpath toward a small distant stone village over a ridge at sunset. Elder traveler at left in muted indigo cloak; younger at right in earth-brown garments. Ground and distant landscape dominate the image; warm amber light from far left and cool violet-blue shadows, expressive brushstrokes, mature illustrated film look, quiet contemplative mood. No foreground tree, no large foreground house, no front-facing people, no dramatic arm gestures, no typography. This is symbolic dramatization, not a documented historical event or portrait.",
+  "boxes": [
+    {
+      "id": "older_traveler",
+      "desc": "An adult male traveler seen entirely from behind, mature, wearing modest indigo woven outer clothing, simple sandals and a small travel satchel; painterly restrained silhouette, natural stance",
+      "bbox": [
+        0.6,
+        0.37,
+        0.9,
+        0.43
+      ]
+    },
+    {
+      "id": "younger_traveler",
+      "desc": "A younger adult male traveler seen entirely from behind, wearing plain earth-brown woven garments and sandals; painterly restrained silhouette, natural stance",
+      "bbox": [
+        0.6,
+        0.52,
+        0.9,
+        0.58
+      ]
+    },
+    {
+      "id": "distant_village",
+      "desc": "A very small cluster of simple stone village roofs on a far ridge, softened by warm sunset haze, not a close house",
+      "bbox": [
+        0.35,
+        0.68,
+        0.43,
+        0.77
+      ]
+    }
+  ],
+  "api_mode": "self_hosted_only",
+  "generation_authorized": false,
+  "release_authorized": false,
+  "external_spend_limit_usd": 0
+}
