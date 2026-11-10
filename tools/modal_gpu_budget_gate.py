@@ -10,7 +10,7 @@ import json
 def check_trial(*, hourly_usd, max_seconds, available_credit_usd, hard_cap_usd,
                 owner_approved=False, model_license_verified=False,
                 private_runtime_verified=False):
-    if not (owner_approved and model_license_verified and private_runtime_verified):
+    if not all(flag is True for flag in (owner_approved, model_license_verified, private_runtime_verified)):
         return {"status": "BLOCKED_APPROVAL_OR_RIGHTS", "gpu_requests": 0}
     try:
         rate = Decimal(str(hourly_usd))
@@ -24,7 +24,7 @@ def check_trial(*, hourly_usd, max_seconds, available_credit_usd, hard_cap_usd,
     if rate <= 0 or seconds <= 0 or credit <= 0 or cap <= 0:
         return {"status": "BLOCKED_INVALID_BUDGET", "gpu_requests": 0}
     estimated = rate * seconds / Decimal(3600)
-    # Reserve 25% for startup, storage, rounding, and delayed billing.
+    # Heuristic 25% reserve, NOT a provider-side hard spending limit.
     if estimated * Decimal("1.25") > min(credit, cap):
         return {"status": "BLOCKED_ESTIMATE_EXCEEDS_CAP", "gpu_requests": 0,
                 "estimated_gpu_usd": str(estimated)}
