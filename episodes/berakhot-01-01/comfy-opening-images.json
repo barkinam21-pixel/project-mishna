@@ -908,6 +908,21 @@
         "verified_at": "2026-11-07T22:39:39+00:00",
         "evidence": "docs/evidence/opn02-cloudflare-real-candidate-2026-11-07.json"
       }
+    },
+    "modal": {
+      "type": "modal",
+      "model": "black-forest-labs/FLUX.2-klein-4B",
+      "revision": null,
+      "app": "mishnah-flux2-klein4b",
+      "function": "generate",
+      "safety": {
+        "private_runtime_verified": false,
+        "provider_hard_spend_cap_verified": false,
+        "license_verified": false,
+        "reference_transfer_approved": false
+      },
+      "status": "NOT_DEPLOYED_OR_APPROVED",
+      "comment": "Never infer approval from valid Modal tokens. Restore owner-private reference bytes in an authorized runtime, pin model revision, and verify a provider-side hard spending limit before any GPU call."
     }
   },
   "direction_board": {
