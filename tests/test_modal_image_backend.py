@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from tools.modal_image_backend import ModalBlocked, ModalKleinClient, MODEL
 
-REV = "a" * 40
+REV = "e7b7dc27f91deacad38e78976d1f2b499d76a294"
 ENVS = {
     "MODAL_TOKEN_ID": "unit-test-token-id",
     "MODAL_TOKEN_SECRET": "unit-test-secret",
@@ -47,7 +47,7 @@ class ModalIndependentBackendTests(unittest.TestCase):
         import json
         m = json.loads(Path("episodes/berakhot-01-01/comfy-opening-images.json").read_text())
         self.assertEqual(m["available_backends"]["modal"]["type"], "modal")
-        self.assertIsNone(m["available_backends"]["modal"]["revision"])
+        self.assertEqual(m["available_backends"]["modal"]["revision"], REV)
         self.assertIs(m["authorization"]["generation_approved"], False)
 
     def test_missing_model_revision_blocks(self):
