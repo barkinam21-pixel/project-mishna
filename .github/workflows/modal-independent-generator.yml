@@ -6,8 +6,10 @@ on:
       - 'tools/modal_flux2_worker.py'
       - 'tools/comfy_scene_images.py'
       - 'tools/studio_runtime.py'
+      - 'tools/curated_reference_restore.py'
       - 'episodes/berakhot-01-01/comfy-opening-images.json'
       - 'tests/test_modal_image_backend.py'
+      - 'tests/test_curated_reference_restore.py'
       - '.github/workflows/modal-independent-generator.yml'
   push:
     paths:
@@ -15,8 +17,10 @@ on:
       - 'tools/modal_flux2_worker.py'
       - 'tools/comfy_scene_images.py'
       - 'tools/studio_runtime.py'
+      - 'tools/curated_reference_restore.py'
       - 'episodes/berakhot-01-01/comfy-opening-images.json'
       - 'tests/test_modal_image_backend.py'
+      - 'tests/test_curated_reference_restore.py'
       - '.github/workflows/modal-independent-generator.yml'
   workflow_dispatch:
 permissions:
@@ -40,9 +44,11 @@ jobs:
           print('Modal worker registered in SDK; no remote invocation')
           PY
       - name: Compile independent generator and integration
-        run: python -m py_compile tools/modal_image_backend.py tools/modal_flux2_worker.py tools/comfy_scene_images.py tools/studio_runtime.py
+        run: python -m py_compile tools/modal_image_backend.py tools/modal_flux2_worker.py tools/comfy_scene_images.py tools/studio_runtime.py tools/curated_reference_restore.py
       - name: Test reference hashes, mock provider, authorization and provenance
         run: python -m unittest discover -s tests -p 'test_modal_image_backend.py' -v
+      - name: Verify offline eight-image archive restoration with synthetic media
+        run: python -m unittest discover -s tests -p 'test_curated_reference_restore.py' -v
       - name: Verify Modal studio plan without GPU or credentials
         env:
           MISHNAH_IMAGE_BACKEND: modal
