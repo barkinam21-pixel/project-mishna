@@ -10,6 +10,7 @@ import re
 from pathlib import Path
 
 MODEL = "black-forest-labs/FLUX.2-klein-4B"
+PINNED_REVISION = "e7b7dc27f91deacad38e78976d1f2b499d76a294"
 APP_NAME = "mishnah-flux2-klein4b"
 FUNCTION_NAME = "generate"
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
@@ -34,7 +35,7 @@ class ModalKleinClient:
         if spec.get("model", {}).get("id") != MODEL:
             raise ModalBlocked("MODAL_MODEL_MISMATCH")
         revision = self.backend.get("revision", "")
-        if not isinstance(revision, str) or not HEX40.fullmatch(revision):
+        if not isinstance(revision, str) or not HEX40.fullmatch(revision) or revision != PINNED_REVISION:
             raise ModalBlocked("MODAL_MODEL_REVISION_NOT_PINNED")
         safety = self.backend.get("safety", {})
         for key in ("private_runtime_verified", "provider_hard_spend_cap_verified",
