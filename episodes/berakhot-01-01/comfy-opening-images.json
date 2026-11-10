@@ -913,7 +913,7 @@
     "modal": {
       "type": "modal",
       "model": "black-forest-labs/FLUX.2-klein-4B",
-      "revision": null,
+      "revision": "e7b7dc27f91deacad38e78976d1f2b499d76a294",
       "app": "mishnah-flux2-klein4b",
       "function": "generate",
       "safety": {
@@ -923,7 +923,8 @@
         "reference_transfer_approved": false
       },
       "status": "NOT_DEPLOYED_OR_APPROVED",
-      "comment": "Never infer approval from valid Modal tokens. Restore owner-private reference bytes in an authorized runtime, pin model revision, and verify a provider-side hard spending limit before any GPU call."
+      "comment": "Never infer approval from valid Modal tokens. Restore owner-private reference bytes in an authorized runtime, pin model revision, and verify a provider-side hard spending limit before any GPU call.",
+      "model_revision_source": "https://huggingface.co/api/models/black-forest-labs/FLUX.2-klein-4B"
     }
   },
   "direction_board": {
