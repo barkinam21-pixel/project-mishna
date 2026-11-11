@@ -164,6 +164,26 @@
       "external_cash_spend_reported_usd": 0,
       "colab_gpu_quota_usage": "unknown",
       "note": "Private PNG stays outside GitHub; no release approval."
+    },
+    {
+      "shot_id": "OPN02",
+      "scene_id": "INTRO-A1-S01",
+      "status": "generated_unapproved",
+      "generated_at_utc": "2026-11-11T18:31:50Z",
+      "model_id": "@cf/black-forest-labs/flux-2-klein-4b",
+      "seed": 73003,
+      "inference_steps": 4,
+      "resolution": [
+        1024,
+        576
+      ],
+      "image_sha256": "1c47645bf64777cc3377809b7be75a10f233a1f7e143cf3d791af86480219b03",
+      "native_sha256": "6f12cdba2a9a1778d528fae48697525479ea3b1ba69f76124868a6132baff8cd",
+      "evidence_type": "Live authenticated Cloudflare inference through existing Python adapter; decoded pixels checked and actual image viewed",
+      "production_asset_accepted": false,
+      "artistic_review": "needs_revision",
+      "artistic_issue": "Figures approx38%, target25–35%; distant fortress rather than small village",
+      "evidence_path": "docs/evidence/opn02-cloudflare-layout-2026-11-11.json"
     }
   ],
   "voice_trials": [
@@ -186,8 +206,8 @@
       "provider_model_weights_revision": "not exposed",
       "same_base_settings": {
         "voice_name": "Alnilam",
-        "speed_factor": 1.0,
-        "temperature": 1.0,
+        "speed_factor": 1,
+        "temperature": 1,
         "seed": "not exposed",
         "output_format": "wav"
       },
@@ -225,7 +245,7 @@
           "mp3_bytes": 383645,
           "url": "https://drive.google.com/file/d/1yIS_rF-BV_mDR2hrpVQ4wG9XGsMoZcVB/view?usp=drivesdk",
           "seconds": 19.090958333333333,
-          "combined_start_seconds": 0.0,
+          "combined_start_seconds": 0,
           "sample_rate": 24000,
           "channels": 1,
           "codec": "PCM16 WAV",
@@ -250,7 +270,7 @@
           ],
           "detected_silences": [
             {
-              "start": 0.0,
+              "start": 0,
               "end": 0.305958,
               "duration": 0.305958
             },
@@ -376,7 +396,7 @@
           ],
           "detected_silences": [
             {
-              "start": 0.0,
+              "start": 0,
               "end": 0.305042,
               "duration": 0.305042
             },
@@ -485,8 +505,8 @@
       "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
       "provider_weights_revision": "not exposed",
       "base_settings": {
-        "speed_factor": 1.0,
-        "temperature": 1.0,
+        "speed_factor": 1,
+        "temperature": 1,
         "seed": "not exposed"
       },
       "source_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
@@ -509,8 +529,8 @@
           "previous_voice_id": "Alnilam",
           "previous_model": "gemini-2.5-flash-preview-tts",
           "previous_host_revision": "a56c699e022b1898cf175c964757906911792dfe",
-          "previous_speed_factor": 1.0,
-          "previous_temperature": 1.0,
+          "previous_speed_factor": 1,
+          "previous_temperature": 1,
           "base_parameters_same_across_three": true,
           "previous_emotion_prompts_differed": true,
           "previous_generation_contexts_separate": true,
@@ -528,7 +548,7 @@
         "destruction_begins_seconds": 34.01,
         "old_then_new_transition": "https://drive.google.com/file/d/1UHx98hUDvAaEGLOyLxj1bO1PdGqepjwR/view?usp=drivesdk",
         "transition_old_seconds": 15.810958333333334,
-        "transition_separator_seconds": 1.0,
+        "transition_separator_seconds": 1,
         "transition_new_seconds": 13.52,
         "common_static_gain_db": -0.3060910817640984,
         "music_pitch_eq_or_time_stretch": false
@@ -672,8 +692,8 @@
       "sha256": "dc6d8bed55de08a5ab87ada035b36f6d5c788cee5ddfd7fa53b7d775e5dde120",
       "seconds": 51.610958333333336,
       "base_settings": {
-        "speed_factor": 1.0,
-        "temperature": 1.0,
+        "speed_factor": 1,
+        "temperature": 1,
         "seed": "not exposed"
       },
       "same_text_words": 87,
