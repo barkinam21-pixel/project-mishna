@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-11",
+  "status": "REAL_CANDIDATE_NOT_APPROVED",
+  "model": "@cf/black-forest-labs/flux-2-klein-4b",
+  "seed": 73003,
+  "guidance": 1,
+  "request_count": 1,
+  "dimensions": [
+    1024,
+    576
+  ],
+  "native_sha256": "6f12cdba2a9a1778d528fae48697525479ea3b1ba69f76124868a6132baff8cd",
+  "png_sha256": "1c47645bf64777cc3377809b7be75a10f233a1f7e143cf3d791af86480219b03",
+  "private_bundle_sha256": "46378682fff3835b6f731c93652d3a25fa2118463af7c0a627bea7ec39f6122a",
+  "decoded_pixel_equality": true,
+  "private_artifacts_persisted": true,
+  "reference_policy": "Two verified costume crops of owner-authorized master plus original deterministic layout sketch; no archived boards sent",
+  "layout_sha256": "965821627a7905b418c72bbb5d89db5324b5af78c3021af7644a02d19818de4d",
+  "source_master_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+  "review": {
+    "status": "CANDIDATE_NEEDS_REVIEW",
+    "accepted": false,
+    "release_authorized": false,
+    "viewed_actual_output": true,
+    "dimensions": [
+      1024,
+      576
+    ],
+    "manual_visual_measurement": {
+      "elder_bbox_approx": [
+        390,
+        293,
+        492,
+        513
+      ],
+      "younger_bbox_approx": [
+        496,
+        294,
+        586,
+        513
+      ],
+      "height_percent_approx": [
+        38.2,
+        38
+      ],
+      "target_range_percent": [
+        25,
+        35
+      ],
+      "method": "Visual estimate from displayed pixels, not an automated detector"
+    },
+    "passes": [
+      "two adults",
+      "rear view",
+      "full bodies and feet",
+      "indigo left and brown right",
+      "landscape dominates",
+      "painted finish",
+      "no visible text"
+    ],
+    "remaining": [
+      "Figures slightly too large",
+      "Distant buildings resemble a fortress rather than village",
+      "Age/facial identity hidden in rear view",
+      "Painted style more simplified than original; needs owner review"
+    ],
+    "generation_calls": 1,
+    "expected_external_charge_usd": 0,
+    "invoice_verified": false,
+    "usage_before": "Analytics empty",
+    "usage_after": "Analytics empty; delayed reporting, not zero consumption",
+    "estimated_neurons": 120.31,
+    "workspace_usage": "unknown",
+    "independence": "Cloudflare computation with existing Python adapter, via connected session transport. Unattended credentials not provisioned."
+  },
+  "privacy": {
+    "path": "Direct Cloudflare-hosted synchronous inference, no Gateway, no public storage",
+    "basis": "Cloudflare no-training/standard-inference zero retention subject to legal/security exceptions; Klein4B Apache-2.0 separate license. BFL website terms explicitly defer to separate licenses. This is an endpoint-specific assessment, not assurance about BFL-hosted API/Playground.",
+    "sources": [
+      "https://developers.cloudflare.com/workers-ai/platform/data-usage/",
+      "https://developers.cloudflare.com/workers-ai/models/flux-2-klein-4b/",
+      "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/blob/main/LICENSE.md",
+      "https://bfl.ai/legal/terms-of-service"
+    ]
+  },
+  "billing": {
+    "plan_basis": "Owner confirmed Workers Free",
+    "max_authorized_usd": 1,
+    "expected_incremental_usd": 0,
+    "invoice_amount": null,
+    "estimated_neurons": 120.31,
+    "analytics_before": "empty",
+    "analytics_after": "empty, delayed",
+    "free_daily_neurons": 10000
+  },
+  "execution": "Unmodified CloudflareClient from 6fa269b executed prepare and submit via injected authenticated connector transport. One multipart inference POST. Scoped standalone credentials remain unavailable; no unattended-operation claim.",
+  "next": "Review candidate, refine scale/village in a separately authorized trial; configure existing runner credential and private references for unattended operation without a second studio.",
+  "accepted": false,
+  "release_authorized": false
+}
