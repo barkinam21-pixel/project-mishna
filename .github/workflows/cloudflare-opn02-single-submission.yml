@@ -1,0 +1,21 @@
+name: Cloudflare OPN02 single-submission contract (offline)
+on:
+  push:
+    branches: [fix/cloudflare-opn02-free-plan-attestation-20261111]
+  pull_request:
+    branches: [feat/non-avri-narrator-auditions]
+permissions:
+  contents: read
+jobs:
+  one-shot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow (offline adapter import only)
+        run: python -m pip install 'Pillow>=10,<12'
+      - name: Verify no retries and fresh safety/usage gate
+        run: python -m unittest discover -s tests -p 'test_cloudflare_opn02_submission.py' -v
