@@ -1,0 +1,36 @@
+name: Publish Mishnah Watch Site
+on:
+  push:
+    branches: [main]
+    paths:
+      - "watch/**"
+      - ".github/workflows/publish-mishnah-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mishnah-watch-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload only the watch website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./watch
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
