@@ -25,6 +25,8 @@ class CloudflareClient:
         self.token = os.environ.get('CLOUDFLARE_API_TOKEN', '')
         self.transport = request or self._request
         self.receipt = {}
+        self._submission_attempted = False
+        self._prepared_spec = None
 
     def _request(self, method, path, body=None, content_type='application/json'):
         if not self.account or not self.token:
@@ -100,12 +102,21 @@ class CloudflareClient:
                 b=io.BytesIO(); im.save(b,format='PNG'); images.append(b.getvalue())
         self.receipt['references']=[{'sha256':r['sha256'],'role':r.get('role')} for r in actual_refs]
         self.images=images
+        self._prepared_spec = spec
         return {'prompt':prompt_text(spec),'width':spec['size'][0],'height':spec['size'][1],
                 'seed':spec['seed'],'guidance':spec.get('director',{}).get('generation_parameters',{}).get('guidance',1.0)}
 
     def submit(self, payload, *, zero_cost_verified=False, authorized=False):
         if not authorized or not zero_cost_verified or not self.receipt:
             raise CloudflareBlocked('SUBMISSION_NOT_AUTHORIZED')
+        if self._submission_attempted:
+            raise CloudflareBlocked('ONE_SHOT_ALREADY_ATTEMPTED')
+        if self._prepared_spec is None or not hasattr(self, 'images'):
+            raise CloudflareBlocked('REFERENCE_PREPARATION_MISSING')
+        # The previous read-only usage check may be stale after preparation.
+        # Revalidate immediately before the only possible billable POST.
+        self.readiness(self._prepared_spec)
+        self._submission_attempted = True  # no retries after uncertain transport failure
         boundary='mishnah-'+os.urandom(16).hex(); parts=[]
         for k,v in payload.items():
             parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
