@@ -72,10 +72,11 @@ class CloudflareClient:
         usage = self.transport('POST','/graphql',{'query':query})
         try:
             accounts = usage['data']['viewer']['accounts']
-            assert len(accounts)==1 and not usage.get('errors')
-            used = sum(g['sum']['totalNeurons'] for g in accounts[0]['aiInferenceAdaptiveGroups'])
-            assert math.isfinite(used) and used >= 0
-        except (KeyError, TypeError, AssertionError):
+            if len(accounts)!=1 or usage.get('errors'):raise ValueError('Invalid usage account response')
+            values=[g['sum']['totalNeurons'] for g in accounts[0]['aiInferenceAdaptiveGroups']]
+            if any(type(v) not in (int,float) or not math.isfinite(v) or v<0 for v in values):raise ValueError('Invalid usage values')
+            used=sum(values)
+        except (KeyError, TypeError, ValueError):
             raise CloudflareBlocked('USAGE_UNKNOWN') from None
         w,h = spec['size']
         estimate = math.ceil(w/512)*math.ceil(h/512)*26.05 + len(spec.get('director',{}).get('reference_preparation',{}).get('crops') or spec['references'])*5.37
