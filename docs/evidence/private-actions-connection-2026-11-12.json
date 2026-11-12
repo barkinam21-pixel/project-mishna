@@ -19,5 +19,9 @@
   },
   "new_generation_authorization": false,
   "new_external_charge": 0,
-  "standalone_drive_connection_proven": false
+  "standalone_drive_connection_proven": false,
+  "final_run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43223825551",
+  "final_cloudflare_job": "success",
+  "final_drive_blocker": "MISSING_CONFIGURATION:MISHNAH_DRIVE_OAUTH_JSON",
+  "file_id_configuration_missing": false
 }
