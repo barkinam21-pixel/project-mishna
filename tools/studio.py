@@ -166,4 +166,8 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    if len(sys.argv)>1 and sys.argv[1] in ("doctor","plan","run","resume","review","proof","backup","restore","restore-references"):
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+        from tools.studio_runtime import main as runtime_main
+        sys.exit(runtime_main())
     sys.exit(main())

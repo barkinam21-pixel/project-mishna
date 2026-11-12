@@ -174,6 +174,565 @@
       "review": "Foreign accent and numerous Hebrew pronunciation errors reported after listening to 7.54s preview",
       "license": "CC-BY-NC-4.0",
       "accepted_for_private_preview": false
+    },
+    {
+      "trial_id": "alnilam-three-emotions-2026-11-06",
+      "date": "2026-11-06",
+      "status": "owner_liked_direction_identity_correction_requested",
+      "voice_id": "Alnilam",
+      "profile_id": "series-narrator-alnilam-v1",
+      "model_id": "gemini-2.5-flash-preview-tts",
+      "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+      "provider_model_weights_revision": "not exposed",
+      "same_base_settings": {
+        "voice_name": "Alnilam",
+        "speed_factor": 1.0,
+        "temperature": 1.0,
+        "seed": "not exposed",
+        "output_format": "wav"
+      },
+      "direction_interface": "natural-language prompt only; no unsupported SSML/style/speech_metadata fields",
+      "text_layer": "owner-provided original modern audition, not Mishnah quotation or approved episode history",
+      "generation_submissions": 3,
+      "correction_submissions": 0,
+      "no_automatic_submit_retries": true,
+      "no_reference_audio_or_cloning": true,
+      "no_pitch_or_time_stretch": true,
+      "music_and_effects": false,
+      "reference_baseline_sha256": "1a31a31839e565add6736cdda8465d4be04f0d90f3c3bb0416b6ebc721442dd6",
+      "reference_baseline_unchanged": true,
+      "sha256": "c20355d000c0d32f605f8553be361608bc580204410c2aa0f87a4ed5907c8b20",
+      "combined_review": {
+        "url": "https://drive.google.com/file/d/1BoLaY5q-ADc634G7T9Gm32z0iuVpJOoE/view?usp=drivesdk",
+        "seconds": 58.232875,
+        "source_wav_sha256": "c20355d000c0d32f605f8553be361608bc580204410c2aa0f87a4ed5907c8b20",
+        "mp3_sha256": "a5876110e5ac3ff570a7202d241fe91b4a2c1b6d587d67ce8b7ca8f6e0f6f029",
+        "mp3_bytes": 1166523,
+        "gap_seconds": 2.5,
+        "processing": "one common static gain-0.306091dB for all3parts; preserves inter-part level differences; no padding/slowdown to reach60s",
+        "duration_note": "58.23s, approximately one minute, slightly below60–90s target"
+      },
+      "parts": [
+        {
+          "id": "01-mystery",
+          "emotion_he": "מסתורין וסקרנות",
+          "original_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "direction": "פתיחת סיפור היסטורי גדול. סקרנות שקטה ופליאה, מתח עדין, תחושת עולם שנפתח. הפסקה טבעית בסוף כל משפט; בשאלה הרם עניין בעדינות, לא גובה קול מלאכותי. קול בריא, לא לחישה. ללא דרמה מוגזמת.",
+          "request_sha256": "f47c3bec1d522ea4df2c4a523a833eb5cc04fd8cdd456f79b196e2feece48161",
+          "wav_sha256": "41bc633ac82f5f6ba95b13f2167fe7c1a9f1e615eb775b47ea8d272b908b28ba",
+          "mp3_sha256": "93de2d13a573a372b3764a6520add2c8de6d0a9ce921abc19e98532c97ec6d9a",
+          "mp3_bytes": 383645,
+          "url": "https://drive.google.com/file/d/1yIS_rF-BV_mDR2hrpVQ4wG9XGsMoZcVB/view?usp=drivesdk",
+          "seconds": 19.090958333333333,
+          "combined_start_seconds": 0.0,
+          "sample_rate": 24000,
+          "channels": 1,
+          "codec": "PCM16 WAV",
+          "source_peak": 0.8211669921875,
+          "source_rms_dbfs": -18.867076648088773,
+          "saturated_source_samples": 0,
+          "words_per_minute_including_pauses": 84.8569239801564,
+          "asr_transcript": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "expected_words": 27,
+          "recognized_words": 27,
+          "literal_word_edits": 0,
+          "f0_quantiles_hz": {
+            "10": 51.84114866705943,
+            "50": 103.38285194973314,
+            "90": 152.23818215366072
+          },
+          "adjacent_voiced_frame_semitone_jump_p95": 2.3,
+          "first_last4s_uncalibrated_speaker_cosine": 0.9244623184204102,
+          "baseline4s_pair_cosine_range": [
+            0.8389356732368469,
+            0.8694391250610352
+          ],
+          "detected_silences": [
+            {
+              "start": 0.0,
+              "end": 0.305958,
+              "duration": 0.305958
+            },
+            {
+              "start": 1.8987499999999997,
+              "end": 2.267333,
+              "duration": 0.368583
+            },
+            {
+              "start": 4.094833,
+              "end": 4.868875,
+              "duration": 0.774042
+            },
+            {
+              "start": 6.165916999999999,
+              "end": 6.508417,
+              "duration": 0.3425
+            },
+            {
+              "start": 8.431209,
+              "end": 8.745542,
+              "duration": 0.314333
+            },
+            {
+              "start": 11.367375,
+              "end": 12.288708,
+              "duration": 0.921333
+            },
+            {
+              "start": 15.945667,
+              "end": 16.220917,
+              "duration": 0.27525
+            },
+            {
+              "start": 18.6815,
+              "end": 19.090958,
+              "duration": 0.409458
+            }
+          ]
+        },
+        {
+          "id": "02-warmth",
+          "emotion_he": "חמימות וחוכמה",
+          "original_text": "כדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "pronunciation_text": "כדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "direction": "אותו אדם, בהסבר אישי, חכם וסבלני לצופה. חיוך אנושי עדין, נדיבות וחמימות. הדגש רעיונות חשובים במתינות; תן זמן להבנה בין המשפטים, בלי להישמע ילדותי, צעיר יותר או כמו מקריא הוראות. אין חיוך קומי או צחוק.",
+          "request_sha256": "70f8171fc882bbfd87dbc4aca42a88342f6be263ce0e99e59f2c81cd65958793",
+          "wav_sha256": "04745f9b746bd7fb6728153cee8c53dae0f80987533cf9131b730b657299f842",
+          "mp3_sha256": "7fdaeafe027b230e59f29fd50c58aed3c5a1d0dba56315472d0189b0b8847895",
+          "mp3_bytes": 318841,
+          "url": "https://drive.google.com/file/d/1N7f9UoNH4IbhweAPrSOcWDKBU1NuRoyl/view?usp=drivesdk",
+          "seconds": 15.850958333333333,
+          "combined_start_seconds": 21.590958333333333,
+          "sample_rate": 24000,
+          "channels": 1,
+          "codec": "PCM16 WAV",
+          "source_peak": 0.932281494140625,
+          "source_rms_dbfs": -15.76790032078367,
+          "saturated_source_samples": 0,
+          "words_per_minute_including_pauses": 124.91358303782894,
+          "asr_transcript": "כדי להבין את המשנה, לא מספיק רק לקרוא את המילים, צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "expected_words": 33,
+          "recognized_words": 33,
+          "literal_word_edits": 0,
+          "f0_quantiles_hz": {
+            "10": 77.89829049055287,
+            "50": 99.86125248610605,
+            "90": 166.9786410494357
+          },
+          "adjacent_voiced_frame_semitone_jump_p95": 2.3599999999999954,
+          "first_last4s_uncalibrated_speaker_cosine": 0.8776094317436218,
+          "baseline4s_pair_cosine_range": [
+            0.8069738149642944,
+            0.8375423550605774
+          ],
+          "detected_silences": [
+            {
+              "start": 3.8462499999999995,
+              "end": 4.20975,
+              "duration": 0.3635
+            },
+            {
+              "start": 9.629459,
+              "end": 10.303542,
+              "duration": 0.674083
+            }
+          ]
+        },
+        {
+          "id": "03-drama",
+          "emotion_he": "דרמה ורגש",
+          "original_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "pronunciation_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "direction": "אותו אדם, בכובד ראש וברגש אנושי מאופק. אחרי המשפט הראשון הפסקה קצרה בעלת משמעות, ללא מלודרמה או צעקות. כאב שקט בחורבן, ואז כוח ותקווה מאופקים בהמשכיות המסורת. לא צרידות, רעד או החלפת זהות קולית.",
+          "request_sha256": "3b63100ec2ce8a5077a1f816a8fcda297efb11870ed6d1ed3d8886f295fa040f",
+          "wav_sha256": "ed80f2965ee7345d97c3f65c2661b76dcc46610d0c0630bcbf200e1ad8b748b9",
+          "mp3_sha256": "9eb3e810c57d5be85bdc482de949ce9ebf0e41ab76d32f259311a9646adecb99",
+          "mp3_bytes": 367793,
+          "url": "https://drive.google.com/file/d/1chpr473HBPRhSpP7OOPtLU_Lo0LwYoNQ/view?usp=drivesdk",
+          "seconds": 18.290958333333332,
+          "combined_start_seconds": 39.941916666666664,
+          "sample_rate": 24000,
+          "channels": 1,
+          "codec": "PCM16 WAV",
+          "source_peak": 0.839935302734375,
+          "source_rms_dbfs": -17.281324596625957,
+          "saturated_source_samples": 0,
+          "words_per_minute_including_pauses": 88.56835002722201,
+          "asr_transcript": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "expected_words": 27,
+          "recognized_words": 27,
+          "literal_word_edits": 0,
+          "f0_quantiles_hz": {
+            "10": 50.510792173921786,
+            "50": 88.96626183176065,
+            "90": 122.51876120983357
+          },
+          "adjacent_voiced_frame_semitone_jump_p95": 1.5000000000000007,
+          "first_last4s_uncalibrated_speaker_cosine": 0.8860815763473511,
+          "baseline4s_pair_cosine_range": [
+            0.6962268352508545,
+            0.7900810241699219
+          ],
+          "detected_silences": [
+            {
+              "start": 0.0,
+              "end": 0.305042,
+              "duration": 0.305042
+            },
+            {
+              "start": 2.1071669999999996,
+              "end": 2.969292,
+              "duration": 0.862125
+            },
+            {
+              "start": 4.360042,
+              "end": 4.828917,
+              "duration": 0.468875
+            },
+            {
+              "start": 7.74925,
+              "end": 9.017667,
+              "duration": 1.268417
+            },
+            {
+              "start": 10.772209,
+              "end": 11.797917,
+              "duration": 1.025708
+            },
+            {
+              "start": 14.809959,
+              "end": 15.077667,
+              "duration": 0.267708
+            },
+            {
+              "start": 17.966916,
+              "end": 18.290958,
+              "duration": 0.324042
+            }
+          ]
+        }
+      ],
+      "technical_qa": {
+        "full_decode_files_passed": 8,
+        "asr_model": "ivrit-ai/whisper-large-v3-turbo-ct2",
+        "asr_revision": "72ad623a37947395efcc3933132353790e5a12f5",
+        "asr_settings": "CPU int8, Hebrew,beam5,temp0, no initial prompt,VADfalse; FFmpeg16kfloat input",
+        "total_expected_words": 87,
+        "total_literal_word_edits": 0,
+        "speaker_encoder": "existing Chatterbox VoiceEncoder analysis only; revision5bb1f6ee58e50c3b8d408bc82a6d3740c2db6e18",
+        "pitch_method": "librosa.pyin16kHz analysis45–350Hz,1024frame/320hop; octave/fry errors possible",
+        "human_calibrated_threshold": null,
+        "inter_part_source_rms_range_db": 3.099176327305102,
+        "review_attention": [
+          "Warmth is faster(~125wpm) and louder than mystery(~85wpm): original difference preserved, not concealed by per-part gain.",
+          "Drama has lower uncalibrated reference-speaker similarity than the other parts; compare its identity to the retained original by listening. No Hebrew pass/fail threshold.",
+          "Longest detected source silence1.268s in drama; compare pauses to meaning, not an automatic flaw.",
+          "F0 variation, embedding cosines and ASR do not establish age, accent, natural breaths, subtle word stress or emotional suitability."
+        ],
+        "no_natural_accent_or_age_approval_from_metrics": true
+      },
+      "review": {
+        "owner_approved_original_baseline": true,
+        "owner_listened_to_this_round": true,
+        "assistant_critical_listening_performed": false,
+        "same_person_three_emotions_approved": false,
+        "pronunciation_stress_native_accent_approved": false,
+        "perceived_age_approved": false,
+        "acting_approved": false,
+        "long_form_stability_approved": false,
+        "owner_approved_general_emotional_direction": true,
+        "owner_feedback": "Loved the overall three-mode Alnilam direction; heard recognizable identity/timbre change in destruction and somewhat child-story delivery. Requests one continuity/adult-restraint correction; no voice replacement."
+      },
+      "accepted_for_private_preview": false,
+      "rights_and_cost": {
+        "private_audition_authorized": true,
+        "publication_rights_approved": false,
+        "intermediary_permanent_free_commercial_access": "not established",
+        "new_direct_caller_external_charge_usd": 0,
+        "user_account_key_or_payment_supplied": false,
+        "host_underlying_cost_and_quota": "unknown",
+        "workspace_plan_usage": "unknown"
+      },
+      "backup": {
+        "url": "https://drive.google.com/file/d/1S5wqi1WOj8ZvGLULd88YwBrvN_mFkIfi/view?usp=drivesdk",
+        "bytes": 6966385,
+        "files": 55,
+        "zip_sha256": "3a3ed661efebf91d1241f2b2937274589172836c14c414c598dbdb065a45533c",
+        "local_crc_verified": true,
+        "drive_mime_size_and_shared_false_verified": true,
+        "server_sha_exposed": false,
+        "includes_original_baseline_copy": true
+      },
+      "provider_cleanup": {
+        "only_own_three_tasks_deleted_after_backup": true,
+        "delete_http_statuses": [
+          200,
+          200,
+          200
+        ],
+        "provider_log_erasure_claimed": false
+      },
+      "next_gate": "owner listening; if satisfactory, bounded several-minute continuity test after renewed cost/access check, not full episode"
+    },
+    {
+      "trial_id": "alnilam-one-continuous-correction-2026-11-06",
+      "date": "2026-11-06",
+      "status": "owner_approved_production_voice_baseline",
+      "voice_id": "Alnilam",
+      "profile_id": "series-narrator-alnilam-v1",
+      "model_id": "gemini-2.5-flash-preview-tts",
+      "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+      "provider_weights_revision": "not exposed",
+      "base_settings": {
+        "speed_factor": 1.0,
+        "temperature": 1.0,
+        "seed": "not exposed"
+      },
+      "source_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "seconds": 49.25095833333334,
+      "native_sample_rate": 24000,
+      "native_channels": 1,
+      "codec": "PCM16 WAV",
+      "retained_original_sha256": "1a31a31839e565add6736cdda8465d4be04f0d90f3c3bb0416b6ebc721442dd6",
+      "retained_original_unchanged": true,
+      "generation_submissions": 1,
+      "automatic_submit_retries": 0,
+      "additional_corrections": 0,
+      "original_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+      "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?\n\nכדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.\n\nואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+      "direction": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.",
+      "request_sha256": "e32f8019512c82f7196c246afaa70c49c17d7ddec23624d82950c2cbc5d7834f",
+      "diagnosis": {
+        "known": {
+          "previous_voice_id": "Alnilam",
+          "previous_model": "gemini-2.5-flash-preview-tts",
+          "previous_host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+          "previous_speed_factor": 1.0,
+          "previous_temperature": 1.0,
+          "base_parameters_same_across_three": true,
+          "previous_emotion_prompts_differed": true,
+          "previous_generation_contexts_separate": true,
+          "shared_reference_or_fixed_seed_supported": false,
+          "owner_heard_previous_destruction_identity_change": true
+        },
+        "uncertain": "Separate generation contexts, emotion instructions and model stochasticity can all contribute; same client configuration does not pin vendor weights. No causal isolation from the prior samples.",
+        "single_test_change": "All87same words in one context with one restrained adult prompt; no artificial aging/deepening. Both context and direction changed, so causal effects cannot be separated by this one allowed trial.",
+        "result": "Real audio created; content/decode passed; acoustic transition results mixed, not a demonstrated perceptual fix. Owner listening required.",
+        "no_further_trial_in_this_round": true
+      },
+      "comparison_baseline": "alnilam-three-emotions-2026-11-06",
+      "listening": {
+        "new_continuous": "https://drive.google.com/file/d/1_vnyhDvoRQmWQsY8dEY0Ainhq8i6tcwE/view?usp=drivesdk",
+        "destruction_begins_seconds": 34.01,
+        "old_then_new_transition": "https://drive.google.com/file/d/1UHx98hUDvAaEGLOyLxj1bO1PdGqepjwR/view?usp=drivesdk",
+        "transition_old_seconds": 15.810958333333334,
+        "transition_separator_seconds": 1.0,
+        "transition_new_seconds": 13.52,
+        "common_static_gain_db": -0.3060910817640984,
+        "music_pitch_eq_or_time_stretch": false
+      },
+      "technical_qa": {
+        "all_expected_words": 87,
+        "recognized_words": 87,
+        "literal_word_edits": 0,
+        "full_decode_audio_files": 7,
+        "source_saturated_samples": 0,
+        "source_peak": 0.80810546875,
+        "source_rms_dbfs": -18.679841273321657,
+        "asr": "ivrit-ai/whisper-large-v3-turbo-ct2,revision72ad623a37947395efcc3933132353790e5a12f5,CPUint8,he,beam5,temp0,no initial prompt",
+        "paragraphs": [
+          {
+            "id": 1,
+            "source_start_seconds": 0,
+            "source_end_seconds": 17.04,
+            "rms_dbfs": -18.75527165022325
+          },
+          {
+            "id": 2,
+            "source_start_seconds": 17.04,
+            "source_end_seconds": 34.01,
+            "rms_dbfs": -19.401920426655938
+          },
+          {
+            "id": 3,
+            "source_start_seconds": 34.01,
+            "source_end_seconds": 49.25095833333334,
+            "rms_dbfs": -17.925077203199983
+          }
+        ],
+        "transition_observations": {
+          "old_pre_post_destruction_cosine": 0.7849075794219971,
+          "new_pre_post_destruction_cosine": 0.8284944891929626,
+          "old_warmth_last4_vs_drama_first4": 0.8093327283859253,
+          "new_warmth_last4_vs_drama_first4": 0.7635152339935303
+        },
+        "new_drama_original_pair_cosines": [
+          0.8201197981834412,
+          0.7565170526504517,
+          0.8290725946426392,
+          0.7755438089370728
+        ],
+        "calibrated_hebrew_threshold": null,
+        "metric_interpretation": "Mixed: speech-aligned pre/post cosine0.785→0.828; fixed paragraph-boundary4s cosine0.809→0.764. No cherry-picked pass or proof of natural age/accent/identity."
+      },
+      "replaceable_audition_cues": [
+        {
+          "id": "continuity-audition-N01",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 0,
+          "source_end_sample": 408960,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "5075cc978a2325e58ca0a48545ef08c0e854ec6d8d98b052f98c1267435a7118",
+          "derived_wav_frames": 408960,
+          "display_text": "מאחורי מילות המשנה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "pronunciation_text": "מאחורי מילות הַמִּשְׁנָה מסתתר עולם שלם. עולם של חכמים, שאלות, מחלוקות ומסורת שעברה מדור לדור. כיצד הצליחו מילים שנאמרו לפני מאות שנים להמשיך וללוות אותנו עד היום?",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        },
+        {
+          "id": "continuity-audition-N02",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 408960,
+          "source_end_sample": 816240,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "49e2f5947be64241e772a64581e6b21cf7775aaa44419a924223563dac818943",
+          "derived_wav_frames": 407280,
+          "display_text": "כדי להבין את המשנה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "pronunciation_text": "כדי להבין את הַמִּשְׁנָה, לא מספיק רק לקרוא את המילים. צריך להכיר את האנשים, את השאלות שהעסיקו אותם ואת העולם שבו חיו. וכשמתחילים להבין את הרקע, גם הדברים שנראו מסובכים נעשים בהירים יותר.",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        },
+        {
+          "id": "continuity-audition-N03",
+          "source_take_id": "alnilam-one-continuous-correction-2026-11-06",
+          "source_take_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+          "source_start_sample": 816240,
+          "source_end_sample": 1182023,
+          "sample_rate": 24000,
+          "derived_wav_sha256": "1e78a4a2dbd84ddc6914e0aaadfeaea86ca0d2fc544276e94133a2b72e1082e8",
+          "derived_wav_frames": 365783,
+          "display_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "pronunciation_text": "ואז הגיע החורבן. בית המקדש חרב, והעם היהודי ניצב בפני מציאות חדשה. אבל המסורת לא נעלמה. החכמים המשיכו ללמוד, ללמד ולהעביר את התורה שבעל פה לדורות הבאים.",
+          "boundary_status": "ASR-provisional, not approved breath/caption/video boundary",
+          "video_frame_lock": false
+        }
+      ],
+      "review": {
+        "owner_approved_general_previous_direction": true,
+        "owner_listened_to_this_fix": true,
+        "identity_fixed": false,
+        "native_accent_and_stress_approved": false,
+        "more_mature_perceived_delivery_approved": false,
+        "long_form_stability_approved": false,
+        "assistant_critical_listening": false,
+        "owner_approved_as_production_voice_reference": true,
+        "owner_feedback": "Loved the latest continuous take; authorizes it as the preserved baseline for continuing film work. No claim of universal/long-form stability or full source/episode approval.",
+        "identity_fixed_scope": "Short reference subjectively accepted by owner, not proof of absolute identity stability across all future synthesis."
+      },
+      "accepted_for_private_preview": false,
+      "rights_and_cost": {
+        "private_trial_authorized": true,
+        "publication_authorized": false,
+        "new_caller_external_charge_usd": 0,
+        "user_key_account_or_payment_supplied": false,
+        "host_underlying_cost_and_production_free_quota": "unknown",
+        "workspace_plan_usage": "unknown"
+      },
+      "backup": {
+        "url": "https://drive.google.com/file/d/1rCelF_XXnSV2pujgKCl5fXkZBSA7uJGb/view?usp=drivesdk",
+        "bytes": 8548114,
+        "files": 30,
+        "sha256": "47595a48bbbcf12cb27a559aeb482d1253ee5574e7d0cec3d2786a3378b6e08f",
+        "local_crc": "passed",
+        "drive_mime_size_shared_false_verified": true,
+        "server_sha_exposed": false,
+        "contains_original_and_prior_transition_source": true
+      },
+      "production_integration": "Audition editing derivatives only, NOT matching voice slots of introductory working script or existing N01/N02",
+      "remote_cleanup": {
+        "only_own_one_task_deleted_after_backup": true,
+        "http_status": 200,
+        "provider_log_erasure_claimed": false
+      },
+      "approved_reference_profile_id": "series-narrator-alnilam-continuous-v2"
+    },
+    {
+      "trial_id": "alnilam-one-subtle-presence-2026-11-06",
+      "date": "2026-11-06",
+      "status": "not_applied_approved_baseline_retained",
+      "voice_id": "Alnilam",
+      "model_id": "gemini-2.5-flash-preview-tts",
+      "host_revision": "a56c699e022b1898cf175c964757906911792dfe",
+      "reference_profile": "series-narrator-alnilam-continuous-v2",
+      "source_sha256": "dc6d8bed55de08a5ab87ada035b36f6d5c788cee5ddfd7fa53b7d775e5dde120",
+      "sha256": "dc6d8bed55de08a5ab87ada035b36f6d5c788cee5ddfd7fa53b7d775e5dde120",
+      "seconds": 51.610958333333336,
+      "base_settings": {
+        "speed_factor": 1.0,
+        "temperature": 1.0,
+        "seed": "not exposed"
+      },
+      "same_text_words": 87,
+      "only_direction_append_changed": true,
+      "artistic_reference": "quiet authority/maturity/restraint inspired by Korra opening, no Tenzin/actor imitation or recording/reference input",
+      "direction": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.\nדיוק ביצוע עדין בלבד: שים מעט יותר משקל במילים המרכזיות, קצב שקול ונוכחות מאופקת של מספר בעל ניסיון חיים. החמימות נשארת אישית וטבעית; פחות קפיציות והתלהבות, יותר הקשבה ומרחב למחשבה. עומק רגשי דרך משמעות והדגשה, לא דרך קול נמוך יותר או תהודה חדשה. שמור בדיוק על הזהות והגוון הטבעיים של Alnilam, ללא שינוי גיל מלאכותי, ללא בס מאולץ וללא חיקוי של קול אחר. באזכור החורבן אותו אדם ממש ממשיך לדבר.",
+      "request_sha256": "ef587ec9659b7e78451b4688c5fe5c5f4c66047aab6680181105b45fb9bb99e5",
+      "generation_submissions": 1,
+      "retries": 0,
+      "extra_corrections": 0,
+      "listen_url": "https://drive.google.com/file/d/17Gq6dKTStiME6ebFTixjCr22CoyTby_7/view?usp=drivesdk",
+      "approved_baseline_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+      "approved_baseline_unchanged": true,
+      "candidate_promoted": false,
+      "why_not_promoted": "No verified human benefit or absence of timbre regression. Uncalibrated signal/ASR observations cannot certify a better/more mature identity. Keep approved49s profile by default; optional listening does not block film preparation.",
+      "technical_qa": {
+        "literal_word_edits": 0,
+        "full_decode_audio_files": 2,
+        "source_peak": 0.9212646484375,
+        "source_saturated_samples": 0,
+        "paragraph_rms_dbfs": [
+          -18.163148473576705,
+          -16.960166866083362,
+          -16.279265561793366
+        ],
+        "speaker_observations": {
+          "approved_first_last": 0.844589114189148,
+          "candidate_first_last": 0.8250339031219482,
+          "approved_pre_post_destruction": 0.8284922242164612,
+          "candidate_pre_post_destruction": 0.8095903396606445,
+          "approved_vs_candidate_first4": 0.78340744972229,
+          "approved_vs_candidate_last4": 0.783905565738678
+        },
+        "hebrew_calibrated_threshold": null,
+        "human_critical_listening": false,
+        "maturity_accent_stress_identity_improved": false
+      },
+      "accepted_for_private_preview": false,
+      "cost": {
+        "new_direct_caller_external_charge_usd": 0,
+        "caller_key_account_or_payment_supplied": false,
+        "host_cost_quota": "unknown",
+        "workspace_usage": "unknown"
+      },
+      "backup": {
+        "url": "https://drive.google.com/file/d/1SMF3YHvx4Z60jHTkUcuZQ44EjKBzO_X4/view?usp=drivesdk",
+        "bytes": 5237663,
+        "files": 22,
+        "sha256": "d1a033186955138f56f197995ead7245bbba0b7800e06223aec868dd128dbed2",
+        "crc": "passed",
+        "drive_mime_size_shared_false_verified": true,
+        "server_sha_exposed": false
+      },
+      "cleanup": {
+        "own_one_job_deleted_after_backup": true,
+        "http_status": 200,
+        "provider_log_erasure_claimed": false
+      },
+      "production_default_profile_unchanged": "series-narrator-alnilam-continuous-v2"
     }
   ]
 }

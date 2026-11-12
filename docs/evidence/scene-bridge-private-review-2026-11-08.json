@@ -1,0 +1,67 @@
+{
+  "date_utc": "2026-11-08",
+  "scene_id": "INTRO-A1-S01",
+  "branch": "feat/non-avri-narrator-auditions",
+  "source": "owner-private Google Drive assets, read through authenticated connector",
+  "private_candidate": {
+    "shot": "OPN02",
+    "sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+    "dimensions": [
+      1024,
+      576
+    ],
+    "bytes": 1043555,
+    "local_hash_verified": true,
+    "approved": false,
+    "review": "rear wide and original composition are improved; people approx 70-80% frame height vs 30% desired, too photorealistic"
+  },
+  "private_reference_archive": {
+    "sha256": "8b6cd92c3318bf7ab0759ac9388dec5b4c3ba00ac77755c722934dbc9acedd87",
+    "crc_ok": true,
+    "included_original_references": 2,
+    "included_active_guides": 6,
+    "records_verified_against_manifest": 8,
+    "missing_19_context_and_hold_boards_intentionally_excluded": true
+  },
+  "private_review_board": {
+    "drive_url": "https://drive.google.com/file/d/14Hn0CxC2QPHw5OkZxe0bBK669IgJTVLU/view?usp=drivesdk",
+    "sha256": "c2165c6c4c34da46ba0180c60b3d386eb6b9a4c066183264f30c408ebf11250d",
+    "drive_owner_only": true,
+    "drive_shared": false,
+    "source_bytes_modified": false
+  },
+  "ci": {
+    "run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/42433139313",
+    "scene_pack_test_count": 5,
+    "review_board_test_count": 4,
+    "bridge_test_count": 3,
+    "all_passed": true,
+    "github_actions_only_no_real_media": true
+  },
+  "film": {
+    "approved_original_scene_images": 0,
+    "private_proof_ready": false,
+    "missing_or_unapproved_media_in_CI": 10,
+    "publication_authorized": false
+  },
+  "accounting": {
+    "new_image_generation_calls": 0,
+    "provider_requests_this_session": 0,
+    "external_spend_initiated_usd": 0,
+    "workspace_usage": "unknown"
+  },
+  "no_media_uploaded_to_github": true,
+  "next": "Restore the private candidate bundle into an authorized offline workspace, run scene_review_board --candidates private-media/scene-review/verified-candidates.json; no automatic approval or new model calls. Then complete scene pack and voice/caption gates before private proof.",
+  "private_unapproved_candidate_bundle": {
+    "drive_url": "https://drive.google.com/file/d/1m4OPke-0eAuNzhcxKijwsDKCk8qScftL/view?usp=drivesdk",
+    "sha256": "370d9da290c0204b94ba72a0d4e7a5873abc9b75a44599fca2421ee111ebf0a2",
+    "bytes": 1042165,
+    "owner_only": true,
+    "shared": false,
+    "contained_paths": [
+      "private-media/introduction/OPN02-recovered.png",
+      "private-media/scene-review/verified-candidates.json"
+    ],
+    "purpose": "Rehydrate exactly one unapproved, locally hash-verifiable candidate; never promote acceptance"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "type": "PRIVATE_VOICE_PREPARATION_NOT_A_PROVIDER_REQUEST",
+  "scene": "INTRO-A1-S01",
+  "narrator_profile": "series-narrator-alnilam-continuous-v2",
+  "voice_name": "Alnilam",
+  "model_declared_by_approved_baseline": "gemini-2.5-flash-preview-tts",
+  "host_revision_from_approved_audition": "a56c699e022b1898cf175c964757906911792dfe",
+  "approved_voice_trial_id": "alnilam-one-continuous-correction-2026-11-06",
+  "baseline_settings_unchanged": {
+    "speed_factor": 1,
+    "temperature": 1,
+    "seed": "not exposed",
+    "reference_audio": null,
+    "pitch_override": null
+  },
+  "approved_performance_direction_unchanged": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. במילים \"ואז הגיע החורבן\" נשאר בדיוק אותו אדם: רצינות וכאב מאופק באמצעות משקל למילים והפסקה קצרה, לא קול דרמטי חדש. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.",
+  "scene_specific_direction_draft": "הוראות ביצוע בלבד — אין להקריא אותן. הקרא רק את הטקסט שלאחר \"טקסט להקראה\", במלואו.\nקול הקריין הוא Alnilam, אותו מספר סיפורים ישראלי חם וחכם לאורך כל ההקלטה. זוהי קריינות לסרט היסטורי רציני למבוגרים. נוכחות רגועה, סמכות שקטה ומשקל למשמעות המילים; חביבות וסבלנות אנושית, ללא התלהבות ילדותית או קריינות פרסומת. שמור את הגוון הטבעי של קול הבסיס — לא להמציא דמות אחרת, לא להזקין, לא להעמיק בכוח, לא להוסיף צרידות, לחישה או רעד.\nזה רצף אחד הנאמר בידי אדם אחד: אותה זהות, אותה תהודה טבעית, אותו מבטא ישראלי ואותו גיל קולי מתחילתו ועד סופו. פסקה חדשה אינה דובר חדש. שינויים רגשיים קטנים נובעים מן המשמעות, דרך הדגשה עדינה והפסקות טבעיות, ללא שינוי גוון הקול הבסיסי.\nהפתיחה מסקרנת ומהורהרת. ההסבר הבא אישי, מאופק ובהיר. בשאלות על מסירת הלימוד לדור הבא, הדגש בעדינות את האחריות ואת הסקרנות, בלי לשנות גוון קול ובלי להוסיף דרמה מלאכותית. בסיום תחושת המשכיות ותקווה, ללא התרוממות תיאטרלית.\nעברית ישראלית טבעית ורהוטה, קצב סיפורי נוח ללא האטה מלאכותית, עוצמה נוחה ויציבה. אין להוסיף, להשמיט, להכפיל או לשנות מילים; אין להקריא את ההוראות או את שם הקול.",
+  "scene_specific_direction_approved": false,
+  "performance_context_note": "Original direction refers to an old audition passage about the destruction; that passage is NOT in this scene. Keep one warm, serious Israeli narrator throughout, no invented speech and no childlike or advertisement delivery. This scene-specific performance direction requires review before TTS.",
+  "approved_sample_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+  "approved_sample_location": "https://drive.google.com/file/d/1ZniX8Len9_NRCJwemNdiuXdnhmKYJffz/view?usp=drivesdk",
+  "approved_sample_is_only_a_voice_reference": true,
+  "approved_sample_is_not_target_scene_audio": true,
+  "single_continuous_take": true,
+  "one_speaker": true,
+  "single_take_spoken_text": "אדם יוצא לדרך. הוא יודע מה לקח בידיו: מעט מזון, כלי מים, דבר שיעזור לו להגיע אל המקום הבא. ויש דברים שהוא נושא בלי שיוכל להניח אותם על הארץ. מילים ששמע בבית. שאלה שלא עזבה אותו. דרך שלמד להבחין בה בין טוב לרע.\n\nעכשיו מישהו הולך לצדו. צעיר ממנו. יום אחד גם הוא יצטרך לבחור, לשאול, ללמד. מה מן הדברים יוכל לעבור אליו? ומה יקרה כאשר האדם שלימד כבר לא יהיה שם כדי להשיב?\n\nזה המסע שנצא אליו: אל המילים, אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה. בדרך נפגוש עולם גדול של חיים, של אמונה ושל מחשבה. כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו הספר שנקרא משנה?",
+  "segment_boundaries": [
+    {
+      "id": "INTRO-A1-S01-N01",
+      "spoken_text": "אדם יוצא לדרך. הוא יודע מה לקח בידיו: מעט מזון, כלי מים, דבר שיעזור לו להגיע אל המקום הבא. ויש דברים שהוא נושא בלי שיוכל להניח אותם על הארץ. מילים ששמע בבית. שאלה שלא עזבה אותו. דרך שלמד להבחין בה בין טוב לרע.\n\nעכשיו מישהו הולך לצדו. צעיר ממנו. יום אחד גם הוא יצטרך לבחור, לשאול, ללמד. מה מן הדברים יוכל לעבור אליו? ומה יקרה כאשר האדם שלימד כבר לא יהיה שם כדי להשיב?",
+      "text_sha256": "62ca7d76e207958dbae8d7d1d8b876bf150114356d966ba59481e1b6e28e0877",
+      "word_count": 74,
+      "source_start_sample": null,
+      "source_end_sample": null,
+      "approved": false
+    },
+    {
+      "id": "INTRO-A1-S01-N02",
+      "spoken_text": "זה המסע שנצא אליו: אל המילים, אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה. בדרך נפגוש עולם גדול של חיים, של אמונה ושל מחשבה. כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו הספר שנקרא משנה?",
+      "text_sha256": "16c54320af77e95e066b48071280e853559106471fd883b042d1eb3d5d1a8c5a",
+      "word_count": 35,
+      "source_start_sample": null,
+      "source_end_sample": null,
+      "approved": false
+    }
+  ],
+  "beat_anchors_provisional": [
+    {
+      "shot_id": "OPN01",
+      "voice_id": "INTRO-A1-S01-N01",
+      "spoken_phrase_anchor": "אדם יוצא לדרך.",
+      "editorial_intent": "צעד ראשון בדרך",
+      "shot_direction_for_review_only": "Locked detail; a grown traveler's foot and ground",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C01",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C01"
+      ],
+      "provisional_spoken_words_in_shot": 3,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN02",
+      "voice_id": "INTRO-A1-S01-N01",
+      "spoken_phrase_anchor": "הוא יודע מה לקח בידיו:",
+      "editorial_intent": "הדרך נפתחת למרחב",
+      "shot_direction_for_review_only": "Wide two-adult rear view; figures <=35% frame height",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C02",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C02",
+        "INTRO-A1-S01-N01-C03"
+      ],
+      "provisional_spoken_words_in_shot": 16,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN03",
+      "voice_id": "INTRO-A1-S01-N01",
+      "spoken_phrase_anchor": "ויש דברים שהוא נושא בלי שיוכל להניח אותם",
+      "editorial_intent": "משא לא נראה; הצעיר נעצר",
+      "shot_direction_for_review_only": "Adult younger traveler pauses, stays screen-right; metaphor, not a source fact",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C04",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C04",
+        "INTRO-A1-S01-N01-C05",
+        "INTRO-A1-S01-N01-C06"
+      ],
+      "provisional_spoken_words_in_shot": 17,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN04",
+      "voice_id": "INTRO-A1-S01-N01",
+      "spoken_phrase_anchor": "דרך שלמד להבחין בה בין טוב לרע.",
+      "editorial_intent": "הקשב מתעורר בין הדורות",
+      "shot_direction_for_review_only": "Elder notices the younger traveler; original OTS, fixed 180-degree axis",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C07",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C07",
+        "INTRO-A1-S01-N01-C08",
+        "INTRO-A1-S01-N01-C09",
+        "INTRO-A1-S01-N01-C10"
+      ],
+      "provisional_spoken_words_in_shot": 21,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN05",
+      "voice_id": "INTRO-A1-S01-N01",
+      "spoken_phrase_anchor": "מה מן הדברים יוכל לעבור אליו?",
+      "editorial_intent": "שאלה שמבקשת תשובה",
+      "shot_direction_for_review_only": "Intimate reaction close-up; mature restrained emotion",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N01-C11",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N01-C11",
+        "INTRO-A1-S01-N01-C12"
+      ],
+      "provisional_spoken_words_in_shot": 17,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN06",
+      "voice_id": "INTRO-A1-S01-N02",
+      "spoken_phrase_anchor": "זה המסע שנצא אליו:",
+      "editorial_intent": "מחווה אנושית קטנה",
+      "shot_direction_for_review_only": "Original insert: hand near travel satchel, no invented scroll",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N02-C01",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N02-C01",
+        "INTRO-A1-S01-N02-C02"
+      ],
+      "provisional_spoken_words_in_shot": 15,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    },
+    {
+      "shot_id": "OPN07",
+      "voice_id": "INTRO-A1-S01-N02",
+      "spoken_phrase_anchor": "בדרך נפגוש עולם גדול",
+      "editorial_intent": "שני האנשים ממשיכים",
+      "shot_direction_for_review_only": "Distinct wide shot; never re-crop or copy OPN02",
+      "source_layer": "symbolic_dramatization",
+      "exact_cut_frame": null,
+      "estimated_seconds": null,
+      "shot_approved": false,
+      "needs_measured_alignment": true,
+      "first_caption_card_id": "INTRO-A1-S01-N02-C03",
+      "caption_card_ids_until_next_shot": [
+        "INTRO-A1-S01-N02-C03",
+        "INTRO-A1-S01-N02-C04"
+      ],
+      "provisional_spoken_words_in_shot": 20,
+      "pacing_status": "UNMEASURED_REVIEW_AFTER_WAV"
+    }
+  ],
+  "caption_card_count": 16,
+  "all_untimed_caption_cards_assigned_to_shots": true,
+  "caption_alignment_is_semantic_not_measured": true,
+  "script_master_sha256": "988190ce0c8feb7b518ca8a937cd868117bd91da0a3a19d987de2fa9bab2ec7c",
+  "expected_total_words": 109,
+  "expected_segment_ids": [
+    "INTRO-A1-S01-N01",
+    "INTRO-A1-S01-N02"
+  ],
+  "source_text_approved": false,
+  "real_scene_recording_exists": false,
+  "all_shot_images_approved": false,
+  "visual_scene_status": "UNAPPROVED",
+  "verify_free_hard_cap_before_submission": true,
+  "verified_no_charge_tts_route_available": false,
+  "tts_submission_permitted": false,
+  "generation_requests_made": 0,
+  "external_spend_initiated_usd": 0,
+  "workspace_usage": "unknown",
+  "post_recording_steps": [
+    "Capture one uninterrupted WAV without changing approved narrator identity",
+    "Verify spoken N01 then N02 against exact text, not just ASR similarity",
+    "Measure 48kHz WAV and section split at real pauses with listening review",
+    "Align the 14 provisional caption cards from real word timing; never invent timecodes",
+    "Use only explicitly reviewed accepted images and human Torah/rights approvals"
+  ],
+  "release_authorized": false
+}

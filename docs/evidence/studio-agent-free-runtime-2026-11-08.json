@@ -1,0 +1,46 @@
+{
+  "status": "RUNTIME_IMPLEMENTED_COMPUTE_AND_ARTISTIC_PROOF_BLOCKED",
+  "full_suite": {
+    "passed": 425,
+    "seconds": 27.504
+  },
+  "targeted_after_changes": {
+    "passed": 9,
+    "seconds": 5.069
+  },
+  "commands": [
+    "doctor",
+    "plan",
+    "run",
+    "resume",
+    "review",
+    "proof",
+    "backup",
+    "restore"
+  ],
+  "agent_calls": 0,
+  "real_model_requests": 0,
+  "new_external_service_charge": 0,
+  "workspace_usage": "unknown",
+  "private_board": "https://drive.google.com/file/d/1ipD4lwR2jW0oril0qz0uD-7A4G-dp_TJ/view",
+  "board_sha256": "d10a0ae40c7755a2538123b830a408802a47d2d95a412a33b14ff4c367640b16",
+  "real_images_shown": [
+    "OPN02"
+  ],
+  "clearly_missing_slots": 6,
+  "approvals_created": false,
+  "blocked": [
+    "No authorized private ComfyUI GPU endpoint",
+    "No verified inpainting workflow",
+    "No unattended remote backup access",
+    "Seven accepted distinct illustrations/matchingN01N02audio/measuredcaptions/sceneapproval required"
+  ],
+  "cpu_subprocesses_without_network": true,
+  "fake_http_interruption_resume_duplicate_posts": 0,
+  "existing_legacy_studio_api_preserved": true,
+  "last_legacy_and_runtime_tests": {
+    "passed": 14,
+    "seconds": 5.105
+  },
+  "private_snapshot": "https://drive.google.com/file/d/1G4ZFbRnBuaVAABm4jSDid8Q7P7QAvIhX/view"
+}

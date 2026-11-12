@@ -1,0 +1,92 @@
+name: Mishnah scene-pack offline preflight
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tools/scene_pack_preflight.py'
+      - 'tools/scene_asset_bridge.py'
+      - 'tools/opening_caption_prepare.py'
+      - 'tools/opening_voice_take_prepare.py'
+      - 'tests/test_opening_voice_take_prepare.py'
+      - 'episodes/berakhot-01-01/voice-rehearsal-draft.json'
+      - 'episodes/berakhot-01-01/opening-voice-take-prep.json'
+      - 'tests/test_opening_caption_prepare.py'
+      - 'scripts/introduction-working-draft.md'
+      - 'episodes/berakhot-01-01/opening-caption-draft.json'
+      - 'docs/evidence/introduction-script-audit-2026-11-06.json'
+      - 'tools/reference_pack_audit.py'
+      - 'tests/test_reference_pack_audit.py'
+      - 'tools/private_scene_review.py'
+      - 'tests/test_private_scene_review.py'
+      - 'tests/test_scene_asset_bridge.py'
+      - 'tests/test_scene_pack_preflight.py'
+      - 'tools/scene_review_board.py'
+      - 'tests/test_scene_review_board.py'
+      - 'episodes/berakhot-01-01/comfy-opening-images.json'
+      - 'episodes/berakhot-01-01/introduction-proof.json'
+      - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
+      - '.github/workflows/scene-pack-preflight.yml'
+  push:
+    paths:
+      - 'tools/scene_pack_preflight.py'
+      - 'tools/scene_asset_bridge.py'
+      - 'tools/opening_caption_prepare.py'
+      - 'tools/opening_voice_take_prepare.py'
+      - 'tests/test_opening_voice_take_prepare.py'
+      - 'episodes/berakhot-01-01/voice-rehearsal-draft.json'
+      - 'episodes/berakhot-01-01/opening-voice-take-prep.json'
+      - 'tests/test_opening_caption_prepare.py'
+      - 'scripts/introduction-working-draft.md'
+      - 'episodes/berakhot-01-01/opening-caption-draft.json'
+      - 'docs/evidence/introduction-script-audit-2026-11-06.json'
+      - 'tools/reference_pack_audit.py'
+      - 'tests/test_reference_pack_audit.py'
+      - 'tools/private_scene_review.py'
+      - 'tests/test_private_scene_review.py'
+      - 'tests/test_scene_asset_bridge.py'
+      - 'tests/test_scene_pack_preflight.py'
+      - 'tools/scene_review_board.py'
+      - 'tests/test_scene_review_board.py'
+      - 'episodes/berakhot-01-01/comfy-opening-images.json'
+      - 'episodes/berakhot-01-01/introduction-proof.json'
+      - 'docs/evidence/opn02-rear-wide-2026-11-08.json'
+      - '.github/workflows/scene-pack-preflight.yml'
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Test no-charge, fail-closed preflight
+        run: |
+          python -m unittest discover -s tests -p 'test_scene_pack_preflight.py' -v
+          python -m unittest discover -s tests -p 'test_scene_review_board.py' -v
+          python -m unittest discover -s tests -p 'test_scene_asset_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_private_scene_review.py' -v
+          python -m unittest discover -s tests -p 'test_reference_pack_audit.py' -v
+          python -m unittest discover -s tests -p 'test_opening_caption_prepare.py' -v
+          python -m unittest discover -s tests -p 'test_opening_voice_take_prepare.py' -v
+      - name: Prepare exact untimed Hebrew opening captions from locked script
+        run: python -m tools.opening_caption_prepare
+      - name: Prepare one locked Alnilam narration take and semantic shot anchors (no provider calls)
+        run: python -m tools.opening_voice_take_prepare
+      - name: Summarize all seven opening shots without model calls
+        run: python -m tools.scene_pack_preflight
+      - name: Reconcile scene registry with film manifest (fail closed without private media)
+        run: python -m tools.scene_asset_bridge
+      - name: Build private-path-only placeholder review board (no image assets in CI)
+        run: python -m tools.scene_review_board
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OFFLINE-ONLY-scene-pack-preflight
+          path: |
+            build/scene-pack-preflight.json
+            build/scene-asset-bridge.json
+            build/opening-caption-draft.json
+            build/opening-voice-preparation.json

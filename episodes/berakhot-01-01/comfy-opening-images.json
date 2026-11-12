@@ -1,0 +1,966 @@
+{
+  "schema_version": 1,
+  "scene": "INTRO-A1-S01",
+  "size": [
+    1024,
+    576
+  ],
+  "model": {
+    "id": "black-forest-labs/FLUX.2-klein-4B",
+    "revision": "UNVERIFIED",
+    "unet": "flux-2-klein-4b.safetensors",
+    "text_encoder": "qwen_3_4b.safetensors",
+    "vae": "flux2-vae.safetensors",
+    "component_sha256": {
+      "unet": null,
+      "text_encoder": null,
+      "vae": null
+    }
+  },
+  "style": "Original mature hand-painted cinematic semi-realism, textured cloth and stone, muted ochre bronze slate-blue and violet, natural adult anatomy, restrained expressions, no text, glyphs or logos. Symbolic dramatization, not a documented event. Sunset near a generic stone hillside village; same soft light from behind-left. Do not copy existing animation frames or characters.",
+  "references": [
+    {
+      "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+      "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "expected_size": [
+        1672,
+        941
+      ],
+      "synthesis_rights_confirmed": true,
+      "role": "approved_style_and_character_master",
+      "access_status": "VERIFIED_ORIGINAL",
+      "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+      "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+      "privacy": "private"
+    }
+  ],
+  "characters": {
+    "A": {
+      "description": "Mature adult male traveler, gray beard, weathered contemplative face, sand-colored wrapped headcloth, dark indigo robe over light beige tunic, simple travel satchel. Preserve exact facial structure, relative height, headwrap folds, strap and satchel placement from the verified master. Frame left, no historical identity.",
+      "references": [
+        {
+          "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+          "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+          "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+          "expected_size": [
+            1672,
+            941
+          ],
+          "synthesis_rights_confirmed": true,
+          "role": "approved_style_and_character_master",
+          "access_status": "VERIFIED_ORIGINAL",
+          "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+          "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+          "privacy": "private"
+        }
+      ]
+    },
+    "B": {
+      "description": "Adult male traveler with dark hair and beard, brown headwrap and shawl over light tunic, travel bag. Serious restrained expressions, never a boy or teenager. Preserve exact facial structure, relative height, costume and straps from the verified master. Frame right, no historical identity.",
+      "references": [
+        {
+          "path": "private-media/introduction/references/e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3.png",
+          "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+          "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+          "expected_size": [
+            1672,
+            941
+          ],
+          "synthesis_rights_confirmed": true,
+          "role": "approved_style_and_character_master",
+          "access_status": "VERIFIED_ORIGINAL",
+          "rights_basis": "Owner supplied verified original ZIP and explicitly authorized private preservation and OPN02 reference processing; no publication approval",
+          "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+          "privacy": "private"
+        }
+      ]
+    }
+  },
+  "authorization": {
+    "generation_approved": false,
+    "zero_cost_compute_verified": false,
+    "component_licenses_verified": false,
+    "max_submissions": 1,
+    "approved_shot_ids": [
+      "OPN02"
+    ],
+    "total_submissions_limit": 1,
+    "previous_one_shot_authorization_consumed": true,
+    "consumed_shot_id": "OPN02",
+    "consumed_evidence": "docs/evidence/opn02-rear-wide-2026-11-08.json",
+    "new_generation_requires_new_explicit_owner_authorization": true,
+    "bounded_modal_trial_approved": false
+  },
+  "shots": [
+    {
+      "id": "OPN01",
+      "prompt": "Low ground-level insert of a weighted adult step stopping on dusty path. Same practical sandals and robe hem as master.",
+      "seed": 73001,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "פרט הצעד על הדרך — להכניס את הצופה למשקל האנושי של המסע.",
+      "visual_direction": {
+        "camera": "ground height, close insert",
+        "positions": "Only feet and robe hems; preserve travel left-to-right.",
+        "eyelines_axis": "No face shown; same south side of axis.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "locked",
+      "cut_reason": "Cut on the pause to reveal who walks.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN01",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "פרט הצעד על הדרך — להכניס את הצופה למשקל האנושי של המסע.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "ground height, close insert",
+        "camera_angle": "ground height, close insert",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "Only feet and robe hems; preserve travel left-to-right.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "Low ground-level insert of a weighted adult step stopping on dusty path. Same practical sandals and robe hem as master.",
+        "eye_line_notes": "No face shown; same south side of axis.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "Low ground-level insert of a weighted adult step stopping on dusty path. Same practical sandals and robe hem as master.",
+        "must_be_in_frame": [
+          "Only feet and robe hems; preserve travel left-to-right."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "locked",
+        "cut_motivation": "Cut on the pause to reveal who walks.",
+        "emotional_beat": "פרט הצעד על הדרך — להכניס את הצופה למשקל האנושי של המסע.",
+        "new_relative_to_previous": "Original composition for OPN01; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    },
+    {
+      "id": "OPN02",
+      "prompt": "Rear-view wide establishing shot: two anonymous adult travelers WALK AWAY from camera, entire bodies including feet, each approximately 30 percent of frame height. The elder remains left in indigo, the adult younger remains right in brown. A winding dusty path leads from lower-center through broad hills to a SMALL DISTANT hillside stone village. Gold-violet sunset. Landscape dominates. No overhead framing tree, no large near-right building, no front-facing or half-body figures. Preserve wardrobe and painterly identity from character-only reference crops; invent a new landscape layout. Symbolic dramatization, not Rabbi Judah the Patriarch or a documented historical meeting.",
+      "seed": 73002,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "רחב שני הנוסעים — מקום, קשר ושאלה אנושית.",
+      "visual_direction": {
+        "camera": "Behind both travelers at slightly elevated eye-level; camera remains south of travel axis; Very wide establishing, entire rear-view figures approximately 30 percent frame height",
+        "positions": "Figures in lower center-left, elder left younger right. Both full bodies approximately30% frame height. Winding path leads diagonally toward small distant village upper-right. Open hills dominate; no foreground tree canopy or near building.",
+        "eyelines_axis": "Both gaze forward along path away from camera; no faces turned toward viewer",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "forward walk away",
+      "cut_reason": "Cut from shared geography to the younger traveler seeking understanding.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN02",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "רחב שני הנוסעים — מקום, קשר ושאלה אנושית.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "Very wide establishing, entire rear-view figures approximately 30 percent frame height",
+        "camera_angle": "Behind both travelers at slightly elevated eye-level; camera remains south of travel axis",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "Figures in lower center-left, elder left younger right. Both full bodies approximately30% frame height. Winding path leads diagonally toward small distant village upper-right. Open hills dominate; no foreground tree canopy or near building.",
+        "continuity_requirements": [
+          "Same indigo robe/sand wrap/light tunic/satchel elder and brown clothes/light tunic/satchel adult younger",
+          "Anonymous symbolic travelers, explicitly not Rabbi Judah the Patriarch",
+          "Same warm sunset and cool blue-violet shadows",
+          "Preserve left/right order and travel direction"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "Both walking away, relaxed arms, no hand raised in conversation",
+        "eye_line_notes": "Both gaze forward along path away from camera; no faces turned toward viewer",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "Two travelers walking toward a distant village, backs to camera",
+        "must_be_in_frame": [
+          "Two full adult rear-view bodies including feet",
+          "Winding path",
+          "Wide hills",
+          "Small distant village",
+          "Gold-violet sky"
+        ],
+        "must_not_dominate_frame": [
+          "Figures larger than35% frame height",
+          "Tree framing upper-left",
+          "Large near-right building",
+          "Front faces",
+          "Half-body portraits"
+        ],
+        "left_right_placement": "Anonymous elder left, adult younger right, both walking away",
+        "depth_plan": "Foreground open stony path; small full-body pair lower-middle; serpentine path through rolling hills; distant village beneath broad gold-violet sky",
+        "motion_implication": "Forward progress into landscape; no implied speaking gesture",
+        "cut_motivation": "Cut from shared geography to the younger traveler seeking understanding.",
+        "emotional_beat": "רחב שני הנוסעים — מקום, קשר ושאלה אנושית.",
+        "new_relative_to_previous": "Reverse/rear view instead of front two-shot; full bodies30% height, no foreground tree/building, landscape dominant",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true,
+        "reference_preparation": {
+          "method": "two proportional identity/costume crops from verified master, no invented strength or controlnet",
+          "crops": [
+            {
+              "character": "elder",
+              "path": "private-media/introduction/opn02-rear-wide/elder-conditioning.png",
+              "sha256": "80c76c071061e12efa6f45d87f3681f8edb57877c2e0454e31158a22f64a28a9",
+              "source_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+              "crop_box": [
+                285,
+                90,
+                860,
+                941
+              ],
+              "size": [
+                345,
+                511
+              ],
+              "role": "identity_costume_only"
+            },
+            {
+              "character": "younger",
+              "path": "private-media/introduction/opn02-rear-wide/younger-conditioning.png",
+              "sha256": "82b5883412024e6b66a15c51104096f9d9aea9b1712810f444eea1781daad55c",
+              "source_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+              "crop_box": [
+                765,
+                180,
+                1245,
+                941
+              ],
+              "size": [
+                322,
+                511
+              ],
+              "role": "identity_costume_only"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "OPN03",
+      "prompt": "Original medium shot of adult younger traveler pausing with restrained curiosity, same brown garments and mature facial proportions.",
+      "seed": 73003,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "הצעיר מחפש הבנה — שאלה ללא דיאלוג מומצא.",
+      "visual_direction": {
+        "camera": "eye level, medium",
+        "positions": "B right; leave looking room toward A at screen left.",
+        "eyelines_axis": "B looks screen-left; south side of axis.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "restrained push-in if the question develops",
+      "cut_reason": "Cut along eyeline to the older traveler listening.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN03",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "הצעיר מחפש הבנה — שאלה ללא דיאלוג מומצא.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "eye level, medium",
+        "camera_angle": "eye level, medium",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "B right; leave looking room toward A at screen left.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "Original medium shot of adult younger traveler pausing with restrained curiosity, same brown garments and mature facial proportions.",
+        "eye_line_notes": "B looks screen-left; south side of axis.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "Original medium shot of adult younger traveler pausing with restrained curiosity, same brown garments and mature facial proportions.",
+        "must_be_in_frame": [
+          "B right; leave looking room toward A at screen left."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "restrained push-in if the question develops",
+        "cut_motivation": "Cut along eyeline to the older traveler listening.",
+        "emotional_beat": "הצעיר מחפש הבנה — שאלה ללא דיאלוג מומצא.",
+        "new_relative_to_previous": "Original composition for OPN03; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    },
+    {
+      "id": "OPN04",
+      "prompt": "Original medium close view of older traveler listening, with younger shoulder at right foreground if needed. Keep gray beard, headcloth and indigo robe; no exaggerated wise-man pose.",
+      "seed": 73004,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "המבוגר מקשיב — סמכות חביבה ושקטה.",
+      "visual_direction": {
+        "camera": "eye level, medium close or younger-shoulder OTS",
+        "positions": "A left; optional B shoulder right foreground, never older shoulder hiding A.",
+        "eyelines_axis": "A looks right toward B; preserve south side of axis.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "locked",
+      "cut_reason": "Cut on a small change of attention back to the younger reaction.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN04",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "המבוגר מקשיב — סמכות חביבה ושקטה.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "eye level, medium close or younger-shoulder OTS",
+        "camera_angle": "eye level, medium close or younger-shoulder OTS",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "A left; optional B shoulder right foreground, never older shoulder hiding A.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "Original medium close view of older traveler listening, with younger shoulder at right foreground if needed. Keep gray beard, headcloth and indigo robe; no exaggerated wise-man pose.",
+        "eye_line_notes": "A looks right toward B; preserve south side of axis.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "Original medium close view of older traveler listening, with younger shoulder at right foreground if needed. Keep gray beard, headcloth and indigo robe; no exaggerated wise-man pose.",
+        "must_be_in_frame": [
+          "A left; optional B shoulder right foreground, never older shoulder hiding A."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "locked",
+        "cut_motivation": "Cut on a small change of attention back to the younger reaction.",
+        "emotional_beat": "המבוגר מקשיב — סמכות חביבה ושקטה.",
+        "new_relative_to_previous": "Original composition for OPN04; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    },
+    {
+      "id": "OPN05",
+      "prompt": "New original intimate reaction of younger adult, barely perceptible understanding, restrained expression, same face and wardrobe.",
+      "seed": 73005,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "תגובה עדינה של הצעיר — מעבר מהיסוס לקשב.",
+      "visual_direction": {
+        "camera": "eye level, close-up",
+        "positions": "B right with negative space left.",
+        "eyelines_axis": "B looks left; no gaze inversion.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "small push-in only for the reaction, not repeated from every shot",
+      "cut_reason": "Cut on gaze or breath to the small practical gesture.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN05",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "תגובה עדינה של הצעיר — מעבר מהיסוס לקשב.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "eye level, close-up",
+        "camera_angle": "eye level, close-up",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "B right with negative space left.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "New original intimate reaction of younger adult, barely perceptible understanding, restrained expression, same face and wardrobe.",
+        "eye_line_notes": "B looks left; no gaze inversion.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "New original intimate reaction of younger adult, barely perceptible understanding, restrained expression, same face and wardrobe.",
+        "must_be_in_frame": [
+          "B right with negative space left."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "small push-in only for the reaction, not repeated from every shot",
+        "cut_motivation": "Cut on gaze or breath to the small practical gesture.",
+        "emotional_beat": "תגובה עדינה של הצעיר — מעבר מהיסוס לקשב.",
+        "new_relative_to_previous": "Original composition for OPN05; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    },
+    {
+      "id": "OPN06",
+      "prompt": "Original adult hand gesture beside the same travel bag, sleeve and strap; plausible anatomy and weight, no book, scroll, tablets or invented sacred prop.",
+      "seed": 73006,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "מחווה אנושית קטנה — אחריות ומסירה כמשל.",
+      "visual_direction": {
+        "camera": "hand level, detail insert",
+        "positions": "Same bag/hand placement as verified master, no handedness change.",
+        "eyelines_axis": "Insert remains on same camera side, no invented object transfer.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "locked",
+      "cut_reason": "Match the direction of the hand or cloth movement to renewed walking.",
+      "narration_ids": [
+        "INTRO-A1-S01-N01",
+        "INTRO-A1-S01-N02"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN06",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "מחווה אנושית קטנה — אחריות ומסירה כמשל.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "hand level, detail insert",
+        "camera_angle": "hand level, detail insert",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "Same bag/hand placement as verified master, no handedness change.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "Original adult hand gesture beside the same travel bag, sleeve and strap; plausible anatomy and weight, no book, scroll, tablets or invented sacred prop.",
+        "eye_line_notes": "Insert remains on same camera side, no invented object transfer.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "Original adult hand gesture beside the same travel bag, sleeve and strap; plausible anatomy and weight, no book, scroll, tablets or invented sacred prop.",
+        "must_be_in_frame": [
+          "Same bag/hand placement as verified master, no handedness change."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "locked",
+        "cut_motivation": "Match the direction of the hand or cloth movement to renewed walking.",
+        "emotional_beat": "מחווה אנושית קטנה — אחריות ומסירה כמשל.",
+        "new_relative_to_previous": "Original composition for OPN06; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    },
+    {
+      "id": "OPN07",
+      "prompt": "New wider original composition of the same travelers continuing rightward along the path toward the village in the same sunset. Retain identity, clothing and props; not a crop or reused master.",
+      "seed": 73007,
+      "characters": [
+        "A",
+        "B"
+      ],
+      "story_emotion": "ממשיכים בדרכם — קשב משותף וגשר ללימוד.",
+      "visual_direction": {
+        "camera": "slightly elevated wide, still south of axis",
+        "positions": "A left B right with deeper landscape and changed blocking.",
+        "eyelines_axis": "Forward travel rightward; no sudden reverse rear-view crossing.",
+        "light": "same rear-left warm sunset and cool blue-violet fill",
+        "palette": "earth, gold, indigo and muted violet; painted cloth/stone, adult restrained tone"
+      },
+      "motion_intent": "gentle pull-back only for the transition",
+      "cut_reason": "Cut at narration bridge to the next learning scene.",
+      "narration_ids": [
+        "INTRO-A1-S01-N02"
+      ],
+      "source_layer": "symbolic_dramatization",
+      "source_inspiration": [
+        "M01",
+        "M04"
+      ],
+      "duration_frames": null,
+      "start_frame": null,
+      "end_frame": null,
+      "director": {
+        "shot_id": "OPN07",
+        "scene_id": "INTRO-A1-S01",
+        "purpose": "ממשיכים בדרכם — קשב משותף וגשר ללימוד.",
+        "narrative_role": "Symbolic human journey, not a documented historical event",
+        "characters_present": [
+          "A",
+          "B"
+        ],
+        "character_priority": [
+          "A",
+          "B"
+        ],
+        "environment": "Anonymous hillside stone village, dusty path and olive trees",
+        "time_of_day": "sunset",
+        "mood": "Mature, warm, restrained curiosity",
+        "camera_distance": "slightly elevated wide, still south of axis",
+        "camera_angle": "slightly elevated wide, still south of axis",
+        "lens_feel": "Painted cinematic depth, natural proportions",
+        "composition_notes": "A left B right with deeper landscape and changed blocking.",
+        "continuity_requirements": [
+          "Preserve face, adult age, body ratios, wardrobe, straps and satchels",
+          "Camera south of travel axis; same rear-left sunset"
+        ],
+        "lighting_notes": "same rear-left warm sunset and cool blue-violet fill",
+        "gesture_notes": "New wider original composition of the same travelers continuing rightward along the path toward the village in the same sunset. Retain identity, clothing and props; not a crop or reused master.",
+        "eye_line_notes": "Forward travel rightward; no sudden reverse rear-view crossing.",
+        "forbidden_elements": [
+          "text",
+          "extra people",
+          "childlike faces",
+          "plastic 3D",
+          "photorealism",
+          "invented historical identity"
+        ],
+        "style_lock": "d8e1068800dc17a042234efec3468b5687a29cfdaf07c01ba79d63dcbfacaaa9",
+        "reference_images": [
+          "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        ],
+        "reference_roles": [
+          "approved_style_and_character_master"
+        ],
+        "output_aspect_ratio": "16:9",
+        "generation_parameters": {
+          "guidance": 1,
+          "steps": 4
+        },
+        "review_status": "PENDING_HUMAN",
+        "subject_hierarchy": [
+          "A",
+          "B"
+        ],
+        "focal_action": "New wider original composition of the same travelers continuing rightward along the path toward the village in the same sunset. Retain identity, clothing and props; not a crop or reused master.",
+        "must_be_in_frame": [
+          "A left B right with deeper landscape and changed blocking."
+        ],
+        "must_not_dominate_frame": [
+          "Architecture",
+          "Decorative detail"
+        ],
+        "left_right_placement": "A left B right where visible; never invert axis",
+        "depth_plan": "Olive or path foreground, travelers midground, village and hills background where framing permits",
+        "motion_implication": "gentle pull-back only for the transition",
+        "cut_motivation": "Cut at narration bridge to the next learning scene.",
+        "emotional_beat": "ממשיכים בדרכם — קשב משותף וגשר ללימוד.",
+        "new_relative_to_previous": "Original composition for OPN07; do not crop reference",
+        "preserve_character_identity": true,
+        "preserve_costumes": true,
+        "preserve_environment_style": true,
+        "preserve_color_script": true,
+        "avoid_childlike_look": true,
+        "avoid_text_in_image": true,
+        "avoid_extra_limbs_or_fingers": true,
+        "avoid_face_distortion": true,
+        "avoid_reference_copy_too_closely": true
+      }
+    }
+  ],
+  "backend": {
+    "type": "comfyui"
+  },
+  "available_backends": {
+    "hf-zero": {
+      "type": "hf-zero",
+      "space": "black-forest-labs/FLUX.2-klein-4B",
+      "revision": "0207e56c7ec73975b6ebeadfaf88c8d338d61a8d",
+      "app_sha256": "54bd7de69240aee6cf4f543060af945d3ae3625768d3d6a9f68e7936a98c5336",
+      "protocol": "gradio-call-v1",
+      "deployed_weights_revision": null,
+      "original_png_required": false,
+      "output_contract": "Preserve original PNG/WebP; PNG conversion must preserve decoded RGB/RGBA pixels, remain unapproved and retain native hash/path"
+    },
+    "cloudflare": {
+      "type": "cloudflare",
+      "model": "@cf/black-forest-labs/flux-2-klein-4b",
+      "safety": {
+        "private_direct_api_verified": true,
+        "licenses_verified": true,
+        "free_hard_cap_verified": false,
+        "verified_at": "2026-11-07T22:39:39+00:00",
+        "evidence": "docs/evidence/opn02-cloudflare-real-candidate-2026-11-07.json"
+      }
+    },
+    "modal": {
+      "type": "modal",
+      "model": "black-forest-labs/FLUX.2-klein-4B",
+      "revision": "e7b7dc27f91deacad38e78976d1f2b499d76a294",
+      "app": "mishnah-flux2-klein4b",
+      "function": "generate",
+      "safety": {
+        "private_runtime_verified": false,
+        "provider_hard_spend_cap_verified": false,
+        "license_verified": false,
+        "reference_transfer_approved": false
+      },
+      "status": "NOT_DEPLOYED_OR_APPROVED",
+      "comment": "Never infer approval from valid Modal tokens. Restore owner-private reference bytes in an authorized runtime, pin model revision, and verify a provider-side hard spending limit before any GPU call.",
+      "model_revision_source": "https://huggingface.co/api/models/black-forest-labs/FLUX.2-klein-4B"
+    }
+  },
+  "direction_board": {
+    "path": "private-media/introduction/references/1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5.png",
+    "sha256": "1d3eac22fbaee5f442044cd0f658d2a83f3158888dfa7405b7f7039e40a36bd5",
+    "expected_sha256": null,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "role": "direction_only_not_generation_input",
+    "access_status": "VERIFIED_ORIGINAL",
+    "crop_as_film_frame_allowed": false,
+    "synthesis_rights_confirmed": true,
+    "rights_uri": "Owner supplied original ZIP and explicitly authorized private preservation and OPN02 reference synthesis in current task; no release authorization",
+    "privacy": "private"
+  },
+  "continuity": {
+    "setting": "symbolic anonymous hillside stone village at sunset",
+    "travel_direction": "screen left to right",
+    "older_position": "screen left",
+    "younger_position": "screen right",
+    "axis": "cameras remain south of travel line; no automatic reversal",
+    "key_light": "warm rear-left sunset; cool indigo-violet fill; practical warm windows subordinate",
+    "time_jump_allowed": false,
+    "source_layer": "symbolic_dramatization_not_documented_event",
+    "narrator_profile": "series-narrator-alnilam-continuous-v2",
+    "timing_status": "UNMEASURED"
+  },
+  "private_reference_package": {
+    "provider": "google_drive",
+    "file_id": "1Enbrzl3h2iCybflc_c4y_-b6vmecgwfb",
+    "archive_sha256": "0470b210d977dc1d3311638e33dd7de7a632c8acaa53e47ea1f0e6df4d57298d",
+    "shared": false,
+    "requires_authorized_read": true,
+    "restore_command": "tools.comfy_runtime --package",
+    "unattended_download_credentials_configured": false
+  }
+}

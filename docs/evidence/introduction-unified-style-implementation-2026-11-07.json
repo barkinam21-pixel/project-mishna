@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-07",
+  "scope": "unified style/reference/provider implementation; NOT image production success",
+  "references": {
+    "master": {
+      "filename": "a_cinematic_detailed_illustration_in_the_same_rea.png",
+      "expected_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "expected_size": [
+        1672,
+        941
+      ],
+      "actual_sha256": null,
+      "actual_size": null,
+      "visually_seen_in_chat": true,
+      "original_bytes_accessible": false,
+      "private_copy_created": false
+    },
+    "board": {
+      "role": "direction_only",
+      "visually_seen_in_chat": true,
+      "actual_sha256": null,
+      "actual_size": null,
+      "original_bytes_accessible": false,
+      "private_copy_created": false
+    }
+  },
+  "reference_discovery": {
+    "accessible_image_attachment_count": 3,
+    "matching_master_hashes": 0,
+    "drive_exact_filename_search_matches": 0,
+    "chat_preview_not_substituted": true
+  },
+  "visual_bible": "completed from visible chat previews and owner direction; original file/identity fingerprint pending",
+  "shot_map": {
+    "shot_ids": [
+      "OPN01",
+      "OPN02",
+      "OPN03",
+      "OPN04",
+      "OPN05",
+      "OPN06",
+      "OPN07"
+    ],
+    "setting": "anonymous village at sunset",
+    "all_timings_unmeasured": true,
+    "new_illustrations": 0
+  },
+  "provider": {
+    "space": {
+      "type": "hf-zero",
+      "space": "black-forest-labs/FLUX.2-klein-4B",
+      "revision": "0207e56c7ec73975b6ebeadfaf88c8d338d61a8d",
+      "app_sha256": "54bd7de69240aee6cf4f543060af945d3ae3625768d3d6a9f68e7936a98c5336",
+      "protocol": "gradio-call-v1",
+      "deployed_weights_revision": null,
+      "original_png_required": true
+    },
+    "public_config_http_status": 200,
+    "observed_output_components": [
+      {
+        "id": 26,
+        "label": "Result",
+        "format": "webp"
+      }
+    ],
+    "live_readiness_code": "ORIGINAL_PNG_UNAVAILABLE",
+    "inference_submissions": 0,
+    "reference_uploads": 0,
+    "gpu_allocated_for_this_task": "NOT_TESTED",
+    "gpu_seconds": null,
+    "peak_vram_bytes": null,
+    "source_weights_revision": "unknown"
+  },
+  "alternatives": [
+    {
+      "route": "existing authorized Kaggle GPU",
+      "status": "NO_RUNTIME_BINDING_OR_VERIFIED_QUOTA; not scheduled"
+    },
+    {
+      "route": "existing local or private ComfyUI GPU",
+      "status": "NO_ENDPOINT_OR_GPU_CONNECTED; not installed on owner computer"
+    }
+  ],
+  "verification": {
+    "local_full_suite": {
+      "tests": 361,
+      "result": "PASS",
+      "seconds": 34.14
+    },
+    "all44_narrated_text_blocks_identical_to_parent": true,
+    "voice_baseline_hash_unchanged": true,
+    "hosted_cache": "verified with synthetic unit fixture only, NOT live GPU",
+    "dry_run_opn02": "BLOCKED: original bytes/hash/rights receipt unavailable"
+  },
+  "new_external_charge_usd": 0,
+  "workspace_usage": "unknown",
+  "new_artistic_mp4": false,
+  "release_authorized": false
+}

@@ -1,0 +1,121 @@
+{
+  "date": "2026-11-07",
+  "status": "BLOCKED_NO_COMFY_GPU_ENDPOINT_AND_APPROVED_REFERENCE",
+  "real_model_inference_requests": 0,
+  "new_images": 0,
+  "new_external_charge_usd": 0,
+  "gpu_peak_memory_bytes": null,
+  "gpu_inference_seconds": null,
+  "workspace_usage": "unknown",
+  "runtime_probe": {
+    "generation_submissions": 0,
+    "ready": false,
+    "errors": [
+      "NO_COMFY_ENDPOINT: no server selected; no GPU provisioned"
+    ],
+    "local_nvidia_device_count": 0,
+    "local_gpu_memory": null,
+    "remote_gpu_memory": null,
+    "workspace_usage": "unknown",
+    "memory_limit_bytes": "17179869184",
+    "remaining_checks": [
+      "verified zero-cost compute",
+      "model component hashes/licences",
+      "approved reference files and rights",
+      "actual GPU graph test and peak-memory measurement"
+    ]
+  },
+  "official_space": {
+    "observed_stage": "RUNNING",
+    "observed_hardware": "zero-a10g",
+    "revision": "0207e56c7ec73975b6ebeadfaf88c8d338d61a8d",
+    "api_http_status": 200,
+    "implementation": "Diffusers Flux2KleinPipeline, not ComfyUI",
+    "actual_allocation_for_this_task": "NOT_TESTED",
+    "generation_not_submitted_because": "Approved combined reference unavailable; do not bypass existing reference/rights gates",
+    "prompt_upsampling_optional_external_service": "must remain disabled"
+  },
+  "sources": [
+    {
+      "url": "https://huggingface.co/api/spaces/black-forest-labs/FLUX.2-klein-4B",
+      "sha256": "f073529e1c2b5e3e8ccaafab8a9608f8c3171794d822fa9484827114ea7a6fb3",
+      "http_status": 200
+    },
+    {
+      "url": "https://huggingface.co/spaces/black-forest-labs/FLUX.2-klein-4B/raw/main/app.py",
+      "sha256": "54bd7de69240aee6cf4f543060af945d3ae3625768d3d6a9f68e7936a98c5336",
+      "http_status": 200
+    },
+    {
+      "url": "https://huggingface.co/docs/hub/spaces-zerogpu",
+      "sha256": "5cac498b10c385c77e3f9867a33e39b0dccf78424d78d097147c198d6d45acf1",
+      "http_status": 200
+    },
+    {
+      "url": "https://black-forest-labs-flux-2-klein-4b.hf.space/gradio_api/info",
+      "sha256": "a2d7559f00068b4ffa03b2633921a287510294ac3b12a85aca5e4cfe3003fa38",
+      "http_status": 200
+    },
+    {
+      "url": "https://black-forest-labs-flux-2-klein-4b.hf.space/config",
+      "sha256": "645292036f11030841faaaa083a54dcb152b839cc1ef73c82f8ace9800eca644",
+      "http_status": 200
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Kaggle/kaggle-api/main/docs/kernels.md",
+      "sha256": "f72791d0e1279d83fafe257e7f80fd21aad6ae39982bd9ffce6a4a6c39263a12",
+      "http_status": 200
+    },
+    {
+      "url": "https://docs.github.com/en/actions/reference/runners/larger-runners",
+      "sha256": "29127f8f6fd8bd9b99ae1742d80998331b9f874e133b9e1ec3d3886e23eae9cf",
+      "http_status": 200
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Comfy-Org/ComfyUI/master/comfy/cli_args.py",
+      "sha256": "bebe7a5802f99acaed6315adcf1ed2a3661689f4f618452e12dc179b16be8a6c",
+      "http_status": 200
+    },
+    {
+      "url": "https://huggingface.co/docs/hub/spaces-storage",
+      "sha256": "bc95b335620bacb6e9d34c41b27ee32fc7d07a1aa84db613da55e5e529e68cc7",
+      "http_status": 200
+    }
+  ],
+  "reference_discovery": {
+    "conversation_local_approved_path_available": false,
+    "drive_filename_and_project_searches": "no matching approved combined image found; not proof of global absence",
+    "accessible_attachment_images": "SP01 historical scene assets inspected; not approved OPN02 combined reference",
+    "archive_image_entries": "two historical SH09_unreviewed.png; remaining listed archives voice/reports only",
+    "files_uploaded_to_generation_provider": 0
+  },
+  "public_space_comfy_protocol_probe": {
+    "generation_submissions": 0,
+    "ready": false,
+    "errors": [
+      "ENDPOINT_UNAVAILABLE:JSONDecodeError"
+    ],
+    "local_nvidia_device_count": 0,
+    "local_gpu_memory": null,
+    "remote_gpu_memory": null,
+    "workspace_usage": "unknown",
+    "memory_limit_bytes": "17179869184",
+    "remaining_checks": [
+      "verified zero-cost compute",
+      "model component hashes/licences",
+      "approved reference files and rights",
+      "actual GPU graph test and peak-memory measurement"
+    ]
+  },
+  "verification": {
+    "full_local_suite": {
+      "tests": 348,
+      "result": "PASS",
+      "duration_seconds": 32.913
+    },
+    "live_runtime_probe_exit_code": 2,
+    "public_space_comfy_probe_exit_code": 2,
+    "model_inference": "NOT_RUN",
+    "new_mock_generation_experiments": 0
+  }
+}

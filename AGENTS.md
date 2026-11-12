@@ -1,5 +1,8 @@
 # Codex and agent instructions — Mishnah Film Studio
 
+## Mandatory: production must survive without Codex
+Before editing any generation, automation or rendering pipeline, read [the no-Codex production contract](docs/no-codex-production-contract-2026-11-08.md). Codex is an optional developer, **never a runtime dependency**. Do not claim an autonomous free image studio until the one-command Python run/resume flow, no-GPU fallback, independent recovery tests, private asset restoration and real GPU trial are verified. Preserve the existing ComfyUI/preflight/FFmpeg modules and do not introduce another competing control room.
+
 ## Mandatory single control room and no-repeat rule
 - The ONLY active Mishnah production repository is `barkinam21-pixel/project-mishna` and the ONLY human operator dashboard is [README.md](README.md). Read it FIRST every session, then the episode manifest and `episodes/berakhot-01-01/trials.json` evidence ledger before proposing any user action.
 - **SH01 is DONE as a technical GPU trial**: a user-uploaded ZIP containing a real SDXL/Tesla T4 image was inspected and SHA-256 verified; it is **not** an approved production asset. Never ask Bar to rerun the one-image Colab trial because an old document says GPU was not yet tested.
@@ -63,3 +66,11 @@ Default coordination:
 - Do **not** assign a second Copilot task just because parallelism is possible. Add one only when it has a clearly independent deliverable, isolated files, explicit acceptance tests, and low risk of merge conflicts, quota contention, or wasted credits. State why it is worth doing and whether Copilot actually accepted it.
 - Never let Copilot silently approve Torah interpretation, source text, release rights, or creative direction. Do not generate final media before gates.
 - At end of session add: `עבודה מקבילה אפשרית כעת: ...` and `האם כדאי להפעיל Copilot נוסף: כן/לא, כי ...`, alongside current Copilot PR, observed status, honest ETA uncertainty, and whether Bar needs to say `תמשיך`.
+
+
+## Binding long-form introduction scope (owner instruction, 2026-11-04)
+- Read docs/introduction-production-brief.md alongside the production contract. Intro target is25–40 minutes initially, extensible for understanding/drama. A suggested35-minute six-act outline is planning only, not source/script/creative approval.
+- Whole-series duration follows learning depth, including15/40+ minutes or connected clearly labeled parts. Do not compress the series into trailers or stretch it with still frames, repeated moves or narration.
+- Voice samples, a cinematic excerpt and a complete intro are distinct deliverables. Preserve existing75s proof manifest and13.5-minute draft as earlier trials; do not silently convert their approvals, duration or episode IDs.
+- Work order: choose narrator; source dossier; full intro script; acts/scenes/sound map; authorized cinematic excerpt; review/approval; full production. No full episode synthesis/render now. Traditional transmission and historical research must be distinguished throughout.
+- Long-form voice stability, varied music/ambience/silence, beginner term definitions and source-to-scene mapping are requirements. Short ASR/audio tests do not satisfy them.

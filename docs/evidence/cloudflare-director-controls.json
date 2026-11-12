@@ -1,0 +1,30 @@
+{
+  "status": "IMPLEMENTED_LOCAL_DRY_RUN_PASSED_LIVE_GENERATION_BLOCKED",
+  "shot": "OPN02",
+  "submissions": 0,
+  "new_image_created": false,
+  "blocker": "NO_CHARGE_HARD_CAP_UNVERIFIED",
+  "references": [
+    {
+      "sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "role": "approved_style_and_character_master"
+    }
+  ],
+  "missing": [],
+  "semantic_visual_qa": "NOT_EVALUATED",
+  "test_results": {
+    "full_suite": "373 passed in 36.649s",
+    "new_controls_tests": "10 passed"
+  },
+  "test_scope": "local mocked provider JPEG conversion and second-run candidate reuse; not live Cloudflare",
+  "unchanged": [
+    "Alnilam",
+    "44 narration blocks"
+  ],
+  "new_provider_charges": 0,
+  "workspace_usage": "unknown"
+}

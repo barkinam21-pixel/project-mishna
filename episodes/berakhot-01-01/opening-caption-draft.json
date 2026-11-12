@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "purpose": "UNALIGNED_CAPTION_SOURCE_PREPARATION_ONLY",
+  "scene": "INTRO-A1-S01",
+  "profile": "series-narrator-alnilam-continuous-v2",
+  "script_master_sha256": "988190ce0c8feb7b518ca8a937cd868117bd91da0a3a19d987de2fa9bab2ec7c",
+  "segments": [
+    {
+      "id": "INTRO-A1-S01-N01",
+      "speaker": "narrator",
+      "voice_profile": "series-narrator-alnilam-continuous-v2",
+      "source_ids": [
+        "M01",
+        "M04"
+      ],
+      "source_text": "אדם יוצא לדרך. הוא יודע מה לקח בידיו: מעט מזון, כלי מים, דבר שיעזור לו להגיע אל המקום הבא. ויש דברים שהוא נושא בלי שיוכל להניח אותם על הארץ. מילים ששמע בבית. שאלה שלא עזבה אותו. דרך שלמד להבחין בה בין טוב לרע.\n\nעכשיו מישהו הולך לצדו. צעיר ממנו. יום אחד גם הוא יצטרך לבחור, לשאול, ללמד. מה מן הדברים יוכל לעבור אליו? ומה יקרה כאשר האדם שלימד כבר לא יהיה שם כדי להשיב?",
+      "source_text_sha256": "62ca7d76e207958dbae8d7d1d8b876bf150114356d966ba59481e1b6e28e0877",
+      "cards": [
+        {
+          "card_id": "INTRO-A1-S01-N01-C01",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "אדם יוצא לדרך.",
+          "display_text": "אדם יוצא לדרך.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C02",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "הוא יודע מה לקח בידיו: מעט מזון,",
+          "display_text": "הוא יודע מה לקח בידיו: מעט מזון,",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C03",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "כלי מים, דבר שיעזור לו להגיע אל המקום הבא.",
+          "display_text": "כלי מים, דבר שיעזור לו להגיע אל המקום הבא.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C04",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "ויש דברים שהוא נושא בלי שיוכל להניח אותם על הארץ.",
+          "display_text": "ויש דברים שהוא נושא בלי שיוכל להניח אותם\nעל הארץ.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C05",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "מילים ששמע בבית.",
+          "display_text": "מילים ששמע בבית.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C06",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "שאלה שלא עזבה אותו.",
+          "display_text": "שאלה שלא עזבה אותו.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C07",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "דרך שלמד להבחין בה בין טוב לרע.",
+          "display_text": "דרך שלמד להבחין בה בין טוב לרע.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C08",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "עכשיו מישהו הולך לצדו.",
+          "display_text": "עכשיו מישהו הולך לצדו.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C09",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "צעיר ממנו.",
+          "display_text": "צעיר ממנו.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C10",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "יום אחד גם הוא יצטרך לבחור, לשאול, ללמד.",
+          "display_text": "יום אחד גם הוא יצטרך לבחור, לשאול, ללמד.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C11",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "מה מן הדברים יוכל לעבור אליו?",
+          "display_text": "מה מן הדברים יוכל לעבור אליו?",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N01-C12",
+          "voice_id": "INTRO-A1-S01-N01",
+          "spoken_text": "ומה יקרה כאשר האדם שלימד כבר לא יהיה שם כדי להשיב?",
+          "display_text": "ומה יקרה כאשר האדם שלימד כבר לא יהיה שם\nכדי להשיב?",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        }
+      ],
+      "word_count": 74,
+      "recording_status": "NOT_RECORDED",
+      "pronunciation_review": "PENDING",
+      "source_text_approved": false
+    },
+    {
+      "id": "INTRO-A1-S01-N02",
+      "speaker": "narrator",
+      "voice_profile": "series-narrator-alnilam-continuous-v2",
+      "source_ids": [
+        "M01",
+        "M04"
+      ],
+      "source_text": "זה המסע שנצא אליו: אל המילים, אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה. בדרך נפגוש עולם גדול של חיים, של אמונה ושל מחשבה. כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו הספר שנקרא משנה?",
+      "source_text_sha256": "16c54320af77e95e066b48071280e853559106471fd883b042d1eb3d5d1a8c5a",
+      "cards": [
+        {
+          "card_id": "INTRO-A1-S01-N02-C01",
+          "voice_id": "INTRO-A1-S01-N02",
+          "spoken_text": "זה המסע שנצא אליו: אל המילים,",
+          "display_text": "זה המסע שנצא אליו: אל המילים,",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N02-C02",
+          "voice_id": "INTRO-A1-S01-N02",
+          "spoken_text": "אל האנשים שלמדו אותן, ואל האחריות להעביר אותן הלאה.",
+          "display_text": "אל האנשים שלמדו אותן, ואל האחריות להעביר\nאותן הלאה.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N02-C03",
+          "voice_id": "INTRO-A1-S01-N02",
+          "spoken_text": "בדרך נפגוש עולם גדול של חיים, של אמונה ושל מחשבה.",
+          "display_text": "בדרך נפגוש עולם גדול של חיים, של אמונה ושל\nמחשבה.",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        },
+        {
+          "card_id": "INTRO-A1-S01-N02-C04",
+          "voice_id": "INTRO-A1-S01-N02",
+          "spoken_text": "כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו הספר שנקרא משנה?",
+          "display_text": "כדי להיכנס אליו, נתחיל בשאלה פשוטה: מהו\nהספר שנקרא משנה?",
+          "start_frame": null,
+          "end_frame": null,
+          "timing_status": "UNALIGNED_WITH_REAL_WAV",
+          "approved": false
+        }
+      ],
+      "word_count": 35,
+      "recording_status": "NOT_RECORDED",
+      "pronunciation_review": "PENDING",
+      "source_text_approved": false
+    }
+  ],
+  "card_count": 16,
+  "fps_for_future_alignment": 24,
+  "audio_sample_rate_for_future_alignment": 48000,
+  "timing_measured": false,
+  "narration_generated": false,
+  "scene_assets_approved": false,
+  "release_authorized": false,
+  "provider_calls": 0,
+  "next_step": "Record exact N01 and N02 with locked Alnilam voice; align by real WAV samples, validate and human-review Hebrew captions before copying into production manifest."
+}

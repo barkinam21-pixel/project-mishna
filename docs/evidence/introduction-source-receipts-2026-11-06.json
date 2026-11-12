@@ -1,0 +1,306 @@
+[
+  {
+    "id": "avot_sefaria",
+    "url": "https://www.sefaria.org/api/v3/texts/Pirkei_Avot.1.1?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "65d49fa6c4fb1aeaf71e900d42d6f4051b54992aa7e1a6d1c0335d35ee70042c",
+    "versions": [
+      {
+        "title": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "unknown"
+      }
+    ]
+  },
+  {
+    "id": "avot_mamre",
+    "url": "https://mechon-mamre.org/b/h/h49.htm",
+    "status": 200,
+    "sha256": "ebcb2f65e3cdfe29c0aa635daa17fed153476efc14021aa89dc0b02623b7644d"
+  },
+  {
+    "id": "rambam_intro",
+    "url": "https://mechon-mamre.org/i/0000.htm",
+    "status": 200,
+    "sha256": "97f9dcf9253460d98810eee16a50618a34293db02685db30c8e439e5d73e7c32"
+  },
+  {
+    "id": "rh41",
+    "url": "https://www.sefaria.org/api/v3/texts/Mishnah_Rosh_Hashanah.4.1?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "823683a5bdcc85d326afde8f7599f5bb3552e489d90e5d0b60cdbeb1529b9aa2",
+    "versions": [
+      {
+        "title": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "PD"
+      }
+    ]
+  },
+  {
+    "id": "berakhot11",
+    "url": "https://www.sefaria.org/api/v3/texts/Mishnah_Berakhot.1.1?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "7495298f7af2abcdcba4c49c3687c3c01412a262b0df1bdb2e86a1e04a6ddd23",
+    "versions": [
+      {
+        "title": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "PD"
+      }
+    ]
+  },
+  {
+    "id": "berakhot_mamre",
+    "url": "https://mechon-mamre.org/b/h/h11.htm",
+    "status": 200,
+    "sha256": "602bd383d97b4a4377b7e07dcf4a04678dc2d0a10d4f8a76c75542cdb0697538"
+  },
+  {
+    "id": "deut67",
+    "url": "https://www.sefaria.org/api/v3/texts/Deuteronomy.6.7?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "c66d04d8de939964c12c796ffb56a603dafe54e191b10a253453260bc05f72cd",
+    "versions": [
+      {
+        "title": "Miqra according to the Masorah",
+        "language": "he",
+        "license": "CC-BY-SA"
+      },
+      {
+        "title": "Tanach with Ta'amei Hamikra",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Tanach with Text Only",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Tanach with Nikkud",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "title": "Miqra Mevoar, trans. and edited by David Kokhav, Jerusalem 2020",
+        "language": "he",
+        "license": "PD"
+      }
+    ]
+  },
+  {
+    "id": "cojs",
+    "url": "https://cojs.org/Tannaitic_Literature_-circa_70-3rd_century_CE/",
+    "status": 200,
+    "sha256": "49deb440fd9882a51455a4f805bc80c022c4909c03a97782e175dd193b800926"
+  },
+  {
+    "id": "met",
+    "url": "https://www.metmuseum.org/essays/jewish-art-in-late-antiquity-and-early-byzantium",
+    "status": 200,
+    "sha256": "032777b448c0a54c652072fd4a3443e29d794e876cdcf78d39fb29128180f731"
+  },
+  {
+    "id": "rambam_index",
+    "url": "https://www.sefaria.org/api/index/Rambam_Introduction_to_the_Mishnah",
+    "final_url": "https://www.sefaria.org/api/index/Rambam_Introduction_to_the_Mishnah",
+    "status": 200,
+    "sha256": "89427e0f0962ace4712bf70479ed97cd5f575f45a0e172cec7c197c24dc1d8ab"
+  },
+  {
+    "id": "rambam_wiki_search",
+    "url": "https://he.wikisource.org/w/api.php?action=query&list=search&srsearch=%D7%94%D7%A7%D7%93%D7%9E%D7%AA+%D7%94%D7%A8%D7%9E%D7%91%D7%9D+%D7%9C%D7%9E%D7%A9%D7%A0%D7%94&format=json&srlimit=3",
+    "final_url": "https://he.wikisource.org/w/api.php?action=query&list=search&srsearch=%D7%94%D7%A7%D7%93%D7%9E%D7%AA+%D7%94%D7%A8%D7%9E%D7%91%D7%9D+%D7%9C%D7%9E%D7%A9%D7%A0%D7%94&format=json&srlimit=3",
+    "status": 200,
+    "sha256": "bf350d089453acca6a0ce966bea906a6e517587b2af38c05becf079158f92f31",
+    "use": "navigation only; no text quotation based on search snippets"
+  },
+  {
+    "id": "avot16",
+    "url": "https://www.sefaria.org/api/v3/texts/Pirkei_Avot.1.6?version=hebrew%7Call",
+    "final_url": "https://www.sefaria.org/api/v3/texts/Pirkei_Avot.1.6?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "a8d00220c7d8dab6f47f43f9a0438fecdbf96bb533248ed1c81561ecbc0ec4d2",
+    "versions": [
+      {
+        "versionTitle": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "unknown"
+      }
+    ]
+  },
+  {
+    "id": "berakhot22",
+    "url": "https://www.sefaria.org/api/v3/texts/Mishnah_Berakhot.2.2?version=hebrew%7Call",
+    "final_url": "https://www.sefaria.org/api/v3/texts/Mishnah_Berakhot.2.2?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "f9bade13a5cf953297c9703fcb04c7f67943bf073c240cc995945510ba36605c",
+    "versions": [
+      {
+        "versionTitle": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "PD"
+      }
+    ]
+  },
+  {
+    "id": "chag22",
+    "url": "https://www.sefaria.org/api/v3/texts/Mishnah_Chagigah.2.2?version=hebrew%7Call",
+    "final_url": "https://www.sefaria.org/api/v3/texts/Mishnah_Chagigah.2.2?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "6326558db7a5711cb351a8acdb9106587da6e6903265bbd6d8b445a0bbedfbca",
+    "versions": [
+      {
+        "versionTitle": "Torat Emet 357",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah, ed. Romm, Vilna 1913",
+        "language": "he",
+        "license": "Public Domain"
+      },
+      {
+        "versionTitle": "Mishnah based on the Kaufmann manuscript, edited by Dan Be'eri",
+        "language": "he",
+        "license": "PD"
+      }
+    ]
+  },
+  {
+    "id": "rh_mamre",
+    "url": "https://mechon-mamre.org/b/h/h28.htm",
+    "final_url": "https://mechon-mamre.org/b/h/h28.htm",
+    "status": 200,
+    "sha256": "2fc6236e7e7eceb2c11db4b7be09919b55d66231d33e5b53cb2239af0fffb1e8"
+  },
+  {
+    "id": "chag_mamre",
+    "url": "https://mechon-mamre.org/b/h/h2c.htm",
+    "final_url": "https://mechon-mamre.org/b/h/h2c.htm",
+    "status": 200,
+    "sha256": "efcbd95dcaa60c855d7ace4e9bcbf3ca10c3bc94dbe8e134162b4329ab96cc54"
+  },
+  {
+    "id": "tosefta_mjl",
+    "url": "https://www.myjewishlearning.com/article/tosefta/",
+    "status": 404,
+    "error_type": "HTTPError"
+  },
+  {
+    "id": "midrash_mjl",
+    "url": "https://www.myjewishlearning.com/article/midrash/",
+    "final_url": "https://www.myjewishlearning.com/article/midrash-101/",
+    "status": 200,
+    "sha256": "d83a7ec739712d380ba040e990c7c1476f987cd0b0347654bf77dc126bcb73f6"
+  },
+  {
+    "id": "talmud_mjl",
+    "url": "https://www.myjewishlearning.com/article/talmud-101/",
+    "final_url": "https://www.myjewishlearning.com/article/talmud-101/",
+    "status": 200,
+    "sha256": "afad0475039f45fd3617d2150007f40f59a65290ba4565455e48eb4844caf7c2"
+  },
+  {
+    "id": "rambam_full",
+    "url": "https://www.sefaria.org/api/v3/texts/Rambam_Introduction_to_the_Mishnah?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "2345d05d89a24faa72a84d02a918af7dfaf35f14cceb673d020c3be369894108",
+    "versions": [
+      {
+        "versionTitle": "Vilna Edition",
+        "language": "he",
+        "license": "Public Domain"
+      }
+    ],
+    "used_refs": [
+      "Rambam Introduction to the Mishnah.8.42",
+      "Rambam Introduction to the Mishnah.14.1",
+      "Rambam Introduction to the Mishnah.15.1-9",
+      "Rambam Introduction to the Mishnah.15.16-17"
+    ]
+  },
+  {
+    "id": "rambam_wiki",
+    "url": "https://he.wikisource.org/w/api.php?action=parse&page=%D7%94%D7%A7%D7%93%D7%9E%D7%AA+%D7%94%D7%A8%D7%9E%D7%91%22%D7%9D+%D7%9C%D7%9E%D7%A9%D7%A0%D7%94&prop=text%7Crevid&format=json",
+    "status": 403,
+    "error_type": "HTTPError"
+  },
+  {
+    "id": "tosefta_index",
+    "url": "https://www.sefaria.org/api/index/Tosefta_Berakhot",
+    "status": 200,
+    "sha256": "a8e3c2de4fec6fbfcc1c29cf2d25676f9bc56a9823d9ee0c74b1acd9f6bc4544",
+    "use": "catalog only; enDesc seems copied from Mishnah and says9chapters while schema7; not used as historical or chapter-count evidence"
+  },
+  {
+    "id": "tosefta_je",
+    "url": "https://www.jewishencyclopedia.com/articles/14458-tosefta",
+    "status": 200,
+    "sha256": "34001157be71ab81182eea5241a9f652b7985cdea1deefe0869c628a74c1c1ad"
+  },
+  {
+    "id": "tosefta11",
+    "url": "https://www.sefaria.org/api/v3/texts/Tosefta_Berakhot.1.1?version=hebrew%7Call",
+    "status": 200,
+    "sha256": "207315ffb85371f827075551719569ca26a13f1ebb9e52d650d20d53dcfb1af4",
+    "versions": [
+      {
+        "versionTitle": "Tosefta B'rachot",
+        "language": "he",
+        "license": "Public Domain"
+      }
+    ]
+  }
+]

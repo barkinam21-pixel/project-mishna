@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-06",
+  "status": "BLOCKED_BILLING_ACCESS_NO_GENERATION",
+  "authorized_scope": {
+    "visual_direction_approved": true,
+    "one_existing_prepaid_credit_image_authorized": true,
+    "new_external_charge_authorized": false,
+    "six_other_images_authorized": false,
+    "release_authorized": false
+  },
+  "model": "fal-ai/flux-2-pro",
+  "schema_fields_checked": [
+    "prompt",
+    "image_size",
+    "output_format",
+    "enable_safety_checker",
+    "sync_mode"
+  ],
+  "public_estimate_usd": 0.03,
+  "dimensions": [
+    1024,
+    576
+  ],
+  "account_specific_price_and_balance": "UNKNOWN",
+  "funding_guarantee": "UNKNOWN",
+  "runtime_provider_bindings_ready": false,
+  "github_secret_metadata_http_status": 403,
+  "github_secret_presence": "NOT_INFERRED_FROM403",
+  "legacy_scripts": "OPN01-only; local reservation explicitly not a provider hard cap; not repurposed or activated",
+  "rights": {
+    "model_page_license_type": "commercial",
+    "commercial_project_candidate": "model catalog suitable in principle, account/licence scope not fully authenticated",
+    "provider_output_terms": "subject to terms/model-specific licence, no inference of exclusive copyright/noninfringement",
+    "reference_assets_used": false,
+    "public_release_authorized": false
+  },
+  "generation_submissions": 0,
+  "new_direct_external_charge_usd": 0,
+  "credits_used": 0,
+  "workspace_usage": "unknown",
+  "documents": [
+    {
+      "url": "https://fal.ai/models/fal-ai/flux-2-pro",
+      "sha256": "6cb2daa65797c040002a3092b2f1b92a0a304ae96e49979a58e9c4647160bfa3"
+    },
+    {
+      "url": "https://fal.ai/terms",
+      "sha256": "e2c390cfadfed62a1245ca3b3c8681f2d2a4c833035337c93adf88576bef4da8"
+    },
+    {
+      "url": "https://fal.ai/docs/platform-apis/v1/account/billing.md",
+      "sha256": "51e01776f4cc58a2b10dce4362d15a86e39220ef4579c41f6e0d763c1bef81c7"
+    },
+    {
+      "url": "https://fal.ai/docs/platform-apis/v1/models/pricing.md",
+      "sha256": "ad96ee8ded65dc6953e640f0aaabaf2c3213a487ecbd32022b68d71b47a482a9"
+    },
+    {
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=fal-ai/flux-2-pro",
+      "sha256": "4620162924b05e0d874a4d388a931eb292569aa9f4493c5a6d8e640ded739175"
+    }
+  ],
+  "billing_api_limitation": "Documented credits expansion exposes current_balance/currency, not proof of auto-recharge/credit-only stop; no authenticated request possible in this session.",
+  "local_validation": {
+    "payload_matches_documented_field_names_and_required_fields": true,
+    "canonical_payload_sha256_verified": true,
+    "dimensions_16_9_and_multiple_16": true,
+    "single_attempt_no_retries_and_blocked_gate": true,
+    "approved_original_alnilam_wav_hash_unchanged": true,
+    "production_code_or_workflows_changed": false,
+    "image_quality_review": "NOT_PERFORMED_NO_IMAGE",
+    "generation_test": "NOT_RUN_UNVERIFIED_FUNDING",
+    "full_regression_suite": "NOT_RERUN_DOCUMENTATION_AND_NONEXECUTABLE_PLAN_ONLY"
+  }
+}

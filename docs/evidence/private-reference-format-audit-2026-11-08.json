@@ -1,0 +1,59 @@
+{
+  "date_utc": "2026-11-08",
+  "scene": "INTRO-A1-S01",
+  "scope": "OFFLINE_PRIVATE_REFERENCE_FORENSIC_AUDIT",
+  "source_full": {
+    "sha256": "a7a90a0ac3e36041b12c4b8278759fe1dcc63277233a6549c7f54710cea638c2",
+    "reference_images": 27,
+    "decoded_and_hashed": 27,
+    "extension_png_but_content_jpeg": 25
+  },
+  "source_curated": {
+    "sha256": "8b6cd92c3318bf7ab0759ac9388dec5b4c3ba00ac77755c722934dbc9acedd87",
+    "images_in_zip": 8,
+    "bytes_identical_to_full": 8,
+    "embedded_master_manifest_records": 27,
+    "manifest_warning": "The legacy curated ZIP embeds full 27-record inventory, not its physical eight-member contents."
+  },
+  "corrected_private_pack": {
+    "drive_url": "https://drive.google.com/file/d/1HDRDMWD3539nSNa2UnvrA8aGBozlopgn/view?usp=drivesdk",
+    "sha256": "1394a144f2731d229d0a38179aa351a1f6ff37b53c629bf18ba108481c75d3ef",
+    "size_bytes": 7763335,
+    "images": 8,
+    "original_png": 2,
+    "unreencoded_jpeg_renamed_to_jpg": 6,
+    "source_image_bytes_modified": 0,
+    "manifest_records": 8,
+    "excluded_context_and_hold_still_in_source": 19,
+    "drive_readback_sha256_match": true,
+    "drive_shared": false,
+    "drive_permissions": [
+      "owner"
+    ]
+  },
+  "policy": {
+    "provider_upload_allowed": false,
+    "publication_allowed": false,
+    "visual_image_acceptance_not_implied": true,
+    "source_archive_mutated": false
+  },
+  "recovered_opn02": {
+    "private_zip_sha256": "370d9da290c0204b94ba72a0d4e7a5873abc9b75a44599fca2421ee111ebf0a2",
+    "offline_restore_with_real_zip_passed": true,
+    "image_sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+    "accepted": false
+  },
+  "baseline_voice": {
+    "original_sha256": "f6648459ead4913e960eda94204af0c9e9e820f855a6d854b4ac3847aa7ac45d",
+    "derived_48khz_sha256": "86df885f38ad8dfa8759b8bf3e0be2dfd156fa4057d592e79c53628be79d6e95",
+    "recording_replaced": false,
+    "scene_n01_n02_ready": false
+  },
+  "accounting": {
+    "image_generation_operations": 0,
+    "provider_calls": 0,
+    "external_spend_initiated_usd": 0,
+    "workspace_usage": "unknown"
+  },
+  "next_step": "Use corrected private reference pack for local review only; do not upload references to providers until new authorization and rights review. OPN02 still needs scale/style improvements; seven approved shots, real N01/N02 and captions absent."
+}

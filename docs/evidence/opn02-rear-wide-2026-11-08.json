@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-11-08T00:31:49.716Z",
+  "finished_at": "2026-11-08T00:31:56.761Z",
+  "api_elapsed_ms": 6694,
+  "model": "@cf/black-forest-labs/flux-2-klein-4b",
+  "seed": 73002,
+  "guidance": 1,
+  "spec_key": "11e0355d50f31802bc8c252b8aa432a8820d80dd99aac92e9c8a80159663adfa",
+  "neurons_before": 107.21472534179688,
+  "estimated_neurons": 114.94,
+  "request_count": 1,
+  "provider_success": true,
+  "provider_task_id": null,
+  "local_task_id": "OPN02-REAR-WIDE-20261108-01",
+  "accepted": false,
+  "dimensions": [
+    1024,
+    576
+  ],
+  "format": "JPEG",
+  "native_sha256": "eb155133fea3b25099abb401ea51e10999a9adf9a1ab8e9a00d131b1fa568c4d",
+  "png_sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+  "decoded_pixels_equal": true,
+  "png_is_converted": true,
+  "private_png": "https://drive.google.com/file/d/1O8eqa7Fobugf2-OOFxMYv_tXpP5tw18-/view?usp=drivesdk",
+  "private_native": "https://drive.google.com/file/d/14od3-wIAxmTz8qDkpVoli2ZF95ok_Yhf/view?usp=drivesdk",
+  "private_backup_zip": "https://drive.google.com/file/d/1ut4t-AkQBC0cGNw6N03VHEdV99ouE3aX/view",
+  "drive_shared": false,
+  "review_status": "CANDIDATE_NEEDS_SCALE_AND_STYLE_REVIEW",
+  "automated_similarity_flag": false,
+  "visual_review": {
+    "rear_view": true,
+    "full_bodies": true,
+    "pair_count": 2,
+    "original_composition": true,
+    "upper_left_tree_removed": true,
+    "near_right_building_removed": true,
+    "figure_height": "approximately70-80 percent, not target30 percent; visual estimate",
+    "costume": "indigo elder and brown younger retained, satchels and light tunics; rear-view face identity and gray beard cannot be assessed",
+    "anatomy": "No obvious gross limb/hand/eye issue visible; detailed face/age cannot be judged from rear view",
+    "style": "gold-purple sunset and hills preserved; rendering more photorealistic than approved painted-animation target",
+    "historical_accuracy": "symbolic anonymous travelers, not Rabbi Judah the Patriarch; buildings/clothing not historically certified"
+  },
+  "billing": "Owner confirmed Free plan; pre-call recorded107.2147neurons, call estimated114.94/10000daily; no quota/billing warning, invoice unavailable",
+  "conditioning": "Two proportional crops of approved master for identity/costume; no boards, collages or new outside images sent",
+  "unchanged": [
+    "Alnilam",
+    "44 narration blocks",
+    "previous OPN02 images"
+  ],
+  "execution": "Existing specification/dry-run/QA; private connector inference with recorded two-image multipart. No claim unattended token configured."
+}

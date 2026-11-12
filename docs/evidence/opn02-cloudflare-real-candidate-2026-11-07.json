@@ -1,0 +1,47 @@
+{
+  "status": "REAL_OPN02_CANDIDATE_NOT_APPROVED",
+  "date": "2026-11-07",
+  "model": "@cf/black-forest-labs/flux-2-klein-4b",
+  "success": true,
+  "request_count": 1,
+  "reference_sha256": "0f90de18cf67f607dfab74e3f14d074650e825ab9ab84533c5e3f5a1e9f6192c",
+  "neurons_before": 0,
+  "usage_window_start": "2026-11-07T00:00:00Z",
+  "usage_checked_at": "2026-11-07T22:39:39.586Z",
+  "api_elapsed_ms": 5564,
+  "public_list_estimate_neurons": 109.57,
+  "charged_invoice_amount": "not observable through OAuth",
+  "gateway": false,
+  "public_storage": false,
+  "returned_keys": [
+    "image"
+  ],
+  "dimensions": [
+    1024,
+    576
+  ],
+  "provider_format": "JPEG",
+  "provider_sha256": "128e542934519e376675b8b9633b34e67d7221150deec84bf621178fea9b26e0",
+  "png_sha256": "46d1f6d1e03f8b3d5f4bf1042e75802a1425cfc32fbca3b83fbaca3aa1e9c7e8",
+  "png_is_converted": true,
+  "decoded_pixel_equality_verified": true,
+  "accepted": false,
+  "seed": 73002,
+  "guidance": 1,
+  "steps": 4,
+  "original_reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3",
+  "private_png": "https://drive.google.com/file/d/1JU0l1c7doBX6modUyPu6s_I1wscOJ8PW/view",
+  "private_native": "https://drive.google.com/file/d/1NOv8XGOtLNUujutlwkiJyKa7oXZrNCKo/view",
+  "drive_shared": false,
+  "drive_permissions": "owner only verified",
+  "usage_after": "analytics empty; delayed reporting, not proof of zero consumption",
+  "billing": "Expected within documented 10000 daily free neurons; recorded usage before 0, estimate109.57. Subscription/invoice access403; actual charge not independently verified.",
+  "visual_review": "Viewed actual generated image: older left, adult younger right, indigo/brown costumes, sunset village, coherent hands/faces; no visible text. Composition remains close to reference, not sufficiently wide/new; requires Bar review; no approval inferred.",
+  "independence": "Direct authenticated connector inference proved; unattended production credentials/Cloudflare adapter not implemented or proved.",
+  "unchanged": [
+    "Alnilam",
+    "44 narration blocks",
+    "Visual Bible"
+  ],
+  "model_license": "Apache-2.0 Klein4B; Cloudflare/BFL service terms apply; source authorization from owner, no third party clearance inferred"
+}

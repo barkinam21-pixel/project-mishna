@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-07",
+  "status": "BLOCKED_EXISTING_CLOUDFLARE_REAUTHENTICATION_REQUIRED",
+  "account_access": {
+    "existing_primary_connection": "UNAUTHORIZED / requires reauthentication",
+    "existing_same_account_alias": "UNAUTHORIZED / requires reauthentication",
+    "reauthentication_tool_available": false,
+    "cloud_desktop_or_browser_control_available": false,
+    "plugin_directory_search": "no matching public Cloudflare/Bimbam listing; existing private connector not replaced",
+    "account_plan": "UNKNOWN",
+    "daily_usage_remaining": "UNKNOWN",
+    "account_model_access": "NOT_VERIFIED"
+  },
+  "public_documentation": {
+    "model": "@cf/black-forest-labs/flux-2-klein-4b",
+    "availability_basis": "official model catalog JSON and release note, not an assumption",
+    "reference_support": "up to4 binary multipart input_image_0..3; reference copies below512x512 per release documentation",
+    "steps": 4,
+    "free_allocation_neurons_per_day": 10000,
+    "free_plan": "documented limit; extra use fails, requires paid upgrade",
+    "paid_plan": "usage above allocation billable; do not assume account is Free",
+    "model_pricing": {
+      "input_512_tile_neurons": 5.37,
+      "output_512_tile_neurons": 26.05
+    },
+    "account_price_or_usage_verified": false,
+    "privacy": {
+      "standard_inference": "documented zero retention after processing/delivery, subject to legal/security exceptions",
+      "training": "documented no training on Customer Content",
+      "sharing": "documented not made available to other Cloudflare customers",
+      "operational_metadata": "may be retained",
+      "stateful_features": "storage/logging/caching/asynchronous features have separate retention",
+      "gateway_or_third_party": "separate terms/retention; not approved here",
+      "actual_account_logging_and_caching_settings": "UNVERIFIED",
+      "no_claim_of_absolute_privacy": true
+    },
+    "sources": [
+      {
+        "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/workers-ai-models/flux-2-klein-4b.json",
+        "sha256": "076b61e5c3bd2e50555fd486c7d394e6efaa83779de93175160bb111bf46d2b6"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers-ai/platform/pricing.mdx",
+        "sha256": "4fc5ecfdd85c435770f134896bc4ad5db3b901e2fac3b100d56286225ac5504f"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers-ai/platform/data-usage.mdx",
+        "sha256": "e76df1e96054efc88b28bf1feb4057b7638a5509d5ab983bdd17069135c72ad7"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers-ai/platform/limits.mdx",
+        "sha256": "5e549327a4b791940ee73ba644c5a758376c040fd15a1ccfc954fc79f527aa77"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/changelog/workers-ai/2026-01-15-flux-2-klein-4b-workers-ai.mdx",
+        "sha256": "6f573f0aa5d1157a9d82a11bbc9b5a78088ed44dcf096b246e883e3914aede18"
+      }
+    ],
+    "observed_docs_repository_head": "53ce9b502646fdc019b8184b29b9f1054939e1b6"
+  },
+  "alternatives": [
+    {
+      "route": "existing private ComfyUI GPU",
+      "authorization_and_availability": "no endpoint or GPU attached",
+      "storage_training_and_retention": "cannot verify provider/operator controls without a connected host",
+      "generation": "not attempted"
+    },
+    {
+      "route": "existing Kaggle private GPU execution",
+      "authorization_and_availability": "no authorized binding or verified account GPU quota",
+      "storage_training_and_retention": "account/private kernel/dataset settings and applicable terms not verified; no references uploaded",
+      "generation": "not scheduled"
+    }
+  ],
+  "outcome": {
+    "private_reference_uploads": 0,
+    "inference_calls": 0,
+    "new_OPN02_images": 0,
+    "new_charges_initiated_usd": 0,
+    "new_adapters_or_tests": false,
+    "Alnilam_and44_narration_blocks_changed": false,
+    "workspace_usage": "unknown"
+  },
+  "next_owner_action": "reauthenticate existing Cloudflare/Bimbam app; no API keys in chat",
+  "after_authentication": "verify actual account plan, hard no-charge limit, usage, model access, direct synchronous data handling and rights before exactly one request; no provider or billing changes without authorization"
+}
