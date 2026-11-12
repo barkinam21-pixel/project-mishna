@@ -25,8 +25,49 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install Pillow==12.0.0
       - run: python -m unittest tests.test_private_drive_runtime -v
+  cloudflare-readonly:
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && inputs.operation == 'check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Read Workers AI catalogue and recorded usage only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python -m tools.private_drive_runtime check-cloudflare
+  drive-readonly:
+    needs: cloudflare-readonly
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && inputs.operation == 'check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Owner-only Drive access check (no creation or modification)
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          MISHNAH_DRIVE_OAUTH_JSON: ${{ secrets.MISHNAH_DRIVE_OAUTH_JSON }}
+          MISHNAH_REFERENCE_FILE_ID: ${{ secrets.MISHNAH_REFERENCE_FILE_ID }}
+          MISHNAH_STATE_FILE_ID: ${{ secrets.MISHNAH_STATE_FILE_ID }}
+          MISHNAH_SNAPSHOT_FILE_ID: ${{ secrets.MISHNAH_SNAPSHOT_FILE_ID }}
+        run: python -m tools.private_drive_runtime check-drive
   private-runtime:
-    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && github.sha == vars.MISHNAH_IMAGE_REVIEWED_SHA
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && github.sha == vars.MISHNAH_IMAGE_REVIEWED_SHA && inputs.operation == 'run'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

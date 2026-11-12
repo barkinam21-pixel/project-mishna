@@ -41,11 +41,35 @@ class Drive:
         if hashlib.sha256(self.download(file_id)).digest()!=hashlib.sha256(raw).digest():raise DriveBlocked('DRIVE_READBACK_HASH_MISMATCH')
 
 
+def check_cloudflare():
+    """Read-only Workers AI access, independent of Drive and generation gates."""
+    from tools.cloudflare_image_backend import CloudflareClient,MODEL
+    if not all(os.environ.get(k) for k in ('CLOUDFLARE_ACCOUNT_ID','CLOUDFLARE_API_TOKEN')):raise DriveBlocked('CLOUDFLARE_CREDENTIALS_UNAVAILABLE')
+    client=CloudflareClient({})
+    models=client._request('GET',f'/accounts/{client.account}/ai/models/search?search=flux-2-klein-4b')
+    if not any(m.get('name')==MODEL for m in models.get('result',[])):raise DriveBlocked('CLOUDFLARE_MODEL_UNAVAILABLE')
+    import datetime as dt
+    now=dt.datetime.now(dt.timezone.utc).isoformat()
+    usage_status='UNKNOWN';neurons=None
+    try:
+        query='query { viewer { accounts(filter:{accountTag:'+json.dumps(client.account)+'}) { aiInferenceAdaptiveGroups(limit:1,filter:{datetime_geq:'+json.dumps(now[:10]+'T00:00:00Z')+',datetime_leq:'+json.dumps(now)+'}) { sum { totalNeurons } } } } }'
+        u=client._request('POST','/graphql',{'query':query})
+        groups=u['data']['viewer']['accounts']
+        if len(groups)!=1 or u.get('errors'):raise ValueError()
+        values=[g['sum']['totalNeurons'] for g in groups[0]['aiInferenceAdaptiveGroups']]
+        import math
+        if any(type(v) not in (int,float) or not math.isfinite(v) or v<0 for v in values):raise ValueError()
+        neurons=sum(values);usage_status='RECORDED_USAGE_NOT_LIVE_BALANCE'
+    except Exception:pass
+    return {'status':'CLOUDFLARE_READ_ACCESS_VERIFIED','model':MODEL,'checked_at':now,'usage_status':usage_status,'recorded_neurons':neurons,'inference_requests':0,'inference_permission':'NOT_PROVEN_WITHOUT_GENERATION','billing_clearance':False}
+
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('command',choices=['check','run']);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=['check-cloudflare','check-drive','check','run']);a=p.parse_args()
     from tools.studio_runtime import Studio
     root=Path.cwd();studio=Studio(root);d=Drive()
     try:
+        if a.command=='check-cloudflare':print(json.dumps(check_cloudflare()));return 0
         names=['CLOUDFLARE_ACCOUNT_ID','CLOUDFLARE_API_TOKEN','MISHNAH_DRIVE_OAUTH_JSON','MISHNAH_REFERENCE_FILE_ID','MISHNAH_STATE_FILE_ID','MISHNAH_SNAPSHOT_FILE_ID']
         missing=[n for n in names if not os.environ.get(n)]
         if missing:raise DriveBlocked('MISSING_CONFIGURATION:'+','.join(missing))
@@ -53,7 +77,9 @@ def main():
         if len({refs,state,snapshot})!=3:raise DriveBlocked('DRIVE_FILE_IDS_MUST_DIFFER')
         for uid in (refs,state,snapshot):d.metadata(uid)
         # Check never writes Drive, loads no image model and consumes no inference quota.
-        if a.command=='check':
+        if a.command in ('check','check-drive'):
+            if a.command=='check-drive':
+                print(json.dumps({'status':'DRIVE_OWNER_ONLY_ACCESS_VERIFIED','inference_requests':0}));return 0
             from tools.cloudflare_image_backend import CloudflareClient,MODEL
             client=CloudflareClient({})
             models=client._request('GET',f'/accounts/{client.account}/ai/models/search?search=flux-2-klein-4b')
