@@ -47,3 +47,20 @@ class PrivateDriveTests(unittest.TestCase):
                 self.assertEqual(main(),2)
             self.assertEqual(posts,[])
             state=json.loads((private/'images/state.json').read_text());self.assertEqual(state['entries']['test']['status'],'SUBMISSION_UNCERTAIN')
+    def test_cloudflare_check_independent_of_drive_and_no_inference(self):
+        from tools.private_drive_runtime import check_cloudflare
+        from tools.cloudflare_image_backend import CloudflareClient,MODEL
+        requests=[]
+        def request(client,method,path,*args,**kwargs):
+            requests.append((method,path))
+            if method=='GET':return {'result':[{'name':MODEL}]}
+            raise ValueError('No analytics access')
+        with patch.dict(os.environ,{'CLOUDFLARE_ACCOUNT_ID':'TEST','CLOUDFLARE_API_TOKEN':'TEST'},clear=True),patch.object(CloudflareClient,'_request',request):
+            r=check_cloudflare()
+        self.assertEqual(r['status'],'CLOUDFLARE_READ_ACCESS_VERIFIED');self.assertEqual(r['usage_status'],'UNKNOWN')
+        self.assertFalse(any('/ai/run/' in p for m,p in requests))
+    def test_readonly_permission_gate_keeps_generation_guard(self):
+        text=Path('.github/workflows/cloudflare-private-runtime.yml').read_text()
+        self.assertIn("github.sha == vars.MISHNAH_IMAGE_REVIEWED_SHA && inputs.operation == 'run'",text)
+        self.assertIn('needs: cloudflare-readonly',text)
+        self.assertNotIn('pull_request_target',text)

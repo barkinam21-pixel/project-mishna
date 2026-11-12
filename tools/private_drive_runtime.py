@@ -70,6 +70,11 @@ def main():
     root=Path.cwd();studio=Studio(root);d=Drive()
     try:
         if a.command=='check-cloudflare':print(json.dumps(check_cloudflare()));return 0
+        # File IDs are metadata, not access credentials. Verified owner-only defaults
+        # eliminate manual copying; explicit nonempty Secrets retain precedence.
+        locators=json.loads((root/'episodes/berakhot-01-01/private-storage-locators.json').read_text()) if (root/'episodes/berakhot-01-01/private-storage-locators.json').is_file() else {}
+        for k,v in locators.items():
+            if k in ('MISHNAH_REFERENCE_FILE_ID','MISHNAH_STATE_FILE_ID','MISHNAH_SNAPSHOT_FILE_ID') and not os.environ.get(k):os.environ[k]=v
         names=['CLOUDFLARE_ACCOUNT_ID','CLOUDFLARE_API_TOKEN','MISHNAH_DRIVE_OAUTH_JSON','MISHNAH_REFERENCE_FILE_ID','MISHNAH_STATE_FILE_ID','MISHNAH_SNAPSHOT_FILE_ID']
         missing=[n for n in names if not os.environ.get(n)]
         if missing:raise DriveBlocked('MISSING_CONFIGURATION:'+','.join(missing))
@@ -79,7 +84,25 @@ def main():
         # Check never writes Drive, loads no image model and consumes no inference quota.
         if a.command in ('check','check-drive'):
             if a.command=='check-drive':
-                print(json.dumps({'status':'DRIVE_OWNER_ONLY_ACCESS_VERIFIED','inference_requests':0}));return 0
+                # Validate stored bytes in a clean temporary root; no remote writes.
+                import tempfile,shutil
+                from tools.studio_runtime import Studio as LocalStudio
+                from tools.comfy_scene_images import specifications,conditioning_inputs,prompt_text
+                with tempfile.TemporaryDirectory() as tmp:
+                    clean=Path(tmp)
+                    m=json.loads((root/'episodes/berakhot-01-01/comfy-opening-images.json').read_text())
+                    target=clean/'episodes/berakhot-01-01';target.mkdir(parents=True)
+                    (target/'comfy-opening-images.json').write_text(json.dumps(m))
+                    local=LocalStudio(clean)
+                    p=local.work/'refs.zip';p.write_bytes(d.download(refs));local.restore_references(str(p.relative_to(clean)))
+                    p=local.work/'snapshot.zip';p.write_bytes(d.download(snapshot));local.restore(str(p.relative_to(clean)))
+                    saved=json.loads(d.download(state))
+                    if not isinstance(saved.get('entries'),dict) or not isinstance(saved.get('attempts',[]),list):raise DriveBlocked('INVALID_PRIVATE_JOURNAL')
+                    m['backend']=m['available_backends']['cloudflare'];m['shots']=[s for s in m['shots'] if s['id']=='OPN02']
+                    row=specifications(m,clean)[0]
+                    if row['missing']:raise DriveBlocked('LOCAL_REFERENCE_PREFLIGHT_FAILED')
+                    inputs=conditioning_inputs(row['spec'],clean);request_hash=hashlib.sha256(prompt_text(row['spec']).encode()).hexdigest()
+                print(json.dumps({'status':'DRIVE_RESTORE_AND_LOCAL_PREFLIGHT_VERIFIED','inference_requests':0,'remote_writes':0,'conditioning_inputs':len(inputs),'prompt_sha256':request_hash,'generation_authorized':False}));return 0
             from tools.cloudflare_image_backend import CloudflareClient,MODEL
             client=CloudflareClient({})
             models=client._request('GET',f'/accounts/{client.account}/ai/models/search?search=flux-2-klein-4b')
