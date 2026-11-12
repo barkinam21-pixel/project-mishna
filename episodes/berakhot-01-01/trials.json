@@ -183,7 +183,8 @@
       "production_asset_accepted": false,
       "artistic_review": "needs_revision",
       "artistic_issue": "Figures approx38%, target25–35%; distant fortress rather than small village",
-      "evidence_path": "docs/evidence/opn02-cloudflare-layout-2026-11-11.json"
+      "evidence_path": "docs/evidence/opn02-cloudflare-layout-2026-11-11.json",
+      "archive_in_repository": false
     }
   ],
   "voice_trials": [

@@ -41,12 +41,12 @@ class ControlsTests(unittest.TestCase):
         with self.assertRaises(CloudflareBlocked):CloudflareClient({}).submit({})
     def test_invalid_or_empty_provider_response(self):
         for response in [{},{'result':{'image':''}},{'result':{'image':'!!!'}}]:
-            c=CloudflareClient({},request=lambda *a:response);c.images=[];c.receipt={'started_at':'test'}
+            c=CloudflareClient({},request=lambda *a:response);c.images=[];c.receipt={'started_at':'test'};c._prepared_spec={};c.readiness=lambda spec: None
             with self.assertRaises(CloudflareBlocked):c.submit({},zero_cost_verified=True,authorized=True)
     def test_timeout_never_retried(self):
         calls=[]
         def fail(*a):calls.append(a);raise TimeoutError()
-        c=CloudflareClient({},request=fail);c.images=[];c.receipt={'started_at':'test'}
+        c=CloudflareClient({},request=fail);c.images=[];c.receipt={'started_at':'test'};c._prepared_spec={};c.readiness=lambda spec: None
         with self.assertRaises(TimeoutError):c.submit({},zero_cost_verified=True,authorized=True)
         self.assertEqual(len(calls),1)
     def test_readiness_fresh_success_and_usage_failure(self):
