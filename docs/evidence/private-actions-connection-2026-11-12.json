@@ -1,0 +1,27 @@
+{
+  "status": "CLOUDFLARE_ACTIONS_READ_AUTH_VERIFIED_DRIVE_OAUTH_BLOCKED",
+  "run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43223192705",
+  "cloudflare": "CLOUDFLARE_READ_ACCESS_VERIFIED",
+  "model": "@cf/black-forest-labs/flux-2-klein-4b",
+  "current_usage": "UNKNOWN",
+  "inference_requests": 0,
+  "drive_actions": "OAuth unavailable; file IDs now populated from verified private defaults",
+  "drive_chat_metadata": "three owner-only files verified",
+  "references": "original ZIP downloaded; canonical primary hashes validated",
+  "snapshot": "clean restore passed, occupied workspace overwrite refused",
+  "local_conditioning_count": 2,
+  "local_prompt_chars": 6627,
+  "historical_attempts_preserved": 4,
+  "tests": {
+    "full": 479,
+    "seconds": 30.236,
+    "focused": 7
+  },
+  "new_generation_authorization": false,
+  "new_external_charge": 0,
+  "standalone_drive_connection_proven": false,
+  "final_run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43223825551",
+  "final_cloudflare_job": "success",
+  "final_drive_blocker": "MISSING_CONFIGURATION:MISHNAH_DRIVE_OAUTH_JSON",
+  "file_id_configuration_missing": false
+}
