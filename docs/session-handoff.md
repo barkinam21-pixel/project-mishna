@@ -603,3 +603,7 @@ check-drive nowisolatedcleanrootrestoresallthreefilesandvalidatesjournal/conditi
 Fullregression479tests30.236spassed;7focusedtests0.021s. Evidence docs/evidence/private-actions-connection-2026-11-12.json. No need for another agent or repeated continue.
 
 Finalmanualrun43223825551on457cf76:offline-testssuccess,cloudflare-readonlysuccess,drive-readonlyblockedwithONLY MISHNAH_DRIVE_OAUTH_JSONmissing. Thus fileIDdefaults genuinely resolved inActions; ownerOAuthgrant is the remainingread-onlyauthblock. Productionjobskippedbydesign; no generation.
+
+
+## Desktop OAuth preparation
+Added standalone stdlib Desktop loopback PKCE/state helper with5minute timeout and secret-to-gh-stdin only, no token files/logs, and owner-only/read-edit checks on existing threeDriveIDs. Defaultdrive.file; explicit --existing-files fullDrive scope because cross-app existing files cannot be selected by IDs alone. Picker notimplemented; no claim fullscope minimal. Documented externalTesting7day expiry and Production/re-consent, verification caveats/no perpetualtoken guarantee. Ninefocusedoffline tests passed; no liveOAuth/Secretwrite/Windowsrun/image/billing action. docs/desktop-drive-authorization.md has setup.
