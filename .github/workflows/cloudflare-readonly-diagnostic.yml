@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   probe:
-    if: github.event.issue.number == 54 && github.actor == github.repository_owner && contains(github.event.issue.body, 'mishnah-cloudflare-readonly-diagnostic-20261113')
+    if: github.event.issue.number == 54 && github.actor == github.repository_owner && contains(github.event.issue.body, 'mishnah-cloudflare-readonly-diagnostic-v2-20261113')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -46,11 +46,47 @@ jobs:
           now=datetime.datetime.now(datetime.timezone.utc)
           start=now.date().isoformat()+'T00:00:00Z'
           q='query { viewer { accounts(filter:{accountTag:'+json.dumps(account)+'}) { aiInferenceAdaptiveGroups(limit:1,filter:{datetime_geq:'+json.dumps(start)+',datetime_leq:'+json.dumps(now.isoformat())+'}) { sum { totalNeurons } } } } }'
+          # Probe only read-only GraphQL. Classify errors; never print messages, IDs, or token values.
+          def classify(errors):
+              if not isinstance(errors,list): return 'MALFORMED_ERROR_LIST'
+              s=' '.join(str(x.get('message','')).lower() for x in errors if isinstance(x,dict))
+              if any(t in s for t in ('permission','unauthoriz','not authorized','access denied','not allowed','forbidden','insufficient scope','scope required','authentication','authenticate')):
+                  return 'AUTHORIZATION_OR_SCOPE'
+              if any(t in s for t in ('cannot query field','unknown field','unknown argument','unknown type','field does not exist','undefined field')):
+                  return 'SCHEMA_OR_FIELD'
+              if any(t in s for t in ('syntax error','parse error','invalid syntax','expected name','unexpected token')):
+                  return 'QUERY_SYNTAX'
+              if any(t in s for t in ('rate limit','too many request','quota exceeded')):
+                  return 'RATE_LIMIT'
+              if any(t in s for t in ('datetime','date range','invalid date','timestamp')):
+                  return 'DATE_FILTER'
+              return 'UNCLASSIFIED'
+          base,base_error=request('/graphql',{'query':'query { viewer { budget } }'})
+          if base_error:
+              print('GRAPHQL_BASE_CHECK='+base_error)
+          elif isinstance(base,dict) and base.get('errors'):
+              print('GRAPHQL_BASE_CHECK='+classify(base.get('errors')))
+          elif isinstance(base,dict) and isinstance(base.get('data'),dict):
+              print('GRAPHQL_BASE_CHECK=OK')
+          else:
+              print('GRAPHQL_BASE_CHECK=UNKNOWN_RESPONSE')
           usage,err=request('/graphql',{'query':q})
           if err:
               print('USAGE_CHECK='+err)
-          elif usage.get('errors') or not isinstance(usage.get('data'),dict):
+          elif not isinstance(usage,dict):
+              print('USAGE_CHECK=UNKNOWN_RESPONSE')
+          elif usage.get('errors'):
               print('USAGE_CHECK=GRAPHQL_ERROR')
+              print('USAGE_ERROR_CLASS='+classify(usage['errors']))
+              print('USAGE_ERROR_COUNT='+str(min(len(usage['errors']),99)) if isinstance(usage['errors'],list) else 'USAGE_ERROR_COUNT=UNKNOWN')
+              numeric=[]
+              for e in usage['errors'] if isinstance(usage['errors'],list) else []:
+                  if not isinstance(e,dict):continue
+                  v=e.get('extensions',{}).get('code') if isinstance(e.get('extensions'),dict) else e.get('code')
+                  if type(v) is int and 0 <= v <= 999999:numeric.append(v)
+              print('USAGE_ERROR_NUMERIC_CODES='+(','.join(str(z) for z in numeric[:3]) if numeric else 'NONE'))
+          elif not isinstance(usage.get('data'),dict):
+              print('USAGE_CHECK=UNKNOWN_RESPONSE')
           else:
               try:
                   groups=usage['data']['viewer']['accounts']
