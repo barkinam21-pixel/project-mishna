@@ -1,0 +1,39 @@
+{
+  "status": "SOFTWARE_GATE_PREPARED_NOT_LIVE_GENERATION",
+  "pr60": "MERGED verified via GitHub",
+  "issue54_generation_ticket_found": false,
+  "existing_readonly_envelope_changed": false,
+  "tests": {
+    "focused": 16,
+    "full_main": 344
+  },
+  "historical_attempts_required_minimum": 4,
+  "additional_attempt_allowance": 1,
+  "maximum_external_charge_usd": 0,
+  "generation_requests": 0,
+  "references_sent_to_provider": 0,
+  "generation_workflow_wired": true,
+  "production_approvals_promoted": false,
+  "remaining": [
+    "Fresh exact Issue54 generation ticket bound to final specification/history",
+    "Resolved endpoint privacy assessment and fresh quota evidence",
+    "Reviewed production runtime integration and separately approved merge"
+  ],
+  "source_hashes": {
+    "cloudflare_pricing": "107b470f5f83456ac989ed8ccd0966392021e94d3b40962ea48ff337988e1fae",
+    "cloudflare_data_usage": "e76df1e96054efc88b28bf1feb4057b7638a5509d5ab983bdd17069135c72ad7",
+    "klein4b_apache_license": "ca02bc51900ab07789d1b70283329e7137f5af98f5161c23a1c81fc38a4af1fe",
+    "bfl_terms_html": "76adcd041e9decad0f99c6405aa364b9b061d108d49abe900200d808b441c401"
+  },
+  "production_gate": "CLOSED_DEFAULT_FALSE",
+  "synthetic_end_to_end": {
+    "runtime_sha": "80ba1559b785855a1f9f4cbd90083fd0228eec96",
+    "conditioning_inputs": 3,
+    "retained_attempts": 4,
+    "final_attempts": 5,
+    "mock_submissions": 1,
+    "real_inference": 0,
+    "replay_blocked": true,
+    "snapshot_saved": true
+  }
+}

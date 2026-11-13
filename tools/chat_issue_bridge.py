@@ -92,3 +92,55 @@ def main():
 
 
 if __name__=='__main__':raise SystemExit(main())
+
+# Generation is a distinct envelope; never add it to read-only OPERATIONS.
+GENERATION_BLOCK=re.compile(r'^```mishnah-generation-request\n([^`]{1,4096})\n```[ \t]*$',re.M)
+
+def validate_generation_event(event,policy,history,now=None):
+    """Validate a future one-shot ticket; no dispatch, approval promotion or I/O."""
+    now=now or dt.datetime.now(dt.timezone.utc)
+    if event.get('action')!='edited' or event.get('sender',{}).get('login')!=OWNER or event.get('repository',{}).get('full_name')!=REPO or event.get('repository',{}).get('owner',{}).get('login')!=OWNER:
+        raise RequestBlocked('GENERATION_OWNER_EVENT_REQUIRED')
+    issue=event.get('issue',{})
+    if issue.get('number')!=ISSUE or issue.get('state')!='open' or 'pull_request' in issue:raise RequestBlocked('GENERATION_ISSUE_REQUIRED')
+    blocks=GENERATION_BLOCK.findall(issue.get('body',''))
+    if len(blocks)!=1:raise RequestBlocked('ONE_GENERATION_ENVELOPE_REQUIRED')
+    try:ticket=json.loads(blocks[0],object_pairs_hook=unique_pairs)
+    except (ValueError,TypeError):raise RequestBlocked('INVALID_GENERATION_JSON') from None
+    fields={'version','request_id','operation','issued_at','approval','spec_sha256','history_sha256','historical_attempts','total_attempt_limit','max_charge_usd'}
+    if not isinstance(ticket,dict) or set(ticket)!=fields:raise RequestBlocked('GENERATION_FIELDS_INVALID')
+    if type(ticket['version']) is not int or ticket['version']!=1 or ticket['operation']!='generate-opn02-once' or ticket['approval']!='APPROVE_ONE_OPN02_FREE_ATTEMPT':raise RequestBlocked('EXPLICIT_ONE_SHOT_APPROVAL_REQUIRED')
+    if not isinstance(ticket['request_id'],str) or not re.fullmatch('[a-f0-9]{32}',ticket['request_id']):raise RequestBlocked('INVALID_GENERATION_ID')
+    if type(ticket['max_charge_usd']) not in (int,float) or ticket['max_charge_usd']!=0:raise RequestBlocked('ZERO_CHARGE_ONLY')
+    try:
+        issued=dt.datetime.fromisoformat(ticket['issued_at'].replace('Z','+00:00'))
+        verified=dt.datetime.fromisoformat(policy['verified_at'].replace('Z','+00:00'))
+        if issued.tzinfo is None or verified.tzinfo is None or not -60<=(now-issued).total_seconds()<=900 or not 0<=(now-verified).total_seconds()<=86400:raise ValueError()
+    except (ValueError,KeyError,TypeError,AttributeError):raise RequestBlocked('GENERATION_EVIDENCE_EXPIRED') from None
+    if not all(policy.get(k) is True for k in ('privacy_verified','free_hard_cap_verified','quota_verified')):raise RequestBlocked('GENERATION_SAFETY_UNVERIFIED')
+    if not isinstance(policy.get('spec_sha256'),str) or not re.fullmatch('[a-f0-9]{64}',policy['spec_sha256']) or ticket['spec_sha256']!=policy['spec_sha256']:raise RequestBlocked('GENERATION_SPEC_CHANGED')
+    import hashlib
+    history_digest=hashlib.sha256(json.dumps(history,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    attempts=history.get('attempts')
+    if not isinstance(attempts,list) or ticket['history_sha256']!=history_digest:raise RequestBlocked('GENERATION_HISTORY_CHANGED')
+    if type(ticket['historical_attempts']) is not int or ticket['historical_attempts']!=len(attempts) or len(attempts)<4:raise RequestBlocked('HISTORICAL_ATTEMPTS_MUST_BE_PRESERVED')
+    if type(ticket['total_attempt_limit']) is not int or ticket['total_attempt_limit']!=len(attempts)+1:raise RequestBlocked('EXACTLY_ONE_ADDITIONAL_ATTEMPT_REQUIRED')
+    if any(a.get('request_id')==ticket['request_id'] for a in attempts):raise RequestBlocked('GENERATION_ALREADY_RESERVED_NO_RETRY')
+    previous=event.get('changes',{}).get('body',{}).get('from')
+    if not isinstance(previous,str) or ticket['request_id'] in previous:raise RequestBlocked('GENERATION_NOT_A_NEW_OWNER_REQUEST')
+    return dict(ticket,status='ONE_SHOT_TICKET_VALIDATED_NOT_SUBMITTED')
+
+
+def reserve_generation(ticket,history,persist):
+    """Persist through the existing private journal transport BEFORE any submit.
+
+    Caller must serialize producers and use freshly validated history. This does
+    not implement a distributed lock or silently retry a failed persist.
+    """
+    import copy,hashlib
+    digest=hashlib.sha256(json.dumps(history,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    if ticket.get('status')!='ONE_SHOT_TICKET_VALIDATED_NOT_SUBMITTED' or ticket.get('history_sha256')!=digest:raise RequestBlocked('GENERATION_RESERVATION_INVALID')
+    updated=copy.deepcopy(history)
+    updated['attempts'].append({'key':ticket['spec_sha256'],'request_id':ticket['request_id'],'spec_sha256':ticket['spec_sha256'],'status':'RESERVED_SUBMISSION_UNCERTAIN_NO_RETRY'})
+    persist(updated)  # exception means stop, never submit or reset the reservation
+    return updated

@@ -89,11 +89,15 @@ class ChatIssueBridgeTests(unittest.TestCase):
         self.assertNotIn('pull_request_target',text)
         self.assertNotIn('contents: write',text)
         self.assertNotIn('issues: write',text)
-        self.assertNotIn('CLOUDFLARE_API_TOKEN',text)
+        readonly=text.split('  generation-preflight:')[0]
+        self.assertNotIn('CLOUDFLARE_API_TOKEN',readonly)
+        self.assertIn("needs.generation-preflight.outputs.ready == 'true'",text)
         self.assertNotIn('upload-artifact',text)
         self.assertNotIn('private_drive_runtime run',text)
-        self.assertNotIn('github.event.issue.body',text)
-        self.assertEqual(text.count('secrets.'),1)
+        self.assertNotIn('github.event.issue.body',readonly)
+        self.assertNotIn('${{ github.event.issue.body }}',text)
+        self.assertEqual(readonly.count('secrets.'),1)
+        self.assertEqual(text.split('  generation-once:')[1].count('secrets.'),3)
 
 
 if __name__=='__main__':unittest.main()

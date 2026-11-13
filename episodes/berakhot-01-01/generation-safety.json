@@ -1,0 +1,8 @@
+{
+  "privacy_verified": false,
+  "free_hard_cap_verified": false,
+  "quota_verified": false,
+  "verified_at": null,
+  "spec_sha256": null,
+  "reason": "Closed until exact endpoint policy, fresh account/quota evidence and approved specification are reviewed. Owner Workers Free attestation is preserved; never request paid billing or expanded OAuth."
+}
