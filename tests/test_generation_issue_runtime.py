@@ -19,24 +19,11 @@ class RuntimeCheckpointTests(unittest.TestCase):
   with self.assertRaises(RequestBlocked):checkpoint_once(t,f.history,p,lambda v:self.fail('WRITE'))
  def test_generation_gates_require_all_evidence_or_stay_closed(self):
   from pathlib import Path
-  import re
   p=json.loads(Path('episodes/berakhot-01-01/generation-safety.json').read_text())
   flags=[p[k] for k in ('privacy_verified','free_hard_cap_verified','quota_verified')]
   self.assertTrue(all(x is True for x in flags) or all(x is False for x in flags))
   if all(flags):
-   self.assertRegex(p['spec_sha256'],r'^[a-f0-9]{64}
-
-class ProviderDiagnosticsTests(unittest.TestCase):
- def test_only_fixed_provider_codes_are_reported(self):
-  from tools.generation_issue_runtime import safe_failure_code
-  CloudflareBlocked=type('CloudflareBlocked',(ValueError,),{})
-  for code in ('CREDENTIALS_UNAVAILABLE','USAGE_UNKNOWN','MODEL_UNAVAILABLE','TRANSPORT_FAILED_NO_AUTOMATIC_RETRY'):
-   self.assertEqual(safe_failure_code(CloudflareBlocked(code)),code)
-  self.assertEqual(safe_failure_code(CloudflareBlocked('secret-token-or-provider-body')),'CloudflareBlocked')
- def test_unrelated_exception_text_is_never_printed(self):
-  from tools.generation_issue_runtime import safe_failure_code
-  self.assertEqual(safe_failure_code(OSError('secret-token-or-private-url')),'OSError')
-)
+   self.assertRegex(p['spec_sha256'],r'^[a-f0-9]{64}$')
    self.assertIsInstance(p['verified_at'],str)
    self.assertIn('Free',p['reason'])
    self.assertIn('NO RETRY',p['reason'])
