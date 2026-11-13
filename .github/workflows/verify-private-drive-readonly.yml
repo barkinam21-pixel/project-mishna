@@ -1,0 +1,33 @@
+name: Verify private Drive access (read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mishnah-drive-readonly-verification
+  cancel-in-progress: false
+jobs:
+  drive-readonly:
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout fixed reviewed PR 53 commit (never moving branch head)
+        uses: actions/checkout@v4
+        with:
+          ref: 2a7544d7d63a4e90e0872ba31df9736cd3103a21
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install local validation dependency
+        run: python -m pip install Pillow==12.0.0
+      - name: Check private Drive access without remote writes or inference
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          MISHNAH_DRIVE_OAUTH_JSON: ${{ secrets.MISHNAH_DRIVE_OAUTH_JSON }}
+          MISHNAH_REFERENCE_FILE_ID: ${{ secrets.MISHNAH_REFERENCE_FILE_ID }}
+          MISHNAH_STATE_FILE_ID: ${{ secrets.MISHNAH_STATE_FILE_ID }}
+          MISHNAH_SNAPSHOT_FILE_ID: ${{ secrets.MISHNAH_SNAPSHOT_FILE_ID }}
+        run: python -m tools.private_drive_runtime check-drive
