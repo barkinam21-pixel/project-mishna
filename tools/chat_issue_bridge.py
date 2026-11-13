@@ -141,6 +141,6 @@ def reserve_generation(ticket,history,persist):
     digest=hashlib.sha256(json.dumps(history,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     if ticket.get('status')!='ONE_SHOT_TICKET_VALIDATED_NOT_SUBMITTED' or ticket.get('history_sha256')!=digest:raise RequestBlocked('GENERATION_RESERVATION_INVALID')
     updated=copy.deepcopy(history)
-    updated['attempts'].append({'request_id':ticket['request_id'],'spec_sha256':ticket['spec_sha256'],'status':'RESERVED_SUBMISSION_UNCERTAIN_NO_RETRY'})
+    updated['attempts'].append({'key':ticket['spec_sha256'],'request_id':ticket['request_id'],'spec_sha256':ticket['spec_sha256'],'status':'RESERVED_SUBMISSION_UNCERTAIN_NO_RETRY'})
     persist(updated)  # exception means stop, never submit or reset the reservation
     return updated

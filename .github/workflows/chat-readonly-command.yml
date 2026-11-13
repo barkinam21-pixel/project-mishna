@@ -5,6 +5,10 @@ on:
   pull_request:
     paths:
       - tools/chat_issue_bridge.py
+      - tools/generation_issue_runtime.py
+      - tests/test_generation_issue_runtime.py
+      - tests/fixtures/generation_runtime_integration.py
+      - episodes/berakhot-01-01/generation-safety.json
       - tests/test_chat_issue_bridge.py
       - tests/test_generation_ticket.py
       - .github/workflows/chat-readonly-command.yml
@@ -25,7 +29,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime -v
+      - uses: actions/checkout@v4
+        with:
+          path: reviewed-runtime
+          ref: 80ba1559b785855a1f9f4cbd90083fd0228eec96
+          persist-credentials: false
+      - run: python -m pip install Pillow==12.0.0
+      - name: Synthetic end-to-end one-shot against actual existing runtime (no network)
+        run: python tests/fixtures/generation_runtime_integration.py reviewed-runtime
   validate-request:
     if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner
     runs-on: ubuntu-latest
@@ -66,3 +78,59 @@ jobs:
       - name: Remove private temporary runner files
         if: always()
         run: rm -rf private-media
+  generation-preflight:
+    if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner && contains(github.event.issue.body, '```mishnah-generation-request')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      ready: ${{ steps.safety.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: safety
+        name: Fail closed before releasing any production secret
+        run: |
+          python - <<'PY'
+          import json,os
+          p=json.load(open('episodes/berakhot-01-01/generation-safety.json'))
+          ready=all(p.get(k) is True for k in ('privacy_verified','free_hard_cap_verified','quota_verified'))
+          if not ready:
+              print('GENERATION_POLICY_NOT_CLEARED; no inference or private upload')
+              raise SystemExit(2)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('ready=true\n')
+          PY
+  generation-once:
+    needs: generation-preflight
+    if: needs.generation-preflight.outputs.ready == 'true' && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          path: runtime
+          ref: 80ba1559b785855a1f9f4cbd90083fd0228eec96
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Validate exact owner ticket, reserve privately, submit at most once
+        working-directory: runtime
+        env:
+          MISHNAH_DRIVE_OAUTH_JSON: ${{ secrets.MISHNAH_DRIVE_OAUTH_JSON }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: python ../control/tools/generation_issue_runtime.py --event "$GITHUB_EVENT_PATH" --policy ../control/episodes/berakhot-01-01/generation-safety.json
+      - name: Remove private local media
+        if: always()
+        run: rm -rf runtime/private-media
