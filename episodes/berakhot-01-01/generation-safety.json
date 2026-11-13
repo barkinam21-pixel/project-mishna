@@ -1,8 +1,8 @@
 {
-  "privacy_verified": true,
-  "free_hard_cap_verified": true,
-  "quota_verified": true,
-  "verified_at": "2026-11-13T22:29:37.654Z",
-  "spec_sha256": "d26b13440258d686069be6be5ef39bf7b7d551123e9338b08094b84babfcbd93",
-  "reason": "OPN03 only, owner explicitly authorized one new attempt in 2026-11-14 ChatGPT. Cloudflare official Workers AI Free 10000 neurons/day hard stop (no paid overage on Free), owner's still-current Free account/no-card attestation saved in Issue54, fresh native Cloudflare API checked 2026-11-13T22:27Z: model AVAILABLE, GraphQL analytics 1 group 114.1863 neurons used. OPN03 output 1024x576 + ONE shared owner-approved original master reference (not OPN02 three crops); expected ~109.57 neurons, plus 1000 reserve within 10000. Cloudflare-hosted partner FLUX.2 Klein 4B Zero Data Retention and Workers AI no training (with documented exceptions); owner previously approved sending authorized private style/character reference to this exact provider. Partner license ambiguity was reviewed and owner waived additional privacy-special-review, without asserting a legal guarantee. Exact OPN03 spec hash independently calculated via immutable runtime specification builder, cross-checked against proven OPN02 hash. Private Drive journal has 5 attempts and one OPN02 candidate, no new OPN03 attempt. This is a time-limited one-shot admission only, not a dispatch: a fresh exact owner Issue54 ticket with live-history SHA/zero spend required. NO TINYFISH, NO RETRY, NO PAID PLAN; account charge not independently visible."
+  "privacy_verified": false,
+  "free_hard_cap_verified": false,
+  "quota_verified": false,
+  "verified_at": null,
+  "spec_sha256": null,
+  "reason": "CLOSED after exactly one authorized OPN03 Workers AI inference SUCCEEDED in GitHub run 43519974519 on 2026-11-13T22:32Z; request c3b7f92e68214a15a61d917c0825f003, image PNG sha256 177aa4eb135c595724ef0d9ee5722983999324322536aa67feea9ca499aec841 (1024x576), private Drive snapshot sha256 2c9143de7dcb232f7037ea9d3934801e2113dae36f29bbb8c754a86eb8e7639f. Journal now contains 6 attempts and 2 CANDIDATE entries, source history preserved; accepted=false pending visual/owner review. No retry, no further inference without new owner authorization and fresh Free/privacy/quota/spec evidence. Do not reuse consumed ticket. NO TINYFISH."
 }
