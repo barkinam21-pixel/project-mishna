@@ -53,7 +53,26 @@ def conditioning_inputs(spec, root):
             buffer=io.BytesIO();derived.save(buffer,format='PNG');raw=buffer.getvalue()
             if list(derived.size)!=crop.get('size') or hashlib.sha256(raw).hexdigest()!=crop.get('sha256'):raise ValueError('Conditioning pixels/encoder differ from recorded hash')
         result.append((raw,crop['sha256']))
+    layout=prep.get('layout_guide')
+    if layout is not None:
+        path=under(root,layout['path'])
+        if not str(layout['path']).startswith('private-media/') or sha(path)!=layout['sha256']:
+            raise ValueError('Layout guide hash/path mismatch')
+        raw=path.read_bytes()
+        with Image.open(io.BytesIO(raw)) as image:
+            image.load()
+            if image.format!='PNG' or list(image.size)!=layout['size'] or layout.get('role')!='original_layout_guide':
+                raise ValueError('Layout guide dimensions/role mismatch')
+        result.insert(0,(raw,layout['sha256']))
+    if len(result)>4:raise ValueError('Too many conditioning images')
     return result
+
+
+def conditioning_records(spec):
+    prep=spec.get('director',{}).get('reference_preparation',{})
+    crops=prep.get('crops')
+    if not crops:return spec['references']
+    return ([prep['layout_guide']] if prep.get('layout_guide') else [])+crops
 
 
 def specifications(manifest, root):

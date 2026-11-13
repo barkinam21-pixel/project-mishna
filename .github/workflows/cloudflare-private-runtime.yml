@@ -1,7 +1,7 @@
 name: Private Cloudflare studio (owner dispatch only)
 on:
   pull_request:
-    paths: ['tools/private_drive_runtime.py', 'tools/comfy_scene_images.py', 'tests/test_private_drive_runtime.py', 'tests/test_private_runtime_preparation.py', 'tools/authorize_private_drive.py', 'tests/test_authorize_private_drive.py', '.github/workflows/cloudflare-private-runtime.yml']
+    paths: ['tools/private_drive_runtime.py', 'tools/comfy_scene_images.py', 'tools/cloudflare_image_backend.py', 'tools/chat_operations.py', 'tools/opn02_recovery.py', 'tests/test_private_drive_runtime.py', 'tests/test_private_runtime_preparation.py', 'tests/test_chat_and_recovery.py', 'tools/authorize_private_drive.py', 'tests/test_authorize_private_drive.py', '.github/workflows/cloudflare-private-runtime.yml']
   workflow_dispatch:
     inputs:
       operation:
@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install Pillow==12.0.0
-      - run: python -m unittest tests.test_private_drive_runtime tests.test_private_runtime_preparation tests.test_authorize_private_drive -v
+      - run: python -m unittest tests.test_private_drive_runtime tests.test_private_runtime_preparation tests.test_chat_and_recovery tests.test_authorize_private_drive -v
   cloudflare-readonly:
     if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && inputs.operation == 'check'
     runs-on: ubuntu-latest

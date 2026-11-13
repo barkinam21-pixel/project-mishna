@@ -79,7 +79,8 @@ class CloudflareClient:
         except (KeyError, TypeError, ValueError):
             raise CloudflareBlocked('USAGE_UNKNOWN') from None
         w,h = spec['size']
-        estimate = math.ceil(w/512)*math.ceil(h/512)*26.05 + len(spec.get('director',{}).get('reference_preparation',{}).get('crops') or spec['references'])*5.37
+        from tools.comfy_scene_images import conditioning_records
+        estimate = math.ceil(w/512)*math.ceil(h/512)*26.05 + len(conditioning_records(spec))*5.37
         if used + estimate + 1000 > 10000:
             raise CloudflareBlocked('FREE_ALLOWANCE_HEADROOM_INSUFFICIENT')
         self.receipt = {'started_at':now.isoformat(),'model':MODEL,'neurons_before':used,
@@ -92,7 +93,8 @@ class CloudflareClient:
         if not 1 <= len(reference_paths) <= 4:
             raise CloudflareBlocked('REFERENCE_COUNT_INVALID')
         images=[]
-        actual_refs=spec.get('director',{}).get('reference_preparation',{}).get('crops') or spec['references']
+        from tools.comfy_scene_images import conditioning_records
+        actual_refs=conditioning_records(spec)
         if len(actual_refs)!=len(reference_paths):raise CloudflareBlocked('REFERENCE_COUNT_MISMATCH')
         for path,ref in zip(reference_paths,actual_refs):
             raw=path.read_bytes()
