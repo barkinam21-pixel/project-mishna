@@ -53,3 +53,19 @@ class ChatResultsTests(unittest.TestCase):
         tasks[1]['status']='completed';self.assertEqual(next_task(tasks),'REVIEW_APPROVAL_BLOCKERS_NO_AUTOMATIC_GENERATION')
         tasks.append({'id':'check','status':'completed'})
         with self.assertRaises(EvidenceBlocked):next_task(tasks)
+    def test_ambiguous_jobs_and_attempt_mismatch_block(self):
+        for name in ('validate-request','drive-readonly'):
+            b=copy.deepcopy(self.bundle);b['jobs'].append(copy.deepcopy(next(j for j in b['jobs'] if j['name']==name)))
+            with self.assertRaisesRegex(EvidenceBlocked,'AMBIGUOUS_JOB'):verify(b,self.expected)
+        b=copy.deepcopy(self.bundle);b['run']['run_attempt']=2
+        for job in b['jobs']:job['run_attempt']=1
+        with self.assertRaisesRegex(EvidenceBlocked,'ATTEMPT_MISMATCH'):verify(b,self.expected)
+    def test_partial_job_not_verified_and_bool_id_rejected(self):
+        self.bundle['jobs'][1]['status']='in_progress'
+        self.assertEqual(verify(self.bundle,self.expected)['status'],'FAILED')
+        self.bundle['run']['id']=True
+        with self.assertRaisesRegex(EvidenceBlocked,'INVALID_RUN_ID'):verify(self.bundle,self.expected)
+    def test_invalid_attempt_budget_never_recommends_dispatch(self):
+        for value in [-1,True,'0',None]:
+            with self.assertRaisesRegex(EvidenceBlocked,'INVALID_ATTEMPT_LIMIT'):
+                next_task([{'id':'prepare','status':'pending','risk':'read_only','required_approval':'none','attempts':value}])

@@ -1,0 +1,23 @@
+{
+  "status": "EXISTING_RESULT_REVERIFIED_NO_DISPATCH",
+  "base": "main after merged PR58 and PR59",
+  "open_runtime_prs": [53,57],
+  "verified_existing_run": 43433569510,
+  "request_id": "cdcd8fa5975742649e43d22ebbc5b941",
+  "conditioning_inputs": 3,
+  "historical_attempts": 4,
+  "inference_requests": 0,
+  "remote_writes": 0,
+  "generation_authorized": false,
+  "tests": {"full_main":338,"seconds":5.989,"focused_bridge_results":21},
+  "live_provider_account_plan": "NOT_VERIFIED",
+  "provider_usage": "UNKNOWN",
+  "new_media": false,
+  "official_sources_read": [
+    "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers-ai/platform/pricing.mdx",
+    "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers-ai/platform/data-usage.mdx",
+    "https://huggingface.co/black-forest-labs/FLUX.2-klein-4B/raw/main/LICENSE.md"
+  ],
+  "production_blockers": ["Fresh exact one-attempt owner approval", "Current no-charge account/quota evidence", "Endpoint-specific private-reference terms", "Explicit budget/history extension without resetting four attempts"],
+  "additional_agent": false
+}
