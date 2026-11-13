@@ -1,8 +1,8 @@
 {
-  "privacy_verified": false,
-  "free_hard_cap_verified": false,
-  "quota_verified": false,
-  "verified_at": null,
-  "spec_sha256": null,
-  "reason": "Closed until exact endpoint policy, fresh account/quota evidence and approved specification are reviewed. Owner Workers Free attestation is preserved; never request paid billing or expanded OAuth."
+  "privacy_verified": true,
+  "free_hard_cap_verified": true,
+  "quota_verified": true,
+  "verified_at": "2026-11-13T21:34:04Z",
+  "spec_sha256": "89f5234c7f50943d311abc3cf3075ad3ba2082bd9de6b045daa02484b601ca9f",
+  "reason": "One approved OPN02 reference-image attempt only: owner Free/no-overage screenshot attestation documented in Issue54 (2026-11-13); Cloudflare official Workers AI Free 10000 Neurons/day hard-stop, pricing updated 2026-11-12; GitHub Actions authenticated live analytics 43509805169 returned valid empty groups on 2026-11-13; native Cloudflare API confirmed same; model catalog available and Cloudflare-hosted Partner Zero Data Retention. Cloudflare AI data usage says no training and transient processing with stated exceptions. BFL linked August 2026 terms reviewed: owner explicitly approved transmission of these three authorized nonsensitive illustrations and waived additional privacy-special-review, accepting possible partner contractual ambiguity. Private Drive journal independently read and unchanged at four old attempts; exact immutable OPN02 spec hash verified against prior visual fingerprint. Do not interpret this as a guarantee of billing-system balance or legal no-risk; zero-cost mandate relies on owner-attested Workers Free, which hard-stops on exhaustion. This time-limited admission does not itself dispatch; one fresh exact owner issue ticket is mandatory. NO TINYFISH, NO RETRY, NO PAID PLAN."
 }
