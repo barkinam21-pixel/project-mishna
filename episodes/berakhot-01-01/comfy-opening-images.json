@@ -349,7 +349,17 @@
               ],
               "role": "identity_costume_only"
             }
-          ]
+          ],
+          "layout_guide": {
+            "path": "private-media/studio/recovered-opn02-20261111/layout.png",
+            "sha256": "965821627a7905b418c72bbb5d89db5324b5af78c3021af7644a02d19818de4d",
+            "size": [
+              511,
+              287
+            ],
+            "role": "original_layout_guide",
+            "provenance": "Existing deterministic layout from the recorded 2026-11-11 trial; recovered by exact original bundle hash. No new generation authorized."
+          }
         }
       }
     },

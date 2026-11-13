@@ -1,0 +1,63 @@
+{
+  "status": "OPN02_PREPARATION_VERIFIED_NOT_AUTHORIZED",
+  "inference_requests": 0,
+  "remote_writes": 0,
+  "conditioning_inputs": 2,
+  "conditioning_sha256": [
+    "80c76c071061e12efa6f45d87f3681f8edb57877c2e0454e31158a22f64a28a9",
+    "82b5883412024e6b66a15c51104096f9d9aea9b1712810f444eea1781daad55c"
+  ],
+  "prompt_sha256": "efc529af749e02422052f41986e14f4bd76aba792fd9138d9bb3290688d99c7b",
+  "visual_request_sha256": "944c01a823edadd90674026470c11830b17fad7c6ee8a316bc0bfd1a5c6e1d82",
+  "manifest_sha256": "64a38f429fb23444587c5a9019ee1e3081182763377122c225d0b8f100556711",
+  "historical_attempts": 4,
+  "journal_continuity_verified": true,
+  "restored_candidates": [
+    {
+      "sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+      "status": "CANDIDATE_NEEDS_HUMAN_REVIEW",
+      "dimensions": [
+        1024,
+        576
+      ],
+      "native_original_verified": false,
+      "approval_granted_by_preparation": false
+    }
+  ],
+  "direction_board": "VERIFIED_LOCAL_DIRECTION_ONLY_NOT_PROVIDER_INPUT",
+  "latest_recorded_candidate_available": false,
+  "latest_recorded_candidate_sha256": "1c47645bf64777cc3377809b7be75a10f233a1f7e143cf3d791af86480219b03",
+  "latest_trial_layout_in_current_inputs": false,
+  "latest_trial_layout_sha256": "965821627a7905b418c72bbb5d89db5324b5af78c3021af7644a02d19818de4d",
+  "candidate_availability_note": "Snapshot may predate later trials; a missing newer candidate is not recovered by a journal entry",
+  "generation_authorized": false,
+  "generation_blockers": [
+    "NEW_OWNER_GENERATION_APPROVAL_REQUIRED",
+    "FRESH_PROVIDER_PRIVACY_AND_QUOTA_EVIDENCE_REQUIRED",
+    "RECORDED_SUBMISSION_LIMIT_CONSUMED_DO_NOT_RESET_JOURNAL",
+    "LATEST_TRIAL_LAYOUT_NOT_IN_CURRENT_CONDITIONING_INPUTS"
+  ],
+  "semantic_qa": "NOT_EVALUATED",
+  "composition_target_height_fraction": [
+    0.25,
+    0.35
+  ],
+  "next_correction": "Preserve existing identities and painted style; smaller adults and village, not fortress. New direction/seed are not authorized by preparation.",
+  "verification_context": {
+    "restoration": "Two clean temporary roots using real files downloaded read-only via existing Drive connector",
+    "new_code_cloud_oauth": "NOT_RUN; local transport used the exact downloaded bytes",
+    "prior_live_actions_run": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43337618166",
+    "prior_live_code_sha": "2a7544d7d63a4e90e0872ba31df9736cd3103a21",
+    "cloudflare_client_constructed": false,
+    "remote_write_allowed": false,
+    "repeatable": true,
+    "workspace_usage": "unknown"
+  },
+  "tests": {
+    "full_local_passed": 509,
+    "seconds": 26.827,
+    "live_new_code_actions": false,
+    "episode_preflight": "BLOCKED_AS_DESIGNED_0_ERRORS_15_GATES",
+    "scene_preflight": "NOT_READY_FOR_PRIVATE_RENDER"
+  }
+}

@@ -53,7 +53,26 @@ def conditioning_inputs(spec, root):
             buffer=io.BytesIO();derived.save(buffer,format='PNG');raw=buffer.getvalue()
             if list(derived.size)!=crop.get('size') or hashlib.sha256(raw).hexdigest()!=crop.get('sha256'):raise ValueError('Conditioning pixels/encoder differ from recorded hash')
         result.append((raw,crop['sha256']))
+    layout=prep.get('layout_guide')
+    if layout is not None:
+        path=under(root,layout['path'])
+        if not str(layout['path']).startswith('private-media/') or sha(path)!=layout['sha256']:
+            raise ValueError('Layout guide hash/path mismatch')
+        raw=path.read_bytes()
+        with Image.open(io.BytesIO(raw)) as image:
+            image.load()
+            if image.format!='PNG' or list(image.size)!=layout['size'] or layout.get('role')!='original_layout_guide':
+                raise ValueError('Layout guide dimensions/role mismatch')
+        result.insert(0,(raw,layout['sha256']))
+    if len(result)>4:raise ValueError('Too many conditioning images')
     return result
+
+
+def conditioning_records(spec):
+    prep=spec.get('director',{}).get('reference_preparation',{})
+    crops=prep.get('crops')
+    if not crops:return spec['references']
+    return ([prep['layout_guide']] if prep.get('layout_guide') else [])+crops
 
 
 def specifications(manifest, root):
@@ -130,6 +149,25 @@ def prompt_text(spec):
     if spec.get('visual_direction'): text += ' '+json.dumps(spec['visual_direction'],ensure_ascii=False)
     if spec.get('director'): text += ' STRUCTURED DIRECTION: '+json.dumps(spec['director'],ensure_ascii=False,sort_keys=True)
     return text
+
+
+def visual_request_key(spec):
+    """Stable duplicate guard; expiring safety evidence is not creative direction.
+
+    Preserve existing cache keys and receipts. This secondary key only prevents
+    replay under a new cache key after policy/attestation timestamps are refreshed.
+    """
+    visual = copy.deepcopy(spec)
+    if isinstance(visual.get('backend'), dict):
+        visual['backend'].pop('safety', None)
+    return key(visual)
+
+
+def ensure_visual_request_new(spec, entries, current_key):
+    fingerprint = visual_request_key(spec)
+    for previous_key, previous in entries.items():
+        if previous_key != current_key and isinstance(previous.get('spec'), dict) and visual_request_key(previous['spec']) == fingerprint:
+            raise ValueError('EXISTING_VISUAL_REQUEST_REVIEW_OR_RECOVER_NO_RESUBMISSION')
 
 
 def compile_klein(spec, references):
@@ -227,6 +265,7 @@ def _run(manifest, root, out, client, generate):
                 # or serialise them into new reports.
                 raise ValueError('SYNCHRONOUS_RESPONSE_REQUIRES_MANUAL_RECOVERY')
             if not entry:
+                ensure_visual_request_new(row['spec'], state['entries'], row['key'])
                 if report['submissions'] >= policy['max_submissions']:
                     raise ValueError('Submission limit reached')
                 if len(state.get('attempts',[])) >= policy.get('total_submissions_limit',2**63):

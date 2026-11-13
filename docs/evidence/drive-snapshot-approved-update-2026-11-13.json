@@ -1,0 +1,73 @@
+{
+  "status": "APPROVED_DRIVE_SNAPSHOT_UPDATED_AND_READBACK_VERIFIED",
+  "inference_requests": 0,
+  "remote_writes": 1,
+  "conditioning_inputs": 3,
+  "conditioning_sha256": [
+    "965821627a7905b418c72bbb5d89db5324b5af78c3021af7644a02d19818de4d",
+    "80c76c071061e12efa6f45d87f3681f8edb57877c2e0454e31158a22f64a28a9",
+    "82b5883412024e6b66a15c51104096f9d9aea9b1712810f444eea1781daad55c"
+  ],
+  "prompt_sha256": "f703c18ffa5b450fc460a96d020764a5bad7d2ed7c115441c3f662db9a5720fd",
+  "visual_request_sha256": "1d635ad1f9315b7e281cdf81f74b0871739d38e0f00f74cdfe54d4c4c5a3105f",
+  "manifest_sha256": "d647b201b673cdb26ccdce884cc9331516a39137170ecfefeaab12a4d7707ac6",
+  "historical_attempts": 4,
+  "journal_continuity_verified": true,
+  "restored_candidates": [
+    {
+      "sha256": "1c47645bf64777cc3377809b7be75a10f233a1f7e143cf3d791af86480219b03",
+      "status": "CANDIDATE_NEEDS_HUMAN_REVIEW",
+      "dimensions": [
+        1024,
+        576
+      ],
+      "native_original_verified": true,
+      "approval_granted_by_preparation": false
+    },
+    {
+      "sha256": "e144d087fd438892725e5409096b51cf5cc1f3b82010b9a8f44acd2dbde92552",
+      "status": "CANDIDATE_NEEDS_HUMAN_REVIEW",
+      "dimensions": [
+        1024,
+        576
+      ],
+      "native_original_verified": false,
+      "approval_granted_by_preparation": false
+    }
+  ],
+  "direction_board": "VERIFIED_LOCAL_DIRECTION_ONLY_NOT_PROVIDER_INPUT",
+  "latest_recorded_candidate_available": true,
+  "latest_recorded_candidate_sha256": "1c47645bf64777cc3377809b7be75a10f233a1f7e143cf3d791af86480219b03",
+  "latest_trial_layout_in_current_inputs": true,
+  "latest_trial_layout_sha256": "965821627a7905b418c72bbb5d89db5324b5af78c3021af7644a02d19818de4d",
+  "candidate_availability_note": "Snapshot may predate later trials; a missing newer candidate is not recovered by a journal entry",
+  "generation_authorized": false,
+  "generation_blockers": [
+    "NEW_OWNER_GENERATION_APPROVAL_REQUIRED",
+    "FRESH_PROVIDER_PRIVACY_AND_QUOTA_EVIDENCE_REQUIRED",
+    "RECORDED_SUBMISSION_LIMIT_CONSUMED_DO_NOT_RESET_JOURNAL"
+  ],
+  "semantic_qa": "NOT_EVALUATED",
+  "composition_target_height_fraction": [
+    0.25,
+    0.35
+  ],
+  "next_correction": "Preserve existing identities and painted style; smaller adults and village, not fortress. New direction/seed are not authorized by preparation.",
+  "remote_snapshot_updated": true,
+  "remote_snapshot_sha256": "978b585f5eb5e9d89daeeb340b731b34e40c406d7e935214c23c4ed264af8196",
+  "remote_snapshot_bytes": 13837793,
+  "old_drive_revision_preserved": true,
+  "prior_exact_snapshot_backed_up_privately": true,
+  "verification": "Actual Drive update, subsequent download/hash comparison, then clean local restore using current PR57 code; no model constructed",
+  "independent_actions_recheck": {
+    "run_id": 43337618166,
+    "attempt": 3,
+    "conclusion": "success",
+    "runtime_code_sha": "2a7544d7d63a4e90e0872ba31df9736cd3103a21",
+    "status": "DRIVE_RESTORE_AND_LOCAL_PREFLIGHT_VERIFIED",
+    "conditioning_inputs": 2,
+    "inference_requests": 0,
+    "remote_writes": 0,
+    "distinction": "Existing pinned workflow verifies updated archive restore; three-input audit uses current PR57 code locally."
+  }
+}

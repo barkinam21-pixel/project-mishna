@@ -1,4 +1,6 @@
-# חיבור Drive פרטי — המשך ההגדרה הקיימת
+# חיבור Drive פרטי — הגדרה קיימת שהושלמה
+
+**מצב נוכחי, 13.11:** הבעלים השלים את אישור Google והגדרת Production. [בדיקת Actions העצמאית](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43337618166) הצליחה. אין להוריד JSON חדש, להתקין שוב או לחזור על האישור. ההוראות להלן נשמרות לשחזור/אבחון בלבד; חסימות מהסבב הקודם אינן המצב הנוכחי.
 
 הכלי הקיים `tools/authorize_private_drive.py` עודכן לבחירת שלושת הקבצים באמצעות **Google Picker המובנה באישור Desktop OAuth**. אין צורך להחליף את לקוח ה־Desktop, להקים ממשק JavaScript, ליצור API key או להתקין ספריות Python. Python ו־GitHub CLI שכבר הותקנו נשארים בשימוש.
 
