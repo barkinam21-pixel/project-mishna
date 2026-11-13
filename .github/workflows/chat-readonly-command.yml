@@ -8,6 +8,7 @@ on:
       - tools/generation_issue_runtime.py
       - tests/test_generation_issue_runtime.py
       - tests/fixtures/generation_runtime_integration.py
+      - tests/fixtures/generation_opn03_runtime_integration.py
       - episodes/berakhot-01-01/generation-safety.json
       - tests/test_chat_issue_bridge.py
       - tests/test_generation_ticket.py
@@ -37,7 +38,9 @@ jobs:
           persist-credentials: false
       - run: python -m pip install Pillow==12.0.0
       - name: Synthetic end-to-end one-shot against actual existing runtime (no network)
-        run: python tests/fixtures/generation_runtime_integration.py reviewed-runtime
+        run: |
+          python tests/fixtures/generation_runtime_integration.py reviewed-runtime
+          python tests/fixtures/generation_opn03_runtime_integration.py reviewed-runtime
   validate-request:
     if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner
     runs-on: ubuntu-latest

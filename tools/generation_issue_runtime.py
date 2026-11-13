@@ -44,11 +44,12 @@ def execute(event,policy,history,manifest,root,drive,state_id,snapshot_id,adapte
     from tools.cloudflare_image_backend import CloudflareClient
     ticket=validate_generation_event(event,policy,history)
     m=copy.deepcopy(manifest);m['backend']=m['available_backends']['cloudflare']
-    m['shots']=[s for s in m['shots'] if s['id']=='OPN02']
+    shot_id=ticket['shot_id']
+    m['shots']=[s for s in m['shots'] if s['id']==shot_id]
     rows=specifications(m,root)
     if len(rows)!=1 or rows[0]['missing'] or rows[0]['key']!=ticket['spec_sha256']:raise RequestBlocked('RESTORED_SPEC_MISMATCH')
     # Admission is scoped to this validated ticket, never written to public manifest.
-    m['authorization'].update(generation_approved=True,zero_cost_compute_verified=True,component_licenses_verified=True,max_submissions=1,total_submissions_limit=ticket['total_attempt_limit'],approved_shot_ids=['OPN02'])
+    m['authorization'].update(generation_approved=True,zero_cost_compute_verified=True,component_licenses_verified=True,max_submissions=1,total_submissions_limit=ticket['total_attempt_limit'],approved_shot_ids=[shot_id])
     cfg=copy.deepcopy(m['backend']);safety=cfg['safety']
     safety.update(private_direct_api_verified=True,partner_private_reference_terms_verified=True,licenses_verified=True,free_hard_cap_verified=True,verified_at=policy['verified_at'])
     studio=Studio(root);out=studio.work/'images';atomic(out/'state.json',history)
@@ -74,7 +75,7 @@ def execute(event,policy,history,manifest,root,drive,state_id,snapshot_id,adapte
     destination='private-media/studio/generation-output-'+ticket['request_id']+'.zip'
     saved=studio.backup(destination)
     drive.replace(snapshot_id,(Path(root)/destination).read_bytes(),'application/zip')
-    return {'status':'OPN02_PRIVATE_CANDIDATE_SAVED','request_id':ticket['request_id'],'inference_requests':report['submissions'],'accepted':False,'history_attempts':len(previous['attempts']),'snapshot_sha256':saved['outputs']['sha256']}
+    return {'status':shot_id+'_PRIVATE_CANDIDATE_SAVED','request_id':ticket['request_id'],'inference_requests':report['submissions'],'accepted':False,'history_attempts':len(previous['attempts']),'snapshot_sha256':saved['outputs']['sha256']}
 
 
 def main():
@@ -99,6 +100,8 @@ def main():
             studio=Studio(root);p=studio.work/'references.zip';p.write_bytes(d.download(refs));studio.restore_references(str(p.relative_to(root)))
             p=studio.work/'snapshot.zip';p.write_bytes(d.download(snapshot));studio.restore(str(p.relative_to(root)))
             history=json.loads(d.download(state));validate_journal(history,load(studio.work/'images/state.json',{'entries':{}}),locators['historical_attempt_native_sha256'])
+            # Reuse the independently verified OPN02 asset/history preflight as
+            # a shared source-integrity checkpoint. It makes no inference.
             audit=prepare_opn02(runtime_root,root,history,locators['historical_attempt_native_sha256'])
             validate_generation_event(event,policy,history)
             if a.dry_run:
