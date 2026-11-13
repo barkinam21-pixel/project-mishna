@@ -132,6 +132,25 @@ def prompt_text(spec):
     return text
 
 
+def visual_request_key(spec):
+    """Stable duplicate guard; expiring safety evidence is not creative direction.
+
+    Preserve existing cache keys and receipts. This secondary key only prevents
+    replay under a new cache key after policy/attestation timestamps are refreshed.
+    """
+    visual = copy.deepcopy(spec)
+    if isinstance(visual.get('backend'), dict):
+        visual['backend'].pop('safety', None)
+    return key(visual)
+
+
+def ensure_visual_request_new(spec, entries, current_key):
+    fingerprint = visual_request_key(spec)
+    for previous_key, previous in entries.items():
+        if previous_key != current_key and isinstance(previous.get('spec'), dict) and visual_request_key(previous['spec']) == fingerprint:
+            raise ValueError('EXISTING_VISUAL_REQUEST_REVIEW_OR_RECOVER_NO_RESUBMISSION')
+
+
 def compile_klein(spec, references):
     """Native Comfy core nodes, following official Klein distilled workflow topology."""
     model = spec['model']
@@ -227,6 +246,7 @@ def _run(manifest, root, out, client, generate):
                 # or serialise them into new reports.
                 raise ValueError('SYNCHRONOUS_RESPONSE_REQUIRES_MANUAL_RECOVERY')
             if not entry:
+                ensure_visual_request_new(row['spec'], state['entries'], row['key'])
                 if report['submissions'] >= policy['max_submissions']:
                     raise ValueError('Submission limit reached')
                 if len(state.get('attempts',[])) >= policy.get('total_submissions_limit',2**63):

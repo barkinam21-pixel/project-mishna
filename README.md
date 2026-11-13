@@ -1,7 +1,8 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
-> **13.11 — חיבור Drive מצומצם מומש, טרם אושר בחשבון:** כלי ה־Desktop ב־[PR #53](https://github.com/barkinam21-pixel/project-mishna/pull/53) משתמש כעת ב־Google Picker בתוך אישור OAuth וב־`drive.file` בלבד; מסלול Drive המלא נחסם. 498 בדיקות מקומיות עברו, לרבות 19 בדיקות OAuth. **זה אינו חיבור Actions חי:** Google Cloud החזיר `Site Unavailable` בדפדפן Work; הפעלת Picker, השלמת Branding/Production ואישור הבעלים עדיין לא אומתו. [המשך ההגדרה הקיימת](docs/desktop-drive-authorization.md). אין צורך להתקין שוב Python/gh או ליצור OAuth Client מחדש; אין יצירה, חיוב, שינוי שיתוף או מיזוג.
+> **13.11 — חיבור Drive העצמאי אומת; הכנת OPN02 בלבד, ללא יצירה:** [הרצה 43337618166](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43337618166) הסתיימה ב־`DRIVE_RESTORE_AND_LOCAL_PREFLIGHT_VERIFIED`, אפס כתיבות ואפס inference. OAuth ב־Production וב־`drive.file` לפי אישור הבעלים; אין לחזור להגדרות או להתקנות. PR #55 ו־#56 מוזגו; **PR #53 נשאר פתוח**. בביקורת ההמשך שוחזרו הקבצים האמיתיים פעמיים, ונוספו הגנות ליומן/כפילויות/מגבלת גיבוי. [דוח ההכנה](docs/opn02-runtime-preparation.md) מפריד בדיקה חיה, בדיקה מקומית וחסמי יצירה. ה־snapshot המחובר ישן מהניסיון האחרון, ותרשים הפריסה של אותו ניסיון אינו בשני קלטי הייחוס הנוכחיים. אין עדיין בקשת יצירה חדשה מוכנה ומאושרת.
 
+העדכונים המתוארכים להלן הם היסטוריה; חסימת OAuth הישנה אינה המצב הנוכחי.
 
 > **Cloudflare Secrets אומתו בפועל ב־Actions:** [הרצה43223192705](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43223192705) קראה את קטלוגKlein4B בהצלחה ללאיצירה. בדיקתDrive המשיכה ונחסמה ב־OAuthחסר. שלושתמזהיהקבציםהפרטייםכברמוגדריםכברירתמחדל;שנימקורותאומתוושוחזרו,ובדיקתsnapshotנקייהעברהבאמצעותהחיבורהמורשההקיים. זהאינואימותDriveב־Actions. [מהנשארלחבר](docs/private-cloudflare-actions.md#live-read-only-validation-after-owner-supplied-cloudflare-secrets). מכסהלארשומהכמאומתת,איןבקשתמודל/תשלום/שינויאישור/מיזוג.
 
