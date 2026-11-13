@@ -17,7 +17,7 @@ with tempfile.TemporaryDirectory() as temp:
   p=root/f'private-media/reference{i}.png';p.parent.mkdir(exist_ok=True);Image.new('RGB',(256,144),color).save(p)
   m['references'].append(dict(path=str(p.relative_to(root)),sha256=sha(p),expected_sha256=sha(p),expected_size=[256,144],synthesis_rights_confirmed=True,role='TEST_ONLY'))
  for c in m['characters'].values():c['references']=m['references']
- m['shots']=[m['shots'][2]];d=m['shots'][0]['director'];d.pop('reference_preparation',None);d['reference_images']=[r['sha256'] for r in m['references']];d['reference_roles']=['TEST_ONLY']*3
+ m['shots']=[m['shots'][2]];d=m['shots'][0]['director'];d.pop('reference_preparation',None);d['reference_images']=[r['sha256'] for r in m['references']];d['reference_roles']=['TEST_ONLY']*len(m['references'])
  d['style_lock']=hashlib.sha256(json.dumps({k:m[k] for k in ['style','characters','references']},sort_keys=True,ensure_ascii=False).encode()).hexdigest()
  target=root/'episodes/berakhot-01-01';target.mkdir(parents=True);(target/'comfy-opening-images.json').write_text(json.dumps(m))
  rows=specifications(m,root);assert not rows[0]['missing'],rows[0]['missing'];key=rows[0]['key'];f.policy['spec_sha256']=key;f.ticket['spec_sha256']=key
