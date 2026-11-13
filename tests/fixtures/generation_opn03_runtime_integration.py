@@ -9,7 +9,8 @@ from tools.cloudflare_image_backend import CloudflareClient
 from PIL import Image
 from tests import test_generation_ticket as fixtures
 f=fixtures.GenerationTicketTests();f.setUp();f.history["entries"]={};f.history['attempts'].append({'key':'consumed-opn02'})
-f.ticket.update(shot_id='OPN03',operation='generate-opn03-once',approval='APPROVE_ONE_OPN03_FREE_ATTEMPT',historical_attempts=5,total_attempt_limit=6)f.ticket["history_sha256"]=hashlib.sha256(json.dumps(f.history,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+f.ticket.update(shot_id='OPN03',operation='generate-opn03-once',approval='APPROVE_ONE_OPN03_FREE_ATTEMPT',historical_attempts=5,total_attempt_limit=6)
+f.ticket["history_sha256"]=hashlib.sha256(json.dumps(f.history,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 with tempfile.TemporaryDirectory() as temp:
  root=Path(temp);m=json.loads((runtime/'episodes/berakhot-01-01/comfy-opening-images.json').read_text());m['backend']=m['available_backends']['cloudflare'];m['references']=[]
  for i,color in enumerate(['red','green','blue']):
