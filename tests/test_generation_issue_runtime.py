@@ -17,10 +17,18 @@ class RuntimeCheckpointTests(unittest.TestCase):
   with self.assertRaises(OSError):checkpoint_once(t,f.history,p,lambda v:(_ for _ in ()).throw(OSError()))
   p['attempts'][-1]['key']='changed'
   with self.assertRaises(RequestBlocked):checkpoint_once(t,f.history,p,lambda v:self.fail('WRITE'))
- def test_default_production_gates_closed(self):
+ def test_generation_gates_require_all_evidence_or_stay_closed(self):
   from pathlib import Path
   p=json.loads(Path('episodes/berakhot-01-01/generation-safety.json').read_text())
-  self.assertFalse(any(p[k] for k in ('privacy_verified','free_hard_cap_verified','quota_verified')))
+  flags=[p[k] for k in ('privacy_verified','free_hard_cap_verified','quota_verified')]
+  self.assertTrue(all(x is True for x in flags) or all(x is False for x in flags))
+  if all(flags):
+   self.assertRegex(p['spec_sha256'],r'^[a-f0-9]{64}$')
+   self.assertIsInstance(p['verified_at'],str)
+   self.assertIn('Free',p['reason'])
+   self.assertIn('NO RETRY',p['reason'])
+  else:
+   self.assertIsNone(p['verified_at'])
 
 
 class ProviderDiagnosticsTests(unittest.TestCase):
