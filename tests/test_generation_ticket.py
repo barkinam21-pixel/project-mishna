@@ -25,6 +25,24 @@ class GenerationTicketTests(unittest.TestCase):
   def fail(h):calls.append(h);raise OSError('TEST')
   with self.assertRaises(OSError):reserve_generation(t,self.history,fail)
   self.assertEqual(len(calls),1)
+ def test_opn03_explicit_one_shot_and_five_attempt_history(self):
+  self.history['attempts'].append({'key':'historical-opn02-success'})
+  self.ticket.update(shot_id='OPN03',operation='generate-opn03-once',approval='APPROVE_ONE_OPN03_FREE_ATTEMPT',historical_attempts=5,total_attempt_limit=6)
+  self.ticket['history_sha256']=hashlib.sha256(json.dumps(self.history,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+  t=validate_generation_event(self.event(),self.policy,self.history,self.now)
+  self.assertEqual(t['shot_id'],'OPN03')
+  stored=[];h=reserve_generation(t,self.history,stored.append)
+  self.assertEqual(len(h['attempts']),6);self.assertEqual(len(self.history['attempts']),5)
+  with self.assertRaises(RequestBlocked):validate_generation_event(self.event(),self.policy,h,self.now)
+ def test_opn03_cannot_masquerade_as_legacy_opn02(self):
+  self.ticket.update(shot_id='OPN03',operation='generate-opn03-once',approval='APPROVE_ONE_OPN03_FREE_ATTEMPT')
+  self.assertEqual(validate_generation_event(self.event(),self.policy,self.history,self.now)['shot_id'],'OPN03')
+  for changes in ({'approval':'APPROVE_ONE_OPN02_FREE_ATTEMPT'},{'operation':'generate-opn02-once'},{'shot_id':'OPN04'}):
+   original=dict(self.ticket);self.ticket.update(changes)
+   with self.assertRaises(RequestBlocked):validate_generation_event(self.event(),self.policy,self.history,self.now)
+   self.ticket=original
+  self.ticket.pop('shot_id')
+  with self.assertRaises(RequestBlocked):validate_generation_event(self.event(),self.policy,self.history,self.now)
  def test_wrong_actor_and_stale_ticket_block(self):
   e=self.event();e['sender']['login']='foreign'
   with self.assertRaises(RequestBlocked):validate_generation_event(e,self.policy,self.history,self.now)
