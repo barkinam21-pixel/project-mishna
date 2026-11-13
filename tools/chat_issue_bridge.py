@@ -107,9 +107,17 @@ def validate_generation_event(event,policy,history,now=None):
     if len(blocks)!=1:raise RequestBlocked('ONE_GENERATION_ENVELOPE_REQUIRED')
     try:ticket=json.loads(blocks[0],object_pairs_hook=unique_pairs)
     except (ValueError,TypeError):raise RequestBlocked('INVALID_GENERATION_JSON') from None
-    fields={'version','request_id','operation','issued_at','approval','spec_sha256','history_sha256','historical_attempts','total_attempt_limit','max_charge_usd'}
-    if not isinstance(ticket,dict) or set(ticket)!=fields:raise RequestBlocked('GENERATION_FIELDS_INVALID')
-    if type(ticket['version']) is not int or ticket['version']!=1 or ticket['operation']!='generate-opn02-once' or ticket['approval']!='APPROVE_ONE_OPN02_FREE_ATTEMPT':raise RequestBlocked('EXPLICIT_ONE_SHOT_APPROVAL_REQUIRED')
+    legacy_fields={'version','request_id','operation','issued_at','approval','spec_sha256','history_sha256','historical_attempts','total_attempt_limit','max_charge_usd'}
+    fields=legacy_fields|{'shot_id'}
+    if not isinstance(ticket,dict) or set(ticket) not in (legacy_fields,fields):raise RequestBlocked('GENERATION_FIELDS_INVALID')
+    # Old OPN02 envelopes remain valid; new shots must name the exact target.
+    shot_id=ticket.get('shot_id','OPN02')
+    operations={
+        'OPN02':('generate-opn02-once','APPROVE_ONE_OPN02_FREE_ATTEMPT'),
+        'OPN03':('generate-opn03-once','APPROVE_ONE_OPN03_FREE_ATTEMPT'),
+    }
+    if (set(ticket)==legacy_fields and shot_id!='OPN02') or shot_id not in operations or type(ticket['version']) is not int or ticket['version']!=1 or (ticket['operation'],ticket['approval'])!=operations[shot_id]:
+        raise RequestBlocked('EXPLICIT_ONE_SHOT_APPROVAL_REQUIRED')
     if not isinstance(ticket['request_id'],str) or not re.fullmatch('[a-f0-9]{32}',ticket['request_id']):raise RequestBlocked('INVALID_GENERATION_ID')
     if type(ticket['max_charge_usd']) not in (int,float) or ticket['max_charge_usd']!=0:raise RequestBlocked('ZERO_CHARGE_ONLY')
     try:
@@ -128,7 +136,8 @@ def validate_generation_event(event,policy,history,now=None):
     if any(a.get('request_id')==ticket['request_id'] for a in attempts):raise RequestBlocked('GENERATION_ALREADY_RESERVED_NO_RETRY')
     previous=event.get('changes',{}).get('body',{}).get('from')
     if not isinstance(previous,str) or ticket['request_id'] in previous:raise RequestBlocked('GENERATION_NOT_A_NEW_OWNER_REQUEST')
-    return dict(ticket,status='ONE_SHOT_TICKET_VALIDATED_NOT_SUBMITTED')
+    normalized=dict(ticket);normalized['shot_id']=shot_id
+    return dict(normalized,status='ONE_SHOT_TICKET_VALIDATED_NOT_SUBMITTED')
 
 
 def reserve_generation(ticket,history,persist):
