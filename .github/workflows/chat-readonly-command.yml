@@ -6,6 +6,7 @@ on:
     paths:
       - tools/chat_issue_bridge.py
       - tests/test_chat_issue_bridge.py
+      - tests/test_generation_ticket.py
       - .github/workflows/chat-readonly-command.yml
 permissions:
   contents: read
@@ -24,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket -v
   validate-request:
     if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner
     runs-on: ubuntu-latest
