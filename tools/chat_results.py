@@ -29,6 +29,12 @@ def exactly(rows,status):
 def verify(bundle,expected):
     """Consume fetched metadata+logs, correlate request, fail closed, emit safe summary."""
     run=bundle['run']; jobs=bundle['jobs']
+    if type(run.get('id')) is not int or run['id']<=0:raise EvidenceBlocked('INVALID_RUN_ID')
+    if not isinstance(jobs,list) or any(not isinstance(j,dict) for j in jobs):raise EvidenceBlocked('INVALID_JOBS')
+    for name in ('validate-request','drive-readonly'):
+        selected=[j for j in jobs if j.get('name')==name]
+        if len(selected)>1:raise EvidenceBlocked('AMBIGUOUS_JOB_'+name)
+        if selected and 'run_attempt' in run and selected[0].get('run_attempt')!=run['run_attempt']:raise EvidenceBlocked('JOB_ATTEMPT_MISMATCH')
     if (run.get('event')!='issues' or run.get('repository',{}).get('full_name')!=REPO
         or run.get('actor',{}).get('login')!=OWNER or run.get('head_branch')!='main'
         or run.get('path')!='.github/workflows/chat-readonly-command.yml'):
@@ -43,7 +49,7 @@ def verify(bundle,expected):
         or receipt.get('runtime_sha')!=RUNTIME_SHA): raise EvidenceBlocked('REQUEST_CORRELATION_FAILED')
     runtime=next((j for j in jobs if j.get('name')=='drive-readonly'),None)
     if run.get('status')!='completed': return {'status':'RUNNING','run_id':run['id'],'next':'READ_SAME_RUN_NO_REDISPATCH'}
-    if not runtime or runtime.get('run_id')!=run['id'] or run.get('conclusion')!='success' or runtime.get('conclusion')!='success':
+    if not runtime or runtime.get('run_id')!=run['id'] or run.get('conclusion')!='success' or runtime.get('conclusion')!='success' or runtime.get('status')!='completed':
         return {'status':'FAILED','run_id':run['id'],'next':'DIAGNOSE_NO_REDISPATCH'}
     status='DRIVE_RESTORE_AND_LOCAL_PREFLIGHT_VERIFIED' if expected['operation']=='check-drive' else 'OPN02_PREPARATION_VERIFIED_NOT_AUTHORIZED'
     result=exactly(records(bundle['runtime_log']),status)
@@ -70,6 +76,9 @@ def verify(bundle,expected):
 
 def next_task(tasks):
     """A recommendation only; never executes tasks or infers approval."""
+    for t in tasks:
+        if not isinstance(t,dict) or not isinstance(t.get('id'),str) or not t['id']:raise EvidenceBlocked('INVALID_TASK')
+        if any(type(t.get(k,default)) is not int or t.get(k,default)<0 for k,default in (('attempts',0),('max_attempts',1))):raise EvidenceBlocked('INVALID_ATTEMPT_LIMIT')
     by_id={t['id']:t for t in tasks}
     if len(by_id)!=len(tasks): raise EvidenceBlocked('DUPLICATE_TASK_ID')
     if any(t.get('status')=='running' for t in tasks): return 'READ_ACTIVE_RESULT'
