@@ -21,3 +21,15 @@ class RuntimeCheckpointTests(unittest.TestCase):
   from pathlib import Path
   p=json.loads(Path('episodes/berakhot-01-01/generation-safety.json').read_text())
   self.assertFalse(any(p[k] for k in ('privacy_verified','free_hard_cap_verified','quota_verified')))
+
+
+class ProviderDiagnosticsTests(unittest.TestCase):
+ def test_only_fixed_provider_codes_are_reported(self):
+  from tools.generation_issue_runtime import safe_failure_code
+  CloudflareBlocked=type('CloudflareBlocked',(ValueError,),{})
+  for code in ('CREDENTIALS_UNAVAILABLE','USAGE_UNKNOWN','MODEL_UNAVAILABLE','TRANSPORT_FAILED_NO_AUTOMATIC_RETRY'):
+   self.assertEqual(safe_failure_code(CloudflareBlocked(code)),code)
+  self.assertEqual(safe_failure_code(CloudflareBlocked('secret-token-or-provider-body')),'CloudflareBlocked')
+ def test_unrelated_exception_text_is_never_printed(self):
+  from tools.generation_issue_runtime import safe_failure_code
+  self.assertEqual(safe_failure_code(OSError('secret-token-or-private-url')),'OSError')

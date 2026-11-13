@@ -10,6 +10,21 @@ except ImportError:
     from chat_issue_bridge import validate_generation_event,reserve_generation,GENERATION_BLOCK,RequestBlocked
 RUNTIME='80ba1559b785855a1f9f4cbd90083fd0228eec96'
 
+# Fixed immutable-adapter codes only; never print arbitrary provider responses.
+SAFE_PROVIDER_CODES=frozenset((
+ 'CREDENTIALS_UNAVAILABLE','TRANSPORT_FAILED_NO_AUTOMATIC_RETRY','PROVIDER_REJECTED',
+ 'PRIVACY_OR_LICENSE_UNVERIFIED','NO_CHARGE_HARD_CAP_UNVERIFIED',
+ 'PARTNER_PRIVATE_REFERENCE_TERMS_UNVERIFIED','SAFETY_EVIDENCE_EXPIRED',
+ 'MODEL_UNAVAILABLE','USAGE_UNKNOWN','FREE_ALLOWANCE_HEADROOM_INSUFFICIENT',
+ 'REFERENCE_COUNT_INVALID','REFERENCE_COUNT_MISMATCH','REFERENCE_CHANGED',
+ 'SUBMISSION_NOT_AUTHORIZED'))
+
+def safe_failure_code(error):
+    if isinstance(error,RequestBlocked):return str(error)
+    if type(error).__name__=='CloudflareBlocked' and str(error) in SAFE_PROVIDER_CODES:
+        return str(error)
+    return type(error).__name__
+
 def checkpoint_once(ticket,baseline,proposed,persist):
     """Use engine's reservation, not an extra attempt; persist before its POST."""
     old=baseline.get('attempts',[]);new=proposed.get('attempts',[])
@@ -90,6 +105,6 @@ def main():
                 print(json.dumps({'status':'ONE_SHOT_DRY_RUN_NO_INFERENCE','conditioning_inputs':audit['conditioning_inputs'],'historical_attempts':len(history['attempts']),'inference_requests':0,'remote_writes':0}));return 0
             print(json.dumps(execute(event,policy,history,m,root,d,state,snapshot)));return 0
     except Exception as e:
-        print(json.dumps({'status':'BLOCKED','code':str(e) if isinstance(e,RequestBlocked) else type(e).__name__,'retry':False,'inference_outcome':'Inspect journal; never resubmit uncertain work'}));return 2
+        print(json.dumps({'status':'BLOCKED','code':safe_failure_code(e),'retry':False,'inference_outcome':'Inspect journal; never resubmit uncertain work'}));return 2
 
 if __name__=='__main__':sys.exit(main())
