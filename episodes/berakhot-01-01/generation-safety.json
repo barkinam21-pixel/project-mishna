@@ -1,8 +1,8 @@
 {
-  "privacy_verified": false,
-  "free_hard_cap_verified": false,
-  "quota_verified": false,
-  "verified_at": null,
-  "spec_sha256": null,
-  "reason": "CLOSED after one authorized OPN02 Workers AI submission SUCCESS in GitHub run 43512286287 on 2026-11-13T21:37Z; request a1501f607aea2e72bd1095834f0804bf; snapshot private in Drive, candidate PNG sha256 79183862a7c7d7c1bff15b9294c2f247fce8f5601aadbc42357d6c2cdb1cc461, accepted=false. Journal preserves 5 attempts, 1 candidate entry. Owner issue ticket removed after success; next inference requires new explicit approval and freshly verified Free/privacy/quota/spec, no retries. See Issue54 for evidence; do not re-arm this completed ticket. NO TINYFISH."
+  "privacy_verified": true,
+  "free_hard_cap_verified": true,
+  "quota_verified": true,
+  "verified_at": "2026-11-13T22:29:37.654Z",
+  "spec_sha256": "d26b13440258d686069be6be5ef39bf7b7d551123e9338b08094b84babfcbd93",
+  "reason": "OPN03 only, owner explicitly authorized one new attempt in 2026-11-14 ChatGPT. Cloudflare official Workers AI Free 10000 neurons/day hard stop (no paid overage on Free), owner's still-current Free account/no-card attestation saved in Issue54, fresh native Cloudflare API checked 2026-11-13T22:27Z: model AVAILABLE, GraphQL analytics 1 group 114.1863 neurons used. OPN03 output 1024x576 + ONE shared owner-approved original master reference (not OPN02 three crops); expected ~109.57 neurons, plus 1000 reserve within 10000. Cloudflare-hosted partner FLUX.2 Klein 4B Zero Data Retention and Workers AI no training (with documented exceptions); owner previously approved sending authorized private style/character reference to this exact provider. Partner license ambiguity was reviewed and owner waived additional privacy-special-review, without asserting a legal guarantee. Exact OPN03 spec hash independently calculated via immutable runtime specification builder, cross-checked against proven OPN02 hash. Private Drive journal has 5 attempts and one OPN02 candidate, no new OPN03 attempt. This is a time-limited one-shot admission only, not a dispatch: a fresh exact owner Issue54 ticket with live-history SHA/zero spend required. NO TINYFISH, NO RETRY, NO PAID PLAN; account charge not independently visible."
 }
