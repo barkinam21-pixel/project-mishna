@@ -1,0 +1,64 @@
+name: OPN02 provider readiness diagnostic (read-only)
+on:
+  issues:
+    types: [edited]
+permissions:
+  contents: read
+jobs:
+  probe:
+    if: github.event.issue.number == 54 && github.actor == github.repository_owner && contains(github.event.issue.body, 'mishnah-cloudflare-readonly-diagnostic-20261113')
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read-only Cloudflare account token/model/usage probe (no inference)
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime,json,os,urllib.request,urllib.error
+          account=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
+          token=os.environ.get('CLOUDFLARE_API_TOKEN','')
+          def request(path,body=None):
+              data=json.dumps(body).encode() if body is not None else None
+              req=urllib.request.Request('https://api.cloudflare.com/client/v4'+path,data=data,
+                headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'},
+                method='POST' if data else 'GET')
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      return json.load(response),None
+              except urllib.error.HTTPError as e:
+                  return None,'HTTP_'+str(e.code)
+              except Exception:
+                  return None,'NETWORK_OR_TRANSPORT_ERROR'
+          if not account or not token:
+              print('READINESS_DIAGNOSTIC=CREDENTIALS_UNAVAILABLE')
+              raise SystemExit(0)
+          model,err=request('/accounts/'+account+'/ai/models/search?search=flux-2-klein-4b')
+          if err:
+              print('MODEL_CHECK='+err)
+          elif model.get('success') is False or model.get('errors'):
+              print('MODEL_CHECK=PROVIDER_REJECTED')
+          else:
+              ok=any(x.get('name')=='@cf/black-forest-labs/flux-2-klein-4b' for x in model.get('result',[]))
+              print('MODEL_CHECK='+('AVAILABLE' if ok else 'MODEL_UNAVAILABLE'))
+          now=datetime.datetime.now(datetime.timezone.utc)
+          start=now.date().isoformat()+'T00:00:00Z'
+          q='query { viewer { accounts(filter:{accountTag:'+json.dumps(account)+'}) { aiInferenceAdaptiveGroups(limit:1,filter:{datetime_geq:'+json.dumps(start)+',datetime_leq:'+json.dumps(now.isoformat())+'}) { sum { totalNeurons } } } } }'
+          usage,err=request('/graphql',{'query':q})
+          if err:
+              print('USAGE_CHECK='+err)
+          elif usage.get('errors') or not isinstance(usage.get('data'),dict):
+              print('USAGE_CHECK=GRAPHQL_ERROR')
+          else:
+              try:
+                  groups=usage['data']['viewer']['accounts']
+                  if len(groups)!=1: raise ValueError()
+                  values=groups[0]['aiInferenceAdaptiveGroups']
+                  if not isinstance(values,list):raise ValueError()
+                  print('USAGE_CHECK=VALID_RESPONSE_GROUPS_'+str(len(values)))
+              except (KeyError,TypeError,ValueError):
+                  print('USAGE_CHECK=INVALID_RESPONSE')
+          print('INFERENCE_REQUESTS=0; PRIVATE_REFERENCES_ACCESSED=0; BILLING_CHANGES=0')
+          PY
