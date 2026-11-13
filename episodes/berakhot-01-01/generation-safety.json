@@ -1,8 +1,8 @@
 {
-  "privacy_verified": false,
-  "free_hard_cap_verified": false,
-  "quota_verified": false,
-  "verified_at": null,
-  "spec_sha256": null,
-  "reason": "Closed until exact endpoint policy, fresh account/quota evidence and approved specification are reviewed. Owner Workers Free attestation is preserved; never request paid billing or expanded OAuth."
+  "privacy_verified": true,
+  "free_hard_cap_verified": true,
+  "quota_verified": true,
+  "verified_at": "2026-11-13T20:04:07.449Z",
+  "spec_sha256": "89f5234c7f50943d311abc3cf3075ad3ba2082bd9de6b045daa02484b601ca9f",
+  "reason": "Single owner-approved OPN02 only: owner approved3ordinary artwork refs; current Billing screenshot Upgrade to Workers Paid and WorkersAI0/10k; official Free excess fails. Fresh model/usage and bound journal4/spec verified. Evidence Issue54. Close policy after this one request; no paid service or plan changes."
 }
