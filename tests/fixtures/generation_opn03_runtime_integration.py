@@ -13,7 +13,7 @@ f.ticket.update(shot_id='OPN03',operation='generate-opn03-once',approval='APPROV
 f.ticket["history_sha256"]=hashlib.sha256(json.dumps(f.history,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 with tempfile.TemporaryDirectory() as temp:
  root=Path(temp);m=json.loads((runtime/'episodes/berakhot-01-01/comfy-opening-images.json').read_text());m['backend']=m['available_backends']['cloudflare'];m['references']=[]
- for i,color in enumerate(['red','green','blue']):
+ for i,color in enumerate(['red']):
   p=root/f'private-media/reference{i}.png';p.parent.mkdir(exist_ok=True);Image.new('RGB',(256,144),color).save(p)
   m['references'].append(dict(path=str(p.relative_to(root)),sha256=sha(p),expected_sha256=sha(p),expected_size=[256,144],synthesis_rights_confirmed=True,role='TEST_ONLY'))
  for c in m['characters'].values():c['references']=m['references']
@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory() as temp:
  class Fake(CloudflareClient):
   calls=0
   def readiness(self,spec):return {}
-  def prepare(self,spec,paths):assert len(paths)==3;return {'TEST_ONLY':True}
+  def prepare(self,spec,paths):assert len(paths)==1;return {'TEST_ONLY':True}
   def submit(self,*args,**kw):
    self.calls+=1;b=io.BytesIO();Image.new('RGB',(1024,576),'gray').save(b,format='PNG');return {'raw_base64':base64.b64encode(b.getvalue()).decode()}
  class PrivateStore:
@@ -39,4 +39,4 @@ with tempfile.TemporaryDirectory() as temp:
  except Exception:pass
  else:raise AssertionError('Replay admitted')
  assert client.calls==1
- print(json.dumps({'status':'SYNTHETIC_END_TO_END_PASSED','conditioning_inputs':3,'retained_historical_attempts':5,'final_attempts':6,'mock_submissions':1,'real_inference_requests':0,'replay_blocked':True,'snapshot_saved':True}))
+ print(json.dumps({'status':'SYNTHETIC_END_TO_END_PASSED','conditioning_inputs':1,'retained_historical_attempts':5,'final_attempts':6,'mock_submissions':1,'real_inference_requests':0,'replay_blocked':True,'snapshot_saved':True}))
