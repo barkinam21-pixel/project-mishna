@@ -80,5 +80,132 @@
     "new_bridge_tests": 10,
     "pr57_runtime_full": 518,
     "pr57_runtime_seconds": 26.569
+  },
+  "latest_live_receipts": [
+    {
+      "status": "VERIFIED",
+      "request_id": "000001a1d50d1febc1a7e54b92d83f60",
+      "operation": "check-drive",
+      "run_id": 43432225151,
+      "runtime_sha": "80ba1559b785855a1f9f4cbd90083fd0228eec96",
+      "conditioning_inputs": 3,
+      "historical_attempts": 4,
+      "inference_requests": 0,
+      "remote_writes": 0,
+      "generation_authorized": false,
+      "artistic_approval": false,
+      "generation_blockers": [
+        "NEW_OWNER_GENERATION_APPROVAL_REQUIRED",
+        "FRESH_PROVIDER_PRIVACY_AND_QUOTA_EVIDENCE_REQUIRED",
+        "RECORDED_SUBMISSION_LIMIT_CONSUMED_DO_NOT_RESET_JOURNAL"
+      ],
+      "actual_external_charge_usd": null,
+      "billing_note": "No inference or paid service invoked; billing account not inspected",
+      "run_url": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43432225151",
+      "validator_job_id": 131908282623,
+      "runtime_job_id": 131908357178,
+      "initiating_surface": "ordinary_chat_reported_by_owner_backend_correlated"
+    },
+    {
+      "status": "VERIFIED",
+      "request_id": "cdcd8fa5975742649e43d22ebbc5b941",
+      "operation": "prepare-opn02",
+      "run_id": 43433569510,
+      "runtime_sha": "80ba1559b785855a1f9f4cbd90083fd0228eec96",
+      "conditioning_inputs": 3,
+      "historical_attempts": 4,
+      "inference_requests": 0,
+      "remote_writes": 0,
+      "generation_authorized": false,
+      "artistic_approval": false,
+      "generation_blockers": [
+        "NEW_OWNER_GENERATION_APPROVAL_REQUIRED",
+        "FRESH_PROVIDER_PRIVACY_AND_QUOTA_EVIDENCE_REQUIRED",
+        "RECORDED_SUBMISSION_LIMIT_CONSUMED_DO_NOT_RESET_JOURNAL"
+      ],
+      "actual_external_charge_usd": null,
+      "billing_note": "No inference or paid service invoked; billing account not inspected",
+      "run_url": "https://github.com/barkinam21-pixel/project-mishna/actions/runs/43433569510",
+      "validator_job_id": 131912848952,
+      "runtime_job_id": 131912919438,
+      "initiating_surface": "Work"
+    }
+  ],
+  "historical_scope_note": "Top-level local evidence retained as historical; latest_live_receipts are newer independent live Actions evidence.",
+  "continuation": {
+    "updated_at_utc": "2026-11-13T13:32:58Z",
+    "entrypoint": "README.md",
+    "ordinary_new_chat_acceptance": "NOT_INDEPENDENTLY_TESTED_AUTHENTICATED_BROWSER_UNAVAILABLE",
+    "generation_authorized": false,
+    "external_spend_limit_usd": 0,
+    "measured_chatgpt_plan_usage": null,
+    "provider_model_catalog_read": "AVAILABLE",
+    "fresh_free_plan_verification": "BLOCKED_OAUTH_BILLING_READ_NOT_AVAILABLE_DO_NOT_EXPAND_SCOPES",
+    "auto_retry_policy": "Never redispatch on missing response; read same run. At most one safe new attempt after diagnosis and changed cause. Never automatic inference retries.",
+    "tasks": [
+      {
+        "id": "ordinary-request-000001a1d50d1febc1a7e54b92d83f60",
+        "status": "completed",
+        "depends_on": [],
+        "start_condition": "existing request only, no replay",
+        "expected_result": "correlated Drive restore receipt",
+        "required_approval": "none",
+        "risk": "read_only",
+        "attempts": 1,
+        "max_attempts": 1,
+        "result_run_id": 43432225151
+      },
+      {
+        "id": "opn02-preparation-cdcd8fa5975742649e43d22ebbc5b941",
+        "status": "completed",
+        "depends_on": [
+          "ordinary-request-000001a1d50d1febc1a7e54b92d83f60"
+        ],
+        "start_condition": "safe preparation requested",
+        "expected_result": "three references/latest/native/layout/history verified",
+        "required_approval": "none",
+        "risk": "read_only",
+        "attempts": 1,
+        "max_attempts": 1,
+        "result_run_id": 43433569510
+      },
+      {
+        "id": "fresh-provider-no-charge-evidence",
+        "status": "failed",
+        "depends_on": [],
+        "start_condition": "existing read-only provider tools",
+        "expected_result": "current account hard free cap verified",
+        "required_approval": "none",
+        "risk": "read_only",
+        "attempts": 1,
+        "max_attempts": 1,
+        "result": "403 billing endpoint unsupported by OAuth; do not reconnect or expand permissions automatically"
+      },
+      {
+        "id": "independent-new-chat-acceptance",
+        "status": "blocked",
+        "depends_on": [
+          "ordinary-request-000001a1d50d1febc1a7e54b92d83f60"
+        ],
+        "start_condition": "authenticated independent ordinary chat with GitHub update/read tools",
+        "expected_result": "read existing receipt without redispatch",
+        "required_approval": "none",
+        "risk": "read_only",
+        "result": "not independently available in this Work browser"
+      },
+      {
+        "id": "opn02-next-image",
+        "status": "awaiting_approval",
+        "depends_on": [
+          "opn02-preparation-cdcd8fa5975742649e43d22ebbc5b941",
+          "fresh-provider-no-charge-evidence"
+        ],
+        "start_condition": "fresh privacy/license/quota proof plus exact-request approval and preserved journal budget extension",
+        "expected_result": "one private unapproved candidate through independent provider, no automatic retries",
+        "required_approval": "fresh_owner_for_one_request_and_budget_extension",
+        "risk": "generative",
+        "result": "blocked; journal already records four historical attempts; no new production authorization"
+      }
+    ]
   }
 }
