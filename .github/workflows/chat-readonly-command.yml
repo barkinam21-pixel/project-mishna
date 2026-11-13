@@ -1,0 +1,67 @@
+name: Chat read-only command bridge
+on:
+  issues:
+    types: [edited]
+  pull_request:
+    paths:
+      - tools/chat_issue_bridge.py
+      - tests/test_chat_issue_bridge.py
+      - .github/workflows/chat-readonly-command.yml
+permissions:
+  contents: read
+concurrency:
+  group: mishnah-chat-readonly-command
+  cancel-in-progress: false
+jobs:
+  offline-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest tests.test_chat_issue_bridge -v
+  validate-request:
+    if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      operation: ${{ steps.request.outputs.operation }}
+      request_id: ${{ steps.request.outputs.request_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - id: request
+        run: python -m tools.chat_issue_bridge
+  drive-readonly:
+    needs: validate-request
+    if: github.event_name == 'issues' && github.actor == github.repository_owner && (needs.validate-request.outputs.operation == 'check-drive' || needs.validate-request.outputs.operation == 'prepare-opn02')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout immutable reviewed three-reference runtime
+        uses: actions/checkout@v4
+        with:
+          ref: 80ba1559b785855a1f9f4cbd90083fd0228eec96
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Only allowlisted read-only operation
+        env:
+          OPERATION: ${{ needs.validate-request.outputs.operation }}
+          MISHNAH_DRIVE_OAUTH_JSON: ${{ secrets.MISHNAH_DRIVE_OAUTH_JSON }}
+        run: python -m tools.private_drive_runtime "$OPERATION"
+      - name: Remove private temporary runner files
+        if: always()
+        run: rm -rf private-media
