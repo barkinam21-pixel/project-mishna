@@ -146,6 +146,9 @@ class OfflineRemoteCoordinator:
         if old is not None:
             if old["identity"] != identity:
                 raise SceneBlocked("M3_REMOTE_REQUEST_SCOPE_CHANGED")
+            if (old_attempts[:old["historical_attempts"]] != old["historical_prefix"]
+                or len(old_attempts) != old["historical_attempts"] + len(old["reserved"])):
+                raise SceneBlocked("M3_REMOTE_HISTORY_CHANGED")
             return dict(copy.deepcopy(old), cache_hit=True)
         if any(b.get("status") in ("READY", "RESERVED_UNCERTAIN", "PARTIAL")
                for b in batches.values()):
@@ -232,11 +235,18 @@ class OfflineRemoteCoordinator:
         if (len(attempts) != batch["historical_attempts"] + len(batch["reserved"])
             or attempts[:batch["historical_attempts"]] != batch["historical_prefix"]):
             raise SceneBlocked("M3_REMOTE_JOURNAL_CHANGED")
+        expected_fake_hash = hashlib.sha256((
+            "M3_FAKE_IMAGE_V1:" + batch["scene_id"] + ":" + shot_id + ":" +
+            batch["asset_keys"][shot_id]
+        ).encode()).hexdigest()
         if not (isinstance(fake_receipt, dict)
                 and fake_receipt.get("kind") == "OFFLINE_FAKE_NOT_IMAGE"
+                and fake_receipt.get("sha256") == expected_fake_hash
                 and fake_receipt.get("accepted") is False
-                and fake_receipt.get("provider_calls") == 0
-                and fake_receipt.get("external_cost_usd") == 0):
+                and type(fake_receipt.get("provider_calls")) is int
+                and fake_receipt["provider_calls"] == 0
+                and type(fake_receipt.get("external_cost_usd")) in (int, float)
+                and fake_receipt["external_cost_usd"] == 0):
             raise SceneBlocked("M3_REMOTE_ONLY_FAKE_RECEIPTS_ALLOWED")
         batch["receipts"][shot_id] = copy.deepcopy(fake_receipt)
         batch["status"] = ("SIMULATED_NOT_ART"
