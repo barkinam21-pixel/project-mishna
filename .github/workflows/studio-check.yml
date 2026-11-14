@@ -122,6 +122,10 @@ jobs:
           ffmpeg -hide_banner -filters | grep subtitles
       - name: Smoke-check 48-frame real-media assembler filters (synthetic TEST ONLY; delete output)
         run: python -m unittest discover -s tests -p 'test_private_proof_ffmpeg_smoke.py' -v
+      - name: Verify scene-native M2 private rough-cut short render (synthetic ONLY)
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==12.0.0
+          python -m unittest tests.test_scene_prologue_private_preview.ScenePrivatePreviewTests.test_two_shot_private_preview_real_ffmpeg_short_smoke -v
       - name: Render Hebrew captions with sample-accurate synthetic sync markers
         run: python tools/sync_probe.py --out-dir build/sync-probe
       - name: Upload TEXT-ONLY voice and synchronization QA reports
