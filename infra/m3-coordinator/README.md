@@ -2,6 +2,12 @@
 
 This package is the next engineering milestone after [M3's original fail-closed in-memory journal](../../tools/scene_m3_remote.py). It is a real SQLite-backed **Durable Object RPC source**, with a Node 24 test harness executing the same SQL statements against actual SQLite files (including persistence across reopen and two connections competing for one shot). The Worker HTTP entrypoint deliberately returns **404** for every request; no Cloudflare scripts, bindings, paid services, secrets or permissions are created by these files.
 
+## New offline authenticated gateway prototype
+
+`signed-gateway-candidate.mjs` and `worker-gateway-candidate.mjs` are **candidate source files only**; the default `worker.mjs` remains a 404-only entrypoint. Tests use a hard-coded **fake test key** and verify real WebCrypto HMAC-SHA256 over the HTTP method, exact path, UTC timestamp and literal request body. Clock skew, invalid owners, altered signatures, unauthorized operations and server-side missing bindings all fail closed. Only `begin`, `reserve`, `record-fake` and `status` operations are routed, strictly to the same scene-specific Durable Object. No route generates art.
+
+There is **no production HMAC key** and we intentionally did not create one or add a GitHub Actions secret. No authenticated gateway has been deployed. Production rollout would require separate owner confirmation, a scope-limited secret provisioning procedure, and confirmation of Cloudflare Free hard limits and safe quotas. With the current connector, account subscriptions were not readable (HTTP 403), and no Durable Object namespace existed when checked. Therefore no deployment may be considered zero-cost verified yet.
+
 ## Boundaries and meaning
 
 - Source: `scene-reservation-core.mjs` exports `createSceneReservationClass(DurableObjectBase)`. `worker.mjs` supplies the Cloudflare base. `scene-reservation.test.mjs` executes the actual SQL with `node:sqlite`. All CI uses no secrets and calls no image endpoint.
