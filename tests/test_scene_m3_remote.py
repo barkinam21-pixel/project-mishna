@@ -225,6 +225,47 @@ class M3RemoteTests(unittest.TestCase):
                 with self.assertRaisesRegex(SceneBlocked, "RESERVED_ATTEMPT_TAMPERED"):
                     q.reserve(self.request_id, self.ids[1])
 
+    def test_persisted_batch_corruption_cannot_claim_finished_or_live(self):
+        mutations = (
+            lambda b, shot: b.update(status="SIMULATED_NOT_ART"),
+            lambda b, shot: b.update(live_dispatch_enabled=True),
+            lambda b, shot: b.update(simulated_only=False),
+            lambda b, shot: b.update(external_inference_requests=1),
+            lambda b, shot: b["receipts"][shot].update(accepted=True),
+            lambda b, shot: b["receipts"][shot].update(provider_calls=1),
+            lambda b, shot: b["receipts"][shot].update(sha256="f"*64),
+            lambda b, shot: b["reserved"][0].update(idempotency_key="x"),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=mutations.index(mutate)):
+                q, store = self.coordinator()
+                a = self.admission()
+                q.begin(a)
+                shot = self.ids[0]
+                q.reserve(self.request_id, shot)
+                fake = OfflineFakeImageBackend().produce(a["scene_id"], shot, a["asset_keys"][shot])
+                q.record_mock_receipt(self.request_id, shot, fake)
+                revision, doc = store.read()
+                mutate(doc["m3_scene_batches"][self.request_id], shot)
+                self.assertTrue(store.compare_and_swap(revision, doc))
+                with self.assertRaisesRegex(SceneBlocked, "BATCH_INTEGRITY_FAILURE"):
+                    q.status(self.request_id)
+                with self.assertRaisesRegex(SceneBlocked, "BATCH_INTEGRITY_FAILURE"):
+                    q.begin(a)
+                with self.assertRaisesRegex(SceneBlocked, "BATCH_INTEGRITY_FAILURE"):
+                    q.reserve(self.request_id, self.ids[1])
+
+    def test_pending_reservation_cannot_be_relabelled_ready(self):
+        q, store = self.coordinator()
+        a = self.admission()
+        q.begin(a)
+        q.reserve(self.request_id, self.ids[0])
+        revision, doc = store.read()
+        doc["m3_scene_batches"][self.request_id]["status"] = "READY"
+        self.assertTrue(store.compare_and_swap(revision, doc))
+        with self.assertRaisesRegex(SceneBlocked, "BATCH_INTEGRITY_FAILURE"):
+            q.status(self.request_id)
+
     def test_unexpected_additional_attempt_detected(self):
         q, store = self.coordinator()
         a = self.admission()
