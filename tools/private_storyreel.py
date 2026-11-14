@@ -196,3 +196,83 @@ def main():
         return 2
 
 if __name__=='__main__':raise SystemExit(main())
+
+def assemble_technical_fixture(root, out, caption='בדיקת מערכת — ללא קריינות'):
+    """M2:15 compressed1s slots, synthetic images/sound only, NOT91s artwork.
+
+    Extends this existing FFmpeg storyreel module. No private inputs are accepted.
+    """
+    import io,math,random,struct,wave
+    from tools.scene_factory import within,writer_lock,digest,file_sha,SceneBlocked
+    from PIL import Image,ImageDraw,ImageFont
+    import unicodedata
+    root=Path(root).resolve();out=within(root,str(out))
+    if 'private-media' not in out.relative_to(root).parts:raise ValueError('TECHNICAL_OUTPUT_MUST_BE_PRIVATE')
+    if not caption or len(caption)>42 or unicodedata.normalize('NFC',caption)!=caption or re.search('[\u202a-\u202e\u2066-\u2069\ufffd\n]',caption):raise ValueError('UNSAFE_TECHNICAL_CAPTION')
+    for binary in ('ffmpeg','ffprobe','fc-match'):
+        if not shutil.which(binary):raise RuntimeError('Required local tool missing: '+binary)
+    out.mkdir(parents=True,exist_ok=True,mode=0o700)
+    with writer_lock(out/'assembly.lock'):
+        version=subprocess.check_output(['ffmpeg','-version']).decode().splitlines()[0]
+        font=font_path();frames=360;width,height=960,540;sample_count=frames*2000
+        config={'fixture':True,'shots':15,'frames_per_shot':24,'fps':24,'samples_per_frame':2000,'size':[width,height],'caption':caption,'pipeline_sha256':file_sha(Path(__file__)),'ffmpeg':version,'font_sha256':file_sha(Path(font))}
+        key=digest(config);dest=out/key;receipt=dest/'receipt.json'
+        if receipt.exists():
+            r=json.loads(receipt.read_text())
+            for name,h in r['outputs'].items():
+                p=dest/name
+                if not p.is_file() or file_sha(p)!=h:raise ValueError('TECHNICAL_CACHE_OUTPUT_CHANGED')
+            return dict(r,cache_hit=True,receipt=str(receipt.relative_to(root)))
+        dest.mkdir(parents=True,exist_ok=True,mode=0o700)
+        pack={'shots':[{'id':f'FIX-{i+1:02d}','start_frame':i*24,'end_frame':(i+1)*24} for i in range(15)]}
+        caps={'cues':[{'text':caption} for _ in pack['shots']]}
+        write_subtitle_files(pack,caps,dest)
+        rng=random.Random(771);pcm=bytearray();peak=0;energy=0
+        # Wind and brief footstep-like test pulses: authored synthesis, not speech.
+        for i in range(sample_count):
+            t=i/48000;wind=.015*rng.uniform(-1,1);phase=t%1
+            step=.12*math.sin(2*math.pi*90*t)*max(0,1-phase/.07) if phase<.07 else 0
+            value=wind+step;peak=max(peak,abs(value));energy+=value*value
+            left=int(value*30000);right=int((wind+step*.75)*30000);pcm.extend(struct.pack('<hh',left,right))
+        audio=dest/'SYNTHETIC_TEST_ONLY.wav'
+        with wave.open(str(audio),'wb') as w:w.setparams((2,2,48000,0,'NONE','not compressed'));w.writeframes(pcm)
+        video=dest/'fixture-picture.partial.mp4';final=dest/'TECHNICAL_FIXTURE_NOT_FILM.mp4';partial=dest/'assembled.partial.mp4'
+        cmd=['ffmpeg','-hide_banner','-loglevel','error','-y','-f','rawvideo','-pix_fmt','rgb24','-s',f'{width}x{height}','-r','24','-i','pipe:0','-an','-frames:v',str(frames),'-c:v','libx264','-preset','veryfast','-crf','23','-pix_fmt','yuv420p','-color_primaries','bt709','-color_trc','bt709','-colorspace','bt709',str(video)]
+        proc=subprocess.Popen(cmd,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
+        contact=Image.new('RGB',(width//3*3,height//3*5))
+        try:
+            fnt=ImageFont.truetype(str(font),24)
+            for frame in range(frames):
+                shot=frame//24;local=frame%24;im=Image.new('RGB',(width,height),(35+shot*8,55+shot*4,85+shot*4));d=ImageDraw.Draw(im)
+                d.text((30,25),'TECHNICAL FIXTURE / NO NARRATION / NOT A FILM',font=fnt,fill='white')
+                d.text((30,65),f'FIX-{shot+1:02d} | frame {frame:03d} / 359',font=fnt,fill='white')
+                x=100+local*18;d.rectangle((x,180,x+100,280),fill=(210,170,100))
+                # Deliberate observable test motion, not reused production art.
+                d.line((0,420,width,420),fill='white',width=3)
+                if local==12:
+                    preview=im.resize((width//3,height//3));contact.paste(preview,((shot%3)*(width//3),(shot//3)*(height//3)))
+                proc.stdin.write(im.tobytes())
+            proc.stdin.close()
+            err=proc.stderr.read();rc=proc.wait(timeout=90)
+            if rc:raise RuntimeError('FFmpeg fixture picture encoding failed')
+        except Exception:
+            proc.kill();proc.wait();raise
+        contact.save(dest/'technical-contact-sheet.png')
+        cmd=['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(video),'-i',str(audio),'-i','private_storyreel_draft.srt','-vf',"subtitles=private_storyreel_draft.srt:force_style='FontName=Noto Sans Hebrew,FontSize=22,MarginV=32',setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709",'-map','0:v:0','-map','1:a:0','-map','2:s:0','-frames:v',str(frames),'-c:v','libx264','-preset','veryfast','-crf','23','-pix_fmt','yuv420p','-color_primaries','bt709','-color_trc','bt709','-colorspace','bt709','-c:a','aac','-ar','48000','-ac','2','-c:s','mov_text','-metadata:s:a:0','language=heb','-metadata:s:s:0','language=heb','-movflags','+faststart',str(partial)]
+        subprocess.run(cmd,cwd=dest,check=True,capture_output=True,timeout=90)
+        meta=json.loads(subprocess.check_output(['ffprobe','-v','error','-count_frames','-show_streams','-show_format','-of','json',str(partial)]))
+        v=next(s for s in meta['streams'] if s['codec_type']=='video');a=next(s for s in meta['streams'] if s['codec_type']=='audio');sub=next(s for s in meta['streams'] if s['codec_type']=='subtitle')
+        if (v['codec_name']!='h264' or v['pix_fmt']!='yuv420p' or v['avg_frame_rate']!='24/1' or int(v['nb_read_frames'])!=frames or [v['width'],v['height']]!=[width,height] or any(v.get(k)!='bt709' for k in ('color_space','color_transfer','color_primaries')) or a['codec_name']!='aac' or a['sample_rate']!='48000' or a['channels']!=2 or sub.get('tags',{}).get('language')!='heb' or abs(float(meta['format']['duration'])-frames/24)>.042):raise ValueError('TECHNICAL_PROBE_FAILED')
+        decoded=subprocess.run(['ffmpeg','-hide_banner','-i',str(partial),'-vf','blackdetect=d=0.1:pix_th=0.05,freezedetect=n=-60dB:d=0.5','-f','null','-'],capture_output=True,text=True,timeout=90)
+        if decoded.returncode or 'black_start:' in decoded.stderr or 'freeze_start:' in decoded.stderr:raise ValueError('TECHNICAL_DECODE_BLACK_OR_FREEZE_FAILED')
+        if not .001<math.sqrt(energy/sample_count)<.2 or peak>.8:raise ValueError('SYNTHETIC_SOUND_INVALID')
+        partial.replace(final);video.unlink(missing_ok=True)
+        (dest/'ffprobe.json').write_text(json.dumps(meta,indent=2))
+        cue_manifest={'test_only':True,'sample_rate':48000,'total_samples':sample_count,'stems':['synthetic wind','synthetic test footsteps'],'voice':'MISSING_NOT_SIMULATED','music':'NOT_PRESENT','text':caption,'shot_intervals':pack['shots']}
+        (dest/'fixture-timeline.json').write_text(json.dumps(cue_manifest,ensure_ascii=False,indent=2))
+        outputs={p.name:file_sha(p) for p in dest.iterdir() if p.is_file() and p.name!='receipt.json'}
+        result={'status':'TECH_PASS_FIXTURE_ONLY','key':key,'config':config,'outputs':outputs,'video':str(final.relative_to(root)),'frames':frames,'duration_seconds':frames/24,'audio_samples':sample_count,'source_audio_peak':peak,'source_audio_rms':math.sqrt(energy/sample_count),'full_decode':True,'black_freeze_check':'PASS','human_review':{'silent_visual':'NOT_PERFORMED','audio_only':'NOT_PERFORMED','continuity':'NOT_PERFORMED','beginner_comprehension':'NOT_PERFORMED'},'voice':'ABSENT','artistic_scene_complete':False,'generation_requests':0,'external_charge_usd':0,'cache_hit':False}
+        receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+        for p in dest.iterdir():
+            if p.is_file():p.chmod(0o600)
+        return dict(result,receipt=str(receipt.relative_to(root)))
