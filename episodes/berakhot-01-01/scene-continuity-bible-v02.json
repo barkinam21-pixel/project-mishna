@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "id": "INTRO-PROLOGUE-CONTINUITY-DRAFT-v02",
+  "status": "DRAFT_NOT_APPROVED",
+  "states": {
+    "DAWN_BEFORE": {
+      "characters": {
+        "elder": {
+          "face_lock": "anonymous-elder-master",
+          "age": "mature adult",
+          "proportions": "master reference relative height",
+          "costume": "sand headcloth, indigo robe, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        },
+        "younger": {
+          "face_lock": "anonymous-younger-master",
+          "age": "younger adult, not child",
+          "proportions": "master reference relative height",
+          "costume": "brown wrap and shawl, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        }
+      },
+      "location": "symbolic anonymous hillside path",
+      "era": "symbolic_ancient_judea",
+      "time_of_day": "dawn",
+      "sun_direction": "screen-left",
+      "weather": "dry gentle wind",
+      "palette": "earth gold indigo muted violet",
+      "style": "mature hand-painted cinematic illustration",
+      "axis": "south side of travel line",
+      "screen_direction": "right-to-left",
+      "eyelines": "younger to elder, elder toward path",
+      "props": {
+        "waterskin": {
+          "holder": "elder",
+          "hand": "right"
+        }
+      },
+      "emotion": {
+        "elder": "patient",
+        "younger": "curious"
+      },
+      "knowledge": [
+        "journey ongoing"
+      ],
+      "sound_state": "wind and footsteps; narration not yet entered"
+    },
+    "DAWN_AFTER": {
+      "characters": {
+        "elder": {
+          "face_lock": "anonymous-elder-master",
+          "age": "mature adult",
+          "proportions": "master reference relative height",
+          "costume": "sand headcloth, indigo robe, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        },
+        "younger": {
+          "face_lock": "anonymous-younger-master",
+          "age": "younger adult, not child",
+          "proportions": "master reference relative height",
+          "costume": "brown wrap and shawl, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        }
+      },
+      "location": "symbolic anonymous hillside path",
+      "era": "symbolic_ancient_judea",
+      "time_of_day": "dawn",
+      "sun_direction": "screen-left",
+      "weather": "dry gentle wind",
+      "palette": "earth gold indigo muted violet",
+      "style": "mature hand-painted cinematic illustration",
+      "axis": "south side of travel line",
+      "screen_direction": "right-to-left",
+      "eyelines": "younger to elder, elder toward path",
+      "props": {
+        "waterskin": {
+          "holder": "younger",
+          "hand": "right"
+        }
+      },
+      "emotion": {
+        "elder": "patient",
+        "younger": "curious"
+      },
+      "knowledge": [
+        "journey ongoing"
+      ],
+      "sound_state": "wind and footsteps; narration not yet entered"
+    },
+    "SUNSET_CANDIDATE": {
+      "characters": {
+        "elder": {
+          "face_lock": "anonymous-elder-master",
+          "age": "mature adult",
+          "proportions": "master reference relative height",
+          "costume": "sand headcloth, indigo robe, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        },
+        "younger": {
+          "face_lock": "anonymous-younger-master",
+          "age": "younger adult, not child",
+          "proportions": "master reference relative height",
+          "costume": "brown wrap and shawl, light tunic, satchel",
+          "reference_sha256": "e1391de34693cf897898a264662e6f4249bfa2f0a7b648c72fad49906da248f3"
+        }
+      },
+      "location": "symbolic anonymous hillside path",
+      "era": "symbolic_ancient_judea",
+      "time_of_day": "sunset",
+      "sun_direction": "screen-left",
+      "weather": "dry gentle wind",
+      "palette": "earth gold indigo muted violet",
+      "style": "mature hand-painted cinematic illustration",
+      "axis": "south side of travel line",
+      "screen_direction": "right-to-left",
+      "eyelines": "younger to elder, elder toward path",
+      "props": {
+        "waterskin": {
+          "holder": "elder",
+          "hand": "right"
+        }
+      },
+      "emotion": {
+        "elder": "patient",
+        "younger": "curious"
+      },
+      "knowledge": [
+        "journey ongoing"
+      ],
+      "sound_state": "wind and footsteps; narration not yet entered"
+    }
+  },
+  "visual_evidence": "Declared design locks only, not automatic visual recognition",
+  "candidate_evidence": [
+    "docs/evidence/opn02-cloudflare-layout-2026-11-11.json"
+  ],
+  "human_checks": [
+    "faces",
+    "anatomy",
+    "period accuracy",
+    "natural acting",
+    "Hebrew pronunciation"
+  ]
+}

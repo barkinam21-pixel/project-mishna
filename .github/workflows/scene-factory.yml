@@ -1,0 +1,33 @@
+name: Scene factory offline M1
+on:
+  pull_request:
+    paths: ['tools/scene_factory.py', 'tests/test_scene_factory.py', 'schemas/**', 'episodes/berakhot-01-01/scene-*.json', '.github/workflows/scene-factory.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: scene-factory-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+jobs:
+  m1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest tests.test_scene_factory -v
+      - name: Known real draft conflicts must remain blocked, never generate
+        run: |
+          python - <<'PY'
+          import subprocess,json
+          p=subprocess.run(['python','-m','tools.scene_factory','dry-run'],capture_output=True,text=True)
+          r=json.loads(p.stdout)
+          assert p.returncode==2 and r['status']=='BLOCKED'
+          assert r['inference_requests']==0 and 'ASSET_CONTINUITY_TIME_OF_DAY:EP-P07' in r['issues']
+          print('Known dawn/sunset and approval conflicts correctly block production')
+          PY
