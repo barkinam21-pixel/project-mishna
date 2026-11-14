@@ -81,7 +81,17 @@ class ScenePrivatePreviewTests(unittest.TestCase):
 
     def test_valid_private_image_binding_uses_exact_bytes_and_sha(self):
         # Tiny hand-authored PNG from existing test utility: never dispatched.
-        from tests.test_private_proof_ffmpeg_smoke import test_only_png
+        import struct, zlib
+        def chunk(tag, raw):
+            return struct.pack(">I", len(raw)) + tag + raw + struct.pack(">I", zlib.crc32(tag + raw) & 0xffffffff)
+        raw = b"".join(b"\\0" + bytes((30, 40, 50)) * 2 for _ in range(2))
+        path = self.root / "private-media/fixture.png"
+        path.write_bytes(
+            b"\\x89PNG\\r\\n\\x1a\\n"
+            + chunk(b"IHDR", struct.pack(">IIBBBBB", 2, 2, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw))
+            + chunk(b"IEND", b"")
+        )
         from tools.scene_factory import file_sha
         path = self.root / "private-media/fixture.png"
         test_only_png(path, (30, 40, 50))
