@@ -24,7 +24,7 @@ from tools.scene_cloudflare_spec_adapter import compile_previews
 
 ROOT=Path(__file__).resolve().parents[2]
 PINNED=Path(sys.argv[1]).resolve()
-assert PINN.is_dir() and (PINN/"tools/cloudflare_image_backend.py").is_file()
+assert PINNED.is_dir() and (PINNED/"tools/cloudflare_image_backend.py").is_file()
 manifest=load(ROOT/"episodes/berakhot-01-01/scene-prologue-v02.json")
 bible=load(ROOT/manifest["bible"]["path"])
 packet=build_packet(manifest,bible,ROOT)
