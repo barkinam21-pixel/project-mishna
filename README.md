@@ -1,5 +1,11 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## One-command scene planning — PR #101 candidate (not yet merged)
+
+The existing owner Issue #54 `scene-dry-run` check now compiles a reusable **15-shot cinematic production packet** with grounded per-shot visual prompts, character/costume/lighting/axis locks, frame durations, original-image slots, source flags, sound spotting and M1 visual cache keys. It is one scene request, not 15 owner approvals. Code: `tools/scene_production_packet.py`; tests: `tests/test_scene_production_packet.py`. A no-secret developer command is `python -m tools.scene_production_packet --summary`; the GitHub Actions chat bridge summarizes the same packet without exposing full prompts in public logs.
+
+**Explicit boundary:** planning only, 0 inference and 0 model calls. Existing OPN02/OPN03 remain unapproved candidates and the dawn/sunset/narrator/source conflicts remain. Full source/creative approval, Cloudflare account evidence and trusted hosted M3 coordination still block dispatch. No cost or deployment authorization is implied. Next: connect the packet to the existing image/voice/renderer adapters under strict private owner-scoped gates; do **not** rebuild earlier M1/M2 or single-shot Cloudflare/Drive engine.
+
 
 ## חיבור בטיחותי למסלול ההפקה שכבר הצליח (#98, 14.11.2026)
 - **לא הוקם מחדש Worker ולא הוחלף מנוע התמונות:** ה־GitHub Actions הקיים ממשיך לטעון את מנוע Cloudflare/Drive הישן מה־SHA המאומת. הוספנו למסלול השליטה `generation_issue_runtime.py` אימות שחוסם כל קריאת inference אמיתית כל עוד אין שירות נעילה אטומית פעיל ומאומת; לוגיקת ה־Fake המשמשת בדיקות אופליין ממשיכה לעבוד.
