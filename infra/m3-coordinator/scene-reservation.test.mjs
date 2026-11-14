@@ -17,8 +17,11 @@ function open(db) {
   return {
     sql: {
       exec(q,...args) {
+        // CF's sql.exec executes immediately even when no cursor is read.
+        // Execute DDL/DML here as well, instead of deferring to toArray().
         const statement=db.prepare(q);
-        return {toArray(){return statement.all(...args);}};
+        const result=statement.all(...args);
+        return {toArray(){return result;}};
       }
     },
     transactionSync(callback) {
