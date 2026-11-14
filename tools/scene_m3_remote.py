@@ -54,6 +54,79 @@ def _verify_reserved_history(attempts, batch, mismatch_code="M3_REMOTE_HISTORY_C
             raise SceneBlocked("M3_REMOTE_RESERVED_ATTEMPT_TAMPERED")
 
 
+def _verify_batch_integrity(batch):
+    """Fail closed on altered offline batch state, flags or mock receipts.
+
+    This is corruption detection in an OFFLINE fake, not authentication of a
+    remote writer and not proof that Drive supplies atomic CAS.
+    """
+    if (not isinstance(batch, dict)
+        or batch.get("simulated_only") is not True
+        or batch.get("live_dispatch_enabled") is not False
+        or type(batch.get("external_inference_requests")) is not int
+        or batch["external_inference_requests"] != 0):
+        raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    shots = batch.get("shot_ids")
+    assets = batch.get("asset_keys")
+    reserved = batch.get("reserved")
+    receipts = batch.get("receipts")
+    limit = batch.get("max_attempts")
+    if (type(shots) is not list or not shots
+        or any(not isinstance(s, str) or not s for s in shots)
+        or len(shots) != len(set(shots))
+        or type(assets) is not dict or set(assets) != set(shots)
+        or type(reserved) is not list or type(receipts) is not dict
+        or type(limit) is not int or not 1 <= limit <= len(shots)
+        or len(reserved) > limit
+        or not isinstance(batch.get("identity"), str)
+        or not isinstance(batch.get("scene_id"), str)):
+        raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    for i, reservation in enumerate(reserved):
+        shot = shots[i]
+        spec = assets[shot]
+        if (not isinstance(reservation, dict)
+            or reservation.get("shot_id") != shot
+            or reservation.get("spec_sha256") != spec
+            or reservation.get("idempotency_key") != digest({
+                "batch": batch["identity"], "shot_id": shot,
+                "spec_sha256": spec
+            })):
+            raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    reserved_ids = [r["shot_id"] for r in reserved]
+    if any(shot not in reserved_ids for shot in receipts):
+        raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    for shot, receipt in receipts.items():
+        expected_hash = hashlib.sha256((
+            "M3_FAKE_IMAGE_V1:" + batch["scene_id"] + ":" + shot + ":" +
+            assets[shot]
+        ).encode()).hexdigest()
+        if (type(receipt) is not dict
+            or set(receipt) != {
+                "kind", "sha256", "accepted", "provider_calls",
+                "external_cost_usd"
+            }
+            or receipt["kind"] != "OFFLINE_FAKE_NOT_IMAGE"
+            or receipt["sha256"] != expected_hash
+            or receipt["accepted"] is not False
+            or type(receipt["provider_calls"]) is not int
+            or receipt["provider_calls"] != 0
+            or type(receipt["external_cost_usd"]) not in (int, float)
+            or receipt["external_cost_usd"] != 0):
+            raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    completed = len(receipts)
+    pending = len(reserved) - completed
+    if (pending not in (0, 1)
+        or (pending and reserved[-1]["shot_id"] in receipts)):
+        raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+    expected_status = ("READY" if not reserved else
+                       "RESERVED_UNCERTAIN" if pending else
+                       "SIMULATED_NOT_ART" if len(reserved) == limit else
+                       "PARTIAL")
+    if (batch.get("status") != expected_status
+        and not (pending and batch.get("status") == "HALTED_UNCERTAIN")):
+        raise SceneBlocked("M3_REMOTE_BATCH_INTEGRITY_FAILURE")
+
+
 class AtomicMemoryJournal:
     """Concurrent-CAS test double. NEVER a remote transport."""
     atomic_compare_and_swap = True
@@ -148,6 +221,7 @@ class OfflineRemoteCoordinator:
         batch = batches.get(request_id)
         if not isinstance(batch, dict):
             raise SceneBlocked("M3_REMOTE_BATCH_NOT_FOUND")
+        _verify_batch_integrity(batch)
         return version, journal, batch
 
     def _write(self, version, modified):
@@ -164,9 +238,13 @@ class OfflineRemoteCoordinator:
         batches = journal.setdefault("m3_scene_batches", {})
         if not isinstance(batches, dict):
             raise SceneBlocked("M3_REMOTE_BATCH_FORMAT")
+        # Refuse to start a new batch over a corrupted old record.
+        for prior in batches.values():
+            _verify_batch_integrity(prior)
         old = batches.get(a["request_id"])
         identity = digest(a)
         if old is not None:
+            _verify_batch_integrity(old)
             if old["identity"] != identity:
                 raise SceneBlocked("M3_REMOTE_REQUEST_SCOPE_CHANGED")
             _verify_reserved_history(old_attempts, old)
