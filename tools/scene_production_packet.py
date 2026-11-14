@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 from tools.scene_factory import SceneBlocked, digest, file_sha, keys, load, validate, within
+from tools.scene_native_direction import compile_native_direction
 
 FPS = 24
 SAMPLES_PER_FRAME = 2000  # 48kHz / 24fps
@@ -26,47 +27,54 @@ NEGATIVE = (
 
 
 def _visual_spec(scene, shot, state):
-    """A text brief, not a provider payload. Reuses authoritative shot data."""
+    """Stage-locked visual brief; never add actors absent from this exact shot."""
+    direction = compile_native_direction(shot, state)
     characters = {
         name: {
-            "face_lock": char["face_lock"],
-            "reference_sha256": char["reference_sha256"],
-            "age": char["age"], "proportions": char["proportions"],
-            "costume": char["costume"],
+            "face_lock": state["characters"][name]["face_lock"],
+            "reference_sha256": state["characters"][name]["reference_sha256"],
+            "age": state["characters"][name]["age"],
+            "proportions": state["characters"][name]["proportions"],
+            "costume": state["characters"][name]["costume"],
+            "screen_position": direction["positions"][name],
         }
-        for name, char in sorted(state["characters"].items())
+        for name in direction["cast_visible"]
     }
     locks = {name: state[name] for name in REQUIRED_VISUAL_KEYS if name != "characters"}
-    # Producer-authored language is compiled once for all shots, not typed 15
-    # times by the owner. These are descriptive prompts only; not executable.
-    character_notes = "; ".join(
-        name + ": " + char["face_lock"] + ", " + char["costume"]
+    notes = "; ".join(
+        name + ": " + char["face_lock"] + ", " + char["costume"] +
+        ", frame position " + char["screen_position"]
         for name, char in characters.items()
-    )
+    ) if characters else "no identifiable cast member; do not introduce named characters"
     prompt = (
         "Mature hand-painted cinematic illustration, 16:9; "
         + "visual action: " + shot["description"]
         + "; narrative reason: " + shot["why"]
         + "; camera: " + shot["camera"]["intent"]
+        + "; shot type: " + direction["shot_type"]
+        + "; exact composition: " + direction["composition"]
+        + "; cast explicitly visible ONLY: " + notes
+        + "; no other people beyond the described anonymous detail"
         + "; location: " + state["location"]
         + "; era: " + state["era"]
-        + "; time of day: " + state["time_of_day"]
-        + "; sun: " + state["sun_direction"]
+        + "; time of day: " + direction["time_of_day"]
+        + "; sun: " + direction["sun_direction"]
         + "; weather: " + state["weather"]
         + "; palette: " + state["palette"]
         + "; art style: " + state["style"]
-        + "; camera axis: " + state["axis"]
-        + "; screen direction: " + state["screen_direction"]
+        + "; camera axis: " + direction["axis"]
+        + "; screen direction: " + direction["screen_direction"]
         + "; eyelines: " + str(state["eyelines"])
-        + "; continuity character locks ONLY IF visible: " + character_notes
         + "; props: " + json.dumps(state["props"], ensure_ascii=False, sort_keys=True)
-        + ". Respect the scene's symbolic/draft source status; never add captions inside an image."
+        + ". Symbolic dramatization, draft; never add captions inside an image."
     )
     return {
         "scene_id": scene["id"], "shot_id": shot["id"],
         "positive_prompt": prompt,
         "purpose": shot["why"], "shot_description": shot["description"],
         "camera": shot["camera"], "visual_locks": locks,
+        "cast_visible": direction["cast_visible"],
+        "scene_native_direction": direction,
         "character_locks_if_visible": characters,
         "negative_prompt": NEGATIVE,
         "aspect_ratio": "16:9", "width": 1024, "height": 576,
