@@ -12,12 +12,14 @@ on:
       - episodes/berakhot-01-01/generation-safety.json
       - tests/test_chat_issue_bridge.py
       - tests/test_generation_ticket.py
+      - tests/test_scene_m3_workflow_guard.py
       - .github/workflows/chat-readonly-command.yml
 permissions:
   contents: read
 concurrency:
   group: mishnah-chat-readonly-command
   cancel-in-progress: false
+  queue: max
 jobs:
   offline-tests:
     if: github.event_name == 'pull_request'
@@ -30,7 +32,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard -v
       - uses: actions/checkout@v4
         with:
           path: reviewed-runtime
