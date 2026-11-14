@@ -35,6 +35,7 @@ jobs:
           from pathlib import Path
           a=Path('.github/workflows/m3-durable-coordinator-offline.yml').read_text()
           b=Path('infra/m3-coordinator/worker.mjs').read_text()
+          a=a.split('      - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow')[0]
           for marker in ('secrets.', 'cloudflare login', 'npx wrangler deploy',
                          'CLOUDFLARE_API_TOKEN', 'MISHNAH_DRIVE_OAUTH_JSON'):
               assert marker not in a, marker
