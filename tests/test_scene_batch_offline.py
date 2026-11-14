@@ -61,6 +61,21 @@ class SceneBatchOfflineTests(unittest.TestCase):
         }
         return job
 
+    def test_all_fifteen_shots_in_one_fake_batch_are_unique_and_do_not_infer(self):
+        out=self.run_batch(max_attempts=15)
+        self.assertEqual(out["status"],"OFFLINE_FAKE_BATCH_DONE_NOT_ART")
+        self.assertEqual(out["recorded_fake_receipts"],15)
+        self.assertEqual(self.provider.prepares,[f"EP-P{i:02d}" for i in range(1,16)])
+        self.assertEqual(len(set(self.provider.prepares)),15)
+        self.assertEqual(len({job["engine_spec_preview"]["seed"] for job in self.previews["jobs"]}),15)
+        self.assertEqual(out["provider_submissions"],0)
+        self.assertEqual(len(self.journal.read()[1]["attempts"]),21)
+        self.assertEqual(self.journal.read()[1]["attempts"][:6],self.baseline["attempts"])
+        self.assertTrue(all(not receipt["accepted"] for receipt in
+            OfflineRemoteCoordinator(self.journal).status(self.request_id)["receipts"].values()))
+        self.assertEqual(self.run_batch(max_attempts=15)["recorded_fake_receipts"],15)
+        self.assertEqual(len(self.provider.prepares),15)
+
     def test_two_full_fake_preparations_with_immutable_six_attempt_prefix(self):
         out=self.run_batch()
         self.assertEqual(out["status"],"OFFLINE_FAKE_BATCH_DONE_NOT_ART")
