@@ -64,7 +64,8 @@ def build_packet(scene, bible, root):
         raise SceneBlocked("PACKET_SCRIPT_CHANGED")
     if scene["authorization"].get("generation_approved") is not False or scene["authorization"].get("budget_usd") != 0:
         raise SceneBlocked("PACKET_LIVE_AUTHORIZATION_FORBIDDEN")
-    image_keys = keys(scene, bible)["asset_keys"]
+    image_index = keys(scene, bible)
+    image_keys = image_index["asset_keys"]
     jobs = []
     for shot in scene["shots"]:
         state = bible["states"][shot["pre_state"]]
@@ -103,6 +104,7 @@ def build_packet(scene, bible, root):
     packet = {
         "schema_version": 1, "status": "SCENE_PACKET_DRAFT_NOT_AUTHORIZED",
         "scene_id": scene["id"], "scene_approval_scope": "NONE",
+        "scene_build_key": image_index["build_key"],
         "fps": FPS, "audio_sample_rate": 48000, "aspect_ratio": "16:9",
         "duration_frames": jobs[-1]["end_frame"], "shot_count": len(jobs),
         "candidate_review_only_count": sum(j["image_status"] == "EXISTING_CANDIDATE_REVIEW_ONLY" for j in jobs),
