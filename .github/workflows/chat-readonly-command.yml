@@ -16,6 +16,10 @@ on:
       - tests/test_scene_preflight_report.py
       - tools/scene_prologue_crosswalk.py
       - tools/scene_production_packet.py
+      - tools/scene_native_direction.py
+      - tools/scene_factory.py
+      - episodes/berakhot-01-01/scene-prologue-v02.json
+      - tests/test_scene_native_direction.py
       - tests/test_scene_production_packet.py
       - tools/scene_cloudflare_spec_adapter.py
       - tests/test_scene_cloudflare_spec_adapter.py
@@ -42,7 +46,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run tests.test_scene_preflight_report tests.test_scene_prologue_crosswalk tests.test_scene_production_packet tests.test_scene_cloudflare_spec_adapter -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run tests.test_scene_preflight_report tests.test_scene_prologue_crosswalk tests.test_scene_production_packet tests.test_scene_native_direction tests.test_scene_cloudflare_spec_adapter -v
       - uses: actions/checkout@v4
         with:
           path: reviewed-runtime
