@@ -104,6 +104,12 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+      - name: Read pinned previous Cloudflare input schema (no private media)
+        uses: actions/checkout@v4
+        with:
+          path: reviewed-runtime
+          ref: 80ba1559b785855a1f9f4cbd90083fd0228eec96
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -116,6 +122,7 @@ jobs:
           from tools.scene_preflight_report import summarize
           from tools.scene_prologue_crosswalk import analyze as prologue_crosswalk
           from tools.scene_production_packet import build_packet,summary as packet_summary
+          from tools.scene_cloudflare_spec_adapter import compile_previews,summarize as cloud_summary
           from tools.scene_factory import load
           rid=os.environ['REQUEST_ID']
           p=subprocess.run([sys.executable,'-m','tools.scene_factory','dry-run',
@@ -151,6 +158,14 @@ jobs:
               or packet['new_original_image_slots']!=12
               or len(packet['source_and_editorial_blockers'])!=triage['total_blockers']):
               raise SystemExit('SCENE_PACKET_NOT_SAFELY_PREPARED')
+          legacy=load('reviewed-runtime/episodes/berakhot-01-01/comfy-opening-images.json')
+          cloud=compile_previews(packet,legacy,'.')
+          if (cloud['job_count']!=15
+              or cloud['provider_calls']!=0
+              or cloud['provider_dispatch_authorized'] is not False
+              or cloud['native_legacy_engine_compatible'] is not False
+              or len([j for j in cloud['jobs'] if j['blockers']])!=15):
+              raise SystemExit('CLOUDFLARE_PREVIEW_NOT_SAFELY_BLOCKED')
           print(json.dumps({'status':'BLOCKED_AS_DESIGNED',
               'scene_id':out['scene_id'],
               'unresolved_issue_count':triage['total_blockers'],
@@ -162,7 +177,8 @@ jobs:
               'external_inference_requests':0,
               'generation_authorized':False,
               'technical_fixture_only':True,
-              'scene_production_packet':packet_summary(packet)},sort_keys=True))
+              'scene_production_packet':packet_summary(packet),
+              'cloudflare_adapter_preview':cloud_summary(cloud)},sort_keys=True))
           PY
       - name: Remove runner-local private scratch state
         if: always()
