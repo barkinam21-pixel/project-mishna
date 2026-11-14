@@ -29,6 +29,15 @@ with tempfile.TemporaryDirectory() as temp:
   def __init__(self):self.saved=[]
   def replace(self,fileid,raw,mime):self.saved.append((fileid,raw,mime))
  client=Fake(m['backend']);store=PrivateStore()
+ # This is the actual production invocation shape (no synthetic adapter).
+ # A successful old one-shot runtime must NOT reach model readiness or Drive
+ # when no hosted atomic coordinator has been reviewed and connected.
+ from tools.chat_issue_bridge import RequestBlocked
+ try:execute(f.event(),f.policy,f.history,m,root,store,'STATE','SNAP')
+ except RequestBlocked as e:
+  assert str(e)=='M3_LIVE_ATOMIC_COORDINATOR_NOT_CONNECTED_NO_INFERENCE',str(e)
+ else:raise AssertionError('Legacy provider bypass allowed without M3')
+ assert client.calls==0 and store.saved==[]
  result=execute(f.event(),f.policy,f.history,m,root,store,'STATE','SNAP',client)
  assert result['history_attempts']==5 and client.calls==1 and result['accepted'] is False
  assert store.saved[0][0]=='STATE' and store.saved[-1][0]=='SNAP'
