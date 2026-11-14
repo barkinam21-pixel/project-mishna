@@ -73,6 +73,9 @@ class ChatSceneDryRunTests(unittest.TestCase):
         self.assertIn("github.actor == github.repository_owner", job)
         self.assertIn("tools.scene_factory','dry-run'", job)
         self.assertIn("SCENE_DRY_RUN_NOT_SAFELY_BLOCKED", job)
+        self.assertIn("CROSSWALK_NOT_VERIFIED_OR_SHOTMAP_CHANGED", job)
+        self.assertIn("crosswalk_editorial_issues", job)
+        self.assertIn("crosswalk_shotmap_duration_sec", job)
         self.assertIn("rm -rf private-media", job)
         for forbidden in (
             "secrets.", "CLOUDFLARE_API_TOKEN", "MISHNAH_DRIVE_OAUTH_JSON",
