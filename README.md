@@ -1,5 +1,17 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+
+## סטטוס עבודה מאומת — 14.11.2026: בדיקת סצנה מהצ׳אט הצליחה, יצירה חיה עדיין חסומה
+
+**מוזג ונבדק בפועל:** [#79 M1](https://github.com/barkinam21-pixel/project-mishna/pull/79) בקרת רציפות; [#80 M2](https://github.com/barkinam21-pixel/project-mishna/pull/80) MP4 מלאכותי של 15 שניות; [#81](https://github.com/barkinam21-pixel/project-mishna/pull/81) ומסמך [#82](https://github.com/barkinam21-pixel/project-mishna/pull/82) התקדמות M3 בסימולציה ואישור כרטיס בעלים מוגבל. **בסשן הנוכחי:** [#84](https://github.com/barkinam21-pixel/project-mishna/pull/84) תור `queue:max` שמונע החלפת בקשות ממתינות, סימולציית יומן CAS אטומי ובדיקות מירוץ/קריסה; [#85](https://github.com/barkinam21-pixel/project-mishna/pull/85) הפעלת `scene-dry-run` מגשר Issue54 הקיים ללא Codex או Work; [#86](https://github.com/barkinam21-pixel/project-mishna/pull/86) סיווג דטרמיניסטי ללא אבדן ממצאים. כל שלושת PR עברו CI ומוזגו.
+
+**ניסוי אמיתי של הצ׳אט→GitHub Actions, ללא יצירת תמונות:** [הרצה ראשונה 43586796577](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43586796577) ו־[הרצה משופרת 43587175179](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43587175179) הצליחו. ממצאי התסריט `ACT1-PROLOGUE`: **54 חסמים — 5 תסריט/עריכה, 15 מקורות, 4 רציפות, 15 תמונות חסרות/לא מאושרות, 15 סאונד/זכויות.** מהם 24 קדם־הפקה. המצב `BLOCKED_AS_DESIGNED`, `generation_authorized=false`, `external_inference_requests=0`. OPN02/OPN03 מועמדות בלבד, והפרולוג עדיין לא מאושר.
+
+**הפער הבטיחותי הבא:** `Drive.replace` ברנטיים הקיים מבצע העלאה לא מותנית ואז readback; אין ראיה מספקת לעדכון **CAS אטומי** ב־Drive v3. לכן [הסימולציה האטומית](tools/scene_m3_remote.py) **לא** מחוברת ל־Drive; `NoCASDriveAdapter` חוסם זאת. תור Actions מונע התנגשות בין הרצות בשליטתנו אך אינו תחליף לכלי נעילה חיצוני מול עורכים אחרים או מחיקת בקשות מעל 100. יש להוכיח פתרון תיאום אמיתי, בלי הגדלת הרשאות או תשלום, *לפני* חיבור M3 ל־Cloudflare. `generation-safety.json` חייב להישאר סגור עד אישור ייעודי חדש ובדיקות Free, פרטיות, מכסה ומקורות עדכניות.
+
+**השלב הבא לבנייה:** רכז הפקה שמייצר סצנת ניסיון בתהליך אחד מאושר, על בסיס ספקי התמונה הקיימים, לאחר שמירת ניסיון אטומית והכרעת שחר/שקיעה, תסריט ומקורות. אל תיצור OPN04, אל תייצר תמונה דרך ChatGPT, אל תסתפק במסמכים. אין עדיין מנוע סצנות קולנועיות חיות, קריינות מלאה או סרט מאושר. יעד חוויית המשתמש נשאר **בקשה אחת בצ׳אט הרגיל → הפקת סצנה פרטית ובדיקתה**.
+
+
 **M1 נבנה — בקרת רציפות מקומית בלבד:** `python -m tools.scene_factory plan|dry-run|status` קורא מניפסט15שוטים ו־Bible מגרסהנעולה,מזההסתירותמוצהרותושומריומן/checkpointsללאסוכן. [מימוש,מחקרוגבולות](docs/scene-factory-m1-audit.md). ה־dry-runהאמיתיחוזרBLOCKEDעם54חסמים:שחר/שקיעה,קריינות/דיאלוג,מיפויOPN/EPומקורות/אישורים/מדיהחסרים. איןיצירהאואישוראוטומטי;איןמפיקסצנותמלאעדיין.
 
 
