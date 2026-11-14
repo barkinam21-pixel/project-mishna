@@ -1,0 +1,27 @@
+name: Scene factory M3 owner ticket validation - OFFLINE ONLY
+on:
+  pull_request:
+    paths:
+      - 'tools/scene_m3_ticket.py'
+      - 'tests/test_scene_m3_ticket.py'
+      - '.github/workflows/scene-factory-m3-ticket.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: scene-m3-ticket-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+jobs:
+  ticket-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Real M1, M3 and owner-scoped ticket mock regression
+        run: python -m unittest tests.test_scene_factory tests.test_scene_m3 tests.test_scene_m3_ticket -v
