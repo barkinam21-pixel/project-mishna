@@ -77,6 +77,7 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_IMAGE_SCOPE_OR_RIGHTS"):
             build_plan(self.root, {"images": [entry]})
         from unittest.mock import patch
+        entry["path"] = "private-media/fixture.png"
         with patch("tools.scene_prologue_private_preview._checked_image",
                    return_value=(self.root / "private-media/fixture.png", "0" * 64)):
             with self.assertRaisesRegex(SceneBlocked, "PREVIEW_DUPLICATE_SHOT_BINDING"):
