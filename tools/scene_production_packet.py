@@ -90,12 +90,14 @@ def build_packet(scene, bible, root):
     Unapproved OPN candidates are never silently promoted to cache hits.
     """
     root = Path(root).resolve()
-    issues = validate(scene, bible, root)
+    # Pin inputs before their dependent scene-native direction is evaluated,
+    # preserving exact stale-bible/script errors instead of secondary mismatches.
     if digest(bible) != scene["bible"]["sha256"]:
         raise SceneBlocked("PACKET_BIBLE_CHANGED")
     script = within(root, scene["script"]["path"])
     if not script.is_file() or file_sha(script) != scene["script"]["sha256"]:
         raise SceneBlocked("PACKET_SCRIPT_CHANGED")
+    issues = validate(scene, bible, root)
     if scene["authorization"].get("generation_approved") is not False or scene["authorization"].get("budget_usd") != 0:
         raise SceneBlocked("PACKET_LIVE_AUTHORIZATION_FORBIDDEN")
     image_index = keys(scene, bible)
