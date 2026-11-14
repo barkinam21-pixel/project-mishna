@@ -178,13 +178,19 @@ class SceneStore:
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['plan','dry-run','status']);p.add_argument('--manifest',default='episodes/berakhot-01-01/scene-prologue-v02.json');p.add_argument('--root',default='.');p.add_argument('--request-id',default='prologue-v02-dry-run');p.add_argument('--state',default='private-media/scene-factory')
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['plan','dry-run','status','assemble']);p.add_argument('--manifest',default='episodes/berakhot-01-01/scene-prologue-v02.json');p.add_argument('--root',default='.');p.add_argument('--request-id',default='prologue-v02-dry-run');p.add_argument('--state',default='private-media/scene-factory');p.add_argument('--technical-fixture',action='store_true')
     a=p.parse_args();root=Path(a.root).resolve()
     try:
         out=within(root,a.state)
         if 'private-media' not in out.relative_to(root).parts:raise SceneBlocked('PRIVATE_STATE_REQUIRED')
         store=SceneStore(out)
-        if a.command=='status':
+        if a.command=='assemble':
+            if not a.technical_fixture:raise SceneBlocked('PRODUCTION_ASSEMBLY_NOT_IMPLEMENTED_M2_FIXTURES_ONLY')
+            from tools.private_storyreel import assemble_technical_fixture
+            r=assemble_technical_fixture(root,out/'technical-fixture')
+            files={str(within(root,r['video'])):file_sha(within(root,r['video']))}
+            store.checkpoint('assembly',{'build_key':r['key']},files)
+        elif a.command=='status':
             with writer_lock(out/'writer.lock'):state,_,n=store.recover()
             r={'status':'STATE_READ','requests':state['requests'],'events':n,'inference_requests':0}
         else:

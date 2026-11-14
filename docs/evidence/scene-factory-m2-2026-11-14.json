@@ -1,0 +1,54 @@
+{
+  "status": "TECH_PASS_FIXTURE_ONLY",
+  "key": "b65b6b1bca1b5e1453305ed491bf9ea428ee0f6d0ef242c8acefa88d38049240",
+  "config": {
+    "fixture": true,
+    "shots": 15,
+    "frames_per_shot": 24,
+    "fps": 24,
+    "samples_per_frame": 2000,
+    "size": [
+      960,
+      540
+    ],
+    "caption": "בדיקת מערכת — ללא קריינות",
+    "pipeline_sha256": "91ca69e21cfcaa4ca8b1800e179e85838ee2ec2e3fdf2a83fc2d547d2b54d601",
+    "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "font_sha256": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e"
+  },
+  "outputs": {
+    "private_storyreel_draft.srt": "7667822f6c556ec3cd5708f4dc228d71295cc57299540699aa9a32cef03f15e7",
+    "SYNTHETIC_TEST_ONLY.wav": "75c1e4f90d25519dde64e873c0aeebdf0675cbcd0210458e247fcabd78af3e3b",
+    "technical-contact-sheet.png": "bcf35b90d49113c71781c23dec326dbffe800c5a9e0541272fe97fb28f666bf2",
+    "ffprobe.json": "d9f6129e31b84261441e1f1abfaa1adb980469a37132b5db8c71da2ca49663fb",
+    "private_storyreel_draft.vtt": "757fa73c166fa14a3972430074f09a7cba0beb167f0079539180802070654e0f",
+    "TECHNICAL_FIXTURE_NOT_FILM.mp4": "0ebb140aadb7971d0e0cd8f5a8e6e26439a4bd24da536408dcf40e76fe120381",
+    "fixture-timeline.json": "5c1264b23b869d89bc37d282fc22482038dd7d3d71c99aa14794e693813c6f4c"
+  },
+  "video": "private-media/scene-factory/technical-fixture/b65b6b1bca1b5e1453305ed491bf9ea428ee0f6d0ef242c8acefa88d38049240/TECHNICAL_FIXTURE_NOT_FILM.mp4",
+  "frames": 360,
+  "duration_seconds": 15.0,
+  "audio_samples": 720000,
+  "source_audio_peak": 0.13001932777742695,
+  "source_audio_rms": 0.015571716553433831,
+  "full_decode": true,
+  "black_freeze_check": "PASS",
+  "human_review": {
+    "silent_visual": "NOT_PERFORMED",
+    "audio_only": "NOT_PERFORMED",
+    "continuity": "NOT_PERFORMED",
+    "beginner_comprehension": "NOT_PERFORMED"
+  },
+  "voice": "ABSENT",
+  "artistic_scene_complete": false,
+  "generation_requests": 0,
+  "external_charge_usd": 0,
+  "cache_hit": false,
+  "receipt": "private-media/scene-factory/technical-fixture/b65b6b1bca1b5e1453305ed491bf9ea428ee0f6d0ef242c8acefa88d38049240/receipt.json",
+  "video_sha256": "0ebb140aadb7971d0e0cd8f5a8e6e26439a4bd24da536408dcf40e76fe120381",
+  "second_run_cache_hit": true,
+  "drive_visibility_verified": "owner_only_shared_false",
+  "focused_tests": "25 passed in 5.028s",
+  "visual_review": "single decoded frame: Hebrew direction and test label checked; not full human review",
+  "full_regression": "376 passed in 14.000s"
+}

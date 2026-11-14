@@ -101,3 +101,5 @@
 
 
 **סבב איכות לאחר האזנת בר:** קול MMS הקודם נדחה ונחסם לפי hash. מנוע ההרכבה מחובר כעת למצלמה תת־פיקסלית הקיימת ולכמה כתוביות בכל שוט. הופקה תצוגת עריכה פרטית בת 12 שניות משני איורים מקוריים: תנועה אופקית ואחריה התקרבות. **ללא קריינות — חסם הקול עדיין פתוח**, לא הצלחת הפקת סרט לימודי. ראיות ומגבלות: [דוח הסבב](docs/evidence/issue-37/quality-round-report.json), [מסירת מצב](docs/session-handoff.md). PR #38 נשאר ללא מיזוג; אין שינוי באישורי מקור/זכויות/פרסום.
+
+M2 offline technical assembly: see [technical proof](docs/scene-factory-m2-technical-proof.md). The fixture is synthetic, 15 seconds, and does not authorize artistic production or provider calls.

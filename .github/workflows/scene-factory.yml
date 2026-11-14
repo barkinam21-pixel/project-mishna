@@ -1,7 +1,7 @@
-name: Scene factory offline M1
+name: Scene factory offline M1 and M2
 on:
   pull_request:
-    paths: ['tools/scene_factory.py', 'tests/test_scene_factory.py', 'schemas/**', 'episodes/berakhot-01-01/scene-*.json', '.github/workflows/scene-factory.yml']
+    paths: ['tools/scene_factory.py', 'tests/test_scene_factory.py', 'tests/test_scene_factory_assembly.py', 'tools/private_storyreel.py', 'schemas/**', 'episodes/berakhot-01-01/scene-*.json', '.github/workflows/scene-factory.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,3 +31,28 @@ jobs:
           assert r['inference_requests']==0 and 'ASSET_CONTINUITY_TIME_OF_DAY:EP-P07' in r['issues']
           print('Known dawn/sunset and approval conflicts correctly block production')
           PY
+
+  m2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core fonts-noto-core
+      - run: python -m pip install Pillow==12.0.0
+      - name: Real offline encoding, cache, corruption and motion tests
+        run: python -m unittest tests.test_scene_factory tests.test_scene_factory_assembly -v
+      - name: Assemble synthetic fixture twice without generation
+        run: |
+          python -m tools.scene_factory assemble --technical-fixture > /tmp/fixture-first.json
+          python -m tools.scene_factory assemble --technical-fixture > /tmp/fixture-second.json
+          python - <<'PYCODE'
+          import json
+          a=json.load(open('/tmp/fixture-first.json')); b=json.load(open('/tmp/fixture-second.json'))
+          assert not a['cache_hit'] and b['cache_hit'] and a['outputs']==b['outputs']
+          assert a['generation_requests']==0 and not a['artistic_scene_complete']
+          PYCODE
