@@ -238,6 +238,9 @@ class OfflineRemoteCoordinator:
         batches = journal.setdefault("m3_scene_batches", {})
         if not isinstance(batches, dict):
             raise SceneBlocked("M3_REMOTE_BATCH_FORMAT")
+        # Refuse to start a new batch over a corrupted old record.
+        for prior in batches.values():
+            _verify_batch_integrity(prior)
         old = batches.get(a["request_id"])
         identity = digest(a)
         if old is not None:
