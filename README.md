@@ -1,6 +1,14 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
 
+## עדכון 14.11 (מוכח) — בדיקת תסריט–שוטים דרך הצ׳אט, אין אישור ליצירה
+- [PR #89](https://github.com/barkinam21-pixel/project-mishna/pull/89) — קוד בדיקה חדש ומשולב ב־CI משווה את מסמך התסריט הספרותי, מפת 15 השוטים ומניפסט הסצנה. 15 שוטים מתאימים למפת פריימים 24fps ומשך טיוטת 91 שניות, אך מציף שש החלטות/סתירות: התסריט המקורי בן 45 שניות, כניסת קריין מוקדמת לעומת כניסה מאוחרת ב־P15, שחר מול מועמדות שקיעה, אישורי תסריט ומקורות חסרים, ו־script_span גנרי לכל 15 השוטים. לא מתקנים/מאשרים אוטומטית שום יצירה.
+- [PR #90](https://github.com/barkinam21-pixel/project-mishna/pull/90) — מחבר את הבדיקה לגשר `scene-dry-run` הרגיל דרך Issue54. **הרצה אמיתית [43616872511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43616872511) הצליחה** והחזירה 54 חסמים ב־5 קטגוריות, 6 החלטות crosswalk, `generation_authorized=false`, `external_inference_requests=0`. זה אימות למסלול בדיקה מהצ׳אט ולא אישור אמנותי להפקת סצנה.
+- **תיאום קריאות חיות עדיין חסום:** חלופה אפשרית שנבדקה בתיעוד היא [Cloudflare Durable Objects עם SQLite](https://developers.cloudflare.com/durable-objects/platform/pricing/), שמתוארת במסלול Workers Free עם מגבלות (למשל 5 מיליון קריאות שורה ו־100 אלף כתיבות שורה ביום, 5GB סך אחסון). אין זה אימות לעלות/תוכנית/מכסה בפועל בחשבון. לא נוצר או נפרס Durable Object, לא נוספו הרשאות או שירותים. `Drive.replace` במנגנון הישן עדיין אינו CAS מוכח. לפני חיבור LIVE נדרש פתרון תיאום מוכח עם אימות הרשאות, עלויות, פרטיות ו־QA.
+- **הבא:** פיתוח ומבחני שילוב של מנגנון שמירת ניסיון אטומי ממשי, במגבלת אפס־חיוב ואישור מתאים; ותיקון מפת מקור/תסריט ו־crosswalk לפני יצירה. אל לבנות מחדש את M1/M2, אל לטעון שהוידאו הטכני הוא סרט גמור, אל לייצר אוטומטית OPN04.
+
+
+
 ## סטטוס עבודה מאומת — 14.11.2026: בדיקת סצנה מהצ׳אט הצליחה, יצירה חיה עדיין חסומה
 
 **מוזג ונבדק בפועל:** [#79 M1](https://github.com/barkinam21-pixel/project-mishna/pull/79) בקרת רציפות; [#80 M2](https://github.com/barkinam21-pixel/project-mishna/pull/80) MP4 מלאכותי של 15 שניות; [#81](https://github.com/barkinam21-pixel/project-mishna/pull/81) ו־[#82](https://github.com/barkinam21-pixel/project-mishna/pull/82) התקדמות M3 בסימולציה ואישור כרטיס בעלים מוגבל. **בסשן הנוכחי:** [#84](https://github.com/barkinam21-pixel/project-mishna/pull/84) תור `queue:max` שמונע החלפת בקשות ממתינות, סימולציית יומן CAS אטומי ובדיקות מירוץ/קריסה; [#85](https://github.com/barkinam21-pixel/project-mishna/pull/85) הפעלת `scene-dry-run` מגשר Issue54 הקיים ללא Codex או Work; [#86](https://github.com/barkinam21-pixel/project-mishna/pull/86) סיווג דטרמיניסטי ללא אבדן ממצאים. כל שלושת PR עברו CI ומוזגו.
