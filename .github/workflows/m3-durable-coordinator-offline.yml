@@ -1,0 +1,45 @@
+name: M3 durable SQLite coordinator OFFLINE safety tests
+on:
+  pull_request:
+    paths:
+      - 'infra/m3-coordinator/**'
+      - '.github/workflows/m3-durable-coordinator-offline.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: m3-do-offline-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+jobs:
+  sqlite-transaction-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Static syntax checks (NO deployment or credentials)
+        run: |
+          node --check infra/m3-coordinator/scene-reservation-core.mjs
+          node --check infra/m3-coordinator/worker.mjs
+          node --check infra/m3-coordinator/scene-reservation.test.mjs
+      - name: Real SQLite transaction and crash tests, no network
+        run: node --test infra/m3-coordinator/scene-reservation.test.mjs
+      - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          a=Path('.github/workflows/m3-durable-coordinator-offline.yml').read_text()
+          b=Path('infra/m3-coordinator/worker.mjs').read_text()
+          a=a.split('      - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow')[0]
+          for marker in ('secrets.', 'cloudflare login', 'npx wrangler deploy',
+                         'CLOUDFLARE_API_TOKEN', 'MISHNAH_DRIVE_OAUTH_JSON'):
+              assert marker not in a, marker
+          assert 'status:404' in b
+          assert 'CloudflareClient' not in b
+          print('DRY_RUN_ONLY_AND_PUBLIC_ACCESS_DISABLED')
+          PY
