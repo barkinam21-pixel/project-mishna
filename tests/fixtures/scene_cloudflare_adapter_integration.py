@@ -15,6 +15,9 @@ import tempfile
 from pathlib import Path
 
 from PIL import Image
+# This script is invoked as a file, not via -m: add repo root explicitly.
+ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT))
 from tools.scene_factory import load
 from tools.scene_production_packet import build_packet
 from tools.scene_cloudflare_spec_adapter import compile_previews
