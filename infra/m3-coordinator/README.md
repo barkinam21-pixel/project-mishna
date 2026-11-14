@@ -26,3 +26,12 @@ node --test infra/m3-coordinator/scene-reservation.test.mjs
 Official documentation checked: [Cloudflare Durable Objects](https://developers.cloudflare.com/durable-objects/), [SQLite storage API](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/), [Free plan quotas](https://developers.cloudflare.com/durable-objects/platform/pricing/).
 
 **This work should advance, not replace, the ordinary ChatGPT → owner Issue #54 → GitHub Actions control path and its mandatory scene QA.**
+
+
+## Offline six-attempt history migration/reconciliation test seam (NOT deployed)
+
+`legacy-history-reconcile.mjs` is a **disconnected offline prototype**, exercised by `legacy-history-reconcile.test.mjs` with real SQLite. It stores the complete six-attempt legacy JSON and each exact historical attempt as an immutable prefix in the same SQLite database as the candidate scene scope. It checks the separately read source against the admission's hash/count, disallows changed equal-length baselines and overwrites, and tests competing writers, interrupted transactions, crash/restart, receipt uncertainty and no-retry. Both OPN02/OPN03 remain unaccepted fixture candidates.
+
+**Security boundary:** the test's injected `readPrivateHistory` is NOT an authenticated Drive reader; a claimed SHA alone does not establish authoritative provenance. The migration record explicitly says `OFFLINE_FIXTURE_NO_REMOTE_PROOF`, and reconciliation returns `OFFLINE_PREFIX_MATCH_NO_REMOTE_CAS`, **never** a live permit. Current offline `beginOffline` / `reserveOffline` APIs remain intentionally unchanged; this migration prototype is not yet a mandatory hosted pre-reservation gate. The current single-scene global DO admission from PR #99 also remains unchanged. No multi-scene admission, Cloudflare deployment, provider POST, Drive write, secret, permission, or spend is introduced.
+
+**Next safe milestone:** connect an independently authenticated read-only snapshot source to this contract in a staging-only adapter, prove all legacy writers are barred or coordinated, then design a server-atomic versioned global ledger and reconciliation for evolving histories. Do not use this prototype or successful CI to justify deployment or new image generation.
