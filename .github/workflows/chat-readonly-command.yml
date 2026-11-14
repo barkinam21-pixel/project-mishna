@@ -14,6 +14,8 @@ on:
       - tests/test_chat_scene_dry_run.py
       - tools/scene_preflight_report.py
       - tests/test_scene_preflight_report.py
+      - tools/scene_prologue_crosswalk.py
+      - tests/test_scene_prologue_crosswalk.py
       - tests/test_generation_ticket.py
       - tests/test_scene_m3_workflow_guard.py
       - .github/workflows/chat-readonly-command.yml
@@ -35,7 +37,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run tests.test_scene_preflight_report -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run tests.test_scene_preflight_report tests.test_scene_prologue_crosswalk -v
       - uses: actions/checkout@v4
         with:
           path: reviewed-runtime
@@ -106,6 +108,7 @@ jobs:
           python - <<'PY'
           import json,os,subprocess,sys
           from tools.scene_preflight_report import summarize
+          from tools.scene_prologue_crosswalk import analyze as prologue_crosswalk
           rid=os.environ['REQUEST_ID']
           p=subprocess.run([sys.executable,'-m','tools.scene_factory','dry-run',
                             '--request-id',rid],capture_output=True,text=True)
@@ -120,11 +123,22 @@ jobs:
           if (triage['total_blockers']!=len(out['issues'])
               or triage['unclassified_critical_count']):
               raise SystemExit('SCENE_PREFLIGHT_UNCLASSIFIED_OR_LOST_FINDING')
+          crosswalk=prologue_crosswalk('.')
+          expected={'EDITORIAL_NARRATION_ENTRY_CONFLICT',
+                    'LITERARY_45S_VS_SHOTMAP_91S_TIMING_REVIEW',
+                    'DAWN_SCRIPT_VS_SUNSET_ASSET_CANDIDATES'}
+          if (crosswalk['status']!='EDITORIAL_REVIEW_REQUIRED'
+              or crosswalk['inference_requests']!=0
+              or not expected.issubset(set(crosswalk['issues']))
+              or crosswalk['structural_issues']):
+              raise SystemExit('CROSSWALK_NOT_VERIFIED_OR_SHOTMAP_CHANGED')
           print(json.dumps({'status':'BLOCKED_AS_DESIGNED',
               'scene_id':out['scene_id'],
               'unresolved_issue_count':triage['total_blockers'],
               'category_counts':triage['category_counts'],
               'critical_preproduction_blockers':triage['critical_preproduction_blockers'],
+              'crosswalk_editorial_issues':crosswalk['issues'],
+              'crosswalk_shotmap_duration_sec':crosswalk['shotmap_duration_sec'],
               'known_continuity_error':'DAWN_VS_SUNSET',
               'external_inference_requests':0,
               'generation_authorized':False,
