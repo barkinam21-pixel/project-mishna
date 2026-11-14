@@ -39,7 +39,7 @@ def validate(scene,bible,root):
     if not shots or len(set(ids))!=len(ids) or any(not isinstance(x,str) or not re.fullmatch(r'[A-Z0-9-]+',x) for x in ids):raise SceneBlocked('SHOT_IDS_INVALID')
     previous=None;cursor=0;states=bible.get('states',{})
     for i,shot in enumerate(shots):
-        required(shot,'id beat why description script_span source camera pre_state post_state exception asset sound captions start_frame end_frame previous next'.split(),'shot')
+        required(shot,('id beat why description script_span source camera pre_state post_state exception asset sound captions start_frame end_frame previous next' + (' blocking' if 'blocking' in shot else '')).split(),'shot')
         required(shot['camera'],['intent','movement'],'camera')
         if not all(isinstance(shot['camera'][k],str) and shot['camera'][k].strip() for k in ('intent','movement')):raise SceneBlocked('CAMERA_INTENT_MISSING')
         if not shot['why'].strip() or not shot['beat'] or not shot['description'].strip():issues.append('SHOT_HAS_NO_STORY_FUNCTION:'+shot['id'])
@@ -57,6 +57,9 @@ def validate(scene,bible,root):
         for field in ('pre_state','post_state'):
             if shot[field] not in states:raise SceneBlocked('UNKNOWN_CONTINUITY_STATE')
         pre,post=states[shot['pre_state']],states[shot['post_state']]
+        if 'blocking' in shot:
+            from tools.scene_native_direction import compile_native_direction
+            compile_native_direction(shot, pre)
         exc=shot['exception']
         valid_exc=isinstance(exc,dict) and exc.get('approved') is True and bool(exc.get('reviewer')) and bool(exc.get('reason')) and bool(exc.get('transition')) and bool(exc.get('fields'))
         if exc and not valid_exc:issues.append('CONTINUITY_EXCEPTION_UNAPPROVED:'+shot['id'])
@@ -104,7 +107,7 @@ def validate(scene,bible,root):
 
 
 def keys(scene,bible):
-    assets={s['id']:digest({'asset':s['asset'],'camera':s['camera'],'pre':bible['states'][s['pre_state']],'post':bible['states'][s['post_state']],'description':s['description']}) for s in scene['shots']}
+    assets={s['id']:digest({'asset':s['asset'],'camera':s['camera'],'pre':bible['states'][s['pre_state']],'post':bible['states'][s['post_state']],'description':s['description']} | ({'blocking':s['blocking']} if 'blocking' in s else {})) for s in scene['shots']}
     return {'asset_keys':assets,'build_key':digest({'scene':scene,'bible':bible})}
 
 
