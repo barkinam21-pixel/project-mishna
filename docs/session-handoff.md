@@ -1,6 +1,14 @@
 # מסירת מצב בין סשנים — אולפן המשנה
 
 
+## 14.11 סשן המשך: מימוש ובדיקות ממשיות של סנכרון התסריט והשוטים
+- [PR #89](https://github.com/barkinam21-pixel/project-mishna/pull/89) **מוזג**: כלי `tools/scene_prologue_crosswalk.py` ותיק בדיקות מזהים ללא inference שוטים מחוץ לסדר, סטיית זמן/פריימים, 45 שניות ספרותיות לעומת 91 שניות טיוטת בימוי, קריין ראשון/מאוחר, שחר מול מועמדות שקיעה, סטטוס מקור ו־script_span גנרי. 15 השוטים אכן תואמים פריימים של 24fps, אבל זה לא פותר תסריט, קול, זכויות או QA.
+- [PR #90](https://github.com/barkinam21-pixel/project-mishna/pull/90) **מוזג**: ה־crosswalk משולב בגשר `scene-dry-run` של Issue54, ללא secrets, provider או Drive. הרצה אמיתית [43616872511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43616872511) הצליחה, `status=BLOCKED_AS_DESIGNED`; 54 חסמים קיימים, 6 חסמי crosswalk מפורשים, 0 inference, אין authorization. **לא להסיק שעבר אישור סרט.**
+- בדיקת Cloudflare: תיעוד [Durable Objects Free pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/) ו־[storage transactionSync](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/) מציעים כיוון לתיאום אטומי אמיתי. בדיקת קריאה־בלבד חשפה Worker scripts קיימים אך לא הוכיחה binding DO בטוח קיים. לא יצרנו שירות, לא שינינו הרשאות, לא פרסנו Worker/DO, ולא העלינו תוכנית או גבייה. לשלבו רק אם הבטיחות, הגישה/Free/תנאי זכויות והעלות נבדקו והפיתוח הוכח.
+- **השלב הבא בפועל:** 1) מנגנון תיאום אטומי מרחוק במבחני עומס ומקרי כשל (לא `Drive.replace` כ־CAS); 2) מקור/תסריט/שחר/קריין להחלטה לפני יצירת תמונה; 3) חיבור לספק המקורי, ולאחר מכן קריינות/סאונד/עריכת סצנה; הכל בבקשה אחת מהצ׳אט. אל לחזור ל־M1/M2 או להפעיל Codex במקום הפעלה רגילה. שער `generation-safety.json` נותר CLOSED.
+
+
+
 ## אימות בפועל 14.11 — רצף פיתוח M3 בטוח והפעלה מהצ׳אט
 - בשיחה אחת נבנו ונבדקו ומוזגו: [PR #84](https://github.com/barkinam21-pixel/project-mishna/pull/84) (תור גלובלי `queue:max` ל־Issue54 + מנגנון CAS מדומה ובדיקות 2 הרצות/קריסה/שינוי היסטוריה/זיוף קבלה), [PR #85](https://github.com/barkinam21-pixel/project-mishna/pull/85) (פקודת `scene-dry-run` רשומה ומוגבלת לבעלים דרך הגשר הקיים, ללא secrets וללא יצירה), [PR #86](https://github.com/barkinam21-pixel/project-mishna/pull/86) (כלי סיווג 54 חסמי הקדם־הפקה ללא הסתרת קוד לא מוכר). כל ה־PRs מוזגו אחרי GitHub Actions ירוק, בלי שינויים בהרשאות GitHub/Cloudflare או חיוב.
 - שתי הרצות אמיתיות מאותה שיחה, דרך עדכון owner Issue #54: [43586796577](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43586796577) ו־[43587175179](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43587175179). השנייה החזירה `BLOCKED_AS_DESIGNED`, `ACT1-PROLOGUE`, 54 חסמים: `SCRIPT_AND_EDITORIAL=5`, `SOURCES_AND_CHRONOLOGY=15`, `VISUAL_CONTINUITY=4`, `VISUAL_ASSETS=15`, `VOICE_AUDIO_AND_RIGHTS=15`, 24 קריטיים לקדם־הפקה; 0 inference, generation_authorized=false. ה־check עבר כי **החסימה פעלה כמתוכנן**, לא כי הסרט מאושר.
