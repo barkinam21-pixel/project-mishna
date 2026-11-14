@@ -1,5 +1,13 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## Offline Cloudflare spec bridge — candidate, not live production
+
+`tools/scene_cloudflare_spec_adapter.py` builds a scene-wide set of **15 per-shot specs matching the existing pinned `CloudflareClient.prepare` input shape** from one `tools/scene_production_packet.py` packet. It reuses the previous (immutable) Cloudflare model metadata and private reference checks; it **does not** import the old sunset-only prompt or rename `EP-P` shots to `OPN`. All jobs retain camera, dawn lighting, costume/identity, asset SHA/seed, timing and source labels for the next writer. The one-request Issue54 `scene-dry-run` now produces a bounded adapter summary in the same safe run.
+
+**Next blocker is explicit in the result:** the pinned image engine's `shot_controls.validate` requires sunset and `comfy_scene_images.specifications` only accepts OPN01–07, whereas the actual prologue is EP-P01–15 at dawn. This PR only tests **preparation-interface compatibility**; it does not implement a batch writer or generalize those historic original-shot contracts. Further blockers: existing OPN reference rights were scoped to their earlier use, real private reference bytes may not be present, character-visibility direction still needs authoring, M3 is not deployed, all editorial/source/rights approvals remain pending. **Do not infer live-dispatch permission from a compatible request payload.**
+
+Read-only command if the immutable studio manifest is checked out: `python -m tools.scene_cloudflare_spec_adapter --legacy-template reviewed-runtime/episodes/berakhot-01-01/comfy-opening-images.json --summary`. CLI reports only counts/statuses, not original private image bytes or remote URLs. Tests use a distinct synthetic PNG and a fake no-network `CloudflareClient.readiness` to verify the real pinned `prepare` signature. Never use the synthetic test image for production.
+
 ## One-command scene planning — PR #101 candidate (not yet merged)
 
 The existing owner Issue #54 `scene-dry-run` check now compiles a reusable **15-shot cinematic production packet** with grounded per-shot visual prompts, character/costume/lighting/axis locks, frame durations, original-image slots, source flags, sound spotting and M1 visual cache keys. It is one scene request, not 15 owner approvals. Code: `tools/scene_production_packet.py`; tests: `tests/test_scene_production_packet.py`. A no-secret developer command is `python -m tools.scene_production_packet --summary`; the GitHub Actions chat bridge summarizes the same packet without exposing full prompts in public logs.
