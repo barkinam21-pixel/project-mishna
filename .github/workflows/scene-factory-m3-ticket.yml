@@ -6,6 +6,8 @@ on:
       - 'tools/scene_m3_remote.py'
       - 'tests/test_scene_m3_ticket.py'
       - 'tests/test_scene_m3_remote.py'
+      - 'tools/scene_preflight_report.py'
+      - 'tests/test_scene_preflight_report.py'
       - '.github/workflows/scene-factory-m3-ticket.yml'
   workflow_dispatch:
 permissions:
@@ -26,4 +28,4 @@ jobs:
         with:
           python-version: '3.12'
       - name: Real M1, M3 and owner-scoped ticket mock regression
-        run: python -m unittest tests.test_scene_factory tests.test_scene_m3 tests.test_scene_m3_ticket tests.test_scene_m3_remote -v
+        run: python -m unittest tests.test_scene_factory tests.test_scene_m3 tests.test_scene_m3_ticket tests.test_scene_m3_remote tests.test_scene_preflight_report -v

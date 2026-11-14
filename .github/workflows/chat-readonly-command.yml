@@ -12,6 +12,8 @@ on:
       - episodes/berakhot-01-01/generation-safety.json
       - tests/test_chat_issue_bridge.py
       - tests/test_chat_scene_dry_run.py
+      - tools/scene_preflight_report.py
+      - tests/test_scene_preflight_report.py
       - tests/test_generation_ticket.py
       - tests/test_scene_m3_workflow_guard.py
       - .github/workflows/chat-readonly-command.yml
@@ -33,7 +35,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run tests.test_scene_preflight_report -v
       - uses: actions/checkout@v4
         with:
           path: reviewed-runtime
@@ -103,6 +105,7 @@ jobs:
         run: |
           python - <<'PY'
           import json,os,subprocess,sys
+          from tools.scene_preflight_report import summarize
           rid=os.environ['REQUEST_ID']
           p=subprocess.run([sys.executable,'-m','tools.scene_factory','dry-run',
                             '--request-id',rid],capture_output=True,text=True)
@@ -113,9 +116,15 @@ jobs:
               or out.get('generation_authorized') is not False
               or 'ASSET_CONTINUITY_TIME_OF_DAY:EP-P07' not in out.get('issues',[])):
               raise SystemExit('SCENE_DRY_RUN_NOT_SAFELY_BLOCKED')
+          triage=summarize(out['issues'],scene_id=out['scene_id'])
+          if (triage['total_blockers']!=len(out['issues'])
+              or triage['unclassified_critical_count']):
+              raise SystemExit('SCENE_PREFLIGHT_UNCLASSIFIED_OR_LOST_FINDING')
           print(json.dumps({'status':'BLOCKED_AS_DESIGNED',
               'scene_id':out['scene_id'],
-              'unresolved_issue_count':len(out['issues']),
+              'unresolved_issue_count':triage['total_blockers'],
+              'category_counts':triage['category_counts'],
+              'critical_preproduction_blockers':triage['critical_preproduction_blockers'],
               'known_continuity_error':'DAWN_VS_SUNSET',
               'external_inference_requests':0,
               'generation_authorized':False,
