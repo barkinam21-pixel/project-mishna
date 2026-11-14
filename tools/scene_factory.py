@@ -59,7 +59,15 @@ def validate(scene,bible,root):
         pre,post=states[shot['pre_state']],states[shot['post_state']]
         if 'blocking' in shot:
             from tools.scene_native_direction import compile_native_direction
-            compile_native_direction(shot, pre)
+            try:
+                compile_native_direction(shot, pre)
+            except SceneBlocked as err:
+                # State mismatch is an editorial continuity finding in M1,
+                # not an unhandled exception; malformed blocking stays fatal.
+                if str(err).startswith('NATIVE_AXIS_OR_DAYLIGHT_CONFLICT:'):
+                    issues.append(str(err))
+                else:
+                    raise
         exc=shot['exception']
         valid_exc=isinstance(exc,dict) and exc.get('approved') is True and bool(exc.get('reviewer')) and bool(exc.get('reason')) and bool(exc.get('transition')) and bool(exc.get('fields'))
         if exc and not valid_exc:issues.append('CONTINUITY_EXCEPTION_UNAPPROVED:'+shot['id'])
