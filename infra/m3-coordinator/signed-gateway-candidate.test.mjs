@@ -36,7 +36,7 @@ function harness(){
  const env={
   M3_GATEWAY_HMAC_KEY:SECRET,
   M3_SCENE_RESERVATION:{
-    getByName(id){assert.equal(id,"ACT1-PROLOGUE");return stub;}
+    getByName(id){assert.equal(id,"M3-LEGACY-SHARED-JOURNAL-V1");return stub;}
   }
  };
  return {stub,env,db,ready:ctx.ready};
@@ -99,6 +99,40 @@ test("HMAC gateway -> real SQLite DO reservation is atomic, persisted and never 
  assert.equal(status.json.baseline_attempts,6);
  assert.equal(status.json.external_inference_requests,0);
  assert.equal(status.json.live_dispatch_enabled,false);
+ h.db.close();
+});
+test("two distinct scenes cannot reserve independently against one legacy journal",async()=>{
+ const h=harness();await h.ready;
+ const first=a();
+ // Same six-attempt baseline; a different request/scene must NOT get its own DO.
+ const second={...a(),scene_id:"ACT2-PROLOGUE",request_id:"d".repeat(32)};
+ const attempts=await Promise.all([
+  invoke(h.env,"begin",first),
+  invoke(h.env,"begin",second,{envelope:{scene_id:second.scene_id}})
+ ]);
+ assert.deepEqual(attempts.map(x=>x.status).sort((x,y)=>x-y),[200,409]);
+ const winner=attempts[0].status===200?first:second;
+ const loser=attempts[0].status===200?second:first;
+ const own=await invoke(h.env,"status",{}, {envelope:{scene_id:winner.scene_id}});
+ assert.equal(own.status,200);
+ assert.equal(own.json.scene_id,winner.scene_id);
+ assert.equal(own.json.baseline_attempts,6);
+ // A request bearing the winner's exact request_id cannot cross the scene
+ // boundary by changing only the signed envelope scene_id.
+ const cross=await invoke(h.env,"reserve",
+  {request_id:winner.request_id,shot_id:"EP-P01"},
+  {envelope:{scene_id:loser.scene_id}});
+ assert.equal(cross.status,409);
+ const leaked=await invoke(h.env,"status",{}, {envelope:{scene_id:loser.scene_id}});
+ assert.equal(leaked.status,409);
+ const valid=await invoke(h.env,"reserve",
+  {request_id:winner.request_id,shot_id:"EP-P01"},
+  {envelope:{scene_id:winner.scene_id}});
+ assert.equal(valid.status,200);
+ const state=await invoke(h.env,"status",{}, {envelope:{scene_id:winner.scene_id}});
+ assert.equal(state.json.attempts.length,1);
+ assert.equal(state.json.external_inference_requests,0);
+ assert.equal(state.json.live_dispatch_enabled,false);
  h.db.close();
 });
 test("no billing or images API can appear in the gateway's implementation",async()=>{
