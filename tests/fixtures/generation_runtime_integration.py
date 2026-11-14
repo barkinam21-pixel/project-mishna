@@ -29,6 +29,15 @@ with tempfile.TemporaryDirectory() as temp:
   def __init__(self):self.saved=[]
   def replace(self,fileid,raw,mime):self.saved.append((fileid,raw,mime))
  client=Fake(m['backend']);store=PrivateStore()
+ # This is the actual production invocation shape (no synthetic adapter).
+ # A successful old one-shot runtime must NOT reach model readiness or Drive
+ # when no hosted atomic coordinator has been reviewed and connected.
+ from tools.chat_issue_bridge import RequestBlocked
+ try:execute(f.event(),f.policy,f.history,m,root,store,'STATE','SNAP')
+ except RequestBlocked as e:
+  assert str(e)=='M3_LIVE_ATOMIC_COORDINATOR_NOT_CONNECTED_NO_INFERENCE',str(e)
+ else:raise AssertionError('Legacy provider bypass allowed without M3')
+ assert client.calls==0 and store.saved==[]
  result=execute(f.event(),f.policy,f.history,m,root,store,'STATE','SNAP',client)
  assert result['history_attempts']==5 and client.calls==1 and result['accepted'] is False
  assert store.saved[0][0]=='STATE' and store.saved[-1][0]=='SNAP'
@@ -37,4 +46,33 @@ with tempfile.TemporaryDirectory() as temp:
  except Exception:pass
  else:raise AssertionError('Replay admitted')
  assert client.calls==1
+ # Exercise the REAL pinned OPN runtime -> offline M3 handoff, with a
+ # synthetic six-attempt ledger and NO provider/Drive calls in this branch.
+ f2=fixtures.GenerationTicketTests();f2.setUp()
+ f2.history['entries']={}
+ f2.history['attempts'].extend([{'key':'history-5'},{'key':'history-6'}])
+ f2.policy['spec_sha256']=key;f2.ticket['spec_sha256']=key
+ f2.ticket['historical_attempts']=6;f2.ticket['total_attempt_limit']=7
+ f2.ticket['history_sha256']=hashlib.sha256(json.dumps(
+  f2.history,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+ class FakeOfflineCoordinator:
+  def __init__(self):self.begins=0;self.reserves=0
+  def begin_offline(self,a):
+   self.begins+=1
+   assert a['shot_ids']==['OPN02'] and a['historical_attempts']==6
+   return {'status':'OFFLINE_READY','replay':False,'live_dispatch_enabled':False}
+  def reserve_offline(self,rid,shot):
+   self.reserves+=1
+   assert shot=='OPN02'
+   return {'status':'OFFLINE_RESERVED_UNCERTAIN_NO_RETRY',
+           'live_dispatch_enabled':False,'external_inference_requests':0}
+ fake_coordinator=FakeOfflineCoordinator()
+ writes_before=len(store.saved);calls_before=client.calls
+ try:execute(f2.event(),f2.policy,f2.history,m,root,store,'STATE','SNAP',
+             client,coordinator=fake_coordinator)
+ except RequestBlocked as e:
+  assert str(e)=='M3_OFFLINE_RESERVATION_IS_NOT_LIVE_DISPATCH_PERMISSION'
+ else:raise AssertionError('Offline reservation treated as provider permission')
+ assert fake_coordinator.begins==1 and fake_coordinator.reserves==1
+ assert client.calls==calls_before and len(store.saved)==writes_before
  print(json.dumps({'status':'SYNTHETIC_END_TO_END_PASSED','conditioning_inputs':3,'retained_historical_attempts':4,'final_attempts':5,'mock_submissions':1,'real_inference_requests':0,'replay_blocked':True,'snapshot_saved':True}))

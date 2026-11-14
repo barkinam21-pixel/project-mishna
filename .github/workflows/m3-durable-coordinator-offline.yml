@@ -4,6 +4,10 @@ on:
     paths:
       - 'infra/m3-coordinator/**'
       - 'tests/test_scene_m3_sqlite_bridge.py'
+      - 'tests/test_legacy_generation_coordination.py'
+      - 'tools/legacy_generation_coordination.py'
+      - 'tools/generation_issue_runtime.py'
+      - 'tests/fixtures/generation_runtime_integration.py'
       - '.github/workflows/m3-durable-coordinator-offline.yml'
   workflow_dispatch:
 permissions:
@@ -37,7 +41,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Python owner ticket to actual SQLite coordinator integration
-        run: python -m unittest tests.test_scene_m3_sqlite_bridge -v
+        run: python -m unittest tests.test_scene_m3_sqlite_bridge tests.test_legacy_generation_coordination -v
       - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow
         run: |
           python - <<'PY'
