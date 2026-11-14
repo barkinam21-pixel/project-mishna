@@ -39,6 +39,8 @@ def validate(scene,bible,root):
     if not shots or len(set(ids))!=len(ids) or any(not isinstance(x,str) or not re.fullmatch(r'[A-Z0-9-]+',x) for x in ids):raise SceneBlocked('SHOT_IDS_INVALID')
     previous=None;cursor=0;states=bible.get('states',{})
     for i,shot in enumerate(shots):
+        if shot['id'].startswith('EP-P') and 'blocking' not in shot:
+            raise SceneBlocked('NATIVE_BLOCKING_REQUIRED:'+shot['id'])
         required(shot,('id beat why description script_span source camera pre_state post_state exception asset sound captions start_frame end_frame previous next' + (' blocking' if 'blocking' in shot else '')).split(),'shot')
         required(shot['camera'],['intent','movement'],'camera')
         if not all(isinstance(shot['camera'][k],str) and shot['camera'][k].strip() for k in ('intent','movement')):raise SceneBlocked('CAMERA_INTENT_MISSING')
