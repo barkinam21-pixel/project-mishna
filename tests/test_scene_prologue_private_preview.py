@@ -68,6 +68,33 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         self.assertEqual(argv[argv.index("-frames:v") + 1], "2184")
         self.assertNotIn("OPN02", " ".join(argv))
 
+    def test_two_shot_private_preview_real_ffmpeg_short_smoke(self):
+        if not all(shutil.which(x) for x in ("ffmpeg", "ffprobe", "fc-match")):
+            self.skipTest("FFmpeg/font tooling unavailable")
+        from unittest.mock import patch
+        import tools.scene_prologue_private_preview as preview
+        slates = [{"shot_id": f"EP-P{i:02d}", "start_frame": (i-1)*24,
+                   "end_frame": i*24, "duration_frames": 24,
+                   "purpose": "לוח בדיקה בלבד", "source_layer": "symbolic_dramatization",
+                   "image": None, "media_status": "MISSING_OR_UNAPPROVED_SLATE"}
+                  for i in (1, 2)]
+        plan = {"scene_id": "ACT1-PROLOGUE", "preview_key": "f"*64,
+                "total_frames": 48, "shots": slates, "voices": [],
+                "verified_private_preview_images": 0,
+                "missing_or_unapproved_images": 2,
+                "verified_hebrew_voice_clips": 0}
+        with patch.object(preview, "build_plan", return_value=plan):
+            report = render_private_draft(self.root, "private-media/smoke.mp4")
+            self.assertEqual(report["status"], "PRIVATE_DRAFT_TECH_PASS_NOT_ART_OR_SOURCE_APPROVAL")
+            self.assertEqual(report["frames"], 48)
+            self.assertEqual(report["slates_for_missing_images"], 2)
+            self.assertTrue(report["placeholder_silence"])
+            self.assertEqual(report["provider_calls"], 0)
+            self.assertTrue((self.root / "private-media/smoke.mp4").is_file())
+            self.assertTrue((self.root / "private-media/smoke.srt").is_file())
+            cached = render_private_draft(self.root, "private-media/smoke.mp4")
+            self.assertTrue(cached["cache_hit"])
+
     def test_unknown_duplicate_legacy_or_outside_bindings_blocked(self):
         entry = {"shot_id": "OPN02", "asset_key": self.first["asset_key"]}
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_UNKNOWN_SHOT_BINDING"):
