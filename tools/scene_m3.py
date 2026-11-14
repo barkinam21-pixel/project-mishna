@@ -131,6 +131,7 @@ class BatchCoordinator:
                         continue  # Resume without regenerating a finished shot.
                     if result["status"] == "RESERVED_UNCERTAIN":
                         b["status"] = "HALTED_UNCERTAIN"
+                        self.store.commit(state, "M3_HALT_UNCERTAIN_NO_RETRY")
                         return dict(b)  # Potential submit = no automatic retry.
                     raise SceneBlocked("M3_INVALID_RECORDED_STATUS")
                 if b["attempted"] >= b["max_attempts"]:
