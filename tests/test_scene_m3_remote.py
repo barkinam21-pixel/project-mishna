@@ -202,6 +202,29 @@ class M3RemoteTests(unittest.TestCase):
         with self.assertRaisesRegex(SceneBlocked, "REQUEST_SCOPE_CHANGED"):
             q.begin(different)
 
+    def test_reserved_tail_tampering_is_detected_even_when_count_unchanged(self):
+        for changed in (
+            {"key": "forged-token"},
+            {"status": "SUCCESS_FAKE"},
+            {"request_id": "other-request"},
+            {"spec_sha256": "f" * 64},
+            {"shot_id": "EP-P15"},
+        ):
+            with self.subTest(changed=changed):
+                q, store = self.coordinator()
+                a = self.admission()
+                q.begin(a)
+                q.reserve(self.request_id, self.ids[0])
+                version, doc = store.read()
+                doc["attempts"][-1].update(changed)
+                self.assertTrue(store.compare_and_swap(version, doc))
+                with self.assertRaisesRegex(SceneBlocked, "RESERVED_ATTEMPT_TAMPERED"):
+                    q.status(self.request_id)
+                with self.assertRaisesRegex(SceneBlocked, "RESERVED_ATTEMPT_TAMPERED"):
+                    q.begin(a)
+                with self.assertRaisesRegex(SceneBlocked, "RESERVED_ATTEMPT_TAMPERED"):
+                    q.reserve(self.request_id, self.ids[1])
+
     def test_unexpected_additional_attempt_detected(self):
         q, store = self.coordinator()
         a = self.admission()
