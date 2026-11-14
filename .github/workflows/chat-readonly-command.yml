@@ -11,6 +11,7 @@ on:
       - tests/fixtures/generation_opn03_runtime_integration.py
       - episodes/berakhot-01-01/generation-safety.json
       - tests/test_chat_issue_bridge.py
+      - tests/test_chat_scene_dry_run.py
       - tests/test_generation_ticket.py
       - tests/test_scene_m3_workflow_guard.py
       - .github/workflows/chat-readonly-command.yml
@@ -32,7 +33,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard -v
+      - run: python -m unittest tests.test_chat_issue_bridge tests.test_generation_ticket tests.test_generation_issue_runtime tests.test_scene_m3_workflow_guard tests.test_chat_scene_dry_run -v
       - uses: actions/checkout@v4
         with:
           path: reviewed-runtime
@@ -83,6 +84,47 @@ jobs:
       - name: Remove private temporary runner files
         if: always()
         run: rm -rf private-media
+  scene-dry-run:
+    needs: validate-request
+    if: github.event_name == 'issues' && github.actor == github.repository_owner && needs.validate-request.outputs.operation == 'scene-dry-run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source and visual continuity dry-run (always zero inference)
+        env:
+          REQUEST_ID: ${{ needs.validate-request.outputs.request_id }}
+        run: |
+          python - <<'PY'
+          import json,os,subprocess,sys
+          rid=os.environ['REQUEST_ID']
+          p=subprocess.run([sys.executable,'-m','tools.scene_factory','dry-run',
+                            '--request-id',rid],capture_output=True,text=True)
+          try: out=json.loads(p.stdout)
+          except (ValueError,TypeError):raise SystemExit('SCENE_DRY_RUN_RESULT_INVALID')
+          if (p.returncode!=2 or out.get('status')!='BLOCKED'
+              or out.get('inference_requests')!=0
+              or out.get('generation_authorized') is not False
+              or 'ASSET_CONTINUITY_TIME_OF_DAY:EP-P07' not in out.get('issues',[])):
+              raise SystemExit('SCENE_DRY_RUN_NOT_SAFELY_BLOCKED')
+          print(json.dumps({'status':'BLOCKED_AS_DESIGNED',
+              'scene_id':out['scene_id'],
+              'unresolved_issue_count':len(out['issues']),
+              'known_continuity_error':'DAWN_VS_SUNSET',
+              'external_inference_requests':0,
+              'generation_authorized':False,
+              'technical_fixture_only':True},sort_keys=True))
+          PY
+      - name: Remove runner-local private scratch state
+        if: always()
+        run: rm -rf private-media
+
   generation-preflight:
     if: github.event_name == 'issues' && github.event.issue.number == 54 && github.actor == github.repository_owner && contains(github.event.issue.body, '```mishnah-generation-request')
     runs-on: ubuntu-latest
