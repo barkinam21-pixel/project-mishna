@@ -32,13 +32,13 @@ def _history(journal):
 
 
 
-def _verify_reserved_history(attempts, batch):
+def _verify_reserved_history(attempts, batch, mismatch_code="M3_REMOTE_HISTORY_CHANGED"):
     """Protect every reserved tail record, not just historical prefix and count."""
     n = batch["historical_attempts"]
     reserved = batch["reserved"]
     if (len(attempts) != n + len(reserved)
         or attempts[:n] != batch["historical_prefix"]):
-        raise SceneBlocked("M3_REMOTE_HISTORY_CHANGED")
+        raise SceneBlocked(mismatch_code)
     for i, reservation in enumerate(reserved):
         shot_id = reservation["shot_id"]
         expected = {
@@ -204,13 +204,13 @@ class OfflineRemoteCoordinator:
     def reserve(self, request_id, shot_id):
         version, journal, batch = self._read_batch(request_id)
         attempts = _history(journal)
+        _verify_reserved_history(attempts, batch, "M3_REMOTE_FOREIGN_HISTORY_CHANGE")
         if batch["status"] == "HALTED_UNCERTAIN":
             raise SceneBlocked("M3_REMOTE_UNCERTAIN_NO_RETRY")
         if shot_id not in batch["shot_ids"]:
             raise SceneBlocked("M3_REMOTE_UNAUTHORIZED_SHOT")
         if batch["status"] not in ("READY", "PARTIAL"):
             raise SceneBlocked("M3_REMOTE_BATCH_NOT_READY")
-        _verify_reserved_history(attempts, batch)
         if len(attempts) >= batch["total_attempt_limit"]:
             raise SceneBlocked("M3_REMOTE_GLOBAL_ATTEMPT_LIMIT")
         for shot in batch["reserved"]:
