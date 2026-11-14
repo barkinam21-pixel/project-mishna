@@ -37,8 +37,34 @@ def _visual_spec(scene, shot, state):
         for name, char in sorted(state["characters"].items())
     }
     locks = {name: state[name] for name in REQUIRED_VISUAL_KEYS if name != "characters"}
+    # Producer-authored language is compiled once for all shots, not typed 15
+    # times by the owner. These are descriptive prompts only; not executable.
+    character_notes = "; ".join(
+        name + ": " + char["face_lock"] + ", " + char["costume"]
+        for name, char in characters.items()
+    )
+    prompt = (
+        "Mature hand-painted cinematic illustration, 16:9; "
+        + "visual action: " + shot["description"]
+        + "; narrative reason: " + shot["why"]
+        + "; camera: " + shot["camera"]["intent"]
+        + "; location: " + state["location"]
+        + "; era: " + state["era"]
+        + "; time of day: " + state["time_of_day"]
+        + "; sun: " + state["sun_direction"]
+        + "; weather: " + state["weather"]
+        + "; palette: " + state["palette"]
+        + "; art style: " + state["style"]
+        + "; camera axis: " + state["axis"]
+        + "; screen direction: " + state["screen_direction"]
+        + "; eyelines: " + str(state["eyelines"])
+        + "; continuity character locks ONLY IF visible: " + character_notes
+        + "; props: " + json.dumps(state["props"], ensure_ascii=False, sort_keys=True)
+        + ". Respect the scene's symbolic/draft source status; never add captions inside an image."
+    )
     return {
         "scene_id": scene["id"], "shot_id": shot["id"],
+        "positive_prompt": prompt,
         "purpose": shot["why"], "shot_description": shot["description"],
         "camera": shot["camera"], "visual_locks": locks,
         "character_locks_if_visible": characters,
