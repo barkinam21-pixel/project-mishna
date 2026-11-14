@@ -65,7 +65,10 @@ class CloudflareSceneAdapterTests(unittest.TestCase):
             self.assertNotIn("sunset",spec["style"].lower())
             self.assertEqual(spec["size"],[1024,576])
             self.assertEqual(spec["backend"]["type"],"cloudflare")
-            self.assertEqual(spec["characters"],{}) # must lock visibility first
+            self.assertEqual(list(spec["characters"]),self.packet["jobs"][out["jobs"].index(job)]["visual_spec"]["cast_visible"])
+            self.assertEqual(spec["director"]["shot_id"],job["shot_id"])
+            self.assertEqual(spec["director"]["time_of_day"],"dawn")
+            self.assertEqual(spec["director"]["review_status"],"DRAFT_REQUIRES_REVIEW")
 
     def test_same_legacy_candidate_is_never_two_approved_originals(self):
         out=compile_previews(self.packet,self.legacy,self.root)
@@ -76,7 +79,7 @@ class CloudflareSceneAdapterTests(unittest.TestCase):
         for j in out["jobs"]:
             if j["shot_id"] in ("EP-P07","EP-P14"):
                 self.assertIn("DUPLICATE_CANDIDATE_COVERAGE",j["blockers"])
-            self.assertIn("SCENE_NATIVE_DIRECTOR_CONTROLS_UNMAPPED",j["blockers"])
+            self.assertIn("SCENE_NATIVE_DIRECTOR_DRAFT_REVIEW_REQUIRED",j["blockers"])
             self.assertIn("HOSTED_M3_AND_GENERATION_POLICY_CLOSED",j["blockers"])
 
     def test_stable_asset_keys_and_seeds_when_caption_changes(self):
@@ -121,6 +124,36 @@ class CloudflareSceneAdapterTests(unittest.TestCase):
         changed=copy.deepcopy(self.legacy);changed["model"]["id"]="unknown"
         with self.assertRaisesRegex(SceneBlocked,"CLOUD_MODEL_CHANGED"):
             compile_previews(self.packet,changed,self.root)
+
+    def test_actor_visibility_matches_only_real_shot_draft(self):
+        out=compile_previews(self.packet,self.legacy,self.root)
+        first=out["jobs"][0]["engine_spec_preview"]
+        far=out["jobs"][3]["engine_spec_preview"]
+        joint=out["jobs"][6]["engine_spec_preview"]
+        transfer=out["jobs"][11]["engine_spec_preview"]
+        self.assertEqual(first["characters"],{})
+        self.assertEqual(list(far["characters"]),["elder","younger"])
+        self.assertEqual(list(joint["characters"]),["elder","younger"])
+        self.assertEqual(set(transfer["characters"]),{"elder","younger"})
+        self.assertEqual(joint["director"]["positions"],{
+            "elder":"screen-left","younger":"screen-right"})
+        self.assertEqual(joint["director"]["axis"],"south side of travel line")
+        self.assertEqual(joint["director"]["source_anchor"],
+                         "docs/epic-intro-prologue-shotmap-v02.md#P07")
+        self.assertTrue(all(v["references"]==[] for v in joint["characters"].values()))
+        self.assertIn("SCENE_CAST_REFERENCE_SCOPE_NOT_VERIFIED",out["jobs"][6]["blockers"])
+
+    def test_forged_scene_native_direction_fails_even_if_packet_rehashed(self):
+        changed=copy.deepcopy(self.packet)
+        changed["jobs"][6]["visual_spec"]["scene_native_direction"]["axis"]="north side of travel line"
+        changed["packet_sha256"]=digest({k:v for k,v in changed.items() if k!="packet_sha256"})
+        with self.assertRaisesRegex(SceneBlocked,"CLOUD_SCENE_NATIVE_DIRECTION_INVALID"):
+            compile_previews(changed,self.legacy,self.root)
+        changed=copy.deepcopy(self.packet)
+        changed["jobs"][0]["visual_spec"]["cast_visible"]=["elder"]
+        changed["packet_sha256"]=digest({k:v for k,v in changed.items() if k!="packet_sha256"})
+        with self.assertRaisesRegex(SceneBlocked,"CLOUD_SCENE_NATIVE_DIRECTION_INVALID"):
+            compile_previews(changed,self.legacy,self.root)
 
     def test_engine_shot_alias_not_silently_substituted(self):
         out=compile_previews(self.packet,self.legacy,self.root)
