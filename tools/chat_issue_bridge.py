@@ -10,7 +10,7 @@ REPO='barkinam21-pixel/project-mishna'
 OWNER='barkinam21-pixel'
 ISSUE=54
 RUNTIME_SHA='80ba1559b785855a1f9f4cbd90083fd0228eec96'
-OPERATIONS=frozenset(('check-drive','prepare-opn02'))
+OPERATIONS=frozenset(('check-drive','prepare-opn02','scene-dry-run'))
 BLOCK=re.compile(r'^```mishnah-readonly-request\n([^`]{1,2048})\n```[ \t]*$',re.M)
 
 
