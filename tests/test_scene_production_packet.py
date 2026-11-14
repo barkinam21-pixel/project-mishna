@@ -46,6 +46,9 @@ class SceneProductionPacketTests(unittest.TestCase):
         self.assertEqual(j['sound_spotting'][0]['licensed'], False)
         self.assertEqual(pack['jobs'][8]['image_status'], 'EXISTING_CANDIDATE_REVIEW_ONLY')
         self.assertTrue(j['visual_spec']['no_text_in_art'])
+        self.assertIn('mature hand-painted cinematic illustration'.lower(), j['visual_spec']['positive_prompt'].lower())
+        self.assertIn('screen-left', j['visual_spec']['positive_prompt'])
+        self.assertIn('No written words', j['visual_spec']['negative_prompt'])
 
     def test_packet_is_deterministic_and_subtitles_do_not_change_image_key(self):
         first = build_packet(self.scene, self.bible, ROOT)
