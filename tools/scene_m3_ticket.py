@@ -183,6 +183,8 @@ def verify(event, policy, history, scene, bible, root, *, now=None):
         "scene_id": scene["id"], "request_id": ticket["request_id"],
         "shot_ids": shot_ids, "max_attempts": ticket["max_attempts"],
         "max_charge_usd": 0, "historical_attempts": len(history["attempts"]),
+        "history_sha256": ticket["history_sha256"],
+        "total_attempt_limit": ticket["total_attempt_limit"],
         "asset_keys": expected, "waived_draft_only": waived,
         "external_inference_requests": 0,
         "live_dispatch_enabled": False,
