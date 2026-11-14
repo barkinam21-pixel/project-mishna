@@ -84,17 +84,15 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         import struct, zlib
         def chunk(tag, raw):
             return struct.pack(">I", len(raw)) + tag + raw + struct.pack(">I", zlib.crc32(tag + raw) & 0xffffffff)
-        raw = b"".join(b"\\0" + bytes((30, 40, 50)) * 2 for _ in range(2))
+        raw = b"".join(b"\0" + bytes((30, 40, 50)) * 2 for _ in range(2))
         path = self.root / "private-media/fixture.png"
         path.write_bytes(
-            b"\\x89PNG\\r\\n\\x1a\\n"
+            b"\x89PNG\r\n\x1a\n"
             + chunk(b"IHDR", struct.pack(">IIBBBBB", 2, 2, 8, 2, 0, 0, 0))
             + chunk(b"IDAT", zlib.compress(raw))
             + chunk(b"IEND", b"")
         )
         from tools.scene_factory import file_sha
-        path = self.root / "private-media/fixture.png"
-        test_only_png(path, (30, 40, 50))
         sid = self.first["shot_id"]
         entry = {
             "shot_id": sid, "source_asset_id": sid,
