@@ -1,6 +1,13 @@
 # מסירת מצב בין סשנים — אולפן המשנה
 
 
+## סשן 14.11, ~22:00 ישראל — M3 real SQLite core + owner gateway; no live inference
+- מיזוגים מוצלחים [#94](https://github.com/barkinam21-pixel/project-mishna/pull/94), [#95](https://github.com/barkinam21-pixel/project-mishna/pull/95), [#96](https://github.com/barkinam21-pixel/project-mishna/pull/96): קוד Cloudflare DO SQLite עם `transactionSync` אמיתי, `Node node:sqlite` 7 בדיקות התחלתיות שעברו, ניסיון אטומי בסצנה יחידה, שימור רישום `SUBMISSION_UNCERTAIN_NO_RETRY` אחרי תקלה, בדיקת Python scene ticket → SQLite, ו־candidate HTTP HMAC עם זהות בעלים/זמן/חתימה ומבחני איום. **בדיקות Github Actions עברו**; אין חיבור לספק AI.
+- ה־Worker default מחזיר 404; Gateway הינו מועמד לא פרוס. לא הותקנו/נוצרו Durable Object namespaces או סודות בחשבון, לא נפרס Worker, לא הופעל Cloudflare Workers AI, לא שונו הרשאות GitHub/Drive. אין תשלום מודל. קריאת Cloudflare למרחבי DO החזירה 0; קריאת subscription מצאה 403 permission-denied, כך שאין אישור חיוב מבוסס Live. `generation-safety.json` נשאר CLOSED.
+- **הדרך הקריטית שנותרה:** אימות read-only של חבילת Free והיעדר overage או אישור בעלים; פריסת coordinator כיחידה חדשה *רק אחרי אישור*; אימות רציפות ושמירה אטומית של שש ניסיונות היסטוריים ושני מועמדים; ניתוב כל הכותבים ל־DO ללא אפשרות כתיבה עוקפת; GitHub Actions owner event → gateway חתום → DO reserve לפני כל POST; מבחן תקלת אמת בלי יצירה/חיוב; ואז אישור משתמש נקודתי לניסיון תמונה אחד. במקביל תסריט הפרולוג עדיין חסום שחר/שקיעה, תחילת קריינות/דיאלוג ומקורות. אין לומר ״אולפן מוכן״.
+- המשך באמצעות השיחה הרגילה וכלי GitHub. ללא Codex/Work/TinyFish; אין לדרוש פעילות ידנית מבר ללא צורך אמיתי. בקרה שעתית אוטומטית נוצרה בשיחה קודמת, אך אין לטעון שפיתוח כבד מתבצע בלי לראות הרצות ותוצאות.
+
+
 ## 14.11 סשן המשך: מימוש ובדיקות ממשיות של סנכרון התסריט והשוטים
 - [PR #89](https://github.com/barkinam21-pixel/project-mishna/pull/89) **מוזג**: כלי `tools/scene_prologue_crosswalk.py` ותיק בדיקות מזהים ללא inference שוטים מחוץ לסדר, סטיית זמן/פריימים, 45 שניות ספרותיות לעומת 91 שניות טיוטת בימוי, קריין ראשון/מאוחר, שחר מול מועמדות שקיעה, סטטוס מקור ו־script_span גנרי. 15 השוטים אכן תואמים פריימים של 24fps, אבל זה לא פותר תסריט, קול, זכויות או QA.
 - [PR #90](https://github.com/barkinam21-pixel/project-mishna/pull/90) **מוזג**: ה־crosswalk משולב בגשר `scene-dry-run` של Issue54, ללא secrets, provider או Drive. הרצה אמיתית [43616872511](https://github.com/barkinam21-pixel/project-mishna/actions/runs/43616872511) הצליחה, `status=BLOCKED_AS_DESIGNED`; 54 חסמים קיימים, 6 חסמי crosswalk מפורשים, 0 inference, אין authorization. **לא להסיק שעבר אישור סרט.**
