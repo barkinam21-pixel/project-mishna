@@ -31,6 +31,29 @@ def _history(journal):
     return journal["attempts"]
 
 
+
+def _verify_reserved_history(attempts, batch):
+    """Protect every reserved tail record, not just historical prefix and count."""
+    n = batch["historical_attempts"]
+    reserved = batch["reserved"]
+    if (len(attempts) != n + len(reserved)
+        or attempts[:n] != batch["historical_prefix"]):
+        raise SceneBlocked("M3_REMOTE_HISTORY_CHANGED")
+    for i, reservation in enumerate(reserved):
+        shot_id = reservation["shot_id"]
+        expected = {
+            "key": reservation["idempotency_key"],
+            "request_id": batch["request_id"],
+            "shot_id": shot_id,
+            "spec_sha256": reservation["spec_sha256"],
+            "status": "RESERVED_SUBMISSION_UNCERTAIN_NO_RETRY",
+        }
+        if (attempts[n+i] != expected
+            or shot_id not in batch["shot_ids"]
+            or reservation["spec_sha256"] != batch["asset_keys"][shot_id]):
+            raise SceneBlocked("M3_REMOTE_RESERVED_ATTEMPT_TAMPERED")
+
+
 class AtomicMemoryJournal:
     """Concurrent-CAS test double. NEVER a remote transport."""
     atomic_compare_and_swap = True
@@ -146,9 +169,7 @@ class OfflineRemoteCoordinator:
         if old is not None:
             if old["identity"] != identity:
                 raise SceneBlocked("M3_REMOTE_REQUEST_SCOPE_CHANGED")
-            if (old_attempts[:old["historical_attempts"]] != old["historical_prefix"]
-                or len(old_attempts) != old["historical_attempts"] + len(old["reserved"])):
-                raise SceneBlocked("M3_REMOTE_HISTORY_CHANGED")
+            _verify_reserved_history(old_attempts, old)
             return dict(copy.deepcopy(old), cache_hit=True)
         if any(b.get("status") in ("READY", "RESERVED_UNCERTAIN", "PARTIAL")
                for b in batches.values()):
@@ -189,9 +210,7 @@ class OfflineRemoteCoordinator:
             raise SceneBlocked("M3_REMOTE_UNAUTHORIZED_SHOT")
         if batch["status"] not in ("READY", "PARTIAL"):
             raise SceneBlocked("M3_REMOTE_BATCH_NOT_READY")
-        if (len(attempts) != batch["historical_attempts"] + len(batch["reserved"])
-            or attempts[:batch["historical_attempts"]] != batch["historical_prefix"]):
-            raise SceneBlocked("M3_REMOTE_FOREIGN_HISTORY_CHANGE")
+        _verify_reserved_history(attempts, batch)
         if len(attempts) >= batch["total_attempt_limit"]:
             raise SceneBlocked("M3_REMOTE_GLOBAL_ATTEMPT_LIMIT")
         for shot in batch["reserved"]:
@@ -232,9 +251,7 @@ class OfflineRemoteCoordinator:
             or not batch["reserved"] or batch["reserved"][-1]["shot_id"] != shot_id
             or shot_id in batch["receipts"]):
             raise SceneBlocked("M3_REMOTE_RECEIPT_WITHOUT_RESERVATION")
-        if (len(attempts) != batch["historical_attempts"] + len(batch["reserved"])
-            or attempts[:batch["historical_attempts"]] != batch["historical_prefix"]):
-            raise SceneBlocked("M3_REMOTE_JOURNAL_CHANGED")
+        _verify_reserved_history(attempts, batch)
         expected_fake_hash = hashlib.sha256((
             "M3_FAKE_IMAGE_V1:" + batch["scene_id"] + ":" + shot_id + ":" +
             batch["asset_keys"][shot_id]
@@ -259,9 +276,7 @@ class OfflineRemoteCoordinator:
     def status(self, request_id):
         _, journal, batch = self._read_batch(request_id)
         attempts = _history(journal)
-        if (len(attempts) != batch["historical_attempts"] + len(batch["reserved"])
-            or attempts[:batch["historical_attempts"]] != batch["historical_prefix"]):
-            raise SceneBlocked("M3_REMOTE_HISTORY_CHANGED")
+        _verify_reserved_history(attempts, batch)
         if batch["status"] == "RESERVED_UNCERTAIN":
             # Observation does not mutate history; permanently treat as uncertain.
             return dict(copy.deepcopy(batch), recovery_status="HALTED_UNCERTAIN_NO_RETRY")
