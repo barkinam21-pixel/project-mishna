@@ -112,6 +112,37 @@ def compile_previews(packet, legacy_manifest, root):
             or not isinstance(visual.get("negative_prompt"),str)
             or locks.get("time_of_day") not in ("dawn","sunset","day","night")):
             raise SceneBlocked("CLOUD_VISUAL_SPEC_INVALID")
+        # New EP-P scene-native director is checked independently of old
+        # OPN01-07 sunset-only shot_controls.validate. Still DRAFT, never LIVE.
+        director=visual.get("scene_native_direction")
+        cast=visual.get("cast_visible")
+        character_locks=visual.get("character_locks_if_visible")
+        if (not isinstance(director,dict)
+            or director.get("scene_native_schema") != 1
+            or director.get("scene_shot_id") != sid
+            or director.get("review_status") != "DRAFT_REQUIRES_REVIEW"
+            or director.get("time_of_day") != locks.get("time_of_day")
+            or director.get("axis") != locks.get("axis")
+            or director.get("sun_direction") != locks.get("sun_direction")
+            or director.get("screen_direction") != locks.get("screen_direction")
+            or cast != director.get("cast_visible")
+            or not isinstance(cast,list) or len(set(cast))!=len(cast)
+            or not isinstance(character_locks,dict)
+            or set(cast) != set(character_locks)
+            or not isinstance(director.get("characters"),dict)
+            or set(cast) != set(director["characters"])
+            or not isinstance(director.get("composition"),str)
+            or not director["composition"].strip()):
+            raise SceneBlocked("CLOUD_SCENE_NATIVE_DIRECTION_INVALID")
+        for name in cast:
+            actor=director["characters"][name]
+            if (not isinstance(actor,dict)
+                or not isinstance(actor.get("description"),str)
+                or not actor["description"].strip()
+                or actor.get("references") != []
+                or actor.get("reference_sha256") != character_locks[name].get("reference_sha256")
+                or director.get("positions",{}).get(name) != character_locks[name].get("screen_position")):
+                raise SceneBlocked("CLOUD_SCENE_ACTOR_LOCK_INVALID")
         # One stable synthetic preview seed per visual spec, not a reservation.
         seed=int(hashlib.sha256(("SCENE_IMAGE_PREVIEW_V1:"+job["asset_key"]).encode()).hexdigest()[:16],16)
         # The pinned CloudflareClient.prepare calls the unchanged engine's
@@ -122,7 +153,8 @@ def compile_previews(packet, legacy_manifest, root):
             "model":copy.deepcopy(legacy_manifest["model"]),
             "size":list(size),
             "style":str(locks.get("style",""))+"; "+str(locks.get("palette","")),
-            "characters":{},  # Actor visibility has not been locked: fail closed.
+            "characters":{name:{"description":director["characters"][name]["description"],
+                                "references":[]} for name in cast},
             "prompt":visual["positive_prompt"]+" Negative constraints: "+visual["negative_prompt"],
             "seed":seed,
             "references":copy.deepcopy(refs),
@@ -131,8 +163,27 @@ def compile_previews(packet, legacy_manifest, root):
                 "continuity_review":locks,
                 "shot_id":sid,
                 "camera":visual.get("camera"),
-                "character_locks_for_review":visual.get("character_locks_if_visible"),
+                "character_locks_for_review":character_locks,
                 "source_label":job.get("source_label"),
+                "source_anchor":job.get("script_anchor"),
+            },
+            "director":{
+                "scene_id":packet["scene_id"],
+                "shot_id":sid,
+                "scene_native_schema":1,
+                "review_status":"DRAFT_REQUIRES_REVIEW",
+                "characters_present":list(cast),
+                "composition":director["composition"],
+                "shot_type":director["shot_type"],
+                "axis":director["axis"],
+                "camera_side":director["camera_side"],
+                "screen_direction":director["screen_direction"],
+                "positions":director["positions"],
+                "time_of_day":director["time_of_day"],
+                "sun_direction":director["sun_direction"],
+                "source_anchor":director["source_anchor"],
+                "human_detail_unattributed":director["human_detail_unattributed"],
+                "generation_parameters":{"guidance":1.0,"steps":4},
             },
         }
         issues=[]
@@ -143,10 +194,10 @@ def compile_previews(packet, legacy_manifest, root):
         if job.get("candidate_repeated_in_scene"):issues.append("DUPLICATE_CANDIDATE_COVERAGE")
         if job.get("image_status")=="HASH_MISMATCH_BLOCKED":issues.append("CACHE_HASH_INVALID")
         issues.extend(["SCENE_REFERENCE_RIGHTS_SCOPE_UNAPPROVED",
-                       "CHARACTERS_VISIBLE_UNDECLARED",
-                       "SCENE_NATIVE_DIRECTOR_CONTROLS_UNMAPPED",
+                       "SCENE_NATIVE_DIRECTOR_DRAFT_REVIEW_REQUIRED",
                        "LEGACY_ENGINE_EP_SHOT_IDS_UNSUPPORTED",
                        "HOSTED_M3_AND_GENERATION_POLICY_CLOSED"])
+        if cast: issues.append("SCENE_CAST_REFERENCE_SCOPE_NOT_VERIFIED")
         previews.append({
             "scene_id":packet["scene_id"],"shot_id":sid,"asset_key":job["asset_key"],
             "start_frame":job["start_frame"],"end_frame":job["end_frame"],
