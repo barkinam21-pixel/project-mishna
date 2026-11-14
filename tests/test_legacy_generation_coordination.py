@@ -135,6 +135,13 @@ class LegacyGenerationCoordinationTests(unittest.TestCase):
         self.assertIn("M3_LIVE_ATOMIC_COORDINATOR_NOT_CONNECTED_NO_INFERENCE",code)
         self.assertIn("stage_offline_reservation(ticket,history,coordinator)",code)
         self.assertIn("M3_OFFLINE_RESERVATION_IS_NOT_LIVE_DISPATCH_PERMISSION",code)
+        workflow=(ROOT/".github/workflows/chat-readonly-command.yml").read_text()
+        self.assertIn("python ../control/tools/generation_issue_runtime.py",workflow)
+        self.assertIn("ref: 80ba1559b785855a1f9f4cbd90083fd0228eec96",workflow)
+        self.assertIn("needs.generation-preflight.outputs.ready == 'true'",workflow)
+        # Reject future unguarded direct calls to pinned runtime CLI instead
+        # of the reviewed control-side entrypoint and its M3 safety gate.
+        self.assertNotIn("python -m tools.generation_issue_runtime",workflow)
 
 
 if __name__=="__main__":
