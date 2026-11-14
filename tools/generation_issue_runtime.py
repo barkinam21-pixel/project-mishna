@@ -36,13 +36,25 @@ def checkpoint_once(ticket,baseline,proposed,persist):
     reserve_generation(ticket,baseline,save)
 
 
-def execute(event,policy,history,manifest,root,drive,state_id,snapshot_id,adapter=None):
+def execute(event,policy,history,manifest,root,drive,state_id,snapshot_id,adapter=None,*,coordinator=None):
     """Actual network dependencies injectable; never relax persisted source gates."""
     from tools.comfy_scene_images import specifications,run,atomic
     from tools.private_drive_runtime import validate_journal
     from tools.studio_runtime import Studio
     from tools.cloudflare_image_backend import CloudflareClient
     ticket=validate_generation_event(event,policy,history)
+    # The current registered Durable Object is OFFLINE-only and not deployed.
+    # Any real provider call without a hosted atomic coordinator is forbidden.
+    # A supplied offline coordinator is ONLY a rehearsal: even a successful
+    # durable reservation never grants permission to use Cloudflare inference.
+    if coordinator is not None:
+        from tools.legacy_generation_coordination import stage_offline_reservation
+        stage_offline_reservation(ticket,history,coordinator)
+        raise RequestBlocked('M3_OFFLINE_RESERVATION_IS_NOT_LIVE_DISPATCH_PERMISSION')
+    if adapter is None:
+        raise RequestBlocked('M3_LIVE_ATOMIC_COORDINATOR_NOT_CONNECTED_NO_INFERENCE')
+    # adapter is reserved for existing synthetic integration tests. The real
+    # owner GitHub workflow never injects it, and therefore cannot bypass M3.
     m=copy.deepcopy(manifest);m['backend']=m['available_backends']['cloudflare']
     shot_id=ticket['shot_id']
     m['shots']=[s for s in m['shots'] if s['id']==shot_id]
@@ -89,6 +101,10 @@ def main():
             raise RequestBlocked('GENERATION_POLICY_NOT_CLEARED')
         import subprocess
         if subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()!=RUNTIME:raise RequestBlocked('UNREVIEWED_PRIVATE_RUNTIME')
+        # Avoid even reading private media for a provider run that the new
+        # atomic coordination stage cannot yet guarantee. Keep --dry-run usable.
+        if not a.dry_run:
+            raise RequestBlocked('M3_LIVE_ATOMIC_COORDINATOR_NOT_CONNECTED_NO_INFERENCE')
         sys.path.insert(0,str(Path.cwd()))
         from tools.private_drive_runtime import Drive,validate_journal,prepare_opn02
         from tools.studio_runtime import Studio,load
