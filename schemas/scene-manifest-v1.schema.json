@@ -1,0 +1,370 @@
+{
+  "type": "object",
+  "required": [
+    "version",
+    "id",
+    "hierarchy",
+    "script",
+    "bible",
+    "shots",
+    "decisions",
+    "authorization"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string"
+    },
+    "hierarchy": {
+      "type": "object",
+      "required": [
+        "episode",
+        "act",
+        "sequence",
+        "scene"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "episode": {
+          "type": "string"
+        },
+        "act": {
+          "type": "integer"
+        },
+        "sequence": {
+          "type": "string"
+        },
+        "scene": {
+          "type": "string"
+        }
+      }
+    },
+    "script": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "approved",
+        "reviewer",
+        "voice_entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "approved": {
+          "type": "boolean"
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null",
+            "object"
+          ]
+        },
+        "voice_entry": {
+          "type": "string"
+        }
+      }
+    },
+    "bible": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        }
+      }
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "beat",
+          "why",
+          "description",
+          "script_span",
+          "source",
+          "camera",
+          "pre_state",
+          "post_state",
+          "exception",
+          "asset",
+          "sound",
+          "captions",
+          "start_frame",
+          "end_frame",
+          "previous",
+          "next"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "beat": {
+            "type": "string"
+          },
+          "why": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "script_span": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "source": {
+            "type": "object",
+            "required": [
+              "layer",
+              "confidence",
+              "reference",
+              "verified",
+              "speaker_type",
+              "invented"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "layer": {
+                "type": "string"
+              },
+              "confidence": {
+                "type": "string"
+              },
+              "reference": {
+                "type": "string"
+              },
+              "verified": {
+                "type": "boolean"
+              },
+              "speaker_type": {
+                "type": "string"
+              },
+              "invented": {
+                "type": "boolean"
+              }
+            }
+          },
+          "camera": {
+            "type": "object",
+            "required": [
+              "intent",
+              "movement"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "intent": {
+                "type": "string"
+              },
+              "movement": {
+                "type": "string"
+              }
+            }
+          },
+          "pre_state": {
+            "type": "string"
+          },
+          "post_state": {
+            "type": "string"
+          },
+          "exception": {
+            "type": [
+              "string",
+              "null",
+              "object"
+            ]
+          },
+          "asset": {
+            "type": "object",
+            "required": [
+              "id",
+              "origin",
+              "state",
+              "accepted",
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "null",
+                  "object"
+                ]
+              },
+              "origin": {
+                "type": "string"
+              },
+              "state": {
+                "type": [
+                  "string",
+                  "null",
+                  "object"
+                ]
+              },
+              "accepted": {
+                "type": "boolean"
+              },
+              "path": {
+                "type": [
+                  "string",
+                  "null",
+                  "object"
+                ]
+              },
+              "sha256": {
+                "type": [
+                  "string",
+                  "null",
+                  "object"
+                ]
+              }
+            }
+          },
+          "sound": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "kind",
+                "start_sample",
+                "end_sample",
+                "license",
+                "path",
+                "sha256"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "start_sample": {
+                  "type": "integer"
+                },
+                "end_sample": {
+                  "type": "integer"
+                },
+                "license": {
+                  "type": [
+                    "string",
+                    "null",
+                    "object"
+                  ]
+                },
+                "path": {
+                  "type": [
+                    "string",
+                    "null",
+                    "object"
+                  ]
+                },
+                "sha256": {
+                  "type": [
+                    "string",
+                    "null",
+                    "object"
+                  ]
+                }
+              }
+            }
+          },
+          "captions": {
+            "type": "array",
+            "items": {}
+          },
+          "start_frame": {
+            "type": "integer"
+          },
+          "end_frame": {
+            "type": "integer"
+          },
+          "previous": {
+            "type": [
+              "string",
+              "null",
+              "object"
+            ]
+          },
+          "next": {
+            "type": "string"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "approved",
+          "reason",
+          "recommendation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "recommendation": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "required": [
+        "max_inference",
+        "budget_usd",
+        "generation_approved"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "max_inference": {
+          "type": "integer"
+        },
+        "budget_usd": {
+          "const": 0
+        },
+        "generation_approved": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M1 scene manifest contract"
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "version",
+    "id",
+    "status",
+    "states"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "states": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "characters",
+          "location",
+          "era",
+          "time_of_day",
+          "sun_direction",
+          "weather",
+          "palette",
+          "style",
+          "axis",
+          "screen_direction",
+          "eyelines",
+          "props",
+          "emotion",
+          "knowledge",
+          "sound_state"
+        ]
+      }
+    }
+  }
+}

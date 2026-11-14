@@ -1,0 +1,789 @@
+{
+  "version": 1,
+  "id": "ACT1-PROLOGUE",
+  "hierarchy": {
+    "episode": "INTRODUCTION",
+    "act": 1,
+    "sequence": "PROLOGUE",
+    "scene": "ACT1-PROLOGUE"
+  },
+  "script": {
+    "path": "scripts/episode-01-before-dawn.md",
+    "sha256": "d165de528be64fe3be7eb44ee6d66e88011ff16c366776abfa33faa33513cefd",
+    "approved": false,
+    "reviewer": null,
+    "voice_entry": "unresolved: literary narration-first, alternative dialogue-first, v02 delayed"
+  },
+  "bible": {
+    "path": "episodes/berakhot-01-01/scene-continuity-bible-v02.json",
+    "sha256": "bdc0702174938b9bb27fe12d93679243d7d0016bc3c90705eba361d8832a3de4"
+  },
+  "shots": [
+    {
+      "id": "EP-P01",
+      "beat": "REVEAL-1",
+      "why": "קודם מרגישים עולם",
+      "description": "שחור מדורג → קו אור עדין על רכס רחוק, EWS נעול, אין אנשים",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "שחור מדורג → קו אור עדין על רכס רחוק, EWS נעול, אין אנשים",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P01-sound",
+          "kind": "spotting draft",
+          "start_sample": 0,
+          "end_sample": 336000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 0,
+      "end_frame": 168,
+      "previous": null,
+      "next": "EP-P02"
+    },
+    {
+      "id": "EP-P02",
+      "beat": "REVEAL-2",
+      "why": "מגלים נתיב",
+      "description": "סלע ועשב ברוח בקדמת הפריים, שביל בעומק; זווית חדשה מקורית",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "סלע ועשב ברוח בקדמת הפריים, שביל בעומק; זווית חדשה מקורית",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P02-sound",
+          "kind": "spotting draft",
+          "start_sample": 336000,
+          "end_sample": 672000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 168,
+      "end_frame": 336,
+      "previous": "EP-P01",
+      "next": "EP-P03"
+    },
+    {
+      "id": "EP-P03",
+      "beat": "REVEAL-3",
+      "why": "צליל מנבא חיים",
+      "description": "זווית רחבה על הדרך המתפתלת, נקודות אדם בקושי נראות",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "זווית רחבה על הדרך המתפתלת, נקודות אדם בקושי נראות",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P03-sound",
+          "kind": "spotting draft",
+          "start_sample": 672000,
+          "end_sample": 960000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 336,
+      "end_frame": 480,
+      "previous": "EP-P02",
+      "next": "EP-P04"
+    },
+    {
+      "id": "EP-P04",
+      "beat": "REVEAL-4",
+      "why": "חושפים קנה מידה אנושי",
+      "description": "EWS נוסף, שני נוסעים קטנים ביחס לנוף; רקע לא מזוהה",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "EWS נוסף, שני נוסעים קטנים ביחס לנוף; רקע לא מזוהה",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P04-sound",
+          "kind": "spotting draft",
+          "start_sample": 960000,
+          "end_sample": 1248000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 480,
+      "end_frame": 624,
+      "previous": "EP-P03",
+      "next": "EP-P05"
+    },
+    {
+      "id": "EP-P05",
+      "beat": "REVEAL-5",
+      "why": "מעבר מגודל לאדם",
+      "description": "תקריב עצמאי של סנדל אחד נוגע באבק, משקל אמין",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "תקריב עצמאי של סנדל אחד נוגע באבק, משקל אמין",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P05-sound",
+          "kind": "spotting draft",
+          "start_sample": 1248000,
+          "end_sample": 1440000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 624,
+      "end_frame": 720,
+      "previous": "EP-P04",
+      "next": "EP-P06"
+    },
+    {
+      "id": "EP-P06",
+      "beat": "REVEAL-6",
+      "why": "חושפים חיים דרך פרטים",
+      "description": "קצה גלימה, רצועת תיק ונאד מים פשוט; עדיין אין פנים",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "קצה גלימה, רצועת תיק ונאד מים פשוט; עדיין אין פנים",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P06-sound",
+          "kind": "spotting draft",
+          "start_sample": 1440000,
+          "end_sample": 1680000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 720,
+      "end_frame": 840,
+      "previous": "EP-P05",
+      "next": "EP-P07"
+    },
+    {
+      "id": "EP-P07",
+      "beat": "REVEAL-7",
+      "why": "בונים יחסים לפני מילים",
+      "description": "master מאחור, שתי הדמויות חולקות את הדרך; אור השחר עקבי",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "master מאחור, שתי הדמויות חולקות את הדרך; אור השחר עקבי",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": "OPN02",
+        "origin": "original",
+        "state": "SUNSET_CANDIDATE",
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P07-sound",
+          "kind": "spotting draft",
+          "start_sample": 1680000,
+          "end_sample": 2016000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 840,
+      "end_frame": 1008,
+      "previous": "EP-P06",
+      "next": "EP-P08"
+    },
+    {
+      "id": "EP-P08",
+      "beat": "REVEAL-8",
+      "why": "פעולה שמבקשת תשובה",
+      "description": "OTS מקורי מאחורי הצעיר, המבוגר מעט מלפנים; הצעיר מאט",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "OTS מקורי מאחורי הצעיר, המבוגר מעט מלפנים; הצעיר מאט",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P08-sound",
+          "kind": "spotting draft",
+          "start_sample": 2016000,
+          "end_sample": 2256000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1008,
+      "end_frame": 1128,
+      "previous": "EP-P07",
+      "next": "EP-P09"
+    },
+    {
+      "id": "EP-P09",
+      "beat": "REVEAL-9",
+      "why": "כניסה לעולם הפנימי",
+      "description": "מדיום מקורי של הצעיר, סקרנות מאופקת, לא הבעה מוגזמת",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "מדיום מקורי של הצעיר, סקרנות מאופקת, לא הבעה מוגזמת",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": "OPN03",
+        "origin": "original",
+        "state": "SUNSET_CANDIDATE",
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P09-sound",
+          "kind": "spotting draft",
+          "start_sample": 2256000,
+          "end_sample": 2496000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1128,
+      "end_frame": 1248,
+      "previous": "EP-P08",
+      "next": "EP-P10"
+    },
+    {
+      "id": "EP-P10",
+      "beat": "REVEAL-10",
+      "why": "לתת משקל לשאלה",
+      "description": "ריאקציה של המבוגר, מבט אל הצעיר, שתיקה אמיתית",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "ריאקציה של המבוגר, מבט אל הצעיר, שתיקה אמיתית",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P10-sound",
+          "kind": "spotting draft",
+          "start_sample": 2496000,
+          "end_sample": 2736000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1248,
+      "end_frame": 1368,
+      "previous": "EP-P09",
+      "next": "EP-P11"
+    },
+    {
+      "id": "EP-P11",
+      "beat": "REVEAL-11",
+      "why": "מתשובה מילולית למעשה",
+      "description": "OTS של המבוגר אל הצעיר; המבוגר בוחר להגיב בפעולה",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "OTS של המבוגר אל הצעיר; המבוגר בוחר להגיב בפעולה",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_BEFORE",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P11-sound",
+          "kind": "spotting draft",
+          "start_sample": 2736000,
+          "end_sample": 3024000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1368,
+      "end_frame": 1512,
+      "previous": "EP-P10",
+      "next": "EP-P12"
+    },
+    {
+      "id": "EP-P12",
+      "beat": "REVEAL-12",
+      "why": "דימוי המסירה מתגשם",
+      "description": "insert מקורי: נאד מים פשוט עובר בין ידיים, אנטומיה ומגע מדויקים",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "insert מקורי: נאד מים פשוט עובר בין ידיים, אנטומיה ומגע מדויקים",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_BEFORE",
+      "post_state": "DAWN_AFTER",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P12-sound",
+          "kind": "spotting draft",
+          "start_sample": 3024000,
+          "end_sample": 3312000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1512,
+      "end_frame": 1656,
+      "previous": "EP-P11",
+      "next": "EP-P13"
+    },
+    {
+      "id": "EP-P13",
+      "beat": "REVEAL-13",
+      "why": "מהלך רגשי מושלם",
+      "description": "תקריב תגובת הצעיר, ידו מחזיקה בנאד, מבט משתנה",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "תקריב תגובת הצעיר, ידו מחזיקה בנאד, מבט משתנה",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_AFTER",
+      "post_state": "DAWN_AFTER",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P13-sound",
+          "kind": "spotting draft",
+          "start_sample": 3312000,
+          "end_sample": 3600000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1656,
+      "end_frame": 1800,
+      "previous": "EP-P12",
+      "next": "EP-P14"
+    },
+    {
+      "id": "EP-P14",
+      "beat": "REVEAL-14",
+      "why": "מהפרט לסמל",
+      "description": "wide מאחור: השניים ממשיכים, אבל צועדים כעת בתיאום",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "wide מאחור: השניים ממשיכים, אבל צועדים כעת בתיאום",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_AFTER",
+      "post_state": "DAWN_AFTER",
+      "exception": null,
+      "asset": {
+        "id": "OPN02",
+        "origin": "original",
+        "state": "SUNSET_CANDIDATE",
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P14-sound",
+          "kind": "spotting draft",
+          "start_sample": 3600000,
+          "end_sample": 3984000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1800,
+      "end_frame": 1992,
+      "previous": "EP-P13",
+      "next": "EP-P15"
+    },
+    {
+      "id": "EP-P15",
+      "beat": "REVEAL-15",
+      "why": "הגשר האפי לרצף הבא",
+      "description": "EWS חדש של אופק נפתח; מעבר מתוכנן לייצוג מסורת סיני, ללא זיהוי גאוגרפי",
+      "script_span": [
+        8,
+        14
+      ],
+      "source": {
+        "layer": "symbolic_dramatization",
+        "confidence": "artistic proposal",
+        "reference": "scripts/episode-01-before-dawn.md sequence1 plus proposed shotmap-v02",
+        "verified": false,
+        "speaker_type": "anonymous symbolic traveler",
+        "invented": true
+      },
+      "camera": {
+        "intent": "EWS חדש של אופק נפתח; מעבר מתוכנן לייצוג מסורת סיני, ללא זיהוי גאוגרפי",
+        "movement": "deliberate only; not yet locked"
+      },
+      "pre_state": "DAWN_AFTER",
+      "post_state": "DAWN_AFTER",
+      "exception": null,
+      "asset": {
+        "id": null,
+        "origin": "missing",
+        "state": null,
+        "accepted": false,
+        "path": null,
+        "sha256": null
+      },
+      "sound": [
+        {
+          "id": "EP-P15-sound",
+          "kind": "spotting draft",
+          "start_sample": 3984000,
+          "end_sample": 4368000,
+          "license": null,
+          "path": null,
+          "sha256": null
+        }
+      ],
+      "captions": [],
+      "start_frame": 1992,
+      "end_frame": 2184,
+      "previous": "EP-P14",
+      "next": null
+    }
+  ],
+  "decisions": [
+    {
+      "id": "daylight",
+      "approved": false,
+      "reason": "Dawn draft vs sunset OPN02/03 candidates",
+      "recommendation": "Keep dawn draft as-is for now; quarantine sunset candidates. Recommend deliberate sunset adaptation only after owner editorial decision, not automatic reuse."
+    },
+    {
+      "id": "voice-entry",
+      "approved": false,
+      "reason": "Narration-first literary draft vs dialogue-first45s and delayed91s",
+      "recommendation": "Review a timed literary reading before choosing narration entry; do not record invented dialogue as ancient quote."
+    },
+    {
+      "id": "shot-crosswalk",
+      "approved": false,
+      "reason": "OPN identities do not equal EP-P edited shots",
+      "recommendation": "Map candidate coverage explicitly, never automatic filename matching."
+    },
+    {
+      "id": "six-act-crosswalk",
+      "approved": false,
+      "reason": "Six-act intro vs older twelve-sequence episode not reconciled",
+      "recommendation": "Retain six-act chronology; source-reviewed act/sequence crosswalk required before final assembly."
+    }
+  ],
+  "authorization": {
+    "max_inference": 0,
+    "budget_usd": 0,
+    "generation_approved": false
+  }
+}
