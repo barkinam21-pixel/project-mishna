@@ -44,18 +44,20 @@ def compile_native_direction(shot, state):
         or b["sun_direction"] != state.get("sun_direction")
         or b["time_of_day"] != state.get("time_of_day")):
         raise SceneBlocked("NATIVE_AXIS_OR_DAYLIGHT_CONFLICT:" + sid)
-    if not isinstance(b["axis"], str) or not b["axis"].startswith(b["camera_side"] + " side"):
+    if (not isinstance(b["axis"], str) or not isinstance(b["camera_side"], str)
+        or not b["axis"].startswith(b["camera_side"] + " side")):
         raise SceneBlocked("NATIVE_CAMERA_SIDE_CROSSES_AXIS:" + sid)
     if b["shot_type"] not in SHOT_TYPES or not isinstance(b["composition"], str) or not b["composition"].strip():
         raise SceneBlocked("NATIVE_CAMERA_COMPOSITION_INVALID:" + sid)
     cast = b["cast_visible"]
-    if not isinstance(cast, list) or len(set(map(str, cast))) != len(cast):
+    if (not isinstance(cast, list) or any(not isinstance(x, str) for x in cast)
+        or len(set(cast)) != len(cast)):
         raise SceneBlocked("NATIVE_CAST_VISIBILITY_INVALID:" + sid)
     if any(not isinstance(name, str) or name not in state.get("characters", {}) for name in cast):
         raise SceneBlocked("NATIVE_CAST_NOT_IN_BIBLE:" + sid)
     positions = b["positions"]
     if (not isinstance(positions, dict) or set(positions) != set(cast)
-        or any(v not in POSITION_VALUES for v in positions.values())):
+        or any(not isinstance(v, str) or v not in POSITION_VALUES for v in positions.values())):
         raise SceneBlocked("NATIVE_CAST_POSITION_INVALID:" + sid)
     if (type(b["human_detail_unattributed"]) is not bool
         or (cast and b["human_detail_unattributed"])):
