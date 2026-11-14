@@ -8,6 +8,10 @@
  * No read-only endpoint is publicly accessible; no model or Drive calls.
  */
 const OWNER="barkinam21-pixel";
+// All legacy OPN scenes share ONE private Drive journal. A scene-keyed DO
+// would wrongly allow separate atomic budgets against the same history.
+// This candidate intentionally binds only one scene until reviewed migration.
+const SHARED_JOURNAL_SCOPE="M3-LEGACY-SHARED-JOURNAL-V1";
 const ENDPOINT="/m3/v1/offline";
 const HEX=/^[a-f0-9]+$/;
 const SCENE=/^[A-Z0-9][A-Z0-9-]{2,79}$/;
@@ -78,7 +82,14 @@ export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
       return reply(400,{status:"OPERATION_NOT_ALLOWED"});
     if(operation==="begin" && payload.scene_id!==envelope.scene_id)
       return reply(403,{status:"SCENE_MISMATCH"});
-    const stub=env.M3_SCENE_RESERVATION.getByName(envelope.scene_id);
+    const stub=env.M3_SCENE_RESERVATION.getByName(SHARED_JOURNAL_SCOPE);
+    if(operation!=="begin"){
+      // Do not allow cross-scene status inspection or a forged scene envelope
+      // to use another scene's otherwise valid request_id.
+      const bound=await stub.inspectOffline();
+      if(bound.status!=="NOT_INITIALIZED" && bound.scene_id!==envelope.scene_id)
+        return reply(409,{status:"M3_COORDINATOR_REJECTED_NO_RETRY"});
+    }
     let result;
     try {
       if(operation==="begin") result=await stub.beginOffline(payload);
@@ -89,6 +100,10 @@ export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
       // Fail closed and never expose internal journal/asset/authorization data.
       return reply(409,{status:"M3_COORDINATOR_REJECTED_NO_RETRY"});
     }
+    // A status call may race with the first admission: verify its scope again.
+    if(operation==="status" && result.status!=="NOT_INITIALIZED" &&
+       result.scene_id!==envelope.scene_id)
+      return reply(409,{status:"M3_COORDINATOR_REJECTED_NO_RETRY"});
     if(result?.live_dispatch_enabled!==false)
       return reply(500,{status:"LIVE_GATE_NOT_DISABLED"});
     return reply(200,result);
