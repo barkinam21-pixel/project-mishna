@@ -92,6 +92,14 @@ def build_packet(scene, bible, root):
         raise SceneBlocked("PACKET_LIVE_AUTHORIZATION_FORBIDDEN")
     image_index = keys(scene, bible)
     image_keys = image_index["asset_keys"]
+    # Count actual candidate FILE identities, not just timeline slots. OPN02 is
+    # currently mapped to both EP-P07 and EP-P14: these are NOT two originals.
+    candidate_uses = {}
+    for shot in scene["shots"]:
+        a = shot["asset"]
+        if a["origin"] == "original" and a["accepted"] is False and a["id"]:
+            candidate_uses.setdefault(a["id"], []).append(shot["id"])
+    duplicate_candidates = {aid: ids for aid, ids in candidate_uses.items() if len(ids) > 1}
     jobs = []
     for shot in scene["shots"]:
         state = bible["states"][shot["pre_state"]]
@@ -111,6 +119,8 @@ def build_packet(scene, bible, root):
         # Same M1 visual asset key; sound/caption edits must not re-generate art.
         jobs.append({
             "shot_id": shot["id"], "image_status": image_status,
+            "candidate_asset_id": asset["id"] if image_status == "EXISTING_CANDIDATE_REVIEW_ONLY" else None,
+            "candidate_repeated_in_scene": bool(asset["id"] in duplicate_candidates and image_status == "EXISTING_CANDIDATE_REVIEW_ONLY"),
             "asset_key": image_keys[shot["id"]],
             "source_label": shot["source"]["layer"],
             "source_verified": shot["source"]["verified"] is True,
@@ -136,6 +146,8 @@ def build_packet(scene, bible, root):
         "candidate_review_only_count": sum(j["image_status"] == "EXISTING_CANDIDATE_REVIEW_ONLY" for j in jobs),
         "new_original_image_slots": sum(j["image_status"] == "NEW_ORIGINAL_IMAGE_REQUIRED" for j in jobs),
         "verified_accepted_cache_hits": sum(j["image_status"] == "VERIFIED_ACCEPTED_CACHE" for j in jobs),
+        "unique_candidate_asset_count": len(candidate_uses),
+        "duplicate_unapproved_candidate_usage": duplicate_candidates,
         "source_and_editorial_blockers": issues,
         "generation_gate_closed": True, "inference_requests": 0,
         "provider_dispatch_authorized": False,
@@ -150,7 +162,8 @@ def build_packet(scene, bible, root):
 def summary(packet):
     return {k: packet[k] for k in (
         "status", "scene_id", "shot_count", "duration_frames", "candidate_review_only_count",
-        "new_original_image_slots", "verified_accepted_cache_hits", "packet_sha256",
+        "new_original_image_slots", "verified_accepted_cache_hits", "unique_candidate_asset_count",
+        "duplicate_unapproved_candidate_usage", "packet_sha256",
         "generation_gate_closed", "inference_requests", "provider_dispatch_authorized",
     )} | {"blocker_count": len(packet["source_and_editorial_blockers"])}
 
