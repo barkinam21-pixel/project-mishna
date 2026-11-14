@@ -76,8 +76,11 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         entry.update({"shot_id": sid})
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_IMAGE_SCOPE_OR_RIGHTS"):
             build_plan(self.root, {"images": [entry]})
-        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_DUPLICATE_SHOT_BINDING"):
-            build_plan(self.root, {"images": [entry, entry]})
+        from unittest.mock import patch
+        with patch("tools.scene_prologue_private_preview._checked_image",
+                   return_value=(self.root / "private-media/fixture.png", "0" * 64)):
+            with self.assertRaisesRegex(SceneBlocked, "PREVIEW_DUPLICATE_SHOT_BINDING"):
+                build_plan(self.root, {"images": [entry, entry]})
 
     def test_valid_private_image_binding_uses_exact_bytes_and_sha(self):
         # Tiny hand-authored PNG from existing test utility: never dispatched.
