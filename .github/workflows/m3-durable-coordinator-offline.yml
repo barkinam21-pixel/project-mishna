@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'infra/m3-coordinator/**'
+      - 'tests/test_scene_m3_sqlite_bridge.py'
       - '.github/workflows/m3-durable-coordinator-offline.yml'
   workflow_dispatch:
 permissions:
@@ -29,6 +30,11 @@ jobs:
           node --check infra/m3-coordinator/scene-reservation.test.mjs
       - name: Real SQLite transaction and crash tests, no network
         run: node --test infra/m3-coordinator/scene-reservation.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python owner ticket to actual SQLite coordinator integration
+        run: python -m unittest tests.test_scene_m3_sqlite_bridge -v
       - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow
         run: |
           python - <<'PY'
