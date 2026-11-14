@@ -141,8 +141,10 @@ jobs:
           packet=build_packet(scene,bible,'.')
           if (packet['shot_count']!=15 or packet['inference_requests']!=0
               or packet['provider_dispatch_authorized'] is not False
-              or packet['candidate_review_only_count']!=2
-              or packet['new_original_image_slots']!=13
+              or packet['candidate_review_only_count']!=3
+              or packet['unique_candidate_asset_count']!=2
+              or packet['duplicate_unapproved_candidate_usage']!={'OPN02':['EP-P07','EP-P14']}
+              or packet['new_original_image_slots']!=12
               or len(packet['source_and_editorial_blockers'])!=triage['total_blockers']):
               raise SystemExit('SCENE_PACKET_NOT_SAFELY_PREPARED')
           print(json.dumps({'status':'BLOCKED_AS_DESIGNED',
