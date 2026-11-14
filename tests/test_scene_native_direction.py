@@ -108,6 +108,12 @@ class NativeSceneDirectionTests(unittest.TestCase):
         changed["shots"][6]["captions"]=[{"text":"טיוטה","start_frame":0,"end_frame":20}]
         self.assertEqual(keys(changed,self.bible)["asset_keys"],first)
 
+    def test_missing_ep_blocking_must_fail_even_if_other_shot_fields_are_valid(self):
+        scene=copy.deepcopy(self.scene)
+        del scene["shots"][6]["blocking"]
+        with self.assertRaisesRegex(SceneBlocked,"NATIVE_BLOCKING_REQUIRED"):
+            build_packet(scene,self.bible,ROOT)
+
     def test_legacy_opn_shot_id_cannot_masquerade_as_episode_shot(self):
         shot=copy.deepcopy(self.scene["shots"][6])
         shot["id"]="OPN02"
