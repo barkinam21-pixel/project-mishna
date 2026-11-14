@@ -66,7 +66,22 @@
       "start_frame": 0,
       "end_frame": 168,
       "previous": null,
-      "next": "EP-P02"
+      "next": "EP-P02",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P01",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "extreme_wide",
+        "composition": "Empty ridgeline; first dawn rim light; no human silhouettes",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P01"
+      }
     },
     {
       "id": "EP-P02",
@@ -115,7 +130,22 @@
       "start_frame": 168,
       "end_frame": 336,
       "previous": "EP-P01",
-      "next": "EP-P03"
+      "next": "EP-P03",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P02",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "insert",
+        "composition": "Foreground grass and stone, distant path; human-free viewpoint",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P02"
+      }
     },
     {
       "id": "EP-P03",
@@ -164,7 +194,22 @@
       "start_frame": 336,
       "end_frame": 480,
       "previous": "EP-P02",
-      "next": "EP-P04"
+      "next": "EP-P04",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P03",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "extreme_wide",
+        "composition": "Winding path and tiny unattributed human dots; no facial identity",
+        "human_detail_unattributed": true,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P03"
+      }
     },
     {
       "id": "EP-P04",
@@ -213,7 +258,28 @@
       "start_frame": 480,
       "end_frame": 624,
       "previous": "EP-P03",
-      "next": "EP-P05"
+      "next": "EP-P05",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P04",
+        "cast_visible": [
+          "elder",
+          "younger"
+        ],
+        "positions": {
+          "elder": "background-left",
+          "younger": "background-right"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "extreme_wide",
+        "composition": "Two distant anonymous walkers; elder left, younger right; tiny scale, faces unreadable",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P04"
+      }
     },
     {
       "id": "EP-P05",
@@ -262,7 +328,22 @@
       "start_frame": 624,
       "end_frame": 720,
       "previous": "EP-P04",
-      "next": "EP-P06"
+      "next": "EP-P06",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P05",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "insert",
+        "composition": "A single unattributed sandal makes contact with dust; no face or identity claim",
+        "human_detail_unattributed": true,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P05"
+      }
     },
     {
       "id": "EP-P06",
@@ -311,7 +392,22 @@
       "start_frame": 720,
       "end_frame": 840,
       "previous": "EP-P05",
-      "next": "EP-P07"
+      "next": "EP-P07",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P06",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "insert",
+        "composition": "Unattributed cloak edge, satchel strap and waterskin fragment; no identified face",
+        "human_detail_unattributed": true,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P06"
+      }
     },
     {
       "id": "EP-P07",
@@ -360,7 +456,28 @@
       "start_frame": 840,
       "end_frame": 1008,
       "previous": "EP-P06",
-      "next": "EP-P08"
+      "next": "EP-P08",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P07",
+        "cast_visible": [
+          "elder",
+          "younger"
+        ],
+        "positions": {
+          "elder": "screen-left",
+          "younger": "screen-right"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "wide",
+        "composition": "Rear two-shot on the path; older left and younger right, dawn light from screen left",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P07"
+      }
     },
     {
       "id": "EP-P08",
@@ -409,7 +526,28 @@
       "start_frame": 1008,
       "end_frame": 1128,
       "previous": "EP-P07",
-      "next": "EP-P09"
+      "next": "EP-P09",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P08",
+        "cast_visible": [
+          "younger",
+          "elder"
+        ],
+        "positions": {
+          "younger": "foreground-right",
+          "elder": "background-left"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "ots",
+        "composition": "From behind younger on foreground right looking toward elder ahead on left; no camera-axis crossing",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P08"
+      }
     },
     {
       "id": "EP-P09",
@@ -458,7 +596,26 @@
       "start_frame": 1128,
       "end_frame": 1248,
       "previous": "EP-P08",
-      "next": "EP-P10"
+      "next": "EP-P10",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P09",
+        "cast_visible": [
+          "younger"
+        ],
+        "positions": {
+          "younger": "center"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "medium",
+        "composition": "Younger face medium/reaction; elder may be off frame but never a third character",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P09"
+      }
     },
     {
       "id": "EP-P10",
@@ -507,7 +664,26 @@
       "start_frame": 1248,
       "end_frame": 1368,
       "previous": "EP-P09",
-      "next": "EP-P11"
+      "next": "EP-P11",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P10",
+        "cast_visible": [
+          "elder"
+        ],
+        "positions": {
+          "elder": "center"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "reaction",
+        "composition": "Elder quiet reaction, eye line toward younger off frame; remain south of axis",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P10"
+      }
     },
     {
       "id": "EP-P11",
@@ -556,7 +732,28 @@
       "start_frame": 1368,
       "end_frame": 1512,
       "previous": "EP-P10",
-      "next": "EP-P12"
+      "next": "EP-P12",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P11",
+        "cast_visible": [
+          "elder",
+          "younger"
+        ],
+        "positions": {
+          "elder": "foreground-left",
+          "younger": "background-right"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "ots",
+        "composition": "Over elder's left shoulder to younger on right; same south-of-path camera side",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P11"
+      }
     },
     {
       "id": "EP-P12",
@@ -605,7 +802,28 @@
       "start_frame": 1512,
       "end_frame": 1656,
       "previous": "EP-P11",
-      "next": "EP-P13"
+      "next": "EP-P13",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P12",
+        "cast_visible": [
+          "elder",
+          "younger"
+        ],
+        "positions": {
+          "elder": "screen-left",
+          "younger": "screen-right"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "insert",
+        "composition": "Only two known hands transfer waterskin from elder's right hand to younger's right; positions left/right draft",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P12"
+      }
     },
     {
       "id": "EP-P13",
@@ -654,7 +872,26 @@
       "start_frame": 1656,
       "end_frame": 1800,
       "previous": "EP-P12",
-      "next": "EP-P14"
+      "next": "EP-P14",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P13",
+        "cast_visible": [
+          "younger"
+        ],
+        "positions": {
+          "younger": "center"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "close_up",
+        "composition": "Younger with waterskin already in right hand; sustained restrained reaction",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P13"
+      }
     },
     {
       "id": "EP-P14",
@@ -703,7 +940,28 @@
       "start_frame": 1800,
       "end_frame": 1992,
       "previous": "EP-P13",
-      "next": "EP-P15"
+      "next": "EP-P15",
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P14",
+        "cast_visible": [
+          "elder",
+          "younger"
+        ],
+        "positions": {
+          "elder": "screen-left",
+          "younger": "screen-right"
+        },
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "wide",
+        "composition": "Rear two-shot, same left/right order after shared gesture; synchronized steps",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P14"
+      }
     },
     {
       "id": "EP-P15",
@@ -752,7 +1010,22 @@
       "start_frame": 1992,
       "end_frame": 2184,
       "previous": "EP-P14",
-      "next": null
+      "next": null,
+      "blocking": {
+        "review_status": "DRAFT_REQUIRES_REVIEW",
+        "shot_id": "EP-P15",
+        "cast_visible": [],
+        "positions": {},
+        "axis": "south side of travel line",
+        "camera_side": "south",
+        "screen_direction": "right-to-left",
+        "sun_direction": "screen-left",
+        "time_of_day": "dawn",
+        "shot_type": "extreme_wide",
+        "composition": "Empty opening horizon as symbolic bridge, no identifiable geographic Sinai claim or human portrait",
+        "human_detail_unattributed": false,
+        "source_anchor": "docs/epic-intro-prologue-shotmap-v02.md#P15"
+      }
     }
   ],
   "decisions": [
