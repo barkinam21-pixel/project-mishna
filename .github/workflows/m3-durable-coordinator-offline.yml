@@ -28,8 +28,11 @@ jobs:
           node --check infra/m3-coordinator/scene-reservation-core.mjs
           node --check infra/m3-coordinator/worker.mjs
           node --check infra/m3-coordinator/scene-reservation.test.mjs
+          node --check infra/m3-coordinator/signed-gateway-candidate.mjs
+          node --check infra/m3-coordinator/signed-gateway-candidate.test.mjs
+          node --check infra/m3-coordinator/worker-gateway-candidate.mjs
       - name: Real SQLite transaction and crash tests, no network
-        run: node --test infra/m3-coordinator/scene-reservation.test.mjs
+        run: node --test infra/m3-coordinator/*.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
