@@ -108,6 +108,8 @@ def verify(event, policy, history, scene, bible, root, *, now=None):
         raise SceneBlocked("M3_EXACTLY_ONE_SCENE_TICKET_REQUIRED")
     try:
         ticket = json.loads(blocks[0], object_pairs_hook=_unique)
+    except SceneBlocked:
+        raise
     except (ValueError, TypeError):
         raise SceneBlocked("M3_TICKET_JSON_INVALID") from None
     if not isinstance(ticket, dict) or set(ticket) != FIELDS:
