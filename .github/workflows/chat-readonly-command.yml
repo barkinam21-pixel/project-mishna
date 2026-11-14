@@ -18,6 +18,7 @@ permissions:
 concurrency:
   group: mishnah-chat-readonly-command
   cancel-in-progress: false
+  queue: max
 jobs:
   offline-tests:
     if: github.event_name == 'pull_request'
