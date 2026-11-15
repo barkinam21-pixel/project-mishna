@@ -1,5 +1,22 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## 2026-11-15 — One owner-private read-only command: Drive ZIP → 15 directed shots
+
+`tools/scene_owner_reference_pipeline.py` now joins the **already merged** #109 exact-ID private Drive archive reader to the **already merged** #108 15-shot reference router. It uses the **existing pinned historic Drive client**, not new OAuth, Cloudflare, inference or a hosted worker. The trusted Drive client executes from an unmodified checkout of `80ba1559b785855a1f9f4cbd90083fd0228eec96` with its source Git-blob SHA verified. It checks the owner-only Drive ZIP and folder, downloads once when cache is missing, verifies whole ZIP and internal SHA, atomically restores `private-media/`, applies 15 dawn shot reference roles and stores a **private hash-addressed, review-only** scene plan. On rerun with valid cache, there is **no second Drive download**. It prints only safe summary fields, never private file IDs, paths or media bytes.
+
+**Run only on an owner-controlled private machine or service**, with the already-existing `MISHNAH_DRIVE_OAUTH_JSON` credential available to that host and a privately retrieved `PRIVATE_DRIVE_ASSET_LOCATORS_DO_NOT_PUBLISH.json` (from ChatGPT Library/Drive private folder). Example (paths are examples, not new owner actions):
+
+```bash
+python -m tools.scene_owner_reference_pipeline \\
+  --root . \\
+  --legacy-runtime ./reviewed-runtime \\
+  --legacy-template ./reviewed-runtime/episodes/berakhot-01-01/comfy-opening-images.json \\
+  --private-locator ./private-media/PRIVATE_DRIVE_ASSET_LOCATORS_DO_NOT_PUBLISH.json
+```
+
+**Never run this in public GitHub Actions:** the command explicitly refuses `GITHUB_ACTIONS=true`; CI tests fake Drive and synthetic references only. No credentials, owned artwork or locator IDs are committed or exposed to public CI. This is **automatic safe reference *preparation***, not live image generation or final film production. Existing `generation-safety.json` stays CLOSED, OPN02/03 remain rejected for dawn, reference synthesis rights remain NOT_EVALUATED, no owner production approval is implied and no model call or paid service occurs. The next owner-host milestone is a trusted private run with the original Drive OAuth and locator; do not infer this happened from the synthetic CI.
+
+
 
 ## 2026-11-15 — Exact owner-only archive fetch primitive (read-only)
 
