@@ -1,5 +1,7 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+
+**15.11 — חיבור P07 למנוע M3 נבנה:** [קוד, הפעלה פרטית וגבולות](docs/m3-p07-production-bridge.md). הזמנה אטומית לפני POST, שמירת מקור ו־PNG, יומן/גיבוי Drive ושחזור ללא יצירה חוזרת. 596 בדיקות Python (אחת דולגה), 21 בדיקות Node. השער נשאר סגור עד commissioning חתום עם ההיסטוריה הפרטית והאישור המדויק; לא נוצרה תמונה.
 ## Never ask again for already verified Free / image generation / original references
 
 **Owner instruction 2026-11-15:** The project **has already succeeded at actual Cloudflare image generation**, the owner reconfirmed Workers Free, and reference media/Drive restoration were previously verified. Do **not** restart verification or ask the owner for the same screenshots/files in every chat. Read [durable verified state](docs/PROJECT-VERIFIED-FACTS.json) and the pure local checker `python -m tools.project_checkpoint` first. The **next artistic target** is the real 7-second [EP-P07 dawn rear-wide shot direction](docs/EP-P07-FIRST-DAWN-IMAGE-BRIEF.md) — not another generic proof of Cloudflare access. Keep working from merged #107–#110 and [Issue #77](https://github.com/barkinam21-pixel/project-mishna/issues/77).

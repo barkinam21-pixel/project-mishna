@@ -7,6 +7,9 @@ on:
       - 'tests/test_legacy_generation_coordination.py'
       - 'tools/legacy_generation_coordination.py'
       - 'tools/generation_issue_runtime.py'
+      - 'tools/m3_production_runner.py'
+      - 'tests/test_m3_production_runner.py'
+      - 'tests/fixtures/m3_production_sqlite.mjs'
       - 'tests/fixtures/generation_runtime_integration.py'
       - '.github/workflows/m3-durable-coordinator-offline.yml'
   workflow_dispatch:
@@ -40,6 +43,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: python -m pip install Pillow==12.0.0
+      - name: Python P07 to persistent SQLite, provider timeout and private delivery recovery
+        run: python -m unittest tests.test_m3_production_runner -v
       - name: Python owner ticket to actual SQLite coordinator integration
         run: python -m unittest tests.test_scene_m3_sqlite_bridge tests.test_legacy_generation_coordination -v
       - name: Ensure no live Cloudflare/Drive secrets, deploy or billing in this workflow

@@ -1,5 +1,15 @@
 # מסירת מצב בין סשנים — אולפן המשנה
 
+## 15.11 — P07 production bridge, no inference
+
+Implemented the real P07 compiler → separately signed production route → existing DO SQLite atomic reservation → one direct Cloudflare4B POST transport → fsynced original/PNG → immutable receipt → existing private Drive journal/snapshot delivery path. It never calls the old external-provider-capable Worker. Default CLI dry-run has zero network; resume has no provider dependency or reference-image requirement. Existing runtime public Actions remains blocked deliberately.
+
+Actual local verification: 596 Python tests run,595 passed,1 skipped; 12 new integration/transport tests passed with actual SQLite process reopen per call; 21 Node SQLite/WebCrypto tests passed. Simulated provider/Drive only; actual MIME compilation, two competing SQLite processes, crash after bytes saved, lost reservation reply, ambiguous POST, snapshot preservation and no regeneration proven locally. Full regression 20.003s. Fixed a discovered repeat-delivery journal hash drift, not just a hypothetical failure.
+
+Actual connected cloud verification: existing staging Worker has secret_text M3_GATEWAY_HMAC_KEY and M3_SCENE_RESERVATION DO only. Two real HTTPS unsigned/wrong-signature canary status calls returned401 UNAUTHORIZED. Work's earlier signed tests remain Issue77 evidence, not a new test here. Existing private HMAC backup was not available in this Codex environment or accessible Drive results; no new/rotated key or expanded permissions. Hosted signed production/restart tests are NOT complete.
+
+Production admission remains CLOSED: protected exact body/draft/reference/original-six-attempt-history config absent; one-shot rights/privacy/Free cap/quota/private-storage and actual legacy-writer exclusion must be commissioned from real evidence on the existing private host before a permit. Config hard expiry≤5min, immutable baseline+one attempt; reconfiguration cannot clear an uncertain attempt. Receipt/delivery reconcile after expiry without new inference. No actual history imported or altered; no art, voice or media generation. See docs/m3-p07-production-bridge.md for exact operator/service commands and remaining gates. No manual installation or new screenshot requested from Bar. No Copilot was assigned; no verified ETA. Independent safe work: source/creative review can proceed separately; another dependent coding agent is unnecessary.
+
 
 ## סשן 14.11, ~22:00 ישראל — M3 real SQLite core + owner gateway; no live inference
 - מיזוגים מוצלחים [#94](https://github.com/barkinam21-pixel/project-mishna/pull/94), [#95](https://github.com/barkinam21-pixel/project-mishna/pull/95), [#96](https://github.com/barkinam21-pixel/project-mishna/pull/96): קוד Cloudflare DO SQLite עם `transactionSync` אמיתי, `Node node:sqlite` 7 בדיקות התחלתיות שעברו, ניסיון אטומי בסצנה יחידה, שימור רישום `SUBMISSION_UNCERTAIN_NO_RETRY` אחרי תקלה, בדיקת Python scene ticket → SQLite, ו־candidate HTTP HMAC עם זהות בעלים/זמן/חתימה ומבחני איום. **בדיקות Github Actions עברו**; אין חיבור לספק AI.

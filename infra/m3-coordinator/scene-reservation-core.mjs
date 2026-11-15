@@ -1,3 +1,4 @@
+import {productionMethods} from './production-ledger.mjs';
 /** M3 Durable Object reservation core, disconnected from image inference.
  *
  * This uses real SQLite transactions; no Drive-as-CAS assumption. It exposes
@@ -79,7 +80,14 @@ export function createSceneReservationClass(DurableObjectBase) {
       super(ctx, env);
       ctx.blockConcurrencyWhile(async () => {
         for (const stmt of DDL) ctx.storage.sql.exec(stmt);
+        this.productionApi=productionMethods(ctx.storage,env);
       });
+    }
+
+    async production(operation, payload) {
+      const api=this.productionApi;
+      if(!['bootstrap','reserve','receipt','delivered','status','journal'].includes(operation)) deny('PRODUCTION_OPERATION_INVALID');
+      return api[operation](payload);
     }
 
     // RPC. Intentionally does not authorize an external generation call.

@@ -145,3 +145,19 @@ test("no billing or images API can appear in the gateway's implementation",async
  const defaultWorker=readFileSync(new URL("./worker.mjs",import.meta.url),"utf8");
  assert.match(defaultWorker,/status:404/); // Candidate is NOT deployed by default.
 });
+
+test('production route is separately signed, isolated, closed without protected config',async t=>{
+ const h=harness();t.after(()=>h.db.close());await h.ready;
+ const names=[];h.env.M3_SCENE_RESERVATION.getByName=id=>{names.push(id);return h.stub;};
+ const body=JSON.stringify({version:1,owner:OWNER,scene_id:'ACT1-PROLOGUE',operation:'status',payload:{}});
+ const {createHmac}=await import('node:crypto');
+ const sig=createHmac('sha256',Buffer.from(SECRET,'hex')).update('POST\n/m3/v1/production\n'+TIMESTAMP+'\n'+body).digest('hex');
+ const req=signature=>new Request('https://example.invalid/m3/v1/production',{method:'POST',body,headers:{'x-m3-timestamp':TIMESTAMP,'x-m3-signature':signature}});
+ const good=await signedOfflineGateway(req(sig),h.env,{now:NOW});assert.equal(good.status,200);assert.equal((await good.json()).status,'PRODUCTION_NOT_INITIALIZED');
+ assert.deepEqual(names,['M3-PRODUCTION-SHARED-JOURNAL-V1']);
+ const wrongPath=await createSignatureForTesting(SECRET,TIMESTAMP,body);
+ assert.equal((await signedOfflineGateway(req(wrongPath),h.env,{now:NOW})).status,401);
+ const reserve=JSON.stringify({version:1,owner:OWNER,scene_id:'ACT1-PROLOGUE',operation:'reserve',payload:{}});
+ const signature=createHmac('sha256',Buffer.from(SECRET,'hex')).update('POST\n/m3/v1/production\n'+TIMESTAMP+'\n'+reserve).digest('hex');
+ assert.equal((await signedOfflineGateway(new Request('https://example.invalid/m3/v1/production',{method:'POST',body:reserve,headers:{'x-m3-timestamp':TIMESTAMP,'x-m3-signature':signature}}),h.env,{now:NOW})).status,409);
+});

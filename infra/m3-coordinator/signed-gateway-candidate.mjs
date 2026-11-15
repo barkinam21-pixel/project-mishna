@@ -45,7 +45,9 @@ export async function createSignatureForTesting(secret,timestamp,body) {
 
 export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
   try {
-    if(new URL(request.url).pathname!==ENDPOINT || request.method!=="POST")
+    const path=new URL(request.url).pathname;
+    const production=path==="/m3/v1/production";
+    if((path!==ENDPOINT && !production) || request.method!=="POST")
       return reply(404,{status:"NOT_FOUND"});
     // Never report "unauthorized" as success or fall through to a live route.
     if(typeof env?.M3_GATEWAY_HMAC_KEY!=="string" ||
@@ -66,7 +68,7 @@ export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
     if(!Number.isFinite(millis) || millis<now-FIVE_MIN || millis>now+ONE_MIN)
       return reply(401,{status:"UNAUTHORIZED"});
     const expected=await signed(env.M3_GATEWAY_HMAC_KEY,
-      "POST\n"+ENDPOINT+"\n"+timestamp+"\n"+raw);
+      "POST\n"+path+"\n"+timestamp+"\n"+raw);
     if(!constTimeEqual(expected,bytesHex(signature)))
       return reply(401,{status:"UNAUTHORIZED"});
     let envelope;
@@ -77,6 +79,14 @@ export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
        !SCENE.test(envelope.scene_id||""))
       return reply(403,{status:"OWNER_SCOPE_INVALID"});
     const operation=envelope.operation, payload=envelope.payload;
+    if(production){
+      if(envelope.scene_id!=="ACT1-PROLOGUE" || !['bootstrap','reserve','receipt','delivered','status','journal'].includes(operation) || !payload || typeof payload!=="object" || Array.isArray(payload))
+        return reply(403,{status:"PRODUCTION_SCOPE_INVALID"});
+      // SAME namespace, DIFFERENT persistent singleton; never mutate canary.
+      const stub=env.M3_SCENE_RESERVATION.getByName("M3-PRODUCTION-SHARED-JOURNAL-V1");
+      try {return reply(200,await stub.production(operation,payload));}
+      catch {return reply(409,{status:"M3_PRODUCTION_REJECTED_NO_RETRY"});}
+    }
     if(!["begin","reserve","record-fake","status"].includes(operation) ||
        !payload || typeof payload!=="object" || Array.isArray(payload))
       return reply(400,{status:"OPERATION_NOT_ALLOWED"});
