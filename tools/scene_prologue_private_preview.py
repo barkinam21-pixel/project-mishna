@@ -306,7 +306,8 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
     render_key = _render_cache_key(plan)
     report_path = target.with_suffix(".qa.json")
     srt_path, ass_path = target.with_suffix(".srt"), target.with_suffix(".ass")
-    output_files = (target, report_path, srt_path, ass_path)
+    vtt_path = target.with_suffix(".vtt")
+    output_files = (target, report_path, srt_path, ass_path, vtt_path)
     if any(p.exists() for p in output_files):
         if not all(p.is_file() for p in output_files):
             raise SceneBlocked("PREVIEW_PARTIAL_OUTPUT_EXISTS")
@@ -316,7 +317,8 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
                 or prior.get("preview_key") != render_key
                 or prior.get("video_sha256") != file_sha(target)
                 or prior.get("caption_srt_sha256") != file_sha(srt_path)
-                or prior.get("caption_ass_sha256") != file_sha(ass_path)):
+                or prior.get("caption_ass_sha256") != file_sha(ass_path)
+                or prior.get("caption_vtt_sha256") != file_sha(vtt_path)):
             raise SceneBlocked("PREVIEW_CACHED_OUTPUT_CHANGED")
         return dict(prior, cache_hit=True)
     with tempfile.TemporaryDirectory(prefix="scene-draft-", dir=target.parent) as directory:
@@ -337,14 +339,16 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
             wav = work / "INTENTIONAL_SILENCE_NOT_NARRATION.wav"
             _silence_wav(wav, plan["total_frames"])
             voices.append({"start_frame": 0, "path": str(wav.relative_to(root))})
-        srt, ass = [], [hebrew_captions.ASS_HEADER]
+        srt, vtt, ass = [], ["WEBVTT", ""], [hebrew_captions.ASS_HEADER]
         for i, shot in enumerate(plan["shots"], 1):
             caption = "סקיצת בימוי בלבד — " + shot["shot_id"]
             start, end = _stamp(shot["start_frame"]), _stamp(shot["end_frame"])
             srt.extend([str(i), start.replace(".", ",") + " --> " + end.replace(".", ","),
                         caption, ""])
+            vtt.extend([start + " --> " + end, caption, ""])
             ass.append(f"Dialogue: 0,{start[:-1]},{end[:-1]},Hebrew,,0,0,0,,{caption}\n")
         (work / "private-captions.srt").write_text("\n".join(srt), encoding="utf-8")
+        (work / "private-captions.vtt").write_text("\n".join(vtt), encoding="utf-8")
         (work / "private-captions.ass").write_text("".join(ass), encoding="utf-8")
         blueprint = {
             "target_duration_frames": plan["total_frames"],
@@ -364,6 +368,7 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
             "plan_key": plan["preview_key"], "video_sha256": file_sha(video),
             "caption_srt_sha256": file_sha(work / "private-captions.srt"),
             "caption_ass_sha256": file_sha(work / "private-captions.ass"),
+            "caption_vtt_sha256": file_sha(work / "private-captions.vtt"),
             "frames": plan["total_frames"],
             "fps": 24, "verified_images": plan["verified_private_preview_images"],
             "slates_for_missing_images": plan["missing_or_unapproved_images"],
@@ -379,6 +384,7 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
         shutil.copy2(video, target)
         shutil.copy2(work / "private-captions.srt", srt_path)
         shutil.copy2(work / "private-captions.ass", ass_path)
+        shutil.copy2(work / "private-captions.vtt", vtt_path)
         # QA JSON is the last commit marker. A crash before it is PARTIAL,
         # never a recoverable cache hit and never silently cleaned/deleted.
         report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -388,7 +394,7 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root", default=".")
-    p.add_argument("--media", help="Local PRIVATE per-shot image and voice binding JSON")
+    p.add_argument("--media", help="Local PRIVATE per-shot image, voice and sound binding JSON")
     p.add_argument("--out", default="private-media/scene-prologue-draft.mp4")
     p.add_argument("--render", action="store_true")
     args = p.parse_args(argv)

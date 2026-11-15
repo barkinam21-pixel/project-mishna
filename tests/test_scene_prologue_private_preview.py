@@ -95,6 +95,8 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             self.assertEqual(report["provider_calls"], 0)
             self.assertTrue((self.root / "private-media/smoke.mp4").is_file())
             self.assertTrue((self.root / "private-media/smoke.srt").is_file())
+            self.assertTrue((self.root / "private-media/smoke.vtt").is_file())
+            self.assertEqual((self.root / "private-media/smoke.vtt").read_text(encoding="utf-8").count(" --> "), 2)
             cached = render_private_draft(self.root, "private-media/smoke.mp4")
             self.assertTrue(cached["cache_hit"])
             srt = self.root / "private-media/smoke.srt"
@@ -103,10 +105,47 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             with self.assertRaisesRegex(SceneBlocked, "PREVIEW_CACHED_OUTPUT_CHANGED"):
                 render_private_draft(self.root, "private-media/smoke.mp4")
             srt.write_bytes(original)
+            vtt = self.root / "private-media/smoke.vtt"
+            original_vtt = vtt.read_bytes()
+            vtt.write_text("WEBVTT\n\nTAMPERED", encoding="utf-8")
+            with self.assertRaisesRegex(SceneBlocked, "PREVIEW_CACHED_OUTPUT_CHANGED"):
+                render_private_draft(self.root, "private-media/smoke.mp4")
+            vtt.write_bytes(original_vtt)
             ass = self.root / "private-media/smoke.ass"
             ass.unlink()
             with self.assertRaisesRegex(SceneBlocked, "PREVIEW_PARTIAL_OUTPUT_EXISTS"):
                 render_private_draft(self.root, "private-media/smoke.mp4")
+
+    def test_full_fifteen_shot_91s_private_ffmpeg_smoke(self):
+        """True full-length encoder+subtitle integration; synthetic slates only.
+
+        Run only in the explicitly FFmpeg-enabled CI job: no routine unit-test
+        fan-out, no Cloudflare, no private artwork, no published artifacts.
+        """
+        import os
+        if os.environ.get("MISHNAH_FULL_SCENE_FFMPEG_SMOKE") != "1":
+            self.skipTest("91-second FFmpeg smoke is opt-in for media CI")
+        if not all(shutil.which(x) for x in ("ffmpeg", "ffprobe", "fc-match")):
+            self.fail("Media CI must have FFmpeg and a Hebrew-capable font")
+        report = render_private_draft(self.root, "private-media/full-91s.mp4")
+        self.assertEqual(report["status"], "PRIVATE_DRAFT_TECH_PASS_NOT_ART_OR_SOURCE_APPROVAL")
+        self.assertEqual(report["frames"], 2184)
+        self.assertEqual(report["slates_for_missing_images"], 15)
+        self.assertEqual(report["verified_images"], 0)
+        self.assertTrue(report["voice_missing"])
+        self.assertTrue(report["placeholder_silence"])
+        self.assertEqual(report["provider_calls"], 0)
+        self.assertFalse(report["release_authorized"])
+        vtt = (self.root / "private-media/full-91s.vtt").read_text(encoding="utf-8")
+        srt = (self.root / "private-media/full-91s.srt").read_text(encoding="utf-8")
+        self.assertTrue(vtt.startswith("WEBVTT\n"))
+        self.assertEqual(vtt.count(" --> "), 15)
+        self.assertEqual(srt.count(" --> "), 15)
+        for i in range(1, 16):
+            self.assertIn(f"EP-P{i:02d}", vtt)
+        self.assertIn("00:01:31.000", vtt)
+        self.assertTrue(render_private_draft(
+            self.root, "private-media/full-91s.mp4")["cache_hit"])
 
     def test_unknown_duplicate_legacy_or_outside_bindings_blocked(self):
         entry = {"shot_id": "OPN02", "asset_key": self.first["asset_key"]}
