@@ -1,5 +1,19 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## 2026-11-15 — PRIVATE visual reference master RESTORED (owner upload, NOT generated here)
+
+**Do not say “reference images are missing” without consulting this durable record first.** The user's 8 uploaded images contain **7 unique JPEG-encoded photos** (one exact duplicate), plus two existing private MP4s. Historic original **OPN02 and OPN03** were also recovered by SHA-256 against the recorded Cloudflare results (they remain *unapproved sunset candidates*). The entire immutable **11-media** private reference master has been uploaded to both:
+
+- **Google Drive (private):** `/Google Drive/משנה/00-PRIVATE-VISUAL-REFERENCE-MASTER-20261115/`
+- **ChatGPT Library private backup:** `/Mishnah Project/private-visual-reference-master-20261115/`
+
+**Always open** `REFERENCE_MASTER_PRIVATE.json` and `PRIVATE_DRIVE_ASSET_LOCATORS_DO_NOT_PUBLISH.json` in these private locations for exact original filenames, SHA-256, persistent Drive IDs, roles and access. The stable full archive is `MISHNAH_REFERENCE_MASTER_BUNDLE_V1.zip` with SHA256 `53acf04ebdd0960d8adc5f0f2fbd75229857ea24eee6eab16bfa8c29d762f6ce`. The private Drive archive was downloaded back and byte-compared to its source. **Do not put private media, locator IDs or URLs in this public repository or public CI.**
+
+Offline no-network integrity and idempotent private restore: `python -m tools.scene_reference_archive --bundle /path/to/MISHNAH_REFERENCE_MASTER_BUNDLE_V1.zip` and, only on an owner-private filesystem, `python -m tools.scene_reference_archive --bundle /path/to/MISHNAH_REFERENCE_MASTER_BUNDLE_V1.zip --restore-private --root /path/to/project`. The default is read-only; restore is restricted to `private-media/` and never overwrites changed cache. A production system should resolve exact Drive IDs from **the private locator**, fetch the archive and call this verifier automatically, rather than asking the owner to reupload references or using fuzzy name search.
+
+**Art direction:** REF01 = primary elder (blue cloak, white/gray beard) + younger learner (brown wrap) cast identity and rich painterly texture; REF03 = primary over-the-shoulder/rear travel composition; REF04 = wider road/hill architecture; REF02 = collage moodboard **not** a single original production frame; REF05–07 = alternative conversation staging. Both uploaded MP4s are previous studies/technical proof, *not* approved narrative footage. EP-P01–15 remains **dawn**; the reference images' sunset light is inspiration only, never directly reusable as dawn. OPN02/03 remain `accepted=false`, no automatic EP-P assignment, no rights/scene/source or voice approval, **generation-safety.json CLOSED**. This master is an **evidence/reference archive**, not permission for new inference, payments, deployment or publication.
+
+
 ## Offline Cloudflare spec bridge — candidate, not live production
 
 `tools/scene_cloudflare_spec_adapter.py` builds a scene-wide set of **15 per-shot specs matching the existing pinned `CloudflareClient.prepare` input shape** from one `tools/scene_production_packet.py` packet. It reuses the previous (immutable) Cloudflare model metadata and private reference checks; it **does not** import the old sunset-only prompt or rename `EP-P` shots to `OPN`. All jobs retain camera, dawn lighting, costume/identity, asset SHA/seed, timing and source labels for the next writer. The one-request Issue54 `scene-dry-run` now produces a bounded adapter summary in the same safe run.
