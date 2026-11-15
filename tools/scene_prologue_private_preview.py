@@ -27,6 +27,32 @@ SCENE = "episodes/berakhot-01-01/scene-prologue-v02.json"
 SAMPLES_PER_FRAME = 2000
 FPS = 24
 
+TRIAL_LEDGER = "episodes/berakhot-01-01/trials.json"
+
+
+def _reject_previously_rejected_media(root, sha, kind):
+    """A metadata checkbox cannot re-accept bytes rejected in the real trial ledger."""
+    ledger = load(within(root, TRIAL_LEDGER))
+    if ledger.get("episode_id") != "berakhot-01-01":
+        raise SceneBlocked("PREVIEW_TRIAL_HISTORY_INVALID")
+    if kind == "image":
+        records = ledger.get("trials")
+        if not isinstance(records, list):
+            raise SceneBlocked("PREVIEW_TRIAL_HISTORY_INVALID")
+        rejected = any(isinstance(x, dict) and x.get("image_sha256") == sha
+                       and x.get("production_asset_accepted") is not True for x in records)
+    elif kind == "voice":
+        records = ledger.get("voice_trials")
+        if not isinstance(records, list):
+            raise SceneBlocked("PREVIEW_TRIAL_HISTORY_INVALID")
+        rejected = any(isinstance(x, dict) and x.get("sha256") == sha
+                       and x.get("status") == "rejected_by_user" for x in records)
+    else:
+        raise SceneBlocked("PREVIEW_TRIAL_MEDIA_KIND_INVALID")
+    if rejected:
+        raise SceneBlocked("PREVIEW_KNOWN_REJECTED_" + kind.upper())
+
+
 
 def _private_path(root: Path, filename: str) -> Path:
     if not isinstance(filename, str) or not filename.startswith("private-media/"):
@@ -55,6 +81,7 @@ def _checked_image(root, shot_id, asset_key, value):
         raise SceneBlocked("PREVIEW_IMAGE_BYTES_NOT_VERIFIED:" + shot_id)
     if not private_proof_assembler.image_signature_ok(path):
         raise SceneBlocked("PREVIEW_IMAGE_FORMAT_INVALID:" + shot_id)
+    _reject_previously_rejected_media(root, sha, "image")
     return path, sha
 
 
@@ -78,6 +105,7 @@ def _checked_voice(root, scene, item, total):
     length, problem = private_proof_assembler.inspect_wav(path)
     if problem or length > (end-start) * SAMPLES_PER_FRAME:
         raise SceneBlocked("PREVIEW_VOICE_PCM_OR_TIMING_INVALID")
+    _reject_previously_rejected_media(root, sha, "voice")
     return {"start_frame": start, "end_frame": end, "path": item["path"], "sha256": sha}
 
 
