@@ -8,6 +8,7 @@ private-preview authorization. Never accept the rejected SH01 GPU trial.
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -282,6 +283,12 @@ def ffmpeg_args(config, blueprint, root, temp, camera_inputs=None):
     """Only called after a READY audit. Paths become argv, never shell fragments."""
     images = {item["shot_id"]: item for item in config["images"]}
     voices = config["voice_takes"]
+    # Scene-native sound clips stay independently replaceable in the manifest.
+    # The original M2 proof renders exactly as before when this key is absent.
+    sounds = config.get("sound_takes", [])
+    if not isinstance(sounds, list):
+        raise ValueError("sound_takes must be an array")
+    audio_inputs = voices + sounds
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     camera_inputs = camera_inputs or {}
     for shot in blueprint["shots"]:
@@ -292,7 +299,7 @@ def ffmpeg_args(config, blueprint, root, temp, camera_inputs=None):
         else:
             cmd += ["-loop", "1", "-framerate", "24", "-t", duration, "-i", str(img)]
     count = len(blueprint["shots"])
-    for item in voices:
+    for item in audio_inputs:
         cmd += ["-i", str(file_under(root, item["path"]))]
     cmd += ["-i", "private-captions.srt"]
     graph = []
@@ -305,24 +312,38 @@ def ffmpeg_args(config, blueprint, root, temp, camera_inputs=None):
     graph.append("[video]ass=filename=private-captions.ass,format=yuv420p,"
                  "setparams=range=limited:color_primaries=bt709:"
                  "color_trc=bt709:colorspace=bt709[vout]")
-    if not voices and config.get("intentional_silence") is not True:
-        raise ValueError("No voice: require explicit intentional_silence for visual review")
-    if voices:
-        for i, take in enumerate(voices):
+    if not audio_inputs and config.get("intentional_silence") is not True:
+        raise ValueError("No audio: require explicit intentional_silence for visual review")
+    if audio_inputs:
+        for i, take in enumerate(audio_inputs):
             delay = take["start_frame"] * 2000
+            # Draft sound stems are pre-approved for PRIVATE preview only and
+            # deliberately attenuated under spoken Hebrew. A voice remains
+            # unmodified; an unsupported/unsafe gain is never silently accepted.
+            if i >= len(voices):
+                gain = take.get("gain_db", -18)
+                if (type(gain) not in (int, float) or
+                        not math.isfinite(gain) or not -30 <= gain <= -12):
+                    raise ValueError("Private sound gain must be between -30 and -12 dB")
+                vol = f"volume={gain:.2f}dB,"
+            else:
+                vol = ""
             graph.append(f"[{count+i}:a]aresample=48000,aformat=channel_layouts=stereo,"
-                         f"adelay=delays={delay}S:all=1[a{i}]")
-        if len(voices) == 1:
+                         f"{vol}adelay=delays={delay}S:all=1[a{i}]")
+        if len(audio_inputs) == 1:
             mix = "[a0]"
         else:
-            mix = "".join(f"[a{i}]" for i in range(len(voices)))
-            mix += f"amix=inputs={len(voices)}:duration=longest:normalize=0,"
+            mix = "".join(f"[a{i}]" for i in range(len(audio_inputs)))
+            mix += f"amix=inputs={len(audio_inputs)}:duration=longest:normalize=0,"
         samples = blueprint["target_duration_frames"] * 2000
-        graph.append(mix + f"atrim=end_sample={samples},apad=whole_len={samples}[aout]")
+        # Additional headroom protection for a music/ambience + voice draft.
+        limiter = "alimiter=limit=0.9," if sounds else ""
+        graph.append(mix + limiter +
+                     f"atrim=end_sample={samples},apad=whole_len={samples}[aout]")
     cmd += ["-filter_complex", ";".join(graph),
             "-map", "[vout]",
-            *(["-map", "[aout]"] if voices else ["-an"]),
-            "-map", f"{count+len(voices)}:s:0",
+            *(["-map", "[aout]"] if audio_inputs else ["-an"]),
+            "-map", f"{count+len(audio_inputs)}:s:0",
             "-frames:v", str(blueprint["target_duration_frames"]), "-r", "24",
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
             "-pix_fmt", "yuv420p", "-profile:v", "high",
