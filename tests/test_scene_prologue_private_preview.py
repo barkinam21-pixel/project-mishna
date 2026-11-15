@@ -138,7 +138,7 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         self.assertFalse(report["release_authorized"])
         vtt = (self.root / "private-media/full-91s.vtt").read_text(encoding="utf-8")
         srt = (self.root / "private-media/full-91s.srt").read_text(encoding="utf-8")
-        self.assertTrue(vtt.startswith("WEBVTT\\n"))
+        self.assertTrue(vtt.startswith("WEBVTT\n"))
         self.assertEqual(vtt.count(" --> "), 15)
         self.assertEqual(srt.count(" --> "), 15)
         for i in range(1, 16):
