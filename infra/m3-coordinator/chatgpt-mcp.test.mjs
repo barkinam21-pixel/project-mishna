@@ -35,6 +35,8 @@ async function connection(h){
   const verifier='v'.repeat(64),challenge=Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier))).toString('base64url');
   const query=new URLSearchParams({response_type:'code',client_id:client.client_id,redirect_uri:client.redirect_uris[0],scope:'mishnah:control',state:'test-state',code_challenge:challenge,code_challenge_method:'S256',resource:ORIGIN+'/mcp'});
   const a=await h.fetch('/authorize?'+query);assert.equal(a.status,200,await a.clone().text());
+  // no-referrer makes browser form POST Origin null and blocks real consent.
+  assert.equal(a.headers.get('Referrer-Policy'),'strict-origin');
   const html=await a.text(),id=/name="pending_id" value="([a-f0-9]+)"/.exec(html)[1],handle=/name="handle" value="([^"]+)"/.exec(html)[1];
   const cookies=a.headers.getSetCookie().map(s=>s.split(';')[0]).join('; ');
   return {client,verifier,id,handle,cookies};
@@ -85,6 +87,7 @@ test('OAuth cannot approve without signed owner or reuse expired pending ID',asy
 test('foreign Origin and oversized streaming bodies fail before OAuth state or commands',async()=>{
  const h=harness();try{
   let r=await h.fetch('/mcp',{method:'POST',headers:{Origin:'https://untrusted.example'},body:'{}'});assert.equal(r.status,403);
+  r=await h.fetch('/authorize',{method:'POST',headers:{Origin:'null'},body:''});assert.equal(r.status,403);
   r=await h.fetch('/mcp',{method:'POST',body:'x'.repeat(32769)});assert.equal(r.status,413);
   assert.equal(h.storage('M3-CHATGPT-AUTH-V1').sql.exec("SELECT name FROM sqlite_master WHERE name='chatgpt_oauth'").toArray().length,0);
  }finally{h.close();}
