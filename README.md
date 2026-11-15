@@ -1,5 +1,22 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## 2026-11-15 — 15-shot owner reference selection (offline, no inference)
+
+`tools/scene_reference_routing.py` now consumes the existing **SHA-pinned owner-private reference ZIP** plus the **existing** 15-shot dawn packet and existing Cloudflare **prepare-shaped** previews, and chooses 2–4 verified original reference stills for each `EP-P01–15` shot. It verifies private restored bytes and per-shot cast, positions, camera axis and dawn phase, locks a reference-aware *future* cache key and produces a private review-only plan. REF01 locks identities/style; REF03 rear/OTS; REF04 landscape; REF05/06/07 conversation and expressions. REF02 collage moodboard, private MP4s and **rejected sunset OPN02/03** are excluded from provider-conditioning candidates. Existing provider `spec.references` and live authorization are **unchanged**. No generated image, backend call, license approval or charge.
+
+Owner-private one-command offline plan **after** acquiring the private ZIP and pinned historic legacy template in the private workspace:
+
+```bash
+python -m tools.scene_reference_routing \\
+  --root . \\
+  --legacy-template reviewed-runtime/episodes/berakhot-01-01/comfy-opening-images.json \\
+  --bundle /private/owner/MISHNAH_REFERENCE_MASTER_BUNDLE_V1.zip \\
+  --restore-private
+```
+
+The optional `--restore-private` writes **only** to `private-media/` after exact bundle validation; by default the command expects an already verified private restore and performs no writes. CLI prints selected **reference names and counts**, never image bytes or private Drive IDs. It is an offline **reference routing** check, not real Cloudflare preparation, inference, accepted-image cache, licensed usage or a production film. A separate owner-scoped authenticated Drive fetch remains necessary for a fully unattended run. Preserve the CLOSED generation safety gate and do not use public CI to fetch owner media.
+
+
 ## 2026-11-15 — PRIVATE visual reference master RESTORED (owner upload, NOT generated here)
 
 **Do not say “reference images are missing” without consulting this durable record first.** The user's 8 uploaded images contain **7 unique JPEG-encoded photos** (one exact duplicate), plus two existing private MP4s. Historic original **OPN02 and OPN03** were also recovered by SHA-256 against the recorded Cloudflare results (they remain *unapproved sunset candidates*). The entire immutable **11-media** private reference master has been uploaded to both:
