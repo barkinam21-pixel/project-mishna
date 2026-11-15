@@ -90,8 +90,12 @@ async function signedConnection(request,env) {
   const key=await crypto.subtle.importKey('raw',hex(env.M3_GATEWAY_HMAC_KEY),{name:'HMAC',hash:'SHA-256'},false,['verify']);
   if(!await crypto.subtle.verify('HMAC',key,hex(sig),encoder.encode('POST\n/m3/v1/connection\n'+stamp+'\n'+raw)))return reply({error:'UNAUTHORIZED'},401);
   const v=JSON.parse(raw);
-  if(Object.keys(v).sort().join(',')!=='operation,owner,pending_id'||v.owner!==OWNER||v.operation!=='approve'||!/^[a-f0-9]{32}$/.test(v.pending_id||''))return reply({error:'SCOPE_INVALID'},403);
-  return reply(await env.M3_SCENE_RESERVATION.getByName('M3-CHATGPT-AUTH-V1').chatgptAuth('approvePending',{id:v.pending_id}));
+  if(v.owner!==OWNER)return reply({error:'SCOPE_INVALID'},403);
+  if(v.operation==='approve'&&Object.keys(v).sort().join(',')==='operation,owner,pending_id'&&/^[a-f0-9]{32}$/.test(v.pending_id||''))
+    return reply(await env.M3_SCENE_RESERVATION.getByName('M3-CHATGPT-AUTH-V1').chatgptAuth('approvePending',{id:v.pending_id}));
+  if(['check','result'].includes(v.operation)&&Object.keys(v).sort().join(',')==='operation,owner,request_id'&&/^[a-f0-9]{32}$/.test(v.request_id||''))
+    return reply(await env.M3_SCENE_RESERVATION.getByName('M3-CHATGPT-CONNECTION-JOBS-V1').chatgptJob(v.operation==='check'?'enqueue':'get',v.request_id));
+  return reply({error:'SCOPE_INVALID'},403);
 }
 
 export async function chatgptRequest(request,env,ctx) {
