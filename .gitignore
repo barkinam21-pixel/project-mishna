@@ -3,3 +3,4 @@ __pycache__/
 private-media/
 # Private fal.ai references, candidate images and locally stored request ledgers
 local-output/
+node_modules/

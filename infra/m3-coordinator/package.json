@@ -1,0 +1,8 @@
+{
+  "name": "mishnah-m3-chatgpt-bridge",
+  "private": true,
+  "type": "module",
+  "scripts": {"build:mcp": "esbuild worker-gateway-candidate.mjs --bundle --format=esm --platform=browser --external:cloudflare:workers --outfile=../../../m3-build/worker.mjs"},
+  "dependencies": {"@cloudflare/workers-oauth-provider": "1.2.4"},
+  "devDependencies": {"esbuild": "0.25.12"}
+}

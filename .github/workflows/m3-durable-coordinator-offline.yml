@@ -39,7 +39,10 @@ jobs:
           node --check infra/m3-coordinator/signed-gateway-candidate.test.mjs
           node --check infra/m3-coordinator/worker-gateway-candidate.mjs
       - name: Real SQLite transaction and crash tests, no network
-        run: node --test infra/m3-coordinator/*.test.mjs
+        # Locked public dependencies; no owner data, credentials or inference.
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --prefix infra/m3-coordinator
+          node --test infra/m3-coordinator/*.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
