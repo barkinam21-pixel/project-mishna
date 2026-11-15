@@ -14,6 +14,11 @@ class P07PrivatePrepareTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         (self.root / 'private-media').mkdir()
+        # CI uses only in-memory synthetic transport. Exercise owner-mode logic
+        # without weakening the real GITHUB_ACTIONS production guard.
+        self.fake_owner_env = patch.dict(os.environ, {'GITHUB_ACTIONS': 'false'})
+        self.fake_owner_env.start()
+        self.addCleanup(self.fake_owner_env.stop)
         self.plan = {'private': 'test-only'}
         self.draft = {
             'shot_id': 'EP-P07',
