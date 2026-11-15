@@ -103,7 +103,7 @@ jobs:
 
   voice_sync_diagnostic:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -127,6 +127,11 @@ jobs:
           python -m pip install --disable-pip-version-check Pillow==12.0.0
           python -m unittest tests.test_scene_prologue_private_preview.ScenePrivatePreviewTests.test_two_shot_private_preview_real_ffmpeg_short_smoke -v
           python -m unittest tests.test_scene_prologue_private_preview.ScenePrivatePreviewTests.test_real_ffmpeg_sound_stem_two_shot_short_smoke -v
+      - name: Prove full 91-second EP-P01-15 MP4 + SRT/ASS/VTT (synthetic private-only)
+        timeout-minutes: 9
+        env:
+          MISHNAH_FULL_SCENE_FFMPEG_SMOKE: "1"
+        run: python -m unittest tests.test_scene_prologue_private_preview.ScenePrivatePreviewTests.test_full_fifteen_shot_91s_private_ffmpeg_smoke -v
       - name: Render Hebrew captions with sample-accurate synthetic sync markers
         run: python tools/sync_probe.py --out-dir build/sync-probe
       - name: Upload TEXT-ONLY voice and synchronization QA reports
