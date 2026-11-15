@@ -54,11 +54,13 @@ export async function signedOfflineGateway(request,env,{now=Date.now()}={}) {
        !/^[a-f0-9]{64}$/.test(env.M3_GATEWAY_HMAC_KEY) ||
        !env.M3_SCENE_RESERVATION?.getByName)
       return reply(503,{status:"DISABLED_NO_AUTHENTICATED_COORDINATOR"});
+    // Real private six-attempt Drive journal is ~49KB; offline limit stays32KB.
+    const maxBytes=production?2_000_000:MAX_BYTES;
     const length=request.headers.get("content-length");
-    if(length!==null && (!/^\d+$/.test(length) || Number(length)>MAX_BYTES))
+    if(length!==null && (!/^\d+$/.test(length) || Number(length)>maxBytes))
       return reply(413,{status:"REQUEST_TOO_LARGE"});
     const raw=await request.text();
-    if(te.encode(raw).length>MAX_BYTES)
+    if(te.encode(raw).length>maxBytes)
       return reply(413,{status:"REQUEST_TOO_LARGE"});
     const timestamp=request.headers.get("x-m3-timestamp");
     const signature=request.headers.get("x-m3-signature");
