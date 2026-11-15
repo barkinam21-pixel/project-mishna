@@ -76,8 +76,8 @@ class CloudflareOnlyMultipartTests(unittest.TestCase):
         self.assertTrue(all(max(shape) <= 511 for shape in report["reference_dimensions"]))
         self.assertEqual(report["request_body_sha256"], hashlib.sha256(out["body"]).hexdigest())
         self.assertEqual(out["endpoint_suffix"], "/ai/run/" + cloud.MODEL)
-        raw = ("MIME-Version: 1.0\\r\\nContent-Type: " +
-               out["content_type"] + "\\r\\n\\r\\n").encode() + out["body"]
+        raw = ("MIME-Version: 1.0\r\nContent-Type: " +
+               out["content_type"] + "\r\n\r\n").encode() + out["body"]
         msg = BytesParser(policy=default).parsebytes(raw)
         self.assertTrue(msg.is_multipart())
         fields = {p.get_param("name", header="content-disposition"): p
