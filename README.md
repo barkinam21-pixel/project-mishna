@@ -1,5 +1,13 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+
+## 2026-11-15 — Exact owner-only archive fetch primitive (read-only)
+
+`tools/scene_owner_archive_fetch.py` closes the **authenticated source-read handoff** between the private locator and the already verified offline reference router: `fetch_archive(private_locator, existing_authenticated_drive_client, private_media_dir)`. The caller supplies the **already-reviewed pinned runtime** Drive client (metadata/download); this code does not reimplement OAuth, expand scopes, access Cloudflare, or call any model. It resolves the exact Drive ZIP ID, validates the owner-only folder and file metadata, checks the immutable ZIP SHA and every internal member, then atomically caches the bytes under the owner-private `private-media/` directory. Cache resume avoids a duplicate download and refuses tampered or symlinked files rather than silently overwriting.
+
+The returned `archive_path` is for **owner-private internal use only**; print `safe_status(result)` instead. Never place the private locator, file IDs, media bytes, cached ZIP, or access URL in GitHub code, public CI logs or artifacts. Unit tests use a fake Drive and synthetic ZIP; the owner-held real ZIP was independently tested with an injected fake read and produced verified SHA `53acf04e…`, followed by a real cache hit with no second read. No real Drive API call was made by this new code, and it does **not** connect unattended hosted one-command execution by itself: the existing owner-scoped authenticated read-only environment must inject its Drive client and private locator, then call the existing offline `build_reference_plan`. All generation, rights and creative gates remain CLOSED.
+
+
 ## 2026-11-15 — 15-shot owner reference selection (offline, no inference)
 
 `tools/scene_reference_routing.py` now consumes the existing **SHA-pinned owner-private reference ZIP** plus the **existing** 15-shot dawn packet and existing Cloudflare **prepare-shaped** previews, and chooses 2–4 verified original reference stills for each `EP-P01–15` shot. It verifies private restored bytes and per-shot cast, positions, camera axis and dawn phase, locks a reference-aware *future* cache key and produces a private review-only plan. REF01 locks identities/style; REF03 rear/OTS; REF04 landscape; REF05/06/07 conversation and expressions. REF02 collage moodboard, private MP4s and **rejected sunset OPN02/03** are excluded from provider-conditioning candidates. Existing provider `spec.references` and live authorization are **unchanged**. No generated image, backend call, license approval or charge.
