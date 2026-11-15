@@ -60,6 +60,8 @@ class M3ProbeTests(unittest.TestCase):
         self.assertFalse(out["authorization_to_generate"])
         self.assertFalse(out["live_dispatch_enabled"])
         self.assertEqual(len(t.requests), 1)
+        self.assertEqual(t.requests[0][0].get_header("User-agent"),
+                         "Mishnah-M3-PrivateRunner/1")
         self.assertEqual(t.requests[0][0].get_method(), "POST")
         self.assertEqual(json.loads(t.requests[0][0].data)["operation"], "status")
 

@@ -38,6 +38,7 @@ def prepare_status(scene_id, key_hex, *, timestamp=None):
     signed = b"POST\n" + ENDPOINT.encode() + b"\n" + timestamp.encode("ascii") + b"\n" + body
     signature = hmac.new(bytes.fromhex(key_hex), signed, hashlib.sha256).hexdigest()
     return body, {"Content-Type": "application/json",
+                  "User-Agent": "Mishnah-M3-PrivateRunner/1",
                   "X-M3-Timestamp": timestamp, "X-M3-Signature": signature}
 
 

@@ -61,7 +61,39 @@
     "shot_id": "EP-P07",
     "goal": "original dawn rear master of the two historical-symbolic travelers, stable painted character identity",
     "brief_path": "docs/EP-P07-FIRST-DAWN-IMAGE-BRIEF.md",
-    "next_safe_operation": "Finish a deterministic private provider-conditioning packet and mock Cloudflare.prepare for EP-P07, before any fresh request-specific provider authorization",
+    "next_safe_operation": "Commission a permanent owner-private executor with existing scoped Drive/Cloudflare credentials and durable outbox; reuse tools/m3_production_runner.py. Existing HMAC key access and hosted signed status/reset are solved. Do not run private art in public Actions or falsely enable production config to test.",
     "cost_and_generation_this_checkpoint": 0
-  }
+  },
+  "operational_checkpoint": {
+    "date": "2026-11-15",
+    "cloud_worker": "mishnah-m3-coordinator-staging",
+    "restored_deployment": "592f0ee02f784116b801797a0468378a",
+    "hmac_key_rotated": false,
+    "production_config_present": false,
+    "production_baseline_imported": false,
+    "permanent_private_executor_commissioned": false,
+    "new_provider_calls": 0,
+    "new_p07_images": 0,
+    "next_blocker": "Existing private Drive/Cloudflare executor credentials are available to the legacy Actions path but not to a commissioned permanent private executor. This temporary commissioning host has the HMAC backup, not the other two credentials."
+  },
+  "verified_operational_facts": [
+    {
+      "key": "m3_existing_key_recovered_and_signed_production_status_verified",
+      "value": true,
+      "evidence": "2026-11-15: existing owner-private credential file reused without rotation; live offline canary200 OFFLINE_COMPLETE and production200 PRODUCTION_NOT_INITIALIZED. See Issue77 commissioning handoff following PR117.",
+      "scope": "The credential-access problem on this commissioning host is SOLVED; production dispatch remains separately closed. Never print the key or ask owner to recreate it."
+    },
+    {
+      "key": "m3_hosted_canary_process_reset_recovery_verified",
+      "value": true,
+      "evidence": "2026-11-15: Cloudflare ctx.abort on exact completed synthetic canary after await storage.sync(); failing triggering request followed by200 OFFLINE_COMPLETE; original source restored in deployment592f0ee02f784116b801797a0468378a.",
+      "scope": "Actual hosted canary process reset and preserved existing SQL state. NOT a production image/Drive recovery or a full private persistent executor."
+    },
+    {
+      "key": "p07_atomic_production_adapter_implemented",
+      "value": true,
+      "evidence": "Merged PR116 fbec1fce74b8d68c88eb065689144f95c1bf399a and PR117 9fbc60a92ad7c8635585ee6b2588b59340f8ccd5; existing runner, production ledger, receipt and delivery pipeline.",
+      "scope": "Do not rebuild or call the adapter missing. Local injected-transport integration passed previously; hosted signed status now verified, real end-to-end delivery remains uncommissioned."
+    }
+  ]
 }
