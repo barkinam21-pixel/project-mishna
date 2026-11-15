@@ -79,10 +79,11 @@ class ScenePrivatePreviewTests(unittest.TestCase):
                    "image": None, "media_status": "MISSING_OR_UNAPPROVED_SLATE"}
                   for i in (1, 2)]
         plan = {"scene_id": "ACT1-PROLOGUE", "preview_key": "f"*64,
-                "total_frames": 48, "shots": slates, "voices": [],
+                "total_frames": 48, "shots": slates, "voices": [], "sounds": [],
                 "verified_private_preview_images": 0,
                 "missing_or_unapproved_images": 2,
-                "verified_hebrew_voice_clips": 0}
+                "verified_hebrew_voice_clips": 0,
+                "verified_private_sound_stems": 0}
         with patch.object(preview, "build_plan", return_value=plan):
             report = render_private_draft(self.root, "private-media/smoke.mp4")
             self.assertEqual(report["status"], "PRIVATE_DRAFT_TECH_PASS_NOT_ART_OR_SOURCE_APPROVAL")
@@ -94,6 +95,16 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             self.assertTrue((self.root / "private-media/smoke.srt").is_file())
             cached = render_private_draft(self.root, "private-media/smoke.mp4")
             self.assertTrue(cached["cache_hit"])
+            srt = self.root / "private-media/smoke.srt"
+            original = srt.read_bytes()
+            srt.write_text("TAMPERED SUBTITLE", encoding="utf-8")
+            with self.assertRaisesRegex(SceneBlocked, "PREVIEW_CACHED_OUTPUT_CHANGED"):
+                render_private_draft(self.root, "private-media/smoke.mp4")
+            srt.write_bytes(original)
+            ass = self.root / "private-media/smoke.ass"
+            ass.unlink()
+            with self.assertRaisesRegex(SceneBlocked, "PREVIEW_PARTIAL_OUTPUT_EXISTS"):
+                render_private_draft(self.root, "private-media/smoke.mp4")
 
     def test_unknown_duplicate_legacy_or_outside_bindings_blocked(self):
         entry = {"shot_id": "OPN02", "asset_key": self.first["asset_key"]}
@@ -158,6 +169,88 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             _private_path(self.root, "../../private-media/image.png")
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_PRIVATE_MEDIA_PATH_REQUIRED"):
             render_private_draft(self.root, "public-preview.mp4")
+
+    def test_reviewed_sound_spot_requires_exact_local_wav_rights_and_sample_alignment(self):
+        import wave
+        from tools.scene_factory import file_sha
+        spot = self.first["sound_spotting"][0]
+        wav_path = self.root / "private-media/reviewed-synthetic-foley.wav"
+        with wave.open(str(wav_path), "wb") as sound:
+            sound.setnchannels(1)
+            sound.setsampwidth(2)
+            sound.setframerate(48000)
+            sound.writeframes(b"\\x10\\x27" * 4000)
+        entry = {
+            "shot_id": self.first["shot_id"],
+            "spot_id": spot["id"],
+            "kind": "foley",
+            "path": "private-media/reviewed-synthetic-foley.wav",
+            "sha256": file_sha(wav_path),
+            "start_sample": spot["start_sample"],
+            "end_sample": spot["start_sample"] + 4000,
+            "gain_db": -20,
+            "private_preview_rights_verified": True,
+            "reviewed_for_private_preview": True,
+            "license": "Self-authored synthetic test only",
+            "rights_evidence": "Test fixture generated in private TemporaryDirectory",
+        }
+        baseline = build_plan(self.root)
+        planned = build_plan(self.root, {"sounds": [entry]})
+        self.assertEqual(planned["verified_private_sound_stems"], 1)
+        self.assertEqual(planned["verified_hebrew_voice_clips"], 0)
+        self.assertNotEqual(planned["preview_key"], baseline["preview_key"])
+        self.assertEqual(planned["sounds"][0]["start_frame"], spot["start_sample"] // 2000)
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_DUPLICATE_SOUND_BINDING"):
+            build_plan(self.root, {"sounds": [entry, entry]})
+        for field, wrong, error in (
+            ("sha256", "0" * 64, "PREVIEW_SOUND_BYTES_NOT_VERIFIED"),
+            ("gain_db", 0, "PREVIEW_SOUND_GAIN_INVALID"),
+            ("reviewed_for_private_preview", False, "PREVIEW_SOUND_RIGHTS_OR_REVIEW_MISSING"),
+            ("private_preview_rights_verified", False, "PREVIEW_SOUND_RIGHTS_OR_REVIEW_MISSING"),
+            ("spot_id", "OPN02", "PREVIEW_SOUND_SPOT_NOT_IN_SCENE"),
+            ("end_sample", entry["end_sample"] + 1, "PREVIEW_SOUND_SPOTTING_TIMING_INVALID"),
+        ):
+            corrupt = dict(entry, **{field: wrong})
+            with self.subTest(field=field), self.assertRaisesRegex(SceneBlocked, error):
+                build_plan(self.root, {"sounds": [corrupt]})
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_UNSUPPORTED_MEDIA_BINDING"):
+            build_plan(self.root, {"unauthorized_media": []})
+
+    def test_real_ffmpeg_sound_stem_two_shot_short_smoke(self):
+        if not all(shutil.which(x) for x in ("ffmpeg", "ffprobe", "fc-match")):
+            self.skipTest("FFmpeg/font tooling unavailable")
+        import wave
+        from unittest.mock import patch
+        import tools.scene_prologue_private_preview as preview
+        wav_path = self.root / "private-media/synthetic-test-ambience.wav"
+        with wave.open(str(wav_path), "wb") as sound:
+            sound.setnchannels(1)
+            sound.setsampwidth(2)
+            sound.setframerate(48000)
+            sound.writeframes(b"\\x10\\x27" * 24000)
+        slates = [{"shot_id": f"EP-P{i:02d}", "start_frame": (i-1)*24,
+                   "end_frame": i*24, "duration_frames": 24,
+                   "purpose": "לוח בדיקת סאונד",
+                   "source_layer": "symbolic_dramatization",
+                   "image": None, "media_status": "MISSING_OR_UNAPPROVED_SLATE"}
+                  for i in (1, 2)]
+        plan = {"scene_id": "ACT1-PROLOGUE", "preview_key": "d"*64,
+                "total_frames": 48, "shots": slates, "voices": [],
+                "sounds": [{"path": "private-media/synthetic-test-ambience.wav",
+                            "start_frame": 0, "gain_db": -18}],
+                "verified_private_preview_images": 0,
+                "missing_or_unapproved_images": 2,
+                "verified_hebrew_voice_clips": 0,
+                "verified_private_sound_stems": 1}
+        with patch.object(preview, "build_plan", return_value=plan):
+            report = render_private_draft(self.root, "private-media/audio-smoke.mp4")
+            self.assertTrue((self.root / "private-media/audio-smoke.mp4").is_file())
+            self.assertEqual(report["verified_private_sound_stems"], 1)
+            self.assertTrue(report["voice_missing"])
+            self.assertFalse(report["placeholder_silence"])
+            self.assertEqual(report["provider_calls"], 0)
+            self.assertTrue(render_private_draft(
+                self.root, "private-media/audio-smoke.mp4")["cache_hit"])
 
 
 if __name__ == "__main__":
