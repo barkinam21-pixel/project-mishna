@@ -11,7 +11,8 @@ from pathlib import Path
 from tools.scene_factory import SceneBlocked
 from tools.scene_production_packet import build_packet
 from tools.scene_prologue_private_preview import (
-    SCENE, _private_path, build_plan, render_private_draft,
+    SCENE, _private_path, _reject_previously_rejected_media,
+    build_plan, render_private_draft,
 )
 from tools.private_proof_assembler import ffmpeg_args
 
@@ -23,7 +24,8 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(prefix="mishna-draft-fixture-")
         self.root = Path(self.tmp.name)
         scene = json.loads((ROOT / SCENE).read_text(encoding="utf-8"))
-        paths = [SCENE, scene["bible"]["path"], scene["script"]["path"]]
+        paths = [SCENE, scene["bible"]["path"], scene["script"]["path"],
+                 "episodes/berakhot-01-01/trials.json"]
         for name in paths:
             output = self.root / name
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -251,6 +253,22 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             self.assertEqual(report["provider_calls"], 0)
             self.assertTrue(render_private_draft(
                 self.root, "private-media/audio-smoke.mp4")["cache_hit"])
+
+    def test_known_rejected_legacy_image_and_voice_cannot_be_reaccepted(self):
+        history = json.loads((self.root / "episodes/berakhot-01-01/trials.json").read_text(
+            encoding="utf-8"))
+        rejected_image = history["trials"][0]["image_sha256"]
+        rejected_voice = next(x["sha256"] for x in history["voice_trials"]
+                              if x["status"] == "rejected_by_user")
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_KNOWN_REJECTED_IMAGE"):
+            _reject_previously_rejected_media(self.root, rejected_image, "image")
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_KNOWN_REJECTED_VOICE"):
+            _reject_previously_rejected_media(self.root, rejected_voice, "voice")
+        _reject_previously_rejected_media(self.root, "f" * 64, "image")
+        history_file = self.root / "episodes/berakhot-01-01/trials.json"
+        history_file.unlink()
+        with self.assertRaises((OSError, SceneBlocked)):
+            _reject_previously_rejected_media(self.root, "f" * 64, "image")
 
 
 if __name__ == "__main__":
