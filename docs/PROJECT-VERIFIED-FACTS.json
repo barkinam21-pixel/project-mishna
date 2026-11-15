@@ -95,5 +95,23 @@
       "evidence": "Merged PR116 fbec1fce74b8d68c88eb065689144f95c1bf399a and PR117 9fbc60a92ad7c8635585ee6b2588b59340f8ccd5; existing runner, production ledger, receipt and delivery pipeline.",
       "scope": "Do not rebuild or call the adapter missing. Local injected-transport integration passed previously; hosted signed status now verified, real end-to-end delivery remains uncommissioned."
     }
-  ]
+  ],
+  "chatgpt_mcp_acceptance_2026_11_15": {
+    "status": "VERIFIED_IN_ORDINARY_CHAT",
+    "plugin_id": "plugin_asdk_app_6af9c90e4e0c8191a25bbdc1910e7f2a",
+    "chat_url": "https://chatgpt.com/c/6af9caad-c8d0-83ed-9f35-f2bc290e7b55",
+    "request_id": "a716f42b6d354ff390f21e742c7b9372",
+    "result": "COMPLETE",
+    "inference_requests": 0,
+    "allowed_tools": [
+      "mishnah_status",
+      "mishnah_check_connection",
+      "mishnah_job_result"
+    ],
+    "worker_deployment": "59eb024f18994d1b9f9fc3c146acca4f",
+    "image_generation_authorized": false,
+    "permanent_image_executor_ready": false,
+    "private_drive_credential_mounted": false,
+    "next_task": "Commission existing Python image executor on an owner-private persistent host using existing credentials, without exporting secrets through chat or public Actions. Credential relocation/access changes require specific authorization."
+  }
 }
