@@ -42,7 +42,7 @@ def _reference_bytes(ref, root, index):
         raise P07CloudflareOnlyBlocked("P07_PRIVATE_REFERENCE_UNSAFE")
     original = path.read_bytes()
     if (hashlib.sha256(original).hexdigest() != ref["sha256"]
-        or not original.startswith(b"\\xff\\xd8\\xff")):
+        or not original.startswith(b"\xff\xd8\xff")):
         raise P07CloudflareOnlyBlocked("P07_ORIGINAL_IMAGE_SHA_MISMATCH")
     try:
         from PIL import Image, UnidentifiedImageError
@@ -64,7 +64,7 @@ def _reference_bytes(ref, root, index):
         raise
     except (OSError, ValueError, UnidentifiedImageError) as exc:
         raise P07CloudflareOnlyBlocked("P07_REFERENCE_JPEG_DECODE_FAILED") from exc
-    if (not reduced.startswith(b"\\xff\\xd8\\xff") or
+    if (not reduced.startswith(b"\xff\xd8\xff") or
         len(reduced) > MAX_JPEG_BYTES):
         raise P07CloudflareOnlyBlocked("P07_REFERENCE_MODEL_INPUT_TOO_LARGE")
     return reduced, shape
@@ -131,16 +131,16 @@ def compile_cloudflare_only(draft, owner_root):
     boundary = "mishnah-p07-" + check[:28]
     body = bytearray()
     def add(name, value, *, filename=None, mime=None):
-        head = '--' + boundary + '\\r\\nContent-Disposition: form-data; name="' + name + '"'
+        head = '--' + boundary + '\r\nContent-Disposition: form-data; name="' + name + '"'
         if filename is not None:
             head += '; filename="' + filename + '"'
-        head += '\\r\\n'
+        head += '\r\n'
         if mime is not None:
-            head += 'Content-Type: ' + mime + '\\r\\n'
-        head += '\\r\\n'
+            head += 'Content-Type: ' + mime + '\r\n'
+        head += '\r\n'
         body.extend(head.encode("ascii"))
         body.extend(value if isinstance(value, bytes) else str(value).encode("utf-8"))
-        body.extend(b"\\r\\n")
+        body.extend(b"\r\n")
     add("prompt", prompt)
     add("width", 1024)
     add("height", 576)
@@ -149,7 +149,7 @@ def compile_cloudflare_only(draft, owner_root):
     for index, (jpeg, _dims) in enumerate(jpeg_and_shapes):
         add("input_image_" + str(index), jpeg,
             filename="private-reference-" + str(index) + ".jpg", mime="image/jpeg")
-    body.extend(("--" + boundary + "--\\r\\n").encode("ascii"))
+    body.extend(("--" + boundary + "--\r\n").encode("ascii"))
     raw = bytes(body)
     report = {
         "status": "CLOUDFLARE_ONLY_REAL_MULTIPART_PREPARED_NOT_SUBMITTED",
