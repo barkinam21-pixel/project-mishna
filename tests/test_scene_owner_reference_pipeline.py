@@ -17,6 +17,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class OwnerPrivateSceneIntegrationTests(TestCase):
     def setUp(self):
+        # Synthetic FakeDrive only: emulate an owner host without weakening
+        # the production public-Actions guard. The explicit true test overrides.
+        self.owner_host_fixture = mock.patch.dict(os.environ, {'GITHUB_ACTIONS': 'false'})
+        self.owner_host_fixture.start()
+        self.addCleanup(self.owner_host_fixture.stop)
         self.temp = TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
