@@ -161,3 +161,17 @@ test('production route is separately signed, isolated, closed without protected 
  const signature=createHmac('sha256',Buffer.from(SECRET,'hex')).update('POST\n/m3/v1/production\n'+TIMESTAMP+'\n'+reserve).digest('hex');
  assert.equal((await signedOfflineGateway(new Request('https://example.invalid/m3/v1/production',{method:'POST',body:reserve,headers:{'x-m3-timestamp':TIMESTAMP,'x-m3-signature':signature}}),h.env,{now:NOW})).status,409);
 });
+
+
+test('real-size legacy history fits production admission, offline request cap unchanged',async t=>{
+ const h=harness();t.after(()=>h.db.close());await h.ready;
+ h.env.M3_SCENE_RESERVATION.getByName=()=>h.stub;
+ const {createHmac}=await import('node:crypto');
+ for(const [route,size,expected] of [['production',60000,409],['production',2000001,413],['offline',60000,413]]){
+  const path='/m3/v1/'+route;
+  const body=JSON.stringify({version:1,owner:OWNER,scene_id:'ACT1-PROLOGUE',operation:'bootstrap',payload:{history_json:'x'.repeat(size)}});
+  const signature=createHmac('sha256',Buffer.from(SECRET,'hex')).update('POST\n'+path+'\n'+TIMESTAMP+'\n'+body).digest('hex');
+  const result=await signedOfflineGateway(new Request('https://example.invalid'+path,{method:'POST',body,headers:{'x-m3-timestamp':TIMESTAMP,'x-m3-signature':signature}}),h.env,{now:NOW});
+  assert.equal(result.status,expected);
+ }
+});
