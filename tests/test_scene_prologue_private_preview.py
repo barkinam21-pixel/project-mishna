@@ -198,6 +198,64 @@ class ScenePrivatePreviewTests(unittest.TestCase):
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_IMAGE_SCOPE_OR_RIGHTS"):
             build_plan(self.root, {"images": [entry]})
 
+    def test_auto_receipt_imports_p07_directly_into_existing_video_plan(self):
+        from PIL import Image
+        from tools.scene_factory import file_sha
+        img = self.root / "private-media/p07-original.png"
+        Image.new("RGB", (48, 48), (60, 85, 105)).save(img)
+        job = self.packet["jobs"][6]
+        self.assertEqual(job["shot_id"], "EP-P07")
+        folder = self.root / "private-media/scene-image-receipts/ACT1-PROLOGUE"
+        folder.mkdir(parents=True)
+        receipt = folder / "EP-P07.json"
+        entry = {
+            "shot_id": "EP-P07", "source_asset_id": "EP-P07",
+            "asset_key": job["asset_key"], "time_of_day": "dawn",
+            "path": "private-media/p07-original.png", "sha256": file_sha(img),
+            "accepted_for_private_preview": True,
+            "rights_verified_for_private_preview": True,
+            "rights_evidence": "OFFLINE TEST: self-authored synthetic PNG",
+        }
+        receipt.write_text(json.dumps(entry), encoding="utf-8")
+        result = build_plan(self.root, auto_images=True)
+        self.assertEqual(result["verified_private_preview_images"], 1)
+        self.assertEqual(result["missing_or_unapproved_images"], 14)
+        self.assertEqual(result["shots"][6]["media_status"], "VERIFIED_PRIVATE_PREVIEW_ONLY")
+        self.assertEqual(result["preview_key"],
+                         build_plan(self.root, {"images": [entry]})["preview_key"])
+        self.assertEqual(result["original_image_inference_requests"], 0)
+        self.assertFalse(result["editorial_source_rights_approval"])
+        receipt.write_text(json.dumps(dict(entry, accepted_for_private_preview=False)),
+                           encoding="utf-8")
+        self.assertEqual(build_plan(self.root, auto_images=True)
+                         ["missing_or_unapproved_images"], 15)
+        receipt.write_text(json.dumps(entry), encoding="utf-8")
+        img.write_bytes(b"BAD-BYTES")
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_IMAGE_BYTES_NOT_VERIFIED"):
+            build_plan(self.root, auto_images=True)
+
+    def test_auto_receipts_reject_stale_key_and_symlinks(self):
+        folder = self.root / "private-media/scene-image-receipts/ACT1-PROLOGUE"
+        folder.mkdir(parents=True)
+        receipt = folder / "EP-P07.json"
+        stale = {"shot_id": "EP-P07", "asset_key": "0" * 64,
+                 "accepted_for_private_preview": True,
+                 "rights_verified_for_private_preview": True}
+        receipt.write_text(json.dumps(stale), encoding="utf-8")
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_RECEIPT_SHOT_OR_KEY_CHANGED"):
+            build_plan(self.root, auto_images=True)
+        receipt.write_text(json.dumps(dict(stale, rights_verified_for_private_preview=False)),
+                           encoding="utf-8")
+        self.assertEqual(build_plan(self.root, auto_images=True)
+                         ["verified_private_preview_images"], 0)
+        receipt.unlink()
+        receipt.symlink_to(self.root / "outside.json")
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_RECEIPT_SYMLINK"):
+            build_plan(self.root, auto_images=True)
+        receipt.unlink()
+        with self.assertRaisesRegex(SceneBlocked, "PREVIEW_MANUAL_AND_AUTO_IMAGES_CONFLICT"):
+            build_plan(self.root, {"images": [{"shot_id": "EP-P07"}]}, auto_images=True)
+
     def test_voice_requires_real_bound_script_and_private_license(self):
         entry = {"path": "private-media/voice.wav", "start_frame": 0, "end_frame": 24}
         with self.assertRaisesRegex(SceneBlocked, "PREVIEW_VOICE_SCRIPT_OR_RIGHTS"):
