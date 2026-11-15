@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -80,6 +81,69 @@ def _checked_voice(root, scene, item, total):
     return {"start_frame": start, "end_frame": end, "path": item["path"], "sha256": sha}
 
 
+def _checked_sound(root, item, spotting):
+    """Bind one licensed PRIVATE sound file to an authored EP-P spotting window.
+
+    A sound spot is editorial direction, not a recording or rights permission.
+    Its byte identity, sample timing, role and private review scope are checked.
+    """
+    if not isinstance(item, dict):
+        raise SceneBlocked("PREVIEW_SOUND_BINDING_INVALID")
+    spot = spotting.get(item.get("spot_id"))
+    if spot is None or item.get("shot_id") != spot["shot_id"]:
+        raise SceneBlocked("PREVIEW_SOUND_SPOT_NOT_IN_SCENE")
+    if (item.get("kind") not in ("ambience", "foley", "sfx", "music")
+            or item.get("private_preview_rights_verified") is not True
+            or item.get("reviewed_for_private_preview") is not True
+            or not isinstance(item.get("rights_evidence"), str)
+            or not item["rights_evidence"].strip()
+            or not isinstance(item.get("license"), str)
+            or item["license"].strip().casefold() in ("", "unknown", "none", "all rights reserved")):
+        raise SceneBlocked("PREVIEW_SOUND_RIGHTS_OR_REVIEW_MISSING")
+    start, end = item.get("start_sample"), item.get("end_sample")
+    if (type(start) is not int or type(end) is not int
+            or start != spot["start_sample"] or not start < end <= spot["end_sample"]
+            or start % SAMPLES_PER_FRAME or end % SAMPLES_PER_FRAME):
+        raise SceneBlocked("PREVIEW_SOUND_SPOTTING_TIMING_INVALID")
+    gain = item.get("gain_db", -18)
+    if type(gain) not in (int, float) or not math.isfinite(gain) or not -30 <= gain <= -12:
+        raise SceneBlocked("PREVIEW_SOUND_GAIN_INVALID")
+    path = _private_path(root, item.get("path"))
+    sha = item.get("sha256")
+    if (path.suffix.lower() != ".wav" or not isinstance(sha, str)
+            or len(sha) != 64 or not path.is_file() or file_sha(path) != sha):
+        raise SceneBlocked("PREVIEW_SOUND_BYTES_NOT_VERIFIED")
+    length, problem = private_proof_assembler.inspect_wav(path)
+    if problem or length > end-start:
+        raise SceneBlocked("PREVIEW_SOUND_PCM_OR_TIMING_INVALID")
+    return {"shot_id": spot["shot_id"], "spot_id": item["spot_id"],
+            "kind": item["kind"], "path": item["path"], "sha256": sha,
+            "start_frame": start // SAMPLES_PER_FRAME,
+            "end_frame": end // SAMPLES_PER_FRAME, "gain_db": gain}
+
+
+def _render_cache_key(plan):
+    """An output cache is valid only for the exact renderer, font and encoders."""
+    from tools.private_storyreel import font_path
+    dependencies = (
+        Path(__file__), Path(private_proof_assembler.__file__),
+        Path(hebrew_captions.__file__), HERE / "tools/private_storyreel.py",
+    )
+    version_lines = []
+    for executable in ("ffmpeg", "ffprobe"):
+        version = subprocess.run([executable, "-version"], check=True,
+                                 capture_output=True, text=True, timeout=15).stdout.splitlines()
+        if not version:
+            raise SceneBlocked("PREVIEW_ENCODER_VERSION_UNKNOWN")
+        version_lines.append(version[0])
+    return digest({
+        "plan_key": plan["preview_key"],
+        "renderer_source_sha256": [file_sha(p) for p in dependencies],
+        "font_sha256": file_sha(Path(font_path())),
+        "encoder_versions": version_lines,
+    })
+
+
 def build_plan(root: Path, media: dict | None = None):
     """Exact v02 shot times; source/creative review never inferred from media."""
     root = Path(root).resolve()
@@ -94,8 +158,11 @@ def build_plan(root: Path, media: dict | None = None):
     media = {} if media is None else media
     if not isinstance(media, dict):
         raise SceneBlocked("PREVIEW_MEDIA_BINDINGS_INVALID")
+    if set(media) - {"images", "voices", "sounds"}:
+        raise SceneBlocked("PREVIEW_UNSUPPORTED_MEDIA_BINDING")
     images, voices = media.get("images", []), media.get("voices", [])
-    if not isinstance(images, list) or not isinstance(voices, list):
+    sounds = media.get("sounds", [])
+    if not all(isinstance(items, list) for items in (images, voices, sounds)):
         raise SceneBlocked("PREVIEW_MEDIA_BINDINGS_INVALID")
     ids = [j["shot_id"] for j in packet["jobs"]]
     mapping, hashes = {}, set()
@@ -114,6 +181,13 @@ def build_plan(root: Path, media: dict | None = None):
     voice_entries = [_checked_voice(root, scene, x, packet["duration_frames"]) for x in voices]
     if len({(x["path"], x["start_frame"]) for x in voice_entries}) != len(voice_entries):
         raise SceneBlocked("PREVIEW_DUPLICATE_VOICE_BINDING")
+    spots = {spot["id"]: dict(spot, shot_id=job["shot_id"])
+             for job in packet["jobs"] for spot in job["sound_spotting"]}
+    sound_entries = [_checked_sound(root, item, spots) for item in sounds]
+    if (len({x["spot_id"] for x in sound_entries}) != len(sound_entries)
+            or len({(x["path"], x["start_frame"]) for x in sound_entries}) != len(sound_entries)):
+        raise SceneBlocked("PREVIEW_DUPLICATE_SOUND_BINDING")
+    sound_entries.sort(key=lambda x: (x["start_frame"], x["spot_id"]))
     slots = []
     cursor = 0
     for job in packet["jobs"]:
@@ -130,7 +204,8 @@ def build_plan(root: Path, media: dict | None = None):
         })
         cursor = job["end_frame"]
     key = digest({"packet": packet["packet_sha256"], "bound_images": mapping,
-                  "voices": voice_entries, "renderer": "SCENE_V02_M2_DRAFT_V1"})
+                  "voices": voice_entries, "sounds": sound_entries,
+                  "renderer": "SCENE_V02_M2_DRAFT_V2_SOUND_STEMS"})
     return {
         "status": "PRIVATE_DRAFT_ASSEMBLY_PLAN_NOT_FILM", "scene_id": scene["id"],
         "packet_sha256": packet["packet_sha256"], "preview_key": key,
@@ -138,7 +213,8 @@ def build_plan(root: Path, media: dict | None = None):
         "verified_private_preview_images": len(mapping),
         "missing_or_unapproved_images": len(slots)-len(mapping),
         "verified_hebrew_voice_clips": len(voice_entries),
-        "voices": voice_entries,
+        "verified_private_sound_stems": len(sound_entries),
+        "voices": voice_entries, "sounds": sound_entries,
         "editorial_source_rights_approval": False,
         "original_image_inference_requests": 0,
         "external_cost_usd": 0, "workspace_usage": "unknown",
@@ -199,13 +275,20 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
     if not all(shutil.which(tool) for tool in ("ffmpeg", "ffprobe")):
         raise SceneBlocked("PREVIEW_FFMPEG_MISSING")
     plan = build_plan(root, media)
+    render_key = _render_cache_key(plan)
     report_path = target.with_suffix(".qa.json")
-    if target.exists() or report_path.exists():
-        if not target.is_file() or not report_path.is_file():
+    srt_path, ass_path = target.with_suffix(".srt"), target.with_suffix(".ass")
+    output_files = (target, report_path, srt_path, ass_path)
+    if any(p.exists() for p in output_files):
+        if not all(p.is_file() for p in output_files):
             raise SceneBlocked("PREVIEW_PARTIAL_OUTPUT_EXISTS")
         prior = json.loads(report_path.read_text(encoding="utf-8"))
-        if (prior.get("preview_key") != plan["preview_key"]
-                or prior.get("video_sha256") != file_sha(target)):
+        if (prior.get("status") != "PRIVATE_DRAFT_TECH_PASS_NOT_ART_OR_SOURCE_APPROVAL"
+                or prior.get("release_authorized") is not False
+                or prior.get("preview_key") != render_key
+                or prior.get("video_sha256") != file_sha(target)
+                or prior.get("caption_srt_sha256") != file_sha(srt_path)
+                or prior.get("caption_ass_sha256") != file_sha(ass_path)):
             raise SceneBlocked("PREVIEW_CACHED_OUTPUT_CHANGED")
         return dict(prior, cache_hit=True)
     with tempfile.TemporaryDirectory(prefix="scene-draft-", dir=target.parent) as directory:
@@ -220,7 +303,9 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
                            "path": str((work / name).relative_to(root))})
         voices = [{"start_frame": v["start_frame"], "path": v["path"]}
                   for v in plan["voices"]]
-        if not voices:
+        sound_takes = [{"start_frame": v["start_frame"], "path": v["path"],
+                        "gain_db": v["gain_db"]} for v in plan["sounds"]]
+        if not voices and not sound_takes:
             wav = work / "INTENTIONAL_SILENCE_NOT_NARRATION.wav"
             _silence_wav(wav, plan["total_frames"])
             voices.append({"start_frame": 0, "path": str(wav.relative_to(root))})
@@ -238,7 +323,7 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
             "shots": [{"id": x["shot_id"], "duration_frames": x["duration_frames"]}
                       for x in plan["shots"]],
         }
-        cfg = {"images": images, "voice_takes": voices}
+        cfg = {"images": images, "voice_takes": voices, "sound_takes": sound_takes}
         command = private_proof_assembler.ffmpeg_args(cfg, blueprint, root, work)
         subprocess.run(command, cwd=work, check=True,
                        capture_output=True, text=True, timeout=900)
@@ -247,21 +332,28 @@ def render_private_draft(root: Path, out: str, media: dict | None = None):
             raise SceneBlocked("PREVIEW_FFMPEG_QA_FAILED")
         report = {
             "status": "PRIVATE_DRAFT_TECH_PASS_NOT_ART_OR_SOURCE_APPROVAL",
-            "scene_id": plan["scene_id"], "preview_key": plan["preview_key"],
-            "video_sha256": file_sha(video), "frames": plan["total_frames"],
+            "scene_id": plan["scene_id"], "preview_key": render_key,
+            "plan_key": plan["preview_key"], "video_sha256": file_sha(video),
+            "caption_srt_sha256": file_sha(work / "private-captions.srt"),
+            "caption_ass_sha256": file_sha(work / "private-captions.ass"),
+            "frames": plan["total_frames"],
             "fps": 24, "verified_images": plan["verified_private_preview_images"],
             "slates_for_missing_images": plan["missing_or_unapproved_images"],
             "verified_hebrew_voice_clips": plan["verified_hebrew_voice_clips"],
-            "placeholder_silence": not bool(plan["voices"]),
+            "verified_private_sound_stems": plan["verified_private_sound_stems"],
+            "voice_missing": not bool(plan["voices"]),
+            "placeholder_silence": not bool(plan["voices"] or plan["sounds"]),
             "generated_original_images": 0, "provider_calls": 0,
             "external_cost_usd": 0, "release_authorized": False,
             "copyright_review_complete": False, "owner_scene_review_complete": False,
         }
         # Render is private and local; never upload or publish from this module.
         shutil.copy2(video, target)
+        shutil.copy2(work / "private-captions.srt", srt_path)
+        shutil.copy2(work / "private-captions.ass", ass_path)
+        # QA JSON is the last commit marker. A crash before it is PARTIAL,
+        # never a recoverable cache hit and never silently cleaned/deleted.
         report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-        shutil.copy2(work / "private-captions.srt", target.with_suffix(".srt"))
-        shutil.copy2(work / "private-captions.ass", target.with_suffix(".ass"))
         return dict(report, cache_hit=False)
 
 
