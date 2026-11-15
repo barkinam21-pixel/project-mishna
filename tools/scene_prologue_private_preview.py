@@ -85,6 +85,53 @@ def _checked_image(root, shot_id, asset_key, value):
     return path, sha
 
 
+
+def discover_private_image_receipts(root: Path, packet: dict):
+    """Collect shot images from a trusted owner-PRIVATE receipt directory.
+
+    Producers can write one immutable JSON receipt per completed EP-P shot;
+    the editor needs no hand-written 15-item media mapping. A receipt is NOT
+    permission: only individually accepted, rights-attested, SHA-verifiable
+    dawn assets pass through the existing _checked_image gate. Unapproved or
+    absent receipts remain slates. This function never writes or calls a model.
+    """
+    root = Path(root).resolve()
+    private = root / "private-media"
+    folder = private / "scene-image-receipts" / packet["scene_id"]
+    if (private.is_symlink() or (private / "scene-image-receipts").is_symlink()
+            or folder.is_symlink()):
+        raise SceneBlocked("PREVIEW_RECEIPT_DIRECTORY_SYMLINK")
+    if not folder.exists():
+        return []
+    if not folder.is_dir():
+        raise SceneBlocked("PREVIEW_RECEIPT_DIRECTORY_INVALID")
+    found = []
+    for job in packet["jobs"]:
+        sid = job["shot_id"]
+        receipt = folder / (sid + ".json")
+        if receipt.is_symlink():
+            raise SceneBlocked("PREVIEW_RECEIPT_SYMLINK:" + sid)
+        if not receipt.exists():
+            continue
+        if not receipt.is_file() or receipt.stat().st_size > 16384:
+            raise SceneBlocked("PREVIEW_RECEIPT_FILE_INVALID:" + sid)
+        try:
+            entry = json.loads(receipt.read_text(encoding="utf-8"))
+        except (ValueError, UnicodeError):
+            raise SceneBlocked("PREVIEW_RECEIPT_JSON_INVALID:" + sid) from None
+        if not isinstance(entry, dict):
+            raise SceneBlocked("PREVIEW_RECEIPT_OBJECT_REQUIRED:" + sid)
+        # Explicitly rejected/unreviewed generated art cannot become a cache hit.
+        if (entry.get("accepted_for_private_preview") is not True
+                or entry.get("rights_verified_for_private_preview") is not True):
+            continue
+        if entry.get("shot_id") != sid or entry.get("asset_key") != job["asset_key"]:
+            raise SceneBlocked("PREVIEW_RECEIPT_SHOT_OR_KEY_CHANGED:" + sid)
+        _checked_image(root, sid, job["asset_key"], entry)
+        found.append(entry)
+    return found
+
+
 def _checked_voice(root, scene, item, total):
     if not isinstance(item, dict):
         raise SceneBlocked("PREVIEW_VOICE_BINDING_INVALID")
@@ -172,7 +219,7 @@ def _render_cache_key(plan):
     })
 
 
-def build_plan(root: Path, media: dict | None = None):
+def build_plan(root: Path, media: dict | None = None, *, auto_images: bool = False):
     """Exact v02 shot times; source/creative review never inferred from media."""
     root = Path(root).resolve()
     scene = load(within(root, SCENE))
@@ -188,6 +235,12 @@ def build_plan(root: Path, media: dict | None = None):
         raise SceneBlocked("PREVIEW_MEDIA_BINDINGS_INVALID")
     if set(media) - {"images", "voices", "sounds"}:
         raise SceneBlocked("PREVIEW_UNSUPPORTED_MEDIA_BINDING")
+    if auto_images:
+        if media.get("images"):
+            raise SceneBlocked("PREVIEW_MANUAL_AND_AUTO_IMAGES_CONFLICT")
+        # Import accepted private renderer receipts; voice/sound are still
+        # supplied separately and remain subject to their own rights checks.
+        media = dict(media, images=discover_private_image_receipts(root, packet))
     images, voices = media.get("images", []), media.get("voices", [])
     sounds = media.get("sounds", [])
     if not all(isinstance(items, list) for items in (images, voices, sounds)):
@@ -295,14 +348,14 @@ def _silence_wav(path, frames):
         sound.writeframes(b"")
 
 
-def render_private_draft(root: Path, out: str, media: dict | None = None):
+def render_private_draft(root: Path, out: str, media: dict | None = None, *, auto_images: bool = False):
     root = Path(root).resolve()
     target = _private_path(root, out)
     if target.suffix.lower() != ".mp4" or not target.parent.is_dir():
         raise SceneBlocked("PREVIEW_OUTPUT_PRIVATE_MP4_DIRECTORY_REQUIRED")
     if not all(shutil.which(tool) for tool in ("ffmpeg", "ffprobe")):
         raise SceneBlocked("PREVIEW_FFMPEG_MISSING")
-    plan = build_plan(root, media)
+    plan = build_plan(root, media, auto_images=auto_images)
     render_key = _render_cache_key(plan)
     report_path = target.with_suffix(".qa.json")
     srt_path, ass_path = target.with_suffix(".srt"), target.with_suffix(".ass")
@@ -397,12 +450,14 @@ def main(argv=None):
     p.add_argument("--media", help="Local PRIVATE per-shot image, voice and sound binding JSON")
     p.add_argument("--out", default="private-media/scene-prologue-draft.mp4")
     p.add_argument("--render", action="store_true")
+    p.add_argument("--auto-images", action="store_true",
+                   help="Read only approved SHA-verified owner-private per-shot receipts; no manual image mapping")
     args = p.parse_args(argv)
     try:
         root = Path(args.root).resolve()
         media = load(_private_path(root, args.media)) if args.media else {}
-        result = (render_private_draft(root, args.out, media)
-                  if args.render else build_plan(root, media))
+        result = (render_private_draft(root, args.out, media, auto_images=args.auto_images)
+                  if args.render else build_plan(root, media, auto_images=args.auto_images))
         print(json.dumps(result if args.render else {
             k: v for k, v in result.items() if k != "shots"
         }, ensure_ascii=False, indent=2))
