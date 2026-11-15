@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "project": "barkinam21-pixel/project-mishna",
+  "recorded_on": "2026-11-15",
+  "owner_instruction": "Reuse confirmed evidence. Do not ask owner again for Cloudflare Free, previously verified private storage, or previously successful image generation. Continue with image quality, original dawn shot preparation and production; do not use TinyFish, Codex or Work as a required production step.",
+  "verified_reusable_facts": [
+    {
+      "key": "cloudflare_free_owner_confirmed",
+      "value": true,
+      "evidence": "Owner reconfirmed Cloudflare Workers Free in chat 2026-11-15; earlier Free dashboard screenshots documented in GitHub Issue #54 (2026-11-13)",
+      "scope": "account-plan observation, reusable unless plan materially changes"
+    },
+    {
+      "key": "cloudflare_model_successful_before",
+      "value": true,
+      "evidence": "Historical real OPN03 provider request succeeded 2026-11-13, Actions run 43519974519; see generation-safety.json and Issue #77",
+      "scope": "past technical feasibility, NOT authorization for another inference"
+    },
+    {
+      "key": "private_reference_archive_preserved",
+      "value": true,
+      "evidence": "#107 owner-only Drive + private ChatGPT Library, pinned bundle SHA256 53acf04ebdd0960d8adc5f0f2fbd75229857ea24eee6eab16bfa8c29d762f6ce",
+      "scope": "existing archive, NOT a blanket grant to use new model outputs"
+    },
+    {
+      "key": "private_scene_reference_code_prepared",
+      "value": true,
+      "evidence": "Merged PR #108, #109 and #110: offline 15-shot routing, authenticated owner-only Drive read adapter and private single-command preparation; 551 tests plus 11 environment skips in CI 43663417412",
+      "scope": "tested technical integration with synthetic Drive transport; live new-owner-host invocation not claimed"
+    },
+    {
+      "key": "prior_privacy_review_and_waiver_documented",
+      "value": true,
+      "evidence": "Issue #54 contains prior owner privacy-special-review waiver and successful owner-private Drive read; never broaden beyond previous scoped trial",
+      "scope": "historical decision, NOT proof of fresh model/reference-specific contractual rights"
+    }
+  ],
+  "current_permission": {
+    "source": "episodes/berakhot-01-01/generation-safety.json",
+    "meaning": "Per-attempt authorization CLOSED after used OPN03 ticket; not evidence that the Free plan or historic tests disappeared",
+    "reopen_from_historical_evidence_only": false,
+    "never_reuse_consumed_ticket": true
+  },
+  "retry_policy": {
+    "never_ask_owner_to_repeat": [
+      "Cloudflare Free dashboard screenshots or screenshots proving past Free plan",
+      "Previously established owner-only Drive folder and original reference uploads",
+      "Reproving that OPN03 generated an actual image on Cloudflare",
+      "Recreating merged #107–#110 code, archived image hashes or 91-second technical FFmpeg proof",
+      "Installing TinyFish, Codex or Work just to resume this production stack"
+    ],
+    "fresh_check_only_when_needed_for_new_external_request": [
+      "New exact inference request and consumed-ticket/reservation accounting",
+      "Request-time available quota and actual zero-charge guarantees if enforceable",
+      "New scene-specific model conditioning rights and privacy scope",
+      "Source and artistic approvals for final footage"
+    ],
+    "on_uncertainty": "Use existing evidence and connected tools first; report one precise unsatisfied gate, not a generic request to start all verification again"
+  },
+  "active_focus": {
+    "shot_id": "EP-P07",
+    "goal": "original dawn rear master of the two historical-symbolic travelers, stable painted character identity",
+    "brief_path": "docs/EP-P07-FIRST-DAWN-IMAGE-BRIEF.md",
+    "next_safe_operation": "Finish a deterministic private provider-conditioning packet and mock Cloudflare.prepare for EP-P07, before any fresh request-specific provider authorization",
+    "cost_and_generation_this_checkpoint": 0
+  }
+}

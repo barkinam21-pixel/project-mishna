@@ -1,5 +1,14 @@
 # מסע אל המשנה — אולפן איורים קולנועי
 
+## Never ask again for already verified Free / image generation / original references
+
+**Owner instruction 2026-11-15:** The project **has already succeeded at actual Cloudflare image generation**, the owner reconfirmed Workers Free, and reference media/Drive restoration were previously verified. Do **not** restart verification or ask the owner for the same screenshots/files in every chat. Read [durable verified state](docs/PROJECT-VERIFIED-FACTS.json) and the pure local checker `python -m tools.project_checkpoint` first. The **next artistic target** is the real 7-second [EP-P07 dawn rear-wide shot direction](docs/EP-P07-FIRST-DAWN-IMAGE-BRIEF.md) — not another generic proof of Cloudflare access. Keep working from merged #107–#110 and [Issue #77](https://github.com/barkinam21-pixel/project-mishna/issues/77).
+
+**Real next engineering step implemented offline:** `tools/scene_native_conditioning_preview.py` creates an EP-P07 **draft** Cloudflare-style input with exactly the three owner-private SHA-verified image references (`REF01`, `REF03`, `REF04`), replacing legacy OPN references **only in a non-executable preview**. It preserves dawn, original cast positions, closed gates, altered spec seed, no ticket replay and no model calls. Synthetic regression tests check reference hashes, tampering, rights and camera axis. Actual provider inference remains separate.
+
+The separate, **consumed one-shot authorization** file `generation-safety.json` remains closed; it does **not** erase the past Free/account/Drive success. Never automatically reopen it, replay prior tickets, or infer production rights from uploaded references. Only a genuinely new inference action requires its own changed/short-lived request-specific checks. No new inference, billing, deployments, permission or secret modifications are authorized by this document. No TinyFish, no required Codex/Work steps.
+
+
 ## 2026-11-15 — One owner-private read-only command: Drive ZIP → 15 directed shots
 
 `tools/scene_owner_reference_pipeline.py` now joins the **already merged** #109 exact-ID private Drive archive reader to the **already merged** #108 15-shot reference router. It uses the **existing pinned historic Drive client**, not new OAuth, Cloudflare, inference or a hosted worker. The trusted Drive client executes from an unmodified checkout of `80ba1559b785855a1f9f4cbd90083fd0228eec96` with its source Git-blob SHA verified. It checks the owner-only Drive ZIP and folder, downloads once when cache is missing, verifies whole ZIP and internal SHA, atomically restores `private-media/`, applies 15 dawn shot reference roles and stores a **private hash-addressed, review-only** scene plan. On rerun with valid cache, there is **no second Drive download**. It prints only safe summary fields, never private file IDs, paths or media bytes.
