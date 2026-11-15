@@ -9,7 +9,7 @@ from tools import scene_reference_archive as archive
 from tools import scene_reference_routing as route
 from tools import scene_owner_archive_fetch as fetcher
 from tools import scene_owner_reference_pipeline as pipeline
-from tests.test_scene_reference_archive import ReferenceArchiveTests
+from tests.test_scene_reference_routing import VisualReferenceRoutingTests
 from tests.test_scene_owner_archive_fetch import FakeDrive, fake_locator
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +48,7 @@ class OwnerPrivateSceneIntegrationTests(TestCase):
             'available_backends':{'cloudflare':{'type':'cloudflare',
                     'model':'@cf/black-forest-labs/flux-2-klein-4b'}},
         }))
-        data=ReferenceArchiveTests().fake_bundle()
+        data=VisualReferenceRoutingTests.fake_bundle()
         self.locator=fake_locator(data)
         self.drive=FakeDrive(data)
         sha=archive.sha256(data)
