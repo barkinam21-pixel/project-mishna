@@ -62,7 +62,7 @@ async function authorize(request,env) {
     if(a.scope.some(s=>s!==SCOPE&&s!=='offline_access'))return reply({error:'SCOPE_NOT_ALLOWED'},403);
     const consent=await api.beginConsent(a),id=crypto.randomUUID().replaceAll('-','');
     await kv.put('pending:'+id,JSON.stringify({handleHash:await digest(consent.handle),ownerApproved:false}),{expirationTtl:600});
-    const headers=consent.headers;headers.set('Content-Type','text/html;charset=utf-8');headers.set('Referrer-Policy','no-referrer');headers.set('Cache-Control','no-store');
+    const headers=consent.headers;headers.set('Content-Type','text/html;charset=utf-8');headers.set('Referrer-Policy','strict-origin');headers.set('Cache-Control','no-store');
     const body=`<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8"><title>חיבור מסע אל המשנה</title><main><h1>חיבור ChatGPT למסע אל המשנה</h1><p>קריאת סטטוס פרטי והפעלת בדיקת חיבור ללא יצירת תמונות. אין הרשאת יצירה או חיוב.</p><p>החיבור ממתין לאישור בעל המערכת בערוץ M3 החתום.</p><p>מזהה חיבור: <code>${id}</code></p><form method="post" action="/authorize"><input type="hidden" name="handle" value="${escape(consent.handle)}"><input type="hidden" name="pending_id" value="${id}"><button name="decision" value="approve">אישור חיבור</button><button name="decision" value="deny">ביטול</button></form></main></html>`;
     return new Response(body,{headers});
   }
