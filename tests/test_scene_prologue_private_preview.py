@@ -179,7 +179,7 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             sound.setnchannels(1)
             sound.setsampwidth(2)
             sound.setframerate(48000)
-            sound.writeframes(b"\\x10\\x27" * 4000)
+            sound.writeframes(b"\x10\x27" * 4000)
         entry = {
             "shot_id": self.first["shot_id"],
             "spot_id": spot["id"],
@@ -227,7 +227,7 @@ class ScenePrivatePreviewTests(unittest.TestCase):
             sound.setnchannels(1)
             sound.setsampwidth(2)
             sound.setframerate(48000)
-            sound.writeframes(b"\\x10\\x27" * 24000)
+            sound.writeframes(b"\x10\x27" * 24000)
         slates = [{"shot_id": f"EP-P{i:02d}", "start_frame": (i-1)*24,
                    "end_frame": i*24, "duration_frames": 24,
                    "purpose": "לוח בדיקת סאונד",
