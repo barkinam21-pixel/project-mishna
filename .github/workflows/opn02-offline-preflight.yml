@@ -1,0 +1,36 @@
+name: OPN02 offline Modal and layout preflight
+on:
+  pull_request:
+    paths:
+      - 'tools/modal_gpu_budget_gate.py'
+      - 'tests/test_modal_gpu_budget_gate.py'
+      - 'tools/flux3_layout_preflight.py'
+      - 'tests/test_flux3_layout_preflight.py'
+      - '.github/workflows/opn02-offline-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run offline preflight tests (no Modal API or GPU)
+        run: python -m unittest discover -s tests -p 'test_modal_gpu_budget_gate.py' -v && python -m unittest discover -s tests -p 'test_flux3_layout_preflight.py' -v
+      - name: Confirm budget gate explicitly blocks unauthorized generation
+        run: |
+          set +e
+          result=$(python -m tools.modal_gpu_budget_gate --hourly-usd 1 --max-seconds 60 --available-credit-usd 1 --hard-cap-usd 1)
+          exit_code=$?
+          set -e
+          GATE_RESULT="$result" GATE_EXIT_CODE="$exit_code" python - <<'PY'
+          import json, os
+          result = json.loads(os.environ["GATE_RESULT"])
+          assert os.environ["GATE_EXIT_CODE"] == "2", "Expected a blocked exit code"
+          assert result == {"status": "BLOCKED_APPROVAL_OR_RIGHTS", "gpu_requests": 0}, result
+          print("Verified: authorization gate blocked with expected reason and zero GPU requests.")
+          PY
